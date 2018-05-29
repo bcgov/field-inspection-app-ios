@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="126" id="KGk-i7-Jjw" customClass="MiFormTableViewCell" customModule="EAO" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="341" height="126"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="341" height="125.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QVi-Rh-tDF">
+                        <rect key="frame" x="8" y="2.5" width="325" height="120.5"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4uU-GM-bUM">
+                                <rect key="frame" x="8" y="2" width="309" height="116.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tvO-pE-uFj">
+                                        <rect key="frame" x="8" y="3" width="293" height="110.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="tvO-pE-uFj" secondAttribute="bottom" constant="3" id="0fU-lt-yjV"/>
+                                    <constraint firstItem="tvO-pE-uFj" firstAttribute="leading" secondItem="4uU-GM-bUM" secondAttribute="leading" constant="8" id="4KE-3k-b2O"/>
+                                    <constraint firstItem="tvO-pE-uFj" firstAttribute="top" secondItem="4uU-GM-bUM" secondAttribute="top" constant="3" id="k1C-fe-72G"/>
+                                    <constraint firstAttribute="trailing" secondItem="tvO-pE-uFj" secondAttribute="trailing" constant="8" id="xEX-OE-0k9"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4uU-GM-bUM" firstAttribute="top" secondItem="QVi-Rh-tDF" secondAttribute="top" constant="2" id="Ebj-EG-FKj"/>
+                            <constraint firstAttribute="trailing" secondItem="4uU-GM-bUM" secondAttribute="trailing" constant="8" id="Lz5-YK-dFS"/>
+                            <constraint firstItem="4uU-GM-bUM" firstAttribute="leading" secondItem="QVi-Rh-tDF" secondAttribute="leading" constant="8" id="QUJ-Bm-vaw"/>
+                            <constraint firstAttribute="bottom" secondItem="4uU-GM-bUM" secondAttribute="bottom" constant="2" id="UfO-ky-0NC"/>
+                            <constraint firstAttribute="height" constant="120.5" id="d1K-P7-Pnd"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="QVi-Rh-tDF" secondAttribute="trailing" constant="8" id="4NY-vY-jGS"/>
+                    <constraint firstItem="QVi-Rh-tDF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="6yi-Rw-nFM"/>
+                    <constraint firstItem="QVi-Rh-tDF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="U9g-zJ-qcu"/>
+                    <constraint firstAttribute="bottom" secondItem="QVi-Rh-tDF" secondAttribute="bottom" constant="3" id="Wdq-ok-2kZ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="container" destination="4uU-GM-bUM" id="sGw-eR-0NM"/>
+                <outlet property="height" destination="d1K-P7-Pnd" id="40m-AW-sg0"/>
+                <outlet property="label" destination="tvO-pE-uFj" id="cSc-Gf-vQt"/>
+            </connections>
+            <point key="canvasLocation" x="44.5" y="95"/>
+        </tableViewCell>
+    </objects>
+</document>

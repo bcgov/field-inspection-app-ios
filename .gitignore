@@ -1,0 +1,52 @@
+# Exclude OS X folder attributes
+.DS_Store
+
+# Exclude user-specific XCode files
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.moved-aside
+*.xcuserstate
+
+# Exclude user-specific XCode files- with some IDE configuration tmp binaries could be configure to working directory.
+build/
+build/*
+DerivedData/
+Build/*
+Build/
+
+# Exclude merge artifacts
+*.orig
+
+# Obj-C/Swift binaries
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Playgrounds 
+# To demo some API features, playground are a useful feature. 
+# We exclude IDE specific files that saves user specific data.
+timeline.xctimeline
+playground.xcworkspace
+
+# CocoaPods
+# We check in xcodeproj but exclude CocoaPods generated xcworkspace
+# We have chosen not to checked-in Pods.
+# Podfile.lock is not checked-in as we make sure all dependencies (and transitive ones) are fixed in podspec.
+Pods/
+*.xcworkspace
+Podfile.lock
+
+# Exclude generated directory as part of FeedHenry release process script
+dist/
+Releases-*/*
+FH-*/
+
+

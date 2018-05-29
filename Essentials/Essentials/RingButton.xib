@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RingButton" customModule="Essentials" customModuleProvider="target">
+            <connections>
+                <outlet property="button" destination="bRD-e3-QT4" id="82T-fi-saL"/>
+                <outlet property="label" destination="zfa-Pd-V0q" id="vZA-Wg-Xbv"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bRD-e3-QT4">
+                    <rect key="frame" x="10" y="0.0" width="180" height="180"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="bRD-e3-QT4" secondAttribute="height" multiplier="1:1" id="8Xd-gy-1g7"/>
+                    </constraints>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfa-Pd-V0q">
+                    <rect key="frame" x="0.0" y="180" width="200" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="bYZ-mj-V6f"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="bRD-e3-QT4" secondAttribute="trailing" constant="10" id="4Hk-qD-xWO"/>
+                <constraint firstAttribute="bottom" secondItem="zfa-Pd-V0q" secondAttribute="bottom" id="LD0-kT-yVr"/>
+                <constraint firstItem="bRD-e3-QT4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="ZKZ-oH-2q9"/>
+                <constraint firstAttribute="trailing" secondItem="zfa-Pd-V0q" secondAttribute="trailing" id="Zvy-cJ-GMB"/>
+                <constraint firstItem="zfa-Pd-V0q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cLh-lm-wfd"/>
+                <constraint firstItem="zfa-Pd-V0q" firstAttribute="top" secondItem="bRD-e3-QT4" secondAttribute="bottom" id="l3g-fu-DpP"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

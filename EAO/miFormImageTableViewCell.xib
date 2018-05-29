@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="miFormImageTableViewCell" selectionStyle="default" indentationWidth="10" rowHeight="365" id="KGk-i7-Jjw" customClass="miFormImageTableViewCell" customModule="time_me" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="376" height="365"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="376" height="364.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hfw-Sq-g1f">
+                        <rect key="frame" x="8" y="3" width="360" height="360.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nnf-yu-1bK">
+                                <rect key="frame" x="2" y="2" width="356" height="356.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="nnf-yu-1bK" secondAttribute="height" multiplier="1:1" id="8nq-m2-YJc"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="nnf-yu-1bK" firstAttribute="top" secondItem="Hfw-Sq-g1f" secondAttribute="top" constant="2" id="4tv-ob-2FI"/>
+                            <constraint firstItem="nnf-yu-1bK" firstAttribute="leading" secondItem="Hfw-Sq-g1f" secondAttribute="leading" constant="2" id="H6i-JL-T9B"/>
+                            <constraint firstAttribute="trailing" secondItem="nnf-yu-1bK" secondAttribute="trailing" constant="2" id="TIQ-tg-0jC"/>
+                            <constraint firstAttribute="bottom" secondItem="nnf-yu-1bK" secondAttribute="bottom" constant="2" id="YIm-sQ-BnB"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Hfw-Sq-g1f" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="AaZ-Wj-STX"/>
+                    <constraint firstItem="Hfw-Sq-g1f" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="HDG-yg-pa3"/>
+                    <constraint firstItem="Hfw-Sq-g1f" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="OAF-gf-8xY"/>
+                    <constraint firstAttribute="trailing" secondItem="Hfw-Sq-g1f" secondAttribute="trailing" constant="8" id="WeT-HB-Ctw"/>
+                    <constraint firstItem="Hfw-Sq-g1f" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ndW-Tw-3vJ"/>
+                    <constraint firstAttribute="bottom" secondItem="Hfw-Sq-g1f" secondAttribute="bottom" constant="3" id="yhx-0A-CbM"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="container" destination="Hfw-Sq-g1f" id="Zqw-wI-MVy"/>
+                <outlet property="imageContainer" destination="nnf-yu-1bK" id="sRb-x7-EXP"/>
+            </connections>
+            <point key="canvasLocation" x="-177" y="73.5"/>
+        </tableViewCell>
+    </objects>
+</document>

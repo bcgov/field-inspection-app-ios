@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3VH-4f-7S7">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Project List Controller-->
+        <scene sceneID="R4m-IO-zPt">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="3VH-4f-7S7" customClass="ProjectListController" customModule="EAO" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="M7V-Th-KPc"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ak3-ma-CHJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LMW-fr-78Q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QDX-3K-jKD">
+                                <rect key="frame" x="0.0" y="120" width="375" height="547"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectListCell" id="SCh-Ka-E7b" customClass="ProjectListCell" customModule="EAO" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SCh-Ka-E7b" id="bVo-cX-IdF">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mka-jE-N6D">
+                                                    <rect key="frame" x="10" y="0.0" width="365" height="59"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" white="0.10000000000000001" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Mka-jE-N6D" secondAttribute="bottom" id="Ba7-Df-Nj3"/>
+                                                <constraint firstAttribute="trailing" secondItem="Mka-jE-N6D" secondAttribute="trailing" id="cOg-GN-8Ix"/>
+                                                <constraint firstItem="Mka-jE-N6D" firstAttribute="leading" secondItem="bVo-cX-IdF" secondAttribute="leading" constant="10" id="dNK-Sh-A66"/>
+                                                <constraint firstItem="Mka-jE-N6D" firstAttribute="top" secondItem="bVo-cX-IdF" secondAttribute="top" id="lUm-T3-VOc"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="Mka-jE-N6D" id="0Nl-jx-Sdl"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="3VH-4f-7S7" id="sPw-dO-PlI"/>
+                                    <outlet property="delegate" destination="3VH-4f-7S7" id="9Kc-VU-HbM"/>
+                                </connections>
+                            </tableView>
+                            <searchBar contentMode="redraw" placeholder="Search by project name" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j7m-ia-f62">
+                                <rect key="frame" x="0.0" y="64" width="375" height="56"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" red="0.0039215686269999999" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.31544867160000001" green="0.44771867990000003" blue="0.67648500199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="delegate" destination="3VH-4f-7S7" id="AYo-1d-0zc"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="QDX-3K-jKD" firstAttribute="leading" secondItem="LMW-fr-78Q" secondAttribute="leading" id="08k-QO-XIe"/>
+                            <constraint firstItem="QDX-3K-jKD" firstAttribute="top" secondItem="j7m-ia-f62" secondAttribute="bottom" id="5sP-u9-Rwi"/>
+                            <constraint firstAttribute="trailing" secondItem="QDX-3K-jKD" secondAttribute="trailing" id="AZq-ip-Ssr"/>
+                            <constraint firstItem="j7m-ia-f62" firstAttribute="top" secondItem="M7V-Th-KPc" secondAttribute="bottom" id="oNc-eC-a7D"/>
+                            <constraint firstAttribute="trailing" secondItem="j7m-ia-f62" secondAttribute="trailing" id="qSx-Il-ohk"/>
+                            <constraint firstItem="Ak3-ma-CHJ" firstAttribute="top" secondItem="QDX-3K-jKD" secondAttribute="bottom" id="tfY-u3-6Y9"/>
+                            <constraint firstItem="j7m-ia-f62" firstAttribute="leading" secondItem="LMW-fr-78Q" secondAttribute="leading" id="uu9-KU-utw"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="g6O-nq-3fa">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="wGn-aV-vvH">
+                            <rect key="frame" x="112.5" y="5.5" width="150" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Projects List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TEa-e2-Kcv">
+                                    <rect key="frame" x="26" y="6" width="98" height="22"/>
+                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="ySH-7j-KHw">
+                                    <rect key="frame" x="129" y="7" width="20" height="20"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="TEa-e2-Kcv" firstAttribute="centerX" secondItem="wGn-aV-vvH" secondAttribute="centerX" id="3GL-0l-V6Z"/>
+                                <constraint firstItem="ySH-7j-KHw" firstAttribute="leading" secondItem="TEa-e2-Kcv" secondAttribute="trailing" constant="5" id="5x8-zE-O37"/>
+                                <constraint firstItem="ySH-7j-KHw" firstAttribute="centerY" secondItem="wGn-aV-vvH" secondAttribute="centerY" id="XfW-9P-o88"/>
+                                <constraint firstItem="TEa-e2-Kcv" firstAttribute="centerY" secondItem="wGn-aV-vvH" secondAttribute="centerY" id="r2a-WF-xPp"/>
+                            </constraints>
+                        </view>
+                        <barButtonItem key="rightBarButtonItem" title="Custom" id="vdz-F7-pWp">
+                            <connections>
+                                <action selector="customTapped:" destination="3VH-4f-7S7" id="WJE-SY-Nv7"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="indicator" destination="ySH-7j-KHw" id="fny-Hu-Her"/>
+                        <outlet property="searchBar" destination="j7m-ia-f62" id="pxj-WY-ssz"/>
+                        <outlet property="tableView" destination="QDX-3K-jKD" id="k4o-qr-581"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t19-jS-auU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="236" y="44"/>
+        </scene>
+    </scenes>
+</document>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="333" id="KGk-i7-Jjw" customClass="MiFormTextViewTableViewCell" customModule="EAO" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="394" height="333"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="394" height="332.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X2e-9O-D2N">
+                        <rect key="frame" x="28" y="14" width="338" height="305"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="OnO-8y-HtW">
+                                <rect key="frame" x="8" y="50" width="322" height="250"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="OrR-pq-DDr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oar-tL-Ui3">
+                                <rect key="frame" x="8" y="5" width="322" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Oar-tL-Ui3" firstAttribute="leading" secondItem="X2e-9O-D2N" secondAttribute="leading" constant="8" id="27A-I0-s0G"/>
+                            <constraint firstItem="Oar-tL-Ui3" firstAttribute="top" secondItem="X2e-9O-D2N" secondAttribute="top" constant="5" id="Ire-9C-tBO"/>
+                            <constraint firstItem="OnO-8y-HtW" firstAttribute="top" secondItem="Oar-tL-Ui3" secondAttribute="bottom" constant="5" id="SzP-8x-BYQ"/>
+                            <constraint firstAttribute="trailing" secondItem="OnO-8y-HtW" secondAttribute="trailing" constant="8" id="XlT-VX-EkG"/>
+                            <constraint firstAttribute="bottom" secondItem="OnO-8y-HtW" secondAttribute="bottom" constant="5" id="YAO-fd-P1C"/>
+                            <constraint firstItem="OnO-8y-HtW" firstAttribute="leading" secondItem="X2e-9O-D2N" secondAttribute="leading" constant="8" id="hoF-8l-FrL"/>
+                            <constraint firstAttribute="trailing" secondItem="Oar-tL-Ui3" secondAttribute="trailing" constant="8" id="mC6-9T-Y6N"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="X2e-9O-D2N" secondAttribute="trailing" constant="8" id="ckl-5Q-O9J"/>
+                    <constraint firstItem="X2e-9O-D2N" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="e60-54-kJo"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="X2e-9O-D2N" secondAttribute="bottom" constant="3" id="j9X-qu-kra"/>
+                    <constraint firstItem="X2e-9O-D2N" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="rMf-2z-tze"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="container" destination="X2e-9O-D2N" id="BMe-ae-kjv"/>
+                <outlet property="textView" destination="OnO-8y-HtW" id="IjR-z9-UJO"/>
+                <outlet property="textViewHeight" destination="OrR-pq-DDr" id="dcI-ru-ToW"/>
+                <outlet property="titleLabel" destination="Oar-tL-Ui3" id="M2F-y3-Bvf"/>
+            </connections>
+            <point key="canvasLocation" x="71" y="198.5"/>
+        </tableViewCell>
+    </objects>
+</document>
