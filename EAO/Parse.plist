@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-    <key>ParseAppId</key>
-    <string>000</string>
-    <key>ParseClientKey</key>
-    <string>000</string>
-    <key>ParseServer</key>
-    <string>000</string>
-</dict>
+    <dict>
+        <key>ParseAppId</key>
+        <string>abc123</string>
+        <key>ParseClientKey</key>
+        <string>abc123</string>
+        <key>ParseServer</key>
+        <string>https://test.projects.eao.gov.bc.ca/parse</string>
+    </dict>
 </plist>

@@ -361,10 +361,10 @@ extension NewObservationController: UITextFieldDelegate{
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         didMakeChange = true
-        var length = textField.text?.characters.count ?? 0
-        length += string.characters.count
+        var length = textField.text?.count ?? 0
+        length += string.count
         length -= range.length
-        return length < EAO.Constants.textFieldLenght
+        return length < 500
     }
 }
 
