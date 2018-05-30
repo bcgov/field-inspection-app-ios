@@ -6,7 +6,7 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 
-struct Constants{
+class Constants {
 	static let textFieldLenght = 500
 	static let textViewLenght  = 5000
 }
