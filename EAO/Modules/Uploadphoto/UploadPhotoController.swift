@@ -172,10 +172,10 @@ extension UploadPhotoController{
 extension UploadPhotoController: UITextViewDelegate{
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		didMakeChange = true
-		var length = textView.text?.characters.count ?? 0
-		length += text.characters.count
+		var length = textView.text?.count ?? 0
+		length += text.count
 		length -= range.length
-		if length < EAO.Constants.textViewLenght{
+		if length < 5000 {
 			return true
 		} else{
 			present(controller: UIAlertController(title: "Text Limit Exceeded", message: "You've reached maximum number of characters allowed"))
