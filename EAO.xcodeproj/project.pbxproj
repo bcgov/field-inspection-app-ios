@@ -275,6 +275,7 @@
 		29FF5617200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5615200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib */; };
 		29FF561A200EC29100FCF230 /* PFManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5619200EC29100FCF230 /* PFManager.swift */; };
 		54A450104FD83EFA9471288B /* Pods_EAO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0E7F8FD1D452DB3152947A /* Pods_EAO.framework */; };
+		561F2AC020D19C5F0072C0D0 /* Info-Test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */; };
 		95CF462D7588D8B3207A134B /* Pods_EAOUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7264A000F4E6ED7FD7102F7 /* Pods_EAOUITests.framework */; };
 		9688D51C1E69DA4300C49CD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -387,8 +388,7 @@
 		291C4D9E203A599000390523 /* GalleryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryMode.swift; sourceTree = "<group>"; };
 		29315819200929FB008E2FF4 /* ImageCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		2931581A200929FB008E2FF4 /* ImageCollectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionTableViewCell.xib; sourceTree = "<group>"; };
-		2936BF3F20BF64A500775F5E /* TestAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2936BF4120BF64A600775F5E /* EAO copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "EAO copy-Info.plist"; path = "/Users/amir/Work/field-inspection-app-ios/EAO copy-Info.plist"; sourceTree = "<absolute>"; };
+		2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp. TEST.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29424D271FFC140E00562508 /* NewObservationElementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationElementManager.swift; sourceTree = "<group>"; };
 		29424D281FFC140E00562508 /* NewObservationElementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationElementViewController.swift; sourceTree = "<group>"; };
 		29424D291FFC140E00562508 /* NewObservationElement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewObservationElement.storyboard; sourceTree = "<group>"; };
@@ -463,8 +463,9 @@
 		29FF5615200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionNewObservationCollectionViewCell.xib; sourceTree = "<group>"; };
 		29FF5619200EC29100FCF230 /* PFManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFManager.swift; sourceTree = "<group>"; };
 		35A0BFAA52096CAB054AF015 /* Pods-EAOTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOTests/Pods-EAOTests.debug.xcconfig"; sourceTree = "<group>"; };
+		561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Test.plist"; sourceTree = SOURCE_ROOT; };
 		6AA409627E4D8A567FCFAD3C /* Pods-EAOUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		9688D5181E69DA4300C49CD7 /* FieldAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FieldAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9688D5181E69DA4300C49CD7 /* Field Insp..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp..app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD0E7F8FD1D452DB3152947A /* Pods_EAO.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EAO.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEFF4B5C7E2F8AE6706C9548 /* Pods-EAOUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -961,16 +962,15 @@
 				9688D5191E69DA4300C49CD7 /* Products */,
 				BD3B058A1E6A3736005E2C19 /* Frameworks */,
 				0DAF0FAAE3A00230144E65E8 /* Pods */,
-				2936BF4120BF64A600775F5E /* EAO copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
 		9688D5191E69DA4300C49CD7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9688D5181E69DA4300C49CD7 /* FieldAPP.app */,
+				9688D5181E69DA4300C49CD7 /* Field Insp..app */,
 				1186B5381ECB699D00681426 /* EAOUITests.xctest */,
-				2936BF3F20BF64A500775F5E /* TestAPP.app */,
+				2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1018,6 +1018,7 @@
 				110FF0AF1E8C2833000DB1A5 /* Assets.xcassets */,
 				110FF0B01E8C2833000DB1A5 /* EAO-Bridging-Header.h */,
 				110FF0B11E8C2833000DB1A5 /* Info.plist */,
+				561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */,
 				110FF0B21E8C2833000DB1A5 /* samplePDF.pdf */,
 				119A0B831EE785300077D9B5 /* Reachability.swift */,
 			);
@@ -1056,9 +1057,9 @@
 			productReference = 1186B5381ECB699D00681426 /* EAOUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		2936BEAE20BF64A500775F5E /* TestAPP */ = {
+		2936BEAE20BF64A500775F5E /* Field Insp. TEST */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "TestAPP" */;
+			buildConfigurationList = 2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "Field Insp. TEST" */;
 			buildPhases = (
 				2936BEAF20BF64A500775F5E /* [CP] Check Pods Manifest.lock */,
 				2936BEB020BF64A500775F5E /* Sources */,
@@ -1072,14 +1073,14 @@
 			);
 			dependencies = (
 			);
-			name = TestAPP;
+			name = "Field Insp. TEST";
 			productName = EAO;
-			productReference = 2936BF3F20BF64A500775F5E /* TestAPP.app */;
+			productReference = 2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9688D5171E69DA4300C49CD7 /* FieldAPP */ = {
+		9688D5171E69DA4300C49CD7 /* Field Insp. */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "FieldAPP" */;
+			buildConfigurationList = 9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "Field Insp." */;
 			buildPhases = (
 				C83A661391482BD6CC241FDE /* [CP] Check Pods Manifest.lock */,
 				9688D5141E69DA4300C49CD7 /* Sources */,
@@ -1093,9 +1094,9 @@
 			);
 			dependencies = (
 			);
-			name = FieldAPP;
+			name = "Field Insp.";
 			productName = EAO;
-			productReference = 9688D5181E69DA4300C49CD7 /* FieldAPP.app */;
+			productReference = 9688D5181E69DA4300C49CD7 /* Field Insp..app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1105,7 +1106,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = FreshWorks;
 				TargetAttributes = {
 					1186B5371ECB699D00681426 = {
@@ -1115,12 +1116,12 @@
 						TestTargetID = 9688D5171E69DA4300C49CD7;
 					};
 					2936BEAE20BF64A500775F5E = {
-						DevelopmentTeam = TCH45SXZ69;
+						DevelopmentTeam = KH9MTRSDAZ;
 						ProvisioningStyle = Automatic;
 					};
 					9688D5171E69DA4300C49CD7 = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = TCH45SXZ69;
+						DevelopmentTeam = KH9MTRSDAZ;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
@@ -1145,9 +1146,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				9688D5171E69DA4300C49CD7 /* FieldAPP */,
+				9688D5171E69DA4300C49CD7 /* Field Insp. */,
 				1186B5371ECB699D00681426 /* EAOUITests */,
-				2936BEAE20BF64A500775F5E /* TestAPP */,
+				2936BEAE20BF64A500775F5E /* Field Insp. TEST */,
 			);
 		};
 /* End PBXProject section */
@@ -1193,6 +1194,7 @@
 				2936BF1D20BF64A500775F5E /* SettingsController.storyboard in Resources */,
 				2936BF1E20BF64A500775F5E /* OptionCollectionViewCell.xib in Resources */,
 				2936BF1F20BF64A500775F5E /* GPSLabelTableViewCell.xib in Resources */,
+				561F2AC020D19C5F0072C0D0 /* Info-Test.plist in Resources */,
 				2936BF2020BF64A500775F5E /* MiForm.storyboard in Resources */,
 				2936BF2120BF64A500775F5E /* SignupController.storyboard in Resources */,
 				2936BF2220BF64A500775F5E /* ImageCollectionTableViewCell.xib in Resources */,
@@ -1615,7 +1617,7 @@
 /* Begin PBXTargetDependency section */
 		1186B53E1ECB699D00681426 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9688D5171E69DA4300C49CD7 /* FieldAPP */;
+			target = 9688D5171E69DA4300C49CD7 /* Field Insp. */;
 			targetProxy = 1186B53D1ECB699D00681426 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1668,11 +1670,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = TCH45SXZ69;
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				INFOPLIST_FILE = "EAO copy-Info.plist";
+				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.freshworks.EAO-MVP";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.bc.gov.pathfinder.mobile.FieldInspection-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1690,10 +1692,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TCH45SXZ69;
-				INFOPLIST_FILE = "EAO copy-Info.plist";
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
+				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.freshworks.EAO-MVP";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.bc.gov.pathfinder.mobile.FieldInspection-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1715,6 +1717,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1722,6 +1725,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -1771,6 +1775,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1778,6 +1783,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -1816,11 +1822,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = TCH45SXZ69;
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = EAO/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.freshworks.EAO-MVP";
+				PRODUCT_BUNDLE_IDENTIFIER = ca.bc.gov.pathfinder.mobile.FieldInspection;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1838,10 +1844,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TCH45SXZ69;
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
 				INFOPLIST_FILE = EAO/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.freshworks.EAO-MVP";
+				PRODUCT_BUNDLE_IDENTIFIER = ca.bc.gov.pathfinder.mobile.FieldInspection;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1862,7 +1868,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "TestAPP" */ = {
+		2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "Field Insp. TEST" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2936BF3D20BF64A500775F5E /* Debug */,
@@ -1880,7 +1886,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "FieldAPP" */ = {
+		9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "Field Insp." */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9688D5361E69DA4300C49CD7 /* Debug */,
