@@ -197,7 +197,6 @@
 		2936BF3320BF64A500775F5E /* MiFormTextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295304D92017FF40001E5C7F /* MiFormTextViewTableViewCell.xib */; };
 		2936BF3420BF64A500775F5E /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29795F56200FDCCF00A55B45 /* ImageCollectionViewCell.xib */; };
 		2936BF3520BF64A500775F5E /* AudioRecorder.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29A029ED2029FECC0085DCE8 /* AudioRecorder.storyboard */; };
-		2936BF3620BF64A500775F5E /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2999842E20BDBC5D00B64A25 /* Parse.plist */; };
 		2936BF3720BF64A500775F5E /* LabelCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29795F51200FCF3A00A55B45 /* LabelCollectionViewCell.xib */; };
 		2936BF3B20BF64A500775F5E /* Essentials.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B5281ECA35AC00681426 /* Essentials.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		29424D2A1FFC140E00562508 /* NewObservationElementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D271FFC140E00562508 /* NewObservationElementManager.swift */; };
@@ -242,7 +241,6 @@
 		29795F58200FDCCF00A55B45 /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29795F56200FDCCF00A55B45 /* ImageCollectionViewCell.xib */; };
 		298EDDB7203B4BB1004530F5 /* PFVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298EDDB6203B4BB1004530F5 /* PFVideo.swift */; };
 		298EDDB9203B4D01004530F5 /* PHAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298EDDB8203B4D01004530F5 /* PHAsset.swift */; };
-		2999842F20BDBC5D00B64A25 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2999842E20BDBC5D00B64A25 /* Parse.plist */; };
 		29A029EE2029FECC0085DCE8 /* AudioRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A029EB2029FECC0085DCE8 /* AudioRecorderViewController.swift */; };
 		29A029EF2029FECC0085DCE8 /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A029EC2029FECC0085DCE8 /* Recorder.swift */; };
 		29A029F02029FECC0085DCE8 /* AudioRecorder.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29A029ED2029FECC0085DCE8 /* AudioRecorder.storyboard */; };
@@ -276,6 +274,8 @@
 		29FF561A200EC29100FCF230 /* PFManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5619200EC29100FCF230 /* PFManager.swift */; };
 		54A450104FD83EFA9471288B /* Pods_EAO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0E7F8FD1D452DB3152947A /* Pods_EAO.framework */; };
 		561F2AC020D19C5F0072C0D0 /* Info-Test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */; };
+		561F2AD520D1ADA80072C0D0 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2AD120D1AD3A0072C0D0 /* Parse.plist */; };
+		561F2AD720D1ADE90072C0D0 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2AD320D1AD490072C0D0 /* Parse.plist */; };
 		95CF462D7588D8B3207A134B /* Pods_EAOUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7264A000F4E6ED7FD7102F7 /* Pods_EAOUITests.framework */; };
 		9688D51C1E69DA4300C49CD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -432,7 +432,6 @@
 		298EDDB6203B4BB1004530F5 /* PFVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFVideo.swift; sourceTree = "<group>"; };
 		298EDDB8203B4D01004530F5 /* PHAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAsset.swift; sourceTree = "<group>"; };
 		299971B02077FAA5006252B9 /* Essentials.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Essentials.xcodeproj; path = Essentials/Essentials.xcodeproj; sourceTree = "<group>"; };
-		2999842E20BDBC5D00B64A25 /* Parse.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Parse.plist; sourceTree = "<group>"; };
 		29A029EB2029FECC0085DCE8 /* AudioRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderViewController.swift; sourceTree = "<group>"; };
 		29A029EC2029FECC0085DCE8 /* Recorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
 		29A029ED2029FECC0085DCE8 /* AudioRecorder.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AudioRecorder.storyboard; sourceTree = "<group>"; };
@@ -464,6 +463,8 @@
 		29FF5619200EC29100FCF230 /* PFManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFManager.swift; sourceTree = "<group>"; };
 		35A0BFAA52096CAB054AF015 /* Pods-EAOTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOTests/Pods-EAOTests.debug.xcconfig"; sourceTree = "<group>"; };
 		561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Test.plist"; sourceTree = SOURCE_ROOT; };
+		561F2AD120D1AD3A0072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/test/Parse.plist"; sourceTree = SOURCE_ROOT; };
+		561F2AD320D1AD490072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/prod/Parse.plist"; sourceTree = SOURCE_ROOT; };
 		6AA409627E4D8A567FCFAD3C /* Pods-EAOUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9688D5181E69DA4300C49CD7 /* Field Insp..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp..app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -953,6 +954,22 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		561F2ACF20D1AD220072C0D0 /* Prod */ = {
+			isa = PBXGroup;
+			children = (
+				561F2AD320D1AD490072C0D0 /* Parse.plist */,
+			);
+			name = Prod;
+			sourceTree = "<group>";
+		};
+		561F2AD020D1AD280072C0D0 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				561F2AD120D1AD3A0072C0D0 /* Parse.plist */,
+			);
+			name = Test;
+			sourceTree = "<group>";
+		};
 		9688D50F1E69DA4300C49CD7 = {
 			isa = PBXGroup;
 			children = (
@@ -978,7 +995,6 @@
 		9688D51A1E69DA4300C49CD7 /* EAO */ = {
 			isa = PBXGroup;
 			children = (
-				2999842E20BDBC5D00B64A25 /* Parse.plist */,
 				113B204A1EC120A200F04811 /* AppDelegate */,
 				1159B3341EB1029900F72750 /* DataModels */,
 				110FF1911E8C5C25000DB1A5 /* Modules */,
@@ -1013,6 +1029,8 @@
 		9688D5591E69DD8A00C49CD7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				561F2AD020D1AD280072C0D0 /* Test */,
+				561F2ACF20D1AD220072C0D0 /* Prod */,
 				117D3BF81EEF0ACE00791D07 /* Constants */,
 				110FF10A1E8C384D000DB1A5 /* LaunchScreen */,
 				110FF0AF1E8C2833000DB1A5 /* Assets.xcassets */,
@@ -1057,9 +1075,9 @@
 			productReference = 1186B5381ECB699D00681426 /* EAOUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		2936BEAE20BF64A500775F5E /* Field Insp. TEST */ = {
+		2936BEAE20BF64A500775F5E /* Field Insp TEST */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "Field Insp. TEST" */;
+			buildConfigurationList = 2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "Field Insp TEST" */;
 			buildPhases = (
 				2936BEAF20BF64A500775F5E /* [CP] Check Pods Manifest.lock */,
 				2936BEB020BF64A500775F5E /* Sources */,
@@ -1073,14 +1091,14 @@
 			);
 			dependencies = (
 			);
-			name = "Field Insp. TEST";
+			name = "Field Insp TEST";
 			productName = EAO;
 			productReference = 2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9688D5171E69DA4300C49CD7 /* Field Insp. */ = {
+		9688D5171E69DA4300C49CD7 /* Field Insp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "Field Insp." */;
+			buildConfigurationList = 9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "Field Insp" */;
 			buildPhases = (
 				C83A661391482BD6CC241FDE /* [CP] Check Pods Manifest.lock */,
 				9688D5141E69DA4300C49CD7 /* Sources */,
@@ -1094,7 +1112,7 @@
 			);
 			dependencies = (
 			);
-			name = "Field Insp.";
+			name = "Field Insp";
 			productName = EAO;
 			productReference = 9688D5181E69DA4300C49CD7 /* Field Insp..app */;
 			productType = "com.apple.product-type.application";
@@ -1146,9 +1164,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				9688D5171E69DA4300C49CD7 /* Field Insp. */,
+				9688D5171E69DA4300C49CD7 /* Field Insp */,
 				1186B5371ECB699D00681426 /* EAOUITests */,
-				2936BEAE20BF64A500775F5E /* Field Insp. TEST */,
+				2936BEAE20BF64A500775F5E /* Field Insp TEST */,
 			);
 		};
 /* End PBXProject section */
@@ -1216,7 +1234,7 @@
 				2936BF3320BF64A500775F5E /* MiFormTextViewTableViewCell.xib in Resources */,
 				2936BF3420BF64A500775F5E /* ImageCollectionViewCell.xib in Resources */,
 				2936BF3520BF64A500775F5E /* AudioRecorder.storyboard in Resources */,
-				2936BF3620BF64A500775F5E /* Parse.plist in Resources */,
+				561F2AD520D1ADA80072C0D0 /* Parse.plist in Resources */,
 				2936BF3720BF64A500775F5E /* LabelCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1265,7 +1283,7 @@
 				295304E42017FF47001E5C7F /* MiFormTextViewTableViewCell.xib in Resources */,
 				29795F58200FDCCF00A55B45 /* ImageCollectionViewCell.xib in Resources */,
 				29A029F02029FECC0085DCE8 /* AudioRecorder.storyboard in Resources */,
-				2999842F20BDBC5D00B64A25 /* Parse.plist in Resources */,
+				561F2AD720D1ADE90072C0D0 /* Parse.plist in Resources */,
 				29795F53200FCF3B00A55B45 /* LabelCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1617,7 +1635,7 @@
 /* Begin PBXTargetDependency section */
 		1186B53E1ECB699D00681426 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9688D5171E69DA4300C49CD7 /* Field Insp. */;
+			target = 9688D5171E69DA4300C49CD7 /* Field Insp */;
 			targetProxy = 1186B53D1ECB699D00681426 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1868,7 +1886,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "Field Insp. TEST" */ = {
+		2936BF3C20BF64A500775F5E /* Build configuration list for PBXNativeTarget "Field Insp TEST" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2936BF3D20BF64A500775F5E /* Debug */,
@@ -1886,7 +1904,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "Field Insp." */ = {
+		9688D5351E69DA4300C49CD7 /* Build configuration list for PBXNativeTarget "Field Insp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9688D5361E69DA4300C49CD7 /* Debug */,

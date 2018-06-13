@@ -20,6 +20,7 @@ build/*
 DerivedData/
 Build/*
 Build/
+parse-config
 
 # Exclude merge artifacts
 *.orig
@@ -48,5 +49,4 @@ Podfile.lock
 dist/
 Releases-*/*
 FH-*/
-
 
