@@ -1039,18 +1039,20 @@ class PFManager {
     }
 
     func getTeams(completion: @escaping (_ success: Bool, _ teams: [Team]?) -> Void) {
-//        let found = [PFObject]()
-        let query = PFQuery(className: "Team")
-        query.fromLocalDatastore()
-        query.findObjectsInBackground { (objects, error) in
-            if objects != nil  {
-                var r = [Team]()
-                for object: PFObject in objects! {
-                    r.append(Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!))
+        let user: User =  PFUser.current() as! User
+        self.getUserTeams(user: user) { (done) in
+            let query = PFQuery(className: "Team")
+            query.fromLocalDatastore()
+            query.findObjectsInBackground { (objects, error) in
+                if objects != nil  {
+                    var r = [Team]()
+                    for object: PFObject in objects! {
+                        r.append(Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!))
+                    }
+                    completion(true, r)
+                } else {
+                    return completion(false, nil)
                 }
-                completion(true, r)
-            } else {
-                return completion(false, nil)
             }
         }
     }
