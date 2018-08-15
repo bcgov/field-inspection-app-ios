@@ -7,7 +7,7 @@
 //
 import Alamofire
 
-final class ProjectListController: UIViewController{
+final class ProjectListController: UIViewController {
 	@objc var result : ((_: String?)->Void)?
 
 	fileprivate var projects : [String]?
