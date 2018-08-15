@@ -388,7 +388,7 @@
 		291C4D9E203A599000390523 /* GalleryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryMode.swift; sourceTree = "<group>"; };
 		29315819200929FB008E2FF4 /* ImageCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		2931581A200929FB008E2FF4 /* ImageCollectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionTableViewCell.xib; sourceTree = "<group>"; };
-		2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp. TEST.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Field Insp. TEST.app"; path = "Field Insp TEST.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29424D271FFC140E00562508 /* NewObservationElementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationElementManager.swift; sourceTree = "<group>"; };
 		29424D281FFC140E00562508 /* NewObservationElementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationElementViewController.swift; sourceTree = "<group>"; };
 		29424D291FFC140E00562508 /* NewObservationElement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewObservationElement.storyboard; sourceTree = "<group>"; };
@@ -466,7 +466,7 @@
 		561F2AD120D1AD3A0072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/test/Parse.plist"; sourceTree = SOURCE_ROOT; };
 		561F2AD320D1AD490072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/prod/Parse.plist"; sourceTree = SOURCE_ROOT; };
 		6AA409627E4D8A567FCFAD3C /* Pods-EAOUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		9688D5181E69DA4300C49CD7 /* Field Insp..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp..app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9688D5181E69DA4300C49CD7 /* Field Insp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD0E7F8FD1D452DB3152947A /* Pods_EAO.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EAO.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEFF4B5C7E2F8AE6706C9548 /* Pods-EAOUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -985,7 +985,7 @@
 		9688D5191E69DA4300C49CD7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9688D5181E69DA4300C49CD7 /* Field Insp..app */,
+				9688D5181E69DA4300C49CD7 /* Field Insp.app */,
 				1186B5381ECB699D00681426 /* EAOUITests.xctest */,
 				2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */,
 			);
@@ -1114,7 +1114,7 @@
 			);
 			name = "Field Insp";
 			productName = EAO;
-			productReference = 9688D5181E69DA4300C49CD7 /* Field Insp..app */;
+			productReference = 9688D5181E69DA4300C49CD7 /* Field Insp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
