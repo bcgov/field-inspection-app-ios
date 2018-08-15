@@ -1017,41 +1017,51 @@ class PFManager {
         }
     }
 
-    func getUserTeams(user: User, completion: @escaping (_ success: Bool) -> Void) {
+    func getUserTeams(user: User, completion: @escaping (_ success: Bool,_ teams: [PFObject]) -> Void) {
         let query = PFQuery(className: "Team")
 //        query.findObjectsInBackground { (objects, error) in
 //            print(objects)
 //        }
+        var downloadedTeams = [PFObject]()
         query.whereKey("users", equalTo: user)
         query.findObjectsInBackground { (teams, error) in
             print(teams)
             print("****")
             if let foundTeams: [PFObject] = teams {
                 for team in foundTeams {
+                    downloadedTeams.append(team)
                     team.pinInBackground()
                 }
-                return completion(true)
+                return completion(true, downloadedTeams)
             }
             else {
-                return completion(false)
+                return completion(false, downloadedTeams)
             }
         }
     }
 
     func getTeams(completion: @escaping (_ success: Bool, _ teams: [Team]?) -> Void) {
         let user: User =  PFUser.current() as! User
-        self.getUserTeams(user: user) { (done) in
-            let query = PFQuery(className: "Team")
-            query.fromLocalDatastore()
-            query.findObjectsInBackground { (objects, error) in
-                if objects != nil  {
-                    var r = [Team]()
-                    for object: PFObject in objects! {
-                        r.append(Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!))
+        self.getUserTeams(user: user) { (done, downloaded)  in
+            if done {
+                var results = [Team]()
+                for object: PFObject in downloaded {
+                    results.append(Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!))
+                }
+                return completion(true, results)
+            } else {
+                let query = PFQuery(className: "Team")
+                query.fromLocalDatastore()
+                query.findObjectsInBackground { (objects, error) in
+                    if objects != nil  {
+                        var r = [Team]()
+                        for object: PFObject in objects! {
+                            r.append(Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!))
+                        }
+                        completion(true, r)
+                    } else {
+                        return completion(false, nil)
                     }
-                    completion(true, r)
-                } else {
-                    return completion(false, nil)
                 }
             }
         }
