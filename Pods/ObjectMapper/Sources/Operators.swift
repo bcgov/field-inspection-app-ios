@@ -370,15 +370,3 @@ public func >>> <T: BaseMappable>(left: Set<T>?, right: Map) {
 	}
 }
 
-/*
-/// Implicitly unwrapped Optional Set of Mappable objects
-public func <- <T: BaseMappable>(left: inout Set<T>!, right: Map) {
-	switch right.mappingType {
-	case .fromJSON where right.isKeyPresent:
-		FromJSON.optionalObjectSet(&left, map: right)
-	case .toJSON:
-		left >>> right
-	default: ()
-	}
-}
- */
