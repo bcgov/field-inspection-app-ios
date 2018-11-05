@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cec-c8-Mg8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cec-c8-Mg8">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -75,14 +73,14 @@
                                                             <rect key="frame" x="275" y="17.5" width="60" height="60"/>
                                                             <subviews>
                                                                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Yn-KP-qLQ">
-                                                                    <rect key="frame" x="0.0" y="-0.5" width="60" height="60"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                                     <state key="normal" backgroundImage="icon_upload"/>
                                                                     <connections>
                                                                         <action selector="uploadTapped:forEvent:" destination="C9T-wz-vIA" eventType="touchUpInside" id="Z4o-4M-YMH"/>
                                                                     </connections>
                                                                 </button>
                                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="U0y-ZD-acv">
-                                                                    <rect key="frame" x="20" y="19.5" width="20" height="20"/>
+                                                                    <rect key="frame" x="20" y="20" width="20" height="20"/>
                                                                 </activityIndicatorView>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -133,7 +131,7 @@
                                 <rect key="frame" x="0.0" y="160" width="375" height="60"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="INQ-2F-dUI">
-                                        <rect key="frame" x="20" y="13" width="335" height="36"/>
+                                        <rect key="frame" x="20" y="12.5" width="335" height="36"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="jI9-Gn-VqH"/>
@@ -225,13 +223,13 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspection Field App" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fxi-Hk-0I7">
-                                    <rect key="frame" x="-7" y="6" width="165" height="22"/>
+                                    <rect key="frame" x="-7.5" y="5.5" width="165" height="22"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-76-HDd">
-                                    <rect key="frame" x="163" y="7" width="20" height="20"/>
+                                    <rect key="frame" x="162.5" y="6.5" width="20" height="20"/>
                                 </activityIndicatorView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -254,11 +252,29 @@
                         <outlet property="segmentedControl" destination="INQ-2F-dUI" id="6Ot-ku-QZ8"/>
                         <outlet property="tableView" destination="m9F-1b-r6A" id="fAg-FA-piG"/>
                         <outlet property="tableViewBottomConstraint" destination="EiC-IO-gRR" id="z2P-hS-Fxe"/>
+                        <segue destination="pNG-uD-K7a" kind="show" identifier="InspectionFormControllerSegueID" id="dAq-he-vfp"/>
+                        <segue destination="zG6-s9-h7t" kind="show" identifier="InspectionSetupControllerSegueID" id="mo1-yG-7RR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr0-d5-zSV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1152.8" y="141.67916041979012"/>
+        </scene>
+        <!--InspectionFormController-->
+        <scene sceneID="Way-o4-Rip">
+            <objects>
+                <viewControllerPlaceholder storyboardName="InspectionFormController" id="pNG-uD-K7a" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VUy-Ip-BPJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1933" y="58"/>
+        </scene>
+        <!--InspectionSetupController-->
+        <scene sceneID="FMt-JN-eJq">
+            <objects>
+                <viewControllerPlaceholder storyboardName="InspectionSetupController" id="zG6-s9-h7t" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t2p-Pb-884" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1936" y="220"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="eI6-rd-FAg">

@@ -970,6 +970,13 @@
 			name = Test;
 			sourceTree = "<group>";
 		};
+		5675DA8E2190C33E008409AB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		9688D50F1E69DA4300C49CD7 = {
 			isa = PBXGroup;
 			children = (
@@ -995,6 +1002,7 @@
 		9688D51A1E69DA4300C49CD7 /* EAO */ = {
 			isa = PBXGroup;
 			children = (
+				5675DA8E2190C33E008409AB /* Services */,
 				113B204A1EC120A200F04811 /* AppDelegate */,
 				1159B3341EB1029900F72750 /* DataModels */,
 				110FF1911E8C5C25000DB1A5 /* Modules */,

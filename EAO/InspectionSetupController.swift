@@ -141,7 +141,7 @@ final class InspectionSetupController: UIViewController{
 					inspectionFormController.inspection = inspection
 					if inspection.id != nil {
 						inspectionFormController.submit = {
-							if let index = InspectionsController.reference?.inspections[0]?.index(of: inspection){
+                            if let index = InspectionsController.reference?.inspections.draft.index(of: inspection){
 								InspectionsController.reference?.submit(inspection: self.inspection!, indexPath: IndexPath(row: index, section: 0))
 							}
 						}

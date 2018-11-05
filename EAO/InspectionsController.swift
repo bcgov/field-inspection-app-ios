@@ -1,70 +1,123 @@
 //
-//  EAOInspectionsController.swift
-//  EAO
+// EAO
+//
+// Copyright © 2017 Province of British Columbia
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Micha Volin on 2017-03-30.
-//  Copyright © 2017 FreshWorks. All rights reserved.
 //
+
 import MapKit
 import CoreLocation
 import Parse
 
-final class InspectionsController: UIViewController, CLLocationManagerDelegate{
-	//MARK: Properties
-	@objc var isBeingUploaded = false
-	@objc var inspections = [Int:[PFInspection]]()
-	@objc var locationManager = CLLocationManager()
-	//MARK: IB Outlets
-	@IBOutlet var tableView: UITableView!
-	@IBOutlet fileprivate var addNewInspectionButton: UIButton!
-	@IBOutlet fileprivate var tableViewBottomConstraint: NSLayoutConstraint!
-	@IBOutlet fileprivate var segmentedControl: UISegmentedControl!
-	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
+final class InspectionsController: UIViewController {
+    
+    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var addNewInspectionButton: UIButton!
+    @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var segmentedControl: UISegmentedControl!
+    @IBOutlet private var indicator: UIActivityIndicatorView!
 
-	//MARK: IB Actions
+	private var isBeingUploaded = false
+    private var locationManager: CLLocationManager = {
+        // TODO:(jl) This should be moved to where its used and the user advised
+        // why we're going to as for it.
+        let lm = CLLocationManager()
+        lm.requestWhenInUseAuthorization()
+        
+        return lm
+    }()
+    private var data = [PFInspection]()
+//    private var selectedInspection: PFInspection?
+    private var selectedInspectionIndexPath: IndexPath?
+    private static let inspectionFormControllerSegueID = "InspectionFormControllerSegueID"
+    private static let inspectionSetupControllerSegueID = "InspectionSetupControllerSegueID"
+    internal static var reference: InspectionsController? {
+        return (AppDelegate.root?.presentedViewController as? UINavigationController)?.viewControllers.first as? InspectionsController
+    }
+    internal var inspections = (draft: [PFInspection](), submitted: [PFInspection]())
+
+    // MARK: -
+
+    override func viewDidLoad() {
+
+        super.viewDidLoad()
+        
+        locationManager.delegate = self
+        style()
+        addObserver(#selector(insertByDate(_ :)), .insertByDate)
+        addObserver(#selector(reload), .reload)
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        tableView.contentInset.bottom = 10
+
+        
+        self.load()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        let inspeciton = data[selectedInspectionIndexPath!.row]
+
+        if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
+            let dvc = segue.destination as! InspectionFormController
+            if selectedIndex == 0 {
+                dvc.submit = {
+                    self.submit(inspection: inspeciton, indexPath: self.selectedInspectionIndexPath!)
+                }
+            }
+            dvc.inspection = inspeciton
+        }
+        
+        if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
+            let dvc = segue.destination as! InspectionFormController
+            dvc.inspection = inspeciton
+        }
+    }
+
+	// MARK: - IB Actions
+    
 	@IBAction func addInspectionTapped(_ sender: UIButton) {
+
 		sender.isEnabled = false
-		let inspectionSetupController = InspectionSetupController.storyboardInstance() as! InspectionSetupController
-		push(controller: inspectionSetupController)
+		performSegue(withIdentifier: InspectionsController.inspectionSetupControllerSegueID, sender: nil)
 		sender.isEnabled = true
 	}
 
 	@IBAction func editTapped(_ sender: UIButton, forEvent event: UIEvent) {
-		guard let indexPath = tableView.indexPath(for: event), let inspection = inspections[0]?[indexPath.row], inspection.id != nil else{
+
+		guard let indexPath = tableView.indexPath(for: event) else {
 			return
 		}
-		let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
-		inspectionFormController.inspection = inspections[selectedIndex]?[indexPath.row]
-		push(controller: inspectionFormController)
+
+        selectedInspectionIndexPath = indexPath
+        performSegue(withIdentifier: InspectionsController.inspectionSetupControllerSegueID, sender: nil)
 	}
 
 	@IBAction func uploadTapped(_ sender: UIButton, forEvent event: UIEvent) {
-		guard let indexPath = tableView.indexPath(for: event),let inspection = inspections[0]?[indexPath.row] else{
+
+		guard let indexPath = tableView.indexPath(for: event) else {
 			AlertView.present(on: self, with: "Inspection was not found")
 			return
 		}
-//        submit(inspection: inspection, indexPath: indexPath)
 
-
-
-        self.indicator.alpha = 1
-        self.indicator.startAnimating()
-        self.navigationController?.view.isUserInteractionEnabled = false
-        self.isBeingUploaded = true
-//        PFManager.shared.getObservationsFor(inspection: inspection) { (done, observations) in
-//            if done {
-//                PFManager.shared.getVideosFor(observationID: ((observations?.first)?.id!)! , completion: { (done, videos) in
-//                    if done {
-//                        print(videos?.first?.getURL())
-//                    } else {
-//
-//                    }
-//                })
-//            } else {
-//
-//            }
-//        }
-
+        let inspection = data[indexPath.row]
+        indicator.alpha = 1
+        indicator.startAnimating()
+        navigationController?.view.isUserInteractionEnabled = false
+        isBeingUploaded = true
+        
         PFManager.shared.uploadInspection(inspection: inspection) { (done) in
             self.indicator.stopAnimating()
             self.navigationController?.view.isUserInteractionEnabled = true
@@ -72,37 +125,26 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate{
             self.indicator.alpha = 0
             self.load()
         }
-
 	}
 
 	@IBAction func settingsTapped(_ sender: UIBarButtonItem) {
+
 		sender.isEnabled = false
 		push(controller: SettingsController.storyboardInstance())
 		sender.isEnabled = true
 	}
 	
 	@IBAction func segmentedControlChangedValue(_ sender: UISegmentedControl) {
+
+        updateDataForSelectedIndex();
 		addNewInspectionButton.isHidden = selectedIndex == 0 ? false : true
 		tableViewBottomConstraint.constant = selectedIndex == 0 ? 10 : -60
-		//view.layoutIfNeeded()
 		tableView.reloadData()
 	}
 	
-	//MARK: -
-	override func viewDidLoad() {
-		super.viewDidLoad()
-        style()
-        addObserver(#selector(insertByDate(_ :)), .insertByDate)
-		addObserver(#selector(reload), .reload)
-		navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-		tableView.contentInset.bottom = 10
-		locationManager.delegate = self
-		locationManager.requestWhenInUseAuthorization()
-		self.load()
-	}
+	// MARK: - Submission
 
-	//MARK: - Submission
-	@objc func submit(inspection: PFInspection, indexPath: IndexPath){
+	internal func submit(inspection: PFInspection, indexPath: IndexPath) {
 		let alert = UIAlertController(title: "Are You Sure?", message: "You will NOT be able to edit this inspection after submission", yes: {
 			self.indicator.startAnimating()
 			self.navigationController?.view.isUserInteractionEnabled = false
@@ -133,120 +175,167 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate{
 		present(controller: alert)
 	}
 	
-	//MARK: -
-	@objc func load(){
+	// MARK: -
+    
+	private func load() {
+
 		indicator.startAnimating()
-		let query = PFInspection.query()
-		query?.fromLocalDatastore()
-		query?.whereKey("userId", equalTo: PFUser.current()!.objectId!)
-		query?.order(byDescending: "start")
-		query?.findObjectsInBackground(block: { (objects, error) in
-			guard let objects = objects as? [PFInspection], error == nil else{
-				return
-			}
-			var inspections = [Int:[PFInspection]]()
-			objects.forEach({ (inspection) in
-				if let status = inspection.isSubmitted?.intValue{
-					if inspections[status] == nil{
-						inspections[status] = []
-					}
-					inspections[status]?.append(inspection)
-				}
-			})
-			self.indicator.stopAnimating()
-            let submitted = inspections[1]?.sorted(by: { $0.start! > $1.start! })
-            let draft = inspections[0]?.sorted(by: { $0.start! > $1.start! })
-			self.inspections[0] = draft
-            self.inspections[1] = submitted
-			self.tableView.reloadData()
-		})
+        
+        guard let query = PFManager.inspectionQueryForCurrentUser(localOnly: true) else {
+            return
+        }
+        
+        PFManager.fetchInspections(query: query, saveLocal: false) { (results: [PFInspection]) in
+            print("user objs count = \(results.count)");
+            
+            let noObjectId = "n/a"
+            results.forEach({ (item) in
+                print("recieved object ID = \(item.id ?? noObjectId)")
+            })
+            
+            self.inspections.draft = results.filter { $0.isSubmitted?.intValue == 0 }
+            self.inspections.submitted = results.filter { $0.isSubmitted?.intValue == 1 }
+            self.sort()
+            self.updateDataForSelectedIndex()
+
+            self.indicator.stopAnimating()
+            self.tableView.reloadData()
+        }
 	}
 
-	///Use this method to insert an inspection to the 'In Progress' tab
-	@objc public func insertByDate(_ notification: Notification?){
-		if let inspection = notification?.object as? PFInspection{
-			if self.inspections[0] == nil{
-				self.inspections[0] = []
-			}
-			self.inspections[0]?.append(inspection)
-			self.inspections[0]?.sort(by: { (left, right) -> Bool in
-				guard let startL = left.start, let startR = right.start else{
-					return false
-				}
-				return startL > startR
-			})
+	// Use this method to insert an inspection to the 'In Progress' tab
+    @objc dynamic public func insertByDate(_ notification: Notification?) {
+
+		if let inspection = notification?.object as? PFInspection {
+            self.inspections.draft.append(inspection);
+            self.inspections.draft.sort(by: { (left, right) -> Bool in
+                guard let startL = left.start, let startR = right.start else{
+                    return false
+                }
+                return startL > startR
+            })
+
 			self.tableView.reloadData()
 		}
 	}
 
-	@objc func reload(){
+    @objc dynamic private func reload() {
+
         load()
-//        tableView.reloadData()
 	}
 
-	@objc func submitFromInspectionForm(_ notification: Notification?){
+	private func submitFromInspectionForm(_ notification: Notification?) {
 		
 	}
 	
-	///Use this method to put an inspection from 'In Progress' tp 'Submitted'
-	@objc public func moveToSubmitted(inspection: PFInspection?){
-		if let inspection = inspection{
-			guard let i = inspections[0]?.index(of: inspection) else{
-				return
-			}
-			self.inspections[0]?.remove(at: i)
-			if self.inspections[1] == nil{
-				self.inspections[1] = []
-			}
-			self.inspections[1]?.insert(inspection, at: 0)
-			self.inspections[1]?.sort(by: { (left, right) -> Bool in
-				guard let startL = left.start, let startR = right.start else{
-					return false
-				}
-				return startL > startR
-			})
-			self.tableView.reloadData()
-		}
+	// Use this method to put an inspection from 'In Progress' to 'Submitted'
+	public func moveToSubmitted(inspection: PFInspection?) {
+
+        guard let inspection = inspection, let idx = inspections.draft.index(of: inspection)  else {
+            return
+        }
+        
+        inspections.draft.remove(at: idx)
+        inspections.submitted.insert(inspection, at: 0)
+        
+        sort()
+        updateDataForSelectedIndex()
+        tableView.reloadData()
 	}
+    
+    private func updateDataForSelectedIndex() {
+        
+        switch selectedIndex {
+        case 0:
+            self.data = self.inspections.draft
+            print(self.data.count)
+        case 1:
+            self.data = self.inspections.submitted
+            print(self.data.count)
+        default:
+            self.data = []
+        }
+    }
+
+    private func configureCell(cell: InspectionCell, atIndexPath indexPath: IndexPath) {
+
+        let inspection = data[indexPath.row]
+        var date = ""
+
+        if let start = inspection.start {
+            date = start.inspectionFormat()
+        }
+        
+        if let end = inspection.end {
+            date += " - \(end.inspectionFormat())"
+        }
+        
+        cell.setData(title: inspection.title, time: date, isReadOnly: Bool(truncating: NSNumber(integerLiteral: selectedIndex)), progress: inspection.progress , isBeingUploaded: inspection.isBeingUploaded , isEnabled: self.isBeingUploaded, linkedProject: inspection.project)
+    }
+    
+    // MARK: -
+    
+    private var selectedIndex: Int {
+
+        return segmentedControl.selectedSegmentIndex
+    }
+
+    private func style() {
+
+        addNewInspectionButton.layer.cornerRadius = 5
+        addNewInspectionButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        addNewInspectionButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        addNewInspectionButton.layer.shadowOpacity = 0.7
+        addNewInspectionButton.layer.shadowRadius = 4
+    }
+
+    // MARK: Helpers
+    
+    private func sort() {
+
+        inspections.draft.sort(by: { (left, right) -> Bool in
+            guard let startL = left.start, let startR = right.start else {
+                return false
+            }
+            return startL > startR
+        })
+        
+        inspections.submitted.sort(by: { (left, right) -> Bool in
+            guard let startL = left.start, let startR = right.start else {
+                return false
+            }
+            return startL > startR
+        })
+    }
 }
 
-//MARK: -
-extension InspectionsController: UITableViewDelegate, UITableViewDataSource{
+extension InspectionsController: CLLocationManagerDelegate {
+    // nothing to do
+}
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+
+extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
+
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return inspections[selectedIndex]?.count ?? 0
+        return data.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeue(identifier: "InspectionCell") as! InspectionCell
-		let inspection = inspections[selectedIndex]?[indexPath.row]
-		var date = ""
-		if let start = inspection?.start{
-			date = start.inspectionFormat()
-		}
-		if let end = inspection?.end{
-			date += " - \(end.inspectionFormat())"
-		}
-		cell.setData(title: inspection?.title, time: date, isReadOnly: Bool(NSNumber(integerLiteral: selectedIndex)), progress: inspection?.progress ?? 0, isBeingUploaded: inspection?.isBeingUploaded ?? false, isEnabled: self.isBeingUploaded, linkedProject: inspection?.project)
+
+        configureCell(cell: cell, atIndexPath: indexPath)
+
 		return cell
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if inspections[selectedIndex]?[indexPath.row].id != nil{
-			let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
-			inspectionFormController.inspection = inspections[selectedIndex]?[indexPath.row]
-			if selectedIndex == 0{
-				inspectionFormController.submit = {
-					self.submit(inspection: self.inspections[self.selectedIndex]![indexPath.row], indexPath: indexPath)
-				}
-			}
-			push(controller: inspectionFormController)
-		} else{
-			AlertView.present(on: self, with: "Couldn't proceed because of internal error", delay: 4, offsetY: -50)
-		}
+        selectedInspectionIndexPath = indexPath
+        performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
 	}
 	
 	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		if selectedIndex == 1{
+		if selectedIndex == 1 {
 			return true
 		}
 		return false
@@ -254,38 +343,17 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource{
 	
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		let action = UITableViewRowAction(style: .destructive, title: "Remove") { (action, indexPath) in
-			if let inspection = self.inspections[1]?[indexPath.row]{
-				try? inspection.unpin()
-				self.inspections[1]?.remove(at: indexPath.row)
-				tableView.deleteRows(at: [indexPath], with: .none)
-				inspection.deleteAllData()
-			}
+            let inspection = self.data[indexPath.row]
+            if let idx = self.inspections.submitted.index(of: inspection) {
+                self.inspections.submitted.remove(at: idx)
+                self.updateDataForSelectedIndex()
+                inspection.deleteAllData()
+            }
+
+            try? inspection.unpin()
+            tableView.deleteRows(at: [indexPath], with: .none)
 		}
+
 		return [action]
 	}
 }
-
-//MARK: -
-extension InspectionsController{
-	fileprivate var selectedIndex: Int{
-		return segmentedControl.selectedSegmentIndex
-	}
-}
-
-extension InspectionsController{
-	@objc static var reference: InspectionsController?{
-		return (AppDelegate.root?.presentedViewController as? UINavigationController)?.viewControllers.first as? InspectionsController
-	}
-}
-
-extension InspectionsController {
-    func style() {
-        addNewInspectionButton.layer.cornerRadius = 5
-        addNewInspectionButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        addNewInspectionButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
-        addNewInspectionButton.layer.shadowOpacity = 0.7
-        addNewInspectionButton.layer.shadowRadius = 4
-    }
-}
-
-

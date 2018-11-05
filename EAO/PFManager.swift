@@ -29,6 +29,40 @@ class PFManager {
         }
     }
 
+    internal class func inspectionQueryForCurrentUser(localOnly: Bool = true) -> PFQuery<PFObject>? {
+        //        print("user = \(PFUser.current()!.objectId!)");
+        guard let query = PFInspection.query() else {
+            return nil
+        }
+        
+        if localOnly {
+            query.fromLocalDatastore()
+        }
+        query.whereKey("userId", equalTo: PFUser.current()!.objectId!)
+        query.order(byDescending: "start")
+        
+        return query
+    }
+    
+    internal class func fetchInspections(query: PFQuery<PFObject>, saveLocal: Bool = true, completion: ((_ results: [PFInspection]) -> Void)? = nil) {
+        query.findObjectsInBackground(block: { (objects, error) in
+            guard let objects = objects as? [PFInspection], error == nil else {
+                completion?([])
+                return
+            }
+            
+            if saveLocal {
+                objects.forEach({ (inspection) in
+                    inspection.id = UUID().uuidString // Local ID Only, must be set.
+                    inspection.pinInBackground();
+                })
+            }
+            
+            completion?(objects);
+        })
+    }
+    
+
     func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
         let object = PFObject(className: "Inspection")
 
