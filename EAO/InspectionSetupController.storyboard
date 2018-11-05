@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gL0-0A-G6s">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gL0-0A-G6s">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Inspection Setup Controller-->
         <scene sceneID="1qw-A5-xNd">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="gL0-0A-G6s" customClass="InspectionSetupController" customModule="EAO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="gL0-0A-G6s" customClass="InspectionSetupController" customModule="Field_Insp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oeF-L2-Zc0"/>
                         <viewControllerLayoutGuide type="bottom" id="FFd-im-Kn0"/>
@@ -122,10 +121,6 @@
                                                             <color key="titleColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="icon_add_grey"/>
-                                                            <userDefinedRuntimeAttribute type="color" keyPath="color">
-                                                                <color key="value" red="1" green="0.75899006552590098" blue="0.76177386025611293" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="left">
                                                                 <real key="value" value="20"/>
                                                             </userDefinedRuntimeAttribute>
@@ -135,7 +130,7 @@
                                                         </connections>
                                                     </button>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_think" translatesAutoresizingMaskIntoConstraints="NO" id="HNo-5w-eRM">
-                                                        <rect key="frame" x="335" y="17" width="30" height="25"/>
+                                                        <rect key="frame" x="335" y="17.5" width="30" height="25"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="30" id="ZFz-1f-90N"/>
                                                             <constraint firstAttribute="height" constant="25" id="xch-sS-ToE"/>
@@ -272,11 +267,11 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="zKK-E4-zpb">
-                                    <rect key="frame" x="152" y="6" width="20" height="20"/>
+                                    <rect key="frame" x="152" y="6.5" width="20" height="20"/>
                                     <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </activityIndicatorView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspection Set Up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a08-5v-Czx">
-                                    <rect key="frame" x="3" y="6" width="144" height="22"/>
+                                    <rect key="frame" x="3" y="5.5" width="144" height="22"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -320,7 +315,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon_add_grey" width="315" height="315"/>
-        <image name="icon_arrow_right_think" width="30" height="30"/>
+        <image name="icon_arrow_right_think" width="60" height="60"/>
     </resources>
 </document>
