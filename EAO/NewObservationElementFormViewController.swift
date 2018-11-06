@@ -389,12 +389,12 @@ class NewObservationElementFormViewController: UIViewController {
 
     func load() {
         print("load")
-        DataServices.shared.getThumbnailsFor(observationID: observation.id!) { (success, photos) in
+        DataServices.getThumbnailsFor(observationID: observation.id!) { (success, photos) in
             if success {
                 self.storedPhotos = photos!
             }
         }
-        DataServices.shared.getAudiosFor(observationID: self.observation.id!) { (success, audios) in
+        DataServices.getAudiosFor(observationID: self.observation.id!) { (success, audios) in
             if success {
                 self.storedAudios = audios!
             }
@@ -742,7 +742,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
 //        self.containerHeight.constant = 450
         self.containerHeight.constant = self.view.frame.height - 200
-        DataServices.shared.getVideoFor(observationID: observation.id!, at: index) { (found, pfVideo) in
+        DataServices.getVideoFor(observationID: observation.id!, at: index) { (found, pfVideo) in
             if found {
                 guard let assetURL = pfVideo?.getURL() else {return}
 //                let avurlasset = AVURLAsset(url: assetURL)
@@ -776,7 +776,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        DataServices.shared.getPhotoFor(observationID: observation.id!, at: index) { (found, photo) in
+        DataServices.getPhotoFor(observationID: observation.id!, at: index) { (found, photo) in
 
             if found {
                 let location = photo?.coordinate

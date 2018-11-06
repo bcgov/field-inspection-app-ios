@@ -118,7 +118,7 @@ final class InspectionsController: UIViewController {
         navigationController?.view.isUserInteractionEnabled = false
         isBeingUploaded = true
         
-        DataServices.shared.uploadInspection(inspection: inspection) { (done) in
+        DataServices.uploadInspection(inspection: inspection) { (done) in
             self.indicator.stopAnimating()
             self.navigationController?.view.isUserInteractionEnabled = true
             self.isBeingUploaded = false

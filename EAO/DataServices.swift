@@ -12,9 +12,7 @@ import Parse
 import Photos
 
 class DataServices {
-
-    static let shared = DataServices()
-
+    
     private init() {
         let fileManager = FileManager.default
         let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -25,10 +23,10 @@ class DataServices {
                 print(url)
             }
         } catch {
-
+            
         }
     }
-
+    
     internal class func inspectionQueryForCurrentUser(localOnly: Bool = true) -> PFQuery<PFObject>? {
         //        print("user = \(PFUser.current()!.objectId!)");
         guard let query = PFInspection.query() else {
@@ -65,31 +63,31 @@ class DataServices {
     }
     
     internal class func fetchFullInspection(inspection: PFInspection, completion: (() -> Void)? = nil) {
-
+        
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
         DataServices.fetchObservationsFor(inspection: inspection) { (observations) in
             dispatchGroup.leave()
         }
-
+        
         dispatchGroup.notify(queue: .main) {
             print("All done 👍")
             completion?()
         }
     }
-
+    
     internal class func fetchObservationsFor(inspection: PFInspection, completion: ((_ results: [PFObservation]) -> Void)? = nil) {
         
         guard let query = PFObservation.query() else {
             completion?([])
             return
         }
-  
+        
         query.whereKey("inspection", equalTo: inspection)
         query.findObjectsInBackground { (objects, error) -> Void in
             print("fetched \(objects?.count ?? 0) observations")
-
+            
             guard let objects = objects as? [PFObservation], error == nil else {
                 completion?([])
                 return
@@ -125,7 +123,6 @@ class DataServices {
             }
             
             for (index, object) in objects.enumerated() {
-//            objects.forEach({ (object) in
                 object.id = UUID().uuidString // Local ID Only, must be set.
                 object.observationId = observation.id!
                 object.pinInBackground();
@@ -159,12 +156,12 @@ class DataServices {
             completion?(objects)
         }
     }
-        
+    
     // MARK: -
-
-    func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
+    
+    internal class func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
         let object = PFObject(className: "Inspection")
-
+        
         let userId = inspection.userId ?? ""
         let project = inspection.project ?? ""
         let title = inspection.title ?? ""
@@ -173,7 +170,7 @@ class DataServices {
         let number = inspection.number ?? ""
         let start = inspection.start
         let end = inspection.end
-
+        
         object["userId"] = userId
         object["project"] = project
         object["title"] = title
@@ -182,9 +179,9 @@ class DataServices {
         object["number"] = number
         object["start"] = start
         object["end"] = end
-
+        
         object["uploaded"] = false
-
+        
         object.saveInBackground { (success, error) in
             if success {
                 self.getObservationsFor(inspection: inspection, completion: { (success, observations) in
@@ -238,15 +235,15 @@ class DataServices {
                 return completion(false)
             }
         }
-
+        
     }
-
-    func recursiveObservationUpload(observations: [PFObservation], inspection: PFObject, objects: [PFObject], completion: @escaping (_ done: Bool, _ observations: [PFObject]?) -> Void) {
+    
+    internal class func recursiveObservationUpload(observations: [PFObservation], inspection: PFObject, objects: [PFObject], completion: @escaping (_ done: Bool, _ observations: [PFObject]?) -> Void) {
         var array = observations
         var results = objects
         let current = observations.last
         array.removeLast()
-
+        
         uploadObserbation(observation: current!, inspection: inspection) { done, object  in
             if done {
                 results.append(object!)
@@ -260,22 +257,22 @@ class DataServices {
             }
         }
     }
-
-    func uploadObserbation(observation: PFObservation, inspection: PFObject, completion: @escaping (_ done: Bool, _ observation: PFObject?) -> Void) {
+    
+    internal class func uploadObserbation(observation: PFObservation, inspection: PFObject, completion: @escaping (_ done: Bool, _ observation: PFObject?) -> Void) {
         print(observation)
         let object = PFObject(className: "Observation")
-
+        
         let title = observation.title
         let requirement = observation.requirement ?? ""
         let coordinate = observation.coordinate ?? PFGeoPoint()
         let observationDescription = observation.observationDescription ?? ""
-
+        
         object["title"] = title
         object["requirement"] = requirement
         object["coordinate"] = coordinate
         object["observationDescription"] = observationDescription
         object["inspection"] = inspection
-
+        
         object.saveInBackground { (success, error) in
             if success {
                 self.uploadVideos(for: observation, observObj: object, completion: { (done) in
@@ -302,8 +299,8 @@ class DataServices {
             }
         }
     }
-
-    func getObservationsFor(inspection: PFInspection, completion: @escaping (_ done: Bool, _ observations: [PFObservation]?) -> Void) {
+    
+    internal class func getObservationsFor(inspection: PFInspection, completion: @escaping (_ done: Bool, _ observations: [PFObservation]?) -> Void) {
         PFObservation.load(for: inspection.id!) { (results) in
             guard let observations = results, !observations.isEmpty else{
                 return completion(false, nil)
@@ -311,10 +308,10 @@ class DataServices {
             return completion(true, observations)
         }
     }
-
+    
     // save locally
-    class func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
-
+    internal class func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+        
         DataServices.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
             // then save video
@@ -332,25 +329,20 @@ class DataServices {
             })
         }
     }
-
-    class func savePFVideo(video: PFVideo, completion: @escaping (_ created: Bool) -> Void) {
-        do {
-            video.pinInBackground { (success, error) in
-                if success && error == nil {
-                    // success
-                    return completion(true)
-                } else {
-                    // fail
-                    return completion(false)
-                }
+    
+    internal class func savePFVideo(video: PFVideo, completion: @escaping (_ created: Bool) -> Void) {
+        video.pinInBackground { (success, error) in
+            if success && error == nil {
+                // success
+                return completion(true)
+            } else {
+                // fail
+                return completion(false)
             }
-        } catch {
-            // fail
-            return completion(false)
         }
     }
-
-    func getVideoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ video: PFVideo? ) -> Void) {
+    
+    internal class func getVideoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ video: PFVideo? ) -> Void) {
         getVideosFor(observationID: observationID) { (found, pfvideos) in
             if found {
                 if (pfvideos?.count)! >= at {
@@ -361,26 +353,26 @@ class DataServices {
             }
         }
     }
-
-    func uploadVideo(for observation: PFObservation, obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
+    
+    internal class func uploadVideo(for observation: PFObservation, obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
         let video = PFObject(className: "Video")
-
+        
         getVideoAt(observationID: observation.id!, at: index) { (found, pfvideo) in
             if !found {
                 print("not found!")
             }
-
+            
             let title: String = pfvideo?.title ?? ""
             let notes: String  = pfvideo?.notes ?? ""
             var vidIndex: Int = -1
             if let indx = pfvideo?.index {
                 vidIndex = indx as! Int
             }
-
+            
             let videoData = pfvideo?.get()
             if videoData == nil {
                 return completion(false, nil)
-
+                
             }
             let parseVideoFile = PFFile(name: "\(observation.id!)\(index).mp4", data: videoData!)
             parseVideoFile?.saveInBackground(block: { (success, error) -> Void in
@@ -394,27 +386,25 @@ class DataServices {
                         if success  {
                             return completion(true, video)
                         } else {
-                            print(error)
                             return completion(false, nil)
                         }
                     })
                 } else {
-                    print(error)
                     return completion(false, nil)
                 }
             })
         }
     }
-
+    
     // count instead of array of videos because i was resuing functions: there is a function to get video at index for observation
-    func recursiveVideoUpload(last index: Int,for observation: PFObservation, observObj: PFObject, parseVideoObjects: [PFObject],completion: @escaping (_ done: Bool, _ videos: [PFObject]) -> Void) {
+    internal class func recursiveVideoUpload(last index: Int,for observation: PFObservation, observObj: PFObject, parseVideoObjects: [PFObject],completion: @escaping (_ done: Bool, _ videos: [PFObject]) -> Void) {
         if index > -1 {
-
+            
             uploadVideo(for: observation, obsObj: observObj, at: index, completion: { (success, videoObjsect) in
                 if success {
                     var objects = parseVideoObjects
                     objects.append(videoObjsect!)
-
+                    
                     let nextIndex = index - 1
                     if nextIndex > -1 {
                         self.recursiveVideoUpload(last: nextIndex, for: observation, observObj: observObj, parseVideoObjects: objects, completion: completion)
@@ -432,13 +422,13 @@ class DataServices {
             completion(true, parseVideoObjects)
         }
     }
-
-    func getVideosFor(observationID: String, completion: @escaping (_ success: Bool, _ videos: [PFVideo]? ) -> Void) {
+    
+    internal class func getVideosFor(observationID: String, completion: @escaping (_ success: Bool, _ videos: [PFVideo]? ) -> Void) {
         guard let query = PFVideo.query() else {
             // fail
             return completion(false, nil)
         }
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.findObjectsInBackground(block: { (videos, error) in
@@ -450,25 +440,8 @@ class DataServices {
             return completion(true, storedVideos)
         })
     }
-
-    //    func getAudiosFor(observationID: String, completion: @escaping (_ success: Bool, _ sounds: [PFAudio]? ) -> Void) {
-    //        guard let query = PFAudio.query() else {
-    //            // fail
-    //            return completion(false, nil)
-    //        }
-    //
-    //        query.fromLocalDatastore()
-    //        query.whereKey("observationId", equalTo: observationID)
-    //        query.findObjectsInBackground(block: { (sounds, error) in
-    //            guard let storedSounds = sounds as? [PFAudio], error == nil else {
-    //                // fail
-    //                return completion(false, nil)
-    //            }
-    //            // success
-    //            return completion(true, storedSounds)
-    //        })
-    //    }
-    func uploadAudio(for observation: PFObservation,  obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
+    
+    internal class func uploadAudio(for observation: PFObservation,  obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
         let audio = PFObject(className: "Audio")
         getAudiosFor(observationID: observation.id!) { (success, audios) in
             if success, let results = audios {
@@ -502,45 +475,15 @@ class DataServices {
                 })
             }
         }
-        /*
-        getAudioFor(observationID: observation.id!, at: index) { (found, pfaudio) in
-            let observationId : String = pfaudio?.observationId ?? ""
-            let coordinate : PFGeoPoint = pfaudio?.coordinate ?? PFGeoPoint()
-            let index: Int = index
-            let notes: String = pfaudio?.notes ?? ""
-            let title: String = pfaudio?.title ?? ""
-            let audioData = pfaudio?.get()
-            if audioData == nil { return completion(false, nil)}
-            let parseAudioFile = PFFile(name: "\(observationId)\(index).mp4a", data: audioData!)
-            parseAudioFile?.saveInBackground(block: { (success, error) -> Void in
-                if success {
-                    audio["coordinate"] = coordinate
-                    audio["notes"] = notes
-                    audio["index"] = index
-                    audio["title"] = title
-                    audio["audio"] = parseAudioFile
-                    audio["observation"] = obsObj
-                    audio.saveInBackground(block: { (success, error) in
-                        if success  {
-                            return completion(true, audio)
-                        } else {
-                            return completion(false, nil)
-                        }
-                    })
-                } else {
-                    return completion(false, nil)
-                }
-            })
-        }*/
     }
-
-    func recursiveAudioUpload(last index: Int,for observation: PFObservation,  obsObj: PFObject, parseAudioObjects: [PFObject],completion: @escaping (_ done: Bool, _ audios: [PFObject]) -> Void) {
+    
+    internal class func recursiveAudioUpload(last index: Int,for observation: PFObservation,  obsObj: PFObject, parseAudioObjects: [PFObject],completion: @escaping (_ done: Bool, _ audios: [PFObject]) -> Void) {
         if index > -1 {
             uploadAudio(for: observation, obsObj: obsObj, at: index, completion: { (success, audioObjsect) in
                 if success {
                     var objects = parseAudioObjects
                     objects.append(audioObjsect!)
-
+                    
                     let nextIndex = index - 1
                     if nextIndex > -1 {
                         self.recursiveAudioUpload(last: nextIndex, for: observation, obsObj: obsObj, parseAudioObjects: objects, completion: completion)
@@ -558,8 +501,8 @@ class DataServices {
             completion(true, parseAudioObjects)
         }
     }
-
-    func uploadAudios(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
+    
+    internal class func uploadAudios(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
         getAudiosFor(observationID: observation.id!) { (success, pfaudios) in
             if success {
                 if let count = pfaudios?.count {
@@ -567,28 +510,6 @@ class DataServices {
                     self.recursiveAudioUpload(last: (count - 1), for: observation, obsObj: obsObj, parseAudioObjects: parseSoundObjects, completion: { (done, audios) in
                         if done {
                             return completion(true)
-                            //                            let query = PFQuery(className:"Observation")
-                            //                            query.getObjectInBackground(withId: obsObj.objectId!, block: { (foundObj, error) in
-                            //                                if let obj = foundObj {
-                            //                                    var audioIDs: [String] = [String]()
-                            //                                    for paudio in audios{
-                            //                                        audioIDs.append(paudio.objectId!)
-                            //                                    }
-                            //                                    obj["audios"] = audioIDs
-                            //                                    obj.saveInBackground {
-                            //                                        (success: Bool, error: Error?) in
-                            //                                        if (success) {
-                            //                                            return completion(true)
-                            //                                        } else {
-                            //                                            // couldn't update observation
-                            //                                            return completion(false)
-                            //                                        }
-                            //                                    }
-                            //                                } else {
-                            //                                    // couldnt upload videos
-                            //                                    return completion(false)
-                            //                                }
-                            //                            })
                         } else {
                             // couldnt upload
                             return completion(false)
@@ -601,12 +522,12 @@ class DataServices {
             } else {
                 // couldnt upload
                 return completion(false)
-
+                
             }
         }
     }
-
-    func uploadVideos(for observation: PFObservation, observObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
+    
+    internal class func uploadVideos(for observation: PFObservation, observObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
         getVideosFor(observationID: observation.id!) { (success, pfvideos) in
             if success {
                 if let count = pfvideos?.count {
@@ -614,28 +535,6 @@ class DataServices {
                     self.recursiveVideoUpload(last: (count - 1), for: observation, observObj: observObj, parseVideoObjects: parseVideObjects, completion: { (done, videos) in
                         if done {
                             return completion(true)
-                            //                            let query = PFQuery(className:"Observation")
-                            //                            query.getObjectInBackground(withId: observObj.objectId!, block: { (foundObj, error) in
-                            //                                if let obj = foundObj {
-                            //                                    var videoIDs: [String] = [String]()
-                            //                                    for pvideo in videos {
-                            //                                        videoIDs.append(pvideo.objectId!)
-                            //                                    }
-                            //                                    obj["videos"] = videoIDs
-                            //                                    obj.saveInBackground {
-                            //                                        (success: Bool, error: Error?) in
-                            //                                        if (success) {
-                            //                                            return completion(true)
-                            //                                        } else {
-                            //                                            // couldnt update observation
-                            //                                            return completion(false)
-                            //                                        }
-                            //                                    }
-                            //                                } else {
-                            //                                    // couldnt find observation
-                            //                                    return completion(false)
-                            //                                }
-                            //                            })
                         } else {
                             // fail
                             // couldnt upload videos
@@ -653,8 +552,8 @@ class DataServices {
             }
         }
     }
-
-    func uploadPhotos(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
+    
+    internal class func uploadPhotos(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
         getPhotosFor(observationID: observation.id!) { (success, pfphotos) in
             if success {
                 if let count = pfphotos?.count {
@@ -662,28 +561,6 @@ class DataServices {
                     self.recursivePhotoUpload(last: (count - 1), for: observation, obsObj: obsObj, parsePhotoObjects: parsePhotoObjects, completion: { (done, photos) in
                         if done {
                             return completion(true)
-                            //                            let query = PFQuery(className:"Observation")
-                            //                            query.getObjectInBackground(withId: obsObj.objectId!, block: { (foundObj, error) in
-                            //                                if let obj = foundObj {
-                            //                                    var photoIDs: [String] = [String]()
-                            //                                    for pphoto in photos {
-                            //                                        photoIDs.append(pphoto.objectId!)
-                            //                                    }
-                            //                                    obj["photos"] = photoIDs
-                            //                                    obj.saveInBackground {
-                            //                                        (success: Bool, error: Error?) in
-                            //                                        if (success) {
-                            //                                            return completion(true)
-                            //                                        } else {
-                            //                                            // couldnt update observation
-                            //                                            return completion(false)
-                            //                                        }
-                            //                                    }
-                            //                                } else {
-                            //                                    // couldnt find observation
-                            //                                    return completion(false)
-                            //                                }
-                            //                            })
                         } else {
                             // fail
                             return completion(false)
@@ -697,14 +574,14 @@ class DataServices {
             }
         }
     }
-
-    func recursivePhotoUpload(last index: Int,for observation: PFObservation, obsObj: PFObject, parsePhotoObjects: [PFObject],completion: @escaping (_ done: Bool, _ photos: [PFObject]) -> Void) {
+    
+    internal class func recursivePhotoUpload(last index: Int,for observation: PFObservation, obsObj: PFObject, parsePhotoObjects: [PFObject],completion: @escaping (_ done: Bool, _ photos: [PFObject]) -> Void) {
         if index > -1 {
             uploadPhoto(for: observation, obsObj: obsObj, at: index, completion: { (success, photoObject) in
                 if success {
                     var objects = parsePhotoObjects
                     objects.append(photoObject!)
-
+                    
                     let nextIndex = index - 1
                     if nextIndex > -1 {
                         self.recursivePhotoUpload(last: nextIndex, for: observation, obsObj: obsObj, parsePhotoObjects: objects, completion: completion)
@@ -721,8 +598,8 @@ class DataServices {
             completion(true, parsePhotoObjects)
         }
     }
-
-    func getPhotoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhoto? ) -> Void) {
+    
+    internal class func getPhotoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhoto? ) -> Void) {
         getPhotosFor(observationID: observationID) { (found, pfphotos) in
             if found {
                 if (pfphotos?.count)! >= at {
@@ -733,16 +610,16 @@ class DataServices {
             }
         }
     }
-
-
-    func uploadPhoto(for observation: PFObservation, obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
+    
+    
+    internal class func uploadPhoto(for observation: PFObservation, obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
         let photo = PFObject(className: "Photo")
         getPhotoAt(observationID: observation.id!, at: index) { (found, pfphoto) in
             if !found {
                 print("Not found")
                 return completion(false, nil)
             }
-
+            
             let observationId : String = pfphoto?.observationId ?? ""
             let caption       : String = pfphoto?.caption ?? ""
             let timestamp     : Date?   = pfphoto?.timestamp ?? nil
@@ -750,9 +627,7 @@ class DataServices {
             //            let index: Int = index
             let photoData = pfphoto?.get()
             if photoData == nil { return completion(false, nil)}
-
-            print(photoData?.count)
-
+            
             let parsePhotoFile = PFFile(name: "\(observationId)\(index).jpeg", data: photoData!)
             parsePhotoFile?.saveInBackground(block: { (success, error) -> Void in
                 if success {
@@ -774,21 +649,20 @@ class DataServices {
                         }
                     })
                 } else {
-                    print(error)
                     return completion(false, nil)
                 }
             })
         }
     }
-
-    func getVideoFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ video: PFVideo? ) -> Void) {
+    
+    internal class func getVideoFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ video: PFVideo? ) -> Void) {
         guard let query = PFVideo.query() else {
             // fail
             return completion(false, nil)
         }
-
+        
         let vidindex = at as NSNumber
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.whereKey("index", equalTo: vidindex)
@@ -801,26 +675,21 @@ class DataServices {
             print(storedVideos)
             if storedVideos.first?.get() == nil{
                 // fail
-                print(storedVideos.first?.file)
-                print(storedVideos.first?.getURL())
-                print(storedVideos.first?.get())
                 return completion(false, nil)
             }
             // success
-            print(storedVideos.first?.getURL())
-            print(storedVideos.first?.get())
             return completion(true, storedVideos.first)
         })
     }
-
-    func getAudioFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ audio: PFAudio? ) -> Void) {
+    
+    internal class func getAudioFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ audio: PFAudio? ) -> Void) {
         guard let query = PFAudio.query() else {
             // fail
             return completion(false, nil)
         }
-
+        
         let audindex = at as NSNumber
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.whereKey("index", equalTo: audindex)
@@ -833,8 +702,8 @@ class DataServices {
             return completion(true, storedAudios.first)
         })
     }
-
-    func saveAudio(audioURL: URL, index: Int, observationID: String, inspectionID: String, notes: String, title: String, completion: @escaping (_ created: Bool) -> Void) {
+    
+    internal class func saveAudio(audioURL: URL, index: Int, observationID: String, inspectionID: String, notes: String, title: String, completion: @escaping (_ created: Bool) -> Void) {
         let audio = PFAudio()
         audio.id = "\(UUID().uuidString).mp4a"
         audio.observationId = observationID
@@ -859,14 +728,14 @@ class DataServices {
             return completion(false)
         }
     }
-
-    func getAudiosFor(observationID: String, completion: @escaping (_ success: Bool, _ audios: [PFAudio]? ) -> Void) {
+    
+    internal class func getAudiosFor(observationID: String, completion: @escaping (_ success: Bool, _ audios: [PFAudio]? ) -> Void) {
         var foundAudios = [PFAudio]()
         guard let query = PFAudio.query() else {
             // fail
             return completion(false, nil)
         }
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.findObjectsInBackground(block: { (audios, error) in
@@ -874,34 +743,29 @@ class DataServices {
                 // fail
                 return completion(false, nil)
             }
-
+            
             for audio in storedAudios {
                 foundAudios.append(audio)
-                //                if let id = audio.id{
-                //                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-                //                    //                    audio.url = url
-                //                    foundAudios.append(audio)
-                //                }
             }
             print(foundAudios.count)
             // success
             return completion(true, foundAudios)
         })
     }
-
-    class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+    
+    internal class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         DataServices.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
-
+            
             DataServices.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
                 if !success{ return completion (false)}
-
+                
                 return completion(true)
             }
         }
     }
-
-    class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+    
+    internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         let photo = PFPhoto()
         photo.caption = description
         photo.observationId = observationID
@@ -927,8 +791,8 @@ class DataServices {
             return completion(false)
         }
     }
-
-    class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+    
+    internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         let data: Data = UIImageJPEGRepresentation(DataServices.resizeImage(image: image), 0)!
         print("thumb size of \(index) is \(data.count)")
         let photo = PFPhotoThumb()
@@ -952,15 +816,15 @@ class DataServices {
             return completion(false)
         }
     }
-
-    func getThumbnailFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhotoThumb? ) -> Void) {
+    
+    internal class func getThumbnailFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhotoThumb? ) -> Void) {
         var foundPhotos = [PFPhotoThumb]()
         guard let query = PFPhotoThumb.query() else {
             // fail
             return completion(false, nil)
         }
         let photoindex = at as NSNumber
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.whereKey("index", equalTo: photoindex)
@@ -969,7 +833,7 @@ class DataServices {
                 // fail
                 return completion(false, nil)
             }
-
+            
             for photo in storedPhotos {
                 if let id = photo.id{
                     let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
@@ -982,15 +846,15 @@ class DataServices {
             return completion(true, foundPhotos.first)
         })
     }
-
-    func getPhotoFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhoto? ) -> Void) {
+    
+    internal class func getPhotoFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhoto? ) -> Void) {
         var foundPhotos = [PFPhoto]()
         guard let query = PFPhoto.query() else {
             // fail
             return completion(false, nil)
         }
         let photoindex = at as NSNumber
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.whereKey("index", equalTo: photoindex)
@@ -999,7 +863,7 @@ class DataServices {
                 // fail
                 return completion(false, nil)
             }
-
+            
             for photo in storedPhotos {
                 if let id = photo.id{
                     let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
@@ -1007,20 +871,19 @@ class DataServices {
                     foundPhotos.append(photo)
                 }
             }
-            print(foundPhotos.count)
-            print(foundPhotos.last?.id)
+            
             // success
             return completion(true, foundPhotos.first)
         })
     }
-
-    func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhotoThumb]? ) -> Void) {
+    
+    internal class func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhotoThumb]? ) -> Void) {
         var foundPhotos = [PFPhotoThumb]()
         guard let query = PFPhotoThumb.query() else {
             // fail
             return completion(false, nil)
         }
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.findObjectsInBackground(block: { (photos, error) in
@@ -1028,7 +891,7 @@ class DataServices {
                 // fail
                 return completion(false, nil)
             }
-
+            
             for photo in storedPhotos {
                 if let id = photo.id{
                     let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
@@ -1041,32 +904,14 @@ class DataServices {
             return completion(true, foundPhotos)
         })
     }
-
-    //    func getVideosFor(observationID: String, completion: @escaping (_ success: Bool, _ videos: [PFVideo]? ) -> Void) {
-    //        guard let query = PFVideo.query() else {
-    //            // fail
-    //            return completion(false, nil)
-    //        }
-    //
-    //        query.fromLocalDatastore()
-    //        query.whereKey("observationId", equalTo: observationID)
-    //        query.findObjectsInBackground(block: { (videos, error) in
-    //            guard let storedVideos = videos as? [PFVideo], error == nil else {
-    //                // fail
-    //                return completion(false, nil)
-    //            }
-    //            // success
-    //            return completion(true, storedVideos)
-    //        })
-    //    }
-
-    func getPhotosFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhoto]? ) -> Void) {
+    
+    internal class func getPhotosFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhoto]? ) -> Void) {
         var foundPhotos = [PFPhoto]()
         guard let query = PFPhoto.query() else {
             // fail
             return completion(false, nil)
         }
-
+        
         query.fromLocalDatastore()
         query.whereKey("observationId", equalTo: observationID)
         query.findObjectsInBackground(block: { (photos, error) in
@@ -1074,7 +919,7 @@ class DataServices {
                 // fail
                 return completion(false, nil)
             }
-
+            
             for photo in storedPhotos {
                 if let id = photo.id{
                     let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
@@ -1087,8 +932,8 @@ class DataServices {
             return completion(true, foundPhotos)
         })
     }
-
-    class func resizeImage(image: UIImage) -> UIImage {
+    
+    internal class func resizeImage(image: UIImage) -> UIImage {
         var actualHeight: Float = Float(image.size.height)
         var actualWidth: Float = Float(image.size.width)
         let maxHeight: Float = 120.0
@@ -1097,7 +942,7 @@ class DataServices {
         let maxRatio: Float = maxWidth / maxHeight
         let compressionQuality: Float = 0.25
         //50 percent compression
-
+        
         if actualHeight > maxHeight || actualWidth > maxWidth {
             if imgRatio < maxRatio {
                 //adjust width according to maxHeight
@@ -1116,7 +961,7 @@ class DataServices {
                 actualWidth = maxWidth
             }
         }
-
+        
         let rect = CGRect(x: 0.0, y: 0.0, width: CGFloat(actualWidth), height: CGFloat(actualHeight))
         UIGraphicsBeginImageContext(rect.size)
         image.draw(in: rect)
@@ -1125,8 +970,8 @@ class DataServices {
         UIGraphicsEndImageContext()
         return UIImage(data: imageData!)!
     }
-
-    func isUserMobileAccessEnabled(completion: @escaping (_ success: Bool) -> Void) {
+    
+    internal class func isUserMobileAccessEnabled(completion: @escaping (_ success: Bool) -> Void) {
         let user = PFUser.current()
         if user != nil, let id = user?.objectId {
             let query: PFQuery = PFUser.query()!
@@ -1149,17 +994,12 @@ class DataServices {
             return completion(false)
         }
     }
-
-    func getUserTeams(user: User, completion: @escaping (_ success: Bool,_ teams: [PFObject]) -> Void) {
+    
+    internal class func getUserTeams(user: User, completion: @escaping (_ success: Bool,_ teams: [PFObject]) -> Void) {
         let query = PFQuery(className: "Team")
-//        query.findObjectsInBackground { (objects, error) in
-//            print(objects)
-//        }
         var downloadedTeams = [PFObject]()
         query.whereKey("users", equalTo: user)
         query.findObjectsInBackground { (teams, error) in
-            print(teams)
-            print("****")
             if let foundTeams: [PFObject] = teams {
                 for team in foundTeams {
                     downloadedTeams.append(team)
@@ -1172,8 +1012,8 @@ class DataServices {
             }
         }
     }
-
-    func getTeams(completion: @escaping (_ success: Bool, _ teams: [Team]?) -> Void) {
+    
+    internal class func getTeams(completion: @escaping (_ success: Bool, _ teams: [Team]?) -> Void) {
         let user: User =  PFUser.current() as! User
         self.getUserTeams(user: user) { (done, downloaded)  in
             if done {

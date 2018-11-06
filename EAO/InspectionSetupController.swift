@@ -47,7 +47,7 @@ final class InspectionSetupController: UIViewController{
 
     @IBAction func selectTeamAction(_ sender: Any) {
         let team = TeamSearch()
-        DataServices.shared.getTeams { (done, teams) in
+        DataServices.getTeams { (done, teams) in
             if done {
                 let vc = team.getVC(teams: teams!, callBack: { (done, selected) in
                     if done {
