@@ -37,6 +37,7 @@ final class NewObservationController: UIViewController{
     let galleryManager = GalleryManager()
 
     override func viewDidAppear(_ animated: Bool) {
+        print("99999999999999")
         super.viewDidAppear(animated)
 //        populate()
         collectionView.reloadData()
@@ -185,8 +186,10 @@ final class NewObservationController: UIViewController{
         loadPhotos()
     }
 
-    fileprivate func loadPhotos(){
-        print(observation.id)
+    fileprivate func loadPhotos() {
+//        print(observation.id)
+        print("***************************************************")
+
         guard let query = PFPhoto.query() else{
             indicator.stopAnimating()
             return
@@ -202,7 +205,9 @@ final class NewObservationController: UIViewController{
             if self.photos == nil{
                 self.photos = []
             }
+           
             for photo in photos{
+                print("file = \(photo.file!)")
                 if let id = photo.id{
                     let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
                     photo.image = UIImage(contentsOfFile: url.path)

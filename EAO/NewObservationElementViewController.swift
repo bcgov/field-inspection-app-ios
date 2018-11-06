@@ -93,6 +93,8 @@ class NewObservationElementViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        print("ppppp ******************************************")
+
         super.viewDidLoad()
         style()
         lock()
@@ -186,7 +188,8 @@ class NewObservationElementViewController: UIViewController {
             }
 
             for photo in storedPhotos {
-                if let id = photo.id{
+                if let id = photo.id {
+                    print("iiiiii = \(id)")
                     let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
                     photo.image = UIImage(contentsOfFile: url.path)
                     self.storedPhotos.append(photo)

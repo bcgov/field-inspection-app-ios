@@ -39,6 +39,7 @@ class PFManager {
             query.fromLocalDatastore()
         }
         query.whereKey("userId", equalTo: PFUser.current()!.objectId!)
+        query.includeKey("observation");
         query.order(byDescending: "start")
         
         return query
@@ -55,6 +56,7 @@ class PFManager {
                 objects.forEach({ (inspection) in
                     inspection.id = UUID().uuidString // Local ID Only, must be set.
                     inspection.pinInBackground();
+                    PFManager.fetchFullInspection(inspection: inspection)
                 })
             }
             
@@ -62,6 +64,103 @@ class PFManager {
         })
     }
     
+    internal class func fetchFullInspection(inspection: PFInspection, completion: (() -> Void)? = nil) {
+
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        PFManager.fetchObservationsFor(inspection: inspection) { (observations) in
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            print("All done 👍")
+            completion?()
+        }
+    }
+
+    internal class func fetchObservationsFor(inspection: PFInspection, completion: ((_ results: [PFObservation]) -> Void)? = nil) {
+        
+        guard let query = PFObservation.query() else {
+            completion?([])
+            return
+        }
+  
+        query.whereKey("inspection", equalTo: inspection)
+        query.findObjectsInBackground { (objects, error) -> Void in
+            print("fetched \(objects?.count ?? 0) observations")
+
+            guard let objects = objects as? [PFObservation], error == nil else {
+                completion?([])
+                return
+            }
+            
+            objects.forEach({ (object) in
+                object.id = UUID().uuidString // Local ID Only, must be set.
+                object.inspectionId = inspection.id!
+                object.pinInBackground();
+                let defaultObjectId = "n/a"
+                print("recieved observation ID \(object.objectId ?? defaultObjectId), oID = \(object.objectId ?? defaultObjectId)")
+                PFManager.fetchPhotosFor(observation: object)
+            })
+            
+            completion?(objects)
+        }
+    }
+    
+    internal class func fetchPhotosFor(observation: PFObservation, completion: ((_ results: [PFPhoto]) -> Void)? = nil) {
+        
+        guard let query = PFPhoto.query() else {
+            completion?([])
+            return
+        }
+        
+        query.whereKey("observation", equalTo: observation)
+        query.findObjectsInBackground { (objects, error) -> Void in
+            print("fetched \(objects?.count ?? 0) photos")
+            
+            guard let objects = objects as? [PFPhoto], error == nil else {
+                completion?([])
+                return
+            }
+            
+            for (index, object) in objects.enumerated() {
+//            objects.forEach({ (object) in
+                object.id = UUID().uuidString // Local ID Only, must be set.
+                object.observationId = observation.id!
+                object.pinInBackground();
+                let defaultObjectId = "n/a"
+                print("recieved photo ID \(object.id ?? defaultObjectId), oID = \(object.objectId ?? defaultObjectId)")
+                
+                if let image = object["photo"] as? PFFile {
+                    var loc: CLLocation = CLLocation(latitude: 0, longitude: 0)
+                    if let lat = object.coordinate?.latitude, let lng = object.coordinate?.longitude {
+                        loc = CLLocation(latitude: lat, longitude: lng)
+                    }
+                    
+                    if image.isDataAvailable {
+                        if let imageData = try? image.getData() {
+                            PFManager.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
+                                print("saved !!!!!!!!!")
+                            })
+                        }
+                    } else {
+                        image.getDataInBackground(block: { (data: Data?, err: Error?) in
+                            if let imageData = data {
+                                PFManager.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
+                                    print("saved !!!!!!!!!")
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            
+            completion?(objects)
+        }
+    }
+        
+    // MARK: -
 
     func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
         let object = PFObject(className: "Inspection")
@@ -214,9 +313,9 @@ class PFManager {
     }
 
     // save locally
-    func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+    class func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
 
-        saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (done) in
+        PFManager.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
             // then save video
             let video = PFVideo()
@@ -229,12 +328,12 @@ class PFManager {
             exporter?.outputFileType = AVFileType.mov
             exporter?.outputURL = exportURL
             exporter?.exportAsynchronously(completionHandler: {
-                self.savePFVideo(video: video, completion: completion)
+                PFManager.savePFVideo(video: video, completion: completion)
             })
         }
     }
 
-    func savePFVideo(video: PFVideo, completion: @escaping (_ created: Bool) -> Void) {
+    class func savePFVideo(video: PFVideo, completion: @escaping (_ created: Bool) -> Void) {
         do {
             video.pinInBackground { (success, error) in
                 if success && error == nil {
@@ -790,11 +889,11 @@ class PFManager {
         })
     }
 
-    func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
-        saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (done) in
+    class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+        PFManager.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
 
-            self.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
+            PFManager.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
                 if !success{ return completion (false)}
 
                 return completion(true)
@@ -802,7 +901,7 @@ class PFManager {
         }
     }
 
-    func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+    class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         let photo = PFPhoto()
         photo.caption = description
         photo.observationId = observationID
@@ -829,8 +928,8 @@ class PFManager {
         }
     }
 
-    func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
-        let data: Data = UIImageJPEGRepresentation(resizeImage(image: image), 0)!
+    class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+        let data: Data = UIImageJPEGRepresentation(PFManager.resizeImage(image: image), 0)!
         print("thumb size of \(index) is \(data.count)")
         let photo = PFPhotoThumb()
         photo.observationId = observationID
@@ -989,7 +1088,7 @@ class PFManager {
         })
     }
 
-    func resizeImage(image: UIImage) -> UIImage {
+    class func resizeImage(image: UIImage) -> UIImage {
         var actualHeight: Float = Float(image.size.height)
         var actualWidth: Float = Float(image.size.width)
         let maxHeight: Float = 120.0

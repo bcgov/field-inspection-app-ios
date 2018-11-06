@@ -68,9 +68,8 @@ final class InspectionsController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        let inspeciton = data[selectedInspectionIndexPath!.row]
-
         if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
+            let inspeciton = data[selectedInspectionIndexPath!.row]
             let dvc = segue.destination as! InspectionFormController
             if selectedIndex == 0 {
                 dvc.submit = {
@@ -80,10 +79,11 @@ final class InspectionsController: UIViewController {
             dvc.inspection = inspeciton
         }
         
-        if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
-            let dvc = segue.destination as! InspectionFormController
-            dvc.inspection = inspeciton
-        }
+//        if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
+//            let inspeciton = data[selectedInspectionIndexPath!.row]
+//            let dvc = segue.destination as! InspectionFormController
+//            dvc.inspection = inspeciton
+//        }
     }
 
 	// MARK: - IB Actions
@@ -181,16 +181,16 @@ final class InspectionsController: UIViewController {
 
 		indicator.startAnimating()
         
-        guard let query = PFManager.inspectionQueryForCurrentUser(localOnly: true) else {
+        guard let query = PFManager.inspectionQueryForCurrentUser(localOnly: false) else {
             return
         }
         
-        PFManager.fetchInspections(query: query, saveLocal: false) { (results: [PFInspection]) in
+        PFManager.fetchInspections(query: query, saveLocal: true) { (results: [PFInspection]) in
             print("user objs count = \(results.count)");
             
             let noObjectId = "n/a"
             results.forEach({ (item) in
-                print("recieved object ID = \(item.id ?? noObjectId)")
+                print("recieved inspection ID = \(item.id ?? noObjectId)")
             })
             
             self.inspections.draft = results.filter { $0.isSubmitted?.intValue == 0 }

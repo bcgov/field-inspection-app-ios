@@ -115,6 +115,8 @@ class NewObservationElementFormViewController: UIViewController {
     @IBOutlet weak var mediaHeight: NSLayoutConstraint!
     //Mark: View did load
     override func viewDidLoad() {
+
+        print(" ********************** ******************* ")
         super.viewDidLoad()
         lockdown()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -257,7 +259,7 @@ class NewObservationElementFormViewController: UIViewController {
         }
         var selectedAssets = assets
         let asset = selectedAssets.first
-        print(asset)
+        print("asset = \(asset)")
         print("at: \(currIndex), going to: \(lastIndex)")
 
         if asset?.mediaType == .video {
@@ -267,7 +269,7 @@ class NewObservationElementFormViewController: UIViewController {
                 asset?.getURL(completionHandler: { (videoURL) in
                     if videoURL != nil {
                         let thumbnail = AssetManager.sharedInstance.getThumbnailForVideo(url: videoURL! as NSURL)
-                        PFManager.shared.saveVideo(avAsset: avAsset, thumbnail: thumbnail!, index: currIndex, observationID: self.observation.id!, description: "**Video Loaded From Gallery**", completion: { (success) in
+                        PFManager.saveVideo(avAsset: avAsset, thumbnail: thumbnail!, index: currIndex, observationID: self.observation.id!, description: "**Video Loaded From Gallery**", completion: { (success) in
                             if success {
                                 selectedAssets.removeFirst()
                                 self.saveAssets(assets: selectedAssets, currIndex: (currIndex + 1), lastIndex: lastIndex, completion: completion)
@@ -284,7 +286,7 @@ class NewObservationElementFormViewController: UIViewController {
         } else {
             // if asset is image:
             AssetManager.sharedInstance.getOriginal(phAsset: asset!) { (img) in
-                PFManager.shared.savePhoto(image: img, index: currIndex, location: asset?.location, observationID: self.observation.id!, description: "**PHOTO LOADED FROM GALLERY**", completion: { (success) in
+                PFManager.savePhoto(image: img, index: currIndex, location: asset?.location, observationID: self.observation.id!, description: "**PHOTO LOADED FROM GALLERY**", completion: { (success) in
                     if success {
                         // successful? Remove last asset from array and call saveAssets recursively
                         selectedAssets.removeFirst()
@@ -386,6 +388,7 @@ class NewObservationElementFormViewController: UIViewController {
     }
 
     func load() {
+        print("load")
         PFManager.shared.getThumbnailsFor(observationID: observation.id!) { (success, photos) in
             if success {
                 self.storedPhotos = photos!
@@ -781,7 +784,9 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
                 let long = self.round(num: (location?.longitude)!, toPlaces: 5)
                 let locationString = "lat: \(String(lat))\nLon: \(String(long))"
 
-                form.addImage(image: (photo?.image)!)
+                if let image = photo?.image {
+                    form.addImage(image:image)
+                }
                 form.addLabel(name: "caption", text: (photo?.caption)!, style: textStyleL)
                 form.addLabel(name: "piclocation", text: locationString, style: textStyleM)
                 form.addLabel(name: "date:", text: formatter.string(from: (photo?.timestamp)!), style: textStyleS)
@@ -897,7 +902,7 @@ extension  NewObservationElementFormViewController:  UIImagePickerControllerDele
             }
 
             // TODO:: Store nowDate
-            PFManager.shared.savePhoto(image: image, index: self.storedPhotos.count, location:location, observationID: self.observation.id!, description: comments, completion: { (done) in
+            PFManager.savePhoto(image: image, index: self.storedPhotos.count, location:location, observationID: self.observation.id!, description: comments, completion: { (done) in
                 if done {
                     self.load()
                     self.enabledPopUp = false
