@@ -66,14 +66,18 @@ class DataServices {
         
         let dispatchGroup = DispatchGroup()
         
-        dispatchGroup.enter()
-        DataServices.fetchObservationsFor(inspection: inspection) { (observations) in
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            print("All done 👍")
-            completion?()
+        DataServices.fetchObservationsFor(inspection: inspection) { (results) in
+            for observation in results {
+                dispatchGroup.enter()
+                DataServices.fetchPhotosFor(observation: observation) { _ in
+                    dispatchGroup.leave()
+                }
+            }
+
+            dispatchGroup.notify(queue: .main) {
+                print("DONE FETCHING INSPECTION 👍")
+                completion?()
+            }
         }
     }
     
@@ -86,8 +90,6 @@ class DataServices {
         
         query.whereKey("inspection", equalTo: inspection)
         query.findObjectsInBackground { (objects, error) -> Void in
-            print("fetched \(objects?.count ?? 0) observations")
-            
             guard let objects = objects as? [PFObservation], error == nil else {
                 completion?([])
                 return
@@ -97,9 +99,6 @@ class DataServices {
                 object.id = UUID().uuidString // Local ID Only, must be set.
                 object.inspectionId = inspection.id!
                 object.pinInBackground();
-                let defaultObjectId = "n/a"
-                print("recieved observation ID \(object.objectId ?? defaultObjectId), oID = \(object.objectId ?? defaultObjectId)")
-                DataServices.fetchPhotosFor(observation: object)
             })
             
             completion?(objects)
@@ -115,48 +114,60 @@ class DataServices {
         
         query.whereKey("observation", equalTo: observation)
         query.findObjectsInBackground { (objects, error) -> Void in
-            print("fetched \(objects?.count ?? 0) photos")
-            
             guard let objects = objects as? [PFPhoto], error == nil else {
                 completion?([])
                 return
             }
             
+            let group = DispatchGroup()
             for (index, object) in objects.enumerated() {
+                group.enter()
                 object.id = UUID().uuidString // Local ID Only, must be set.
                 object.observationId = observation.id!
                 object.pinInBackground();
-                let defaultObjectId = "n/a"
-                print("recieved photo ID \(object.id ?? defaultObjectId), oID = \(object.objectId ?? defaultObjectId)")
-                
-                if let image = object["photo"] as? PFFile {
-                    var loc: CLLocation = CLLocation(latitude: 0, longitude: 0)
-                    if let lat = object.coordinate?.latitude, let lng = object.coordinate?.longitude {
-                        loc = CLLocation(latitude: lat, longitude: lng)
-                    }
-                    
-                    if image.isDataAvailable {
-                        if let imageData = try? image.getData() {
-                            DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
-                                print("saved !!!!!!!!!")
-                            })
-                        }
-                    } else {
-                        image.getDataInBackground(block: { (data: Data?, err: Error?) in
-                            if let imageData = data {
-                                DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
-                                    print("saved !!!!!!!!!")
-                                })
-                            }
-                        })
-                    }
-                }
+                DataServices.fetchDataFor(photo: object, observation: observation, index: index, completion: { (data: Data?) in
+                    group.leave()
+                })
             }
             
-            completion?(objects)
+            group.notify(queue: .main) {
+                // all photo data fetched
+                completion?(objects)
+            }
         }
     }
     
+    internal class func fetchDataFor(photo: PFPhoto, observation: PFObservation, index: Int, completion: ((_ result: Data?) -> Void)? = nil) {
+
+        guard let image = photo["photo"] as? PFFile else {
+            completion?(nil)
+            return
+        }
+        
+        var loc: CLLocation = CLLocation(latitude: 0, longitude: 0)
+        if let lat = photo.coordinate?.latitude, let lng = photo.coordinate?.longitude {
+            loc = CLLocation(latitude: lat, longitude: lng)
+        }
+    
+        if image.isDataAvailable {
+            if let imageData = try? image.getData() {
+                DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: photo.caption, completion: { (success) in
+                    completion?(imageData)
+                })
+            }
+            
+            return
+        }
+        
+        image.getDataInBackground(block: { (data: Data?, err: Error?) in
+            if let imageData = data {
+                DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: photo.caption, completion: { (success) in
+                    completion?(imageData)
+                })
+            }
+        })
+    }
+
     // MARK: -
     
     internal class func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
