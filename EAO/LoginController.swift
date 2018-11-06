@@ -52,10 +52,10 @@ final class LoginController: UIViewController{
                     self.indicator.stopAnimating()
 					return
 				}
-                PFManager.shared.isUserMobileAccessEnabled(completion: { (enabled) in
+                DataServices.shared.isUserMobileAccessEnabled(completion: { (enabled) in
                     if enabled {
                         let user: User =  PFUser.current() as! User
-                        PFManager.shared.getUserTeams(user: user, completion: { (done, downloaded) in
+                        DataServices.shared.getUserTeams(user: user, completion: { (done, downloaded) in
                             print("ended \(done)")
                         })
                         PFInspection.loadAndPin {

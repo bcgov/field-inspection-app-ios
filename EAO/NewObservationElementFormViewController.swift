@@ -269,7 +269,7 @@ class NewObservationElementFormViewController: UIViewController {
                 asset?.getURL(completionHandler: { (videoURL) in
                     if videoURL != nil {
                         let thumbnail = AssetManager.sharedInstance.getThumbnailForVideo(url: videoURL! as NSURL)
-                        PFManager.saveVideo(avAsset: avAsset, thumbnail: thumbnail!, index: currIndex, observationID: self.observation.id!, description: "**Video Loaded From Gallery**", completion: { (success) in
+                        DataServices.saveVideo(avAsset: avAsset, thumbnail: thumbnail!, index: currIndex, observationID: self.observation.id!, description: "**Video Loaded From Gallery**", completion: { (success) in
                             if success {
                                 selectedAssets.removeFirst()
                                 self.saveAssets(assets: selectedAssets, currIndex: (currIndex + 1), lastIndex: lastIndex, completion: completion)
@@ -286,7 +286,7 @@ class NewObservationElementFormViewController: UIViewController {
         } else {
             // if asset is image:
             AssetManager.sharedInstance.getOriginal(phAsset: asset!) { (img) in
-                PFManager.savePhoto(image: img, index: currIndex, location: asset?.location, observationID: self.observation.id!, description: "**PHOTO LOADED FROM GALLERY**", completion: { (success) in
+                DataServices.savePhoto(image: img, index: currIndex, location: asset?.location, observationID: self.observation.id!, description: "**PHOTO LOADED FROM GALLERY**", completion: { (success) in
                     if success {
                         // successful? Remove last asset from array and call saveAssets recursively
                         selectedAssets.removeFirst()
@@ -389,12 +389,12 @@ class NewObservationElementFormViewController: UIViewController {
 
     func load() {
         print("load")
-        PFManager.shared.getThumbnailsFor(observationID: observation.id!) { (success, photos) in
+        DataServices.shared.getThumbnailsFor(observationID: observation.id!) { (success, photos) in
             if success {
                 self.storedPhotos = photos!
             }
         }
-        PFManager.shared.getAudiosFor(observationID: self.observation.id!) { (success, audios) in
+        DataServices.shared.getAudiosFor(observationID: self.observation.id!) { (success, audios) in
             if success {
                 self.storedAudios = audios!
             }
@@ -742,7 +742,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
 //        self.containerHeight.constant = 450
         self.containerHeight.constant = self.view.frame.height - 200
-        PFManager.shared.getVideoFor(observationID: observation.id!, at: index) { (found, pfVideo) in
+        DataServices.shared.getVideoFor(observationID: observation.id!, at: index) { (found, pfVideo) in
             if found {
                 guard let assetURL = pfVideo?.getURL() else {return}
 //                let avurlasset = AVURLAsset(url: assetURL)
@@ -776,7 +776,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        PFManager.shared.getPhotoFor(observationID: observation.id!, at: index) { (found, photo) in
+        DataServices.shared.getPhotoFor(observationID: observation.id!, at: index) { (found, photo) in
 
             if found {
                 let location = photo?.coordinate
@@ -902,7 +902,7 @@ extension  NewObservationElementFormViewController:  UIImagePickerControllerDele
             }
 
             // TODO:: Store nowDate
-            PFManager.savePhoto(image: image, index: self.storedPhotos.count, location:location, observationID: self.observation.id!, description: comments, completion: { (done) in
+            DataServices.savePhoto(image: image, index: self.storedPhotos.count, location:location, observationID: self.observation.id!, description: comments, completion: { (done) in
                 if done {
                     self.load()
                     self.enabledPopUp = false

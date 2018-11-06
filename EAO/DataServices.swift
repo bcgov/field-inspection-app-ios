@@ -11,9 +11,9 @@ import AVFoundation
 import Parse
 import Photos
 
-class PFManager {
+class DataServices {
 
-    static let shared = PFManager()
+    static let shared = DataServices()
 
     private init() {
         let fileManager = FileManager.default
@@ -56,7 +56,7 @@ class PFManager {
                 objects.forEach({ (inspection) in
                     inspection.id = UUID().uuidString // Local ID Only, must be set.
                     inspection.pinInBackground();
-                    PFManager.fetchFullInspection(inspection: inspection)
+                    DataServices.fetchFullInspection(inspection: inspection)
                 })
             }
             
@@ -69,7 +69,7 @@ class PFManager {
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        PFManager.fetchObservationsFor(inspection: inspection) { (observations) in
+        DataServices.fetchObservationsFor(inspection: inspection) { (observations) in
             dispatchGroup.leave()
         }
 
@@ -101,7 +101,7 @@ class PFManager {
                 object.pinInBackground();
                 let defaultObjectId = "n/a"
                 print("recieved observation ID \(object.objectId ?? defaultObjectId), oID = \(object.objectId ?? defaultObjectId)")
-                PFManager.fetchPhotosFor(observation: object)
+                DataServices.fetchPhotosFor(observation: object)
             })
             
             completion?(objects)
@@ -140,14 +140,14 @@ class PFManager {
                     
                     if image.isDataAvailable {
                         if let imageData = try? image.getData() {
-                            PFManager.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
+                            DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
                                 print("saved !!!!!!!!!")
                             })
                         }
                     } else {
                         image.getDataInBackground(block: { (data: Data?, err: Error?) in
                             if let imageData = data {
-                                PFManager.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
+                                DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: object.caption, completion: { (success) in
                                     print("saved !!!!!!!!!")
                                 })
                             }
@@ -315,7 +315,7 @@ class PFManager {
     // save locally
     class func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
 
-        PFManager.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (done) in
+        DataServices.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
             // then save video
             let video = PFVideo()
@@ -328,7 +328,7 @@ class PFManager {
             exporter?.outputFileType = AVFileType.mov
             exporter?.outputURL = exportURL
             exporter?.exportAsynchronously(completionHandler: {
-                PFManager.savePFVideo(video: video, completion: completion)
+                DataServices.savePFVideo(video: video, completion: completion)
             })
         }
     }
@@ -890,10 +890,10 @@ class PFManager {
     }
 
     class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
-        PFManager.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (done) in
+        DataServices.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
 
-            PFManager.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
+            DataServices.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
                 if !success{ return completion (false)}
 
                 return completion(true)
@@ -929,7 +929,7 @@ class PFManager {
     }
 
     class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
-        let data: Data = UIImageJPEGRepresentation(PFManager.resizeImage(image: image), 0)!
+        let data: Data = UIImageJPEGRepresentation(DataServices.resizeImage(image: image), 0)!
         print("thumb size of \(index) is \(data.count)")
         let photo = PFPhotoThumb()
         photo.observationId = observationID

@@ -118,7 +118,7 @@ final class InspectionsController: UIViewController {
         navigationController?.view.isUserInteractionEnabled = false
         isBeingUploaded = true
         
-        PFManager.shared.uploadInspection(inspection: inspection) { (done) in
+        DataServices.shared.uploadInspection(inspection: inspection) { (done) in
             self.indicator.stopAnimating()
             self.navigationController?.view.isUserInteractionEnabled = true
             self.isBeingUploaded = false
@@ -181,11 +181,11 @@ final class InspectionsController: UIViewController {
 
 		indicator.startAnimating()
         
-        guard let query = PFManager.inspectionQueryForCurrentUser(localOnly: false) else {
+        guard let query = DataServices.inspectionQueryForCurrentUser(localOnly: false) else {
             return
         }
         
-        PFManager.fetchInspections(query: query, saveLocal: true) { (results: [PFInspection]) in
+        DataServices.fetchInspections(query: query, saveLocal: true) { (results: [PFInspection]) in
             print("user objs count = \(results.count)");
             
             let noObjectId = "n/a"
