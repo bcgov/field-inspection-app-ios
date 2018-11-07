@@ -15,17 +15,19 @@ final class InspectionCell: UITableViewCell{
 	@IBOutlet fileprivate var progressBar: UIProgressView!
 	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
 	
-	@objc func setData(title: String?,time: String?, isReadOnly: Bool, progress: Float, isBeingUploaded: Bool, isEnabled: Bool, linkedProject: String?){
+	@objc func setData(title: String?,time: String?, isLocal: Bool, progress: Float, isBeingUploaded: Bool, isEnabled: Bool, linkedProject: String?){
 		titleLabel.text = title
 		timeLabel.text  = time
 		linkedProjectLabel.text = linkedProject
 		progressBar.progress = progress
-		if isReadOnly{
+        
+		if !isLocal {
 			indicator.stopAnimating()
 			progressBar.isHidden = true
 			editButton.isHidden = true
 			uploadButton.isUserInteractionEnabled = false
-			uploadButton.setBackgroundImage(#imageLiteral(resourceName: "icon_eye_blue"), for: .normal)
+            let img = FAFormatter.imageFrom(character: .CloudDownload, color: Theme.governmentDarkBlue, size: 30.0, offset: 0)
+			uploadButton.setBackgroundImage(img, for: .normal)
 			if isBeingUploaded{
 				uploadButton.isHidden = true
 			} else{
@@ -43,7 +45,7 @@ final class InspectionCell: UITableViewCell{
 			}
 			editButton.isHidden = false
 			uploadButton.isUserInteractionEnabled = !isEnabled
-			uploadButton.setBackgroundImage(#imageLiteral(resourceName: "icon_upload"), for: .normal)
+			uploadButton.setBackgroundImage(nil, for: .normal)
 		}
 	}
 }

@@ -43,7 +43,13 @@ class DataServices {
         return query
     }
     
-    internal class func fetchInspections(query: PFQuery<PFObject>, saveLocal: Bool = true, completion: ((_ results: [PFInspection]) -> Void)? = nil) {
+    internal class func fetchInspections(localOnly: Bool = true, saveLocal: Bool = true, completion: ((_ results: [PFInspection]) -> Void)? = nil) {
+        
+        guard let query = DataServices.inspectionQueryForCurrentUser(localOnly: localOnly) else {
+            completion?([])
+            return
+        }
+
         query.findObjectsInBackground(block: { (objects, error) in
             guard let objects = objects as? [PFInspection], error == nil else {
                 completion?([])
@@ -54,7 +60,6 @@ class DataServices {
                 objects.forEach({ (inspection) in
                     inspection.id = UUID().uuidString // Local ID Only, must be set.
                     inspection.pinInBackground();
-                    DataServices.fetchFullInspection(inspection: inspection)
                 })
             }
             
@@ -76,6 +81,7 @@ class DataServices {
 
             dispatchGroup.notify(queue: .main) {
                 print("DONE FETCHING INSPECTION 👍")
+                inspection.isStoredLocally = true
                 completion?()
             }
         }

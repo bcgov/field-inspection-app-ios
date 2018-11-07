@@ -24,6 +24,11 @@ import Parse
 
 final class InspectionsController: UIViewController {
     
+    enum Sections: Int {
+        case Draft = 0
+        case Submitted
+    }
+
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var addNewInspectionButton: UIButton!
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
@@ -181,11 +186,7 @@ final class InspectionsController: UIViewController {
 
 		indicator.startAnimating()
         
-        guard let query = DataServices.inspectionQueryForCurrentUser(localOnly: false) else {
-            return
-        }
-        
-        DataServices.fetchInspections(query: query, saveLocal: true) { (results: [PFInspection]) in
+        DataServices.fetchInspections(localOnly: false, saveLocal: true) { (results: [PFInspection]) in
             print("user objs count = \(results.count)");
             
             let noObjectId = "n/a"
@@ -270,7 +271,7 @@ final class InspectionsController: UIViewController {
             date += " - \(end.inspectionFormat())"
         }
         
-        cell.setData(title: inspection.title, time: date, isReadOnly: Bool(truncating: NSNumber(integerLiteral: selectedIndex)), progress: inspection.progress , isBeingUploaded: inspection.isBeingUploaded , isEnabled: self.isBeingUploaded, linkedProject: inspection.project)
+        cell.setData(title: inspection.title, time: date, isLocal: inspection.isStoredLocally, progress: inspection.progress , isBeingUploaded: inspection.isBeingUploaded , isEnabled: self.isBeingUploaded, linkedProject: inspection.project)
     }
     
     // MARK: -
@@ -330,6 +331,17 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let d = data[indexPath.row]
+        if selectedIndex == Sections.Submitted.rawValue && !d.isStoredLocally {
+            DataServices.fetchFullInspection(inspection: d) {
+                self.selectedInspectionIndexPath = indexPath
+                self.performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
+            }
+            
+            return
+        }
+        
         selectedInspectionIndexPath = indexPath
         performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
 	}

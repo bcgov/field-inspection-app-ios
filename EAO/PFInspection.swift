@@ -14,7 +14,7 @@ enum PFInspectionError: Error{
     case inspectionIdNotFound
     case fail
     case noConnection
-
+    
     var message: String{
         switch self {
         case .zeroObservations :
@@ -32,13 +32,14 @@ enum PFInspectionError: Error{
 }
 
 //MARK: -
-final class PFInspection: PFObject, PFSubclassing{
-    @objc var progress: Float = 0
-    @objc var isBeingUploaded = false
-
-    fileprivate var failed = [PFObject]()
-
+final class PFInspection: PFObject, PFSubclassing {
+    internal var progress: Float = 0
+    internal var isBeingUploaded = false
+    internal var isStoredLocally = false
+    internal var failed = [PFObject]()
+    
     //MARK: -
+
     @NSManaged var id : String?
     @NSManaged var userId : String?
     @NSManaged var isSubmitted  : NSNumber?
@@ -50,11 +51,11 @@ final class PFInspection: PFObject, PFSubclassing{
     @NSManaged var start	: Date?
     @NSManaged var end		: Date?
     @NSManaged var teamID   : String?
-
+    
     static func parseClassName() -> String {
         return "Inspection"
     }
-
+    
     //MARK: - Submission
     
     func submit(completion: @escaping (_ success: Bool,_ error: PFInspectionError?)->Void, block: @escaping (_ progress : Float)->Void){
@@ -155,7 +156,7 @@ final class PFInspection: PFObject, PFSubclassing{
                 //                        })
                 //                    }
                 //                })
-
+                
                 //                PFVideo.load(for: observationId, result: { (videos) in
                 //                    if let videos = videos {
                 //                        videos.setPFFiles()
@@ -184,15 +185,15 @@ final class PFInspection: PFObject, PFSubclassing{
             }
         }
     }
-
+    
     fileprivate func save(objects: [PFObject], completion: @escaping ()->Void, block: @escaping (_ progress : Float)->Void){
         var object_counter = 0
         for object in objects{
-
+            
             (object as? PFInspection)?.isSubmitted = true
             object.saveInBackground(block: { (success, error) in
                 if success && error == nil{
-
+                    
                 } else{
                     self.failed.append(object)
                     self.isSubmitted = false
@@ -279,7 +280,7 @@ extension PFInspection {
                         })
                     }
                 })
-
+                
             }
             completion()
         })

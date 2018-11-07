@@ -276,6 +276,12 @@
 		561F2AC020D19C5F0072C0D0 /* Info-Test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */; };
 		561F2AD520D1ADA80072C0D0 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2AD120D1AD3A0072C0D0 /* Parse.plist */; };
 		561F2AD720D1ADE90072C0D0 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2AD320D1AD490072C0D0 /* Parse.plist */; };
+		5675DA9321927196008409AB /* FAFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5675DA9221927196008409AB /* FAFormatter.swift */; };
+		5675DA9521935C00008409AB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5675DA9421935C00008409AB /* Theme.swift */; };
+		5675DA9721935CE6008409AB /* FAFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5675DA9221927196008409AB /* FAFormatter.swift */; };
+		5675DA9821935CF1008409AB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5675DA9421935C00008409AB /* Theme.swift */; };
+		5675DA9C21936279008409AB /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5675DA9B21936279008409AB /* FontAwesome.otf */; };
+		5675DA9D21936279008409AB /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5675DA9B21936279008409AB /* FontAwesome.otf */; };
 		95CF462D7588D8B3207A134B /* Pods_EAOUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7264A000F4E6ED7FD7102F7 /* Pods_EAOUITests.framework */; };
 		9688D51C1E69DA4300C49CD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -465,6 +471,10 @@
 		561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Test.plist"; sourceTree = SOURCE_ROOT; };
 		561F2AD120D1AD3A0072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/test/Parse.plist"; sourceTree = SOURCE_ROOT; };
 		561F2AD320D1AD490072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/prod/Parse.plist"; sourceTree = SOURCE_ROOT; };
+		5675DA9221927196008409AB /* FAFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAFormatter.swift; sourceTree = "<group>"; };
+		5675DA9421935C00008409AB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		5675DA9B21936279008409AB /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
+		5675DA9E219362E2008409AB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6AA409627E4D8A567FCFAD3C /* Pods-EAOUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9688D5181E69DA4300C49CD7 /* Field Insp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -977,6 +987,15 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
+		5675DA9A21936253008409AB /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				5675DA9B21936279008409AB /* FontAwesome.otf */,
+				5675DA9E219362E2008409AB /* LICENSE */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		9688D50F1E69DA4300C49CD7 = {
 			isa = PBXGroup;
 			children = (
@@ -1002,6 +1021,8 @@
 		9688D51A1E69DA4300C49CD7 /* EAO */ = {
 			isa = PBXGroup;
 			children = (
+				5675DA9221927196008409AB /* FAFormatter.swift */,
+				5675DA9421935C00008409AB /* Theme.swift */,
 				5675DA8E2190C33E008409AB /* Services */,
 				113B204A1EC120A200F04811 /* AppDelegate */,
 				1159B3341EB1029900F72750 /* DataModels */,
@@ -1037,6 +1058,7 @@
 		9688D5591E69DD8A00C49CD7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5675DA9A21936253008409AB /* Fonts */,
 				561F2AD020D1AD280072C0D0 /* Test */,
 				561F2ACF20D1AD220072C0D0 /* Prod */,
 				117D3BF81EEF0ACE00791D07 /* Constants */,
@@ -1133,7 +1155,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = FreshWorks;
+				ORGANIZATIONNAME = "Province of British Columbia";
 				TargetAttributes = {
 					1186B5371ECB699D00681426 = {
 						CreatedOnToolsVersion = 8.3.2;
@@ -1235,6 +1257,7 @@
 				2936BF2C20BF64A500775F5E /* MiFormTableViewCell.xib in Resources */,
 				2936BF2D20BF64A500775F5E /* MiFormButtonTableViewCell.xib in Resources */,
 				2936BF2E20BF64A500775F5E /* newObservationElementForm.storyboard in Resources */,
+				5675DA9D21936279008409AB /* FontAwesome.otf in Resources */,
 				2936BF2F20BF64A500775F5E /* FormTitleTableViewCell.xib in Resources */,
 				2936BF3020BF64A500775F5E /* NewObservationController.storyboard in Resources */,
 				2936BF3120BF64A500775F5E /* TeamSearchTableViewCell.xib in Resources */,
@@ -1272,6 +1295,7 @@
 				29AA665920042D6300673013 /* GPSLabelTableViewCell.xib in Resources */,
 				295304EA2017FF4D001E5C7F /* MiForm.storyboard in Resources */,
 				112F747C1E9807920076926A /* SignupController.storyboard in Resources */,
+				5675DA9C21936279008409AB /* FontAwesome.otf in Resources */,
 				2931581C200929FB008E2FF4 /* ImageCollectionTableViewCell.xib in Resources */,
 				295304E12017FF47001E5C7F /* SimpleFormTableViewCell.xib in Resources */,
 				29424D451FFC146200562508 /* GalleryImageCollectionViewCell.xib in Resources */,
@@ -1495,6 +1519,7 @@
 				2936BEDB20BF64A500775F5E /* RequirementNewObservationCollectionViewCell.swift in Sources */,
 				2936BEDC20BF64A500775F5E /* InspectionFormController.swift in Sources */,
 				2936BEDD20BF64A500775F5E /* InspectionFormCell.swift in Sources */,
+				5675DA9721935CE6008409AB /* FAFormatter.swift in Sources */,
 				2936BEDE20BF64A500775F5E /* MKMapView.swift in Sources */,
 				2936BEDF20BF64A500775F5E /* ProjectListController.swift in Sources */,
 				2936BEE020BF64A500775F5E /* MiFormViewController.swift in Sources */,
@@ -1518,6 +1543,7 @@
 				2936BEF220BF64A500775F5E /* PFPhotoThumb.swift in Sources */,
 				2936BEF320BF64A500775F5E /* PFVideo.swift in Sources */,
 				2936BEF420BF64A500775F5E /* UIReusableView.swift in Sources */,
+				5675DA9821935CF1008409AB /* Theme.swift in Sources */,
 				2936BEF520BF64A500775F5E /* MiFormManager.swift in Sources */,
 				2936BEF620BF64A500775F5E /* InspectionsController.swift in Sources */,
 				2936BEF720BF64A500775F5E /* GalleryManager.swift in Sources */,
@@ -1569,6 +1595,7 @@
 				29A029EF2029FECC0085DCE8 /* Recorder.swift in Sources */,
 				29424D441FFC146200562508 /* HexColor.swift in Sources */,
 				119A0B841EE785300077D9B5 /* Reachability.swift in Sources */,
+				5675DA9521935C00008409AB /* Theme.swift in Sources */,
 				29424D421FFC146200562508 /* GalleryImageCollectionViewCell.swift in Sources */,
 				29795F52200FCF3B00A55B45 /* LabelCollectionViewCell.swift in Sources */,
 				291746742073E77F005F70B4 /* Team.swift in Sources */,
@@ -1591,6 +1618,7 @@
 				29FF5612200E9F6E00FCF230 /* RequirementNewObservationCollectionViewCell.swift in Sources */,
 				11D70EC91E8D9A7F00CBF92C /* InspectionFormController.swift in Sources */,
 				11D70ED51E8DA02000CBF92C /* InspectionFormCell.swift in Sources */,
+				5675DA9321927196008409AB /* FAFormatter.swift in Sources */,
 				110FF0A31E8C25C5000DB1A5 /* MKMapView.swift in Sources */,
 				11D70EBB1E8D8DE400CBF92C /* ProjectListController.swift in Sources */,
 				295304E92017FF4D001E5C7F /* MiFormViewController.swift in Sources */,
