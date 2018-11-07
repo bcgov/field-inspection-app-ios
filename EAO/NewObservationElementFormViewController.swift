@@ -259,8 +259,6 @@ class NewObservationElementFormViewController: UIViewController {
         }
         var selectedAssets = assets
         let asset = selectedAssets.first
-        print("asset = \(asset)")
-        print("at: \(currIndex), going to: \(lastIndex)")
 
         if asset?.mediaType == .video {
             // if asset is video...
@@ -677,14 +675,9 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
             }
 
             if current.originalType == "photo" {
-                print("**")
-                print( storedPhotos[i].index)
-                print( storedPhotos[i])
-                print("** -- **")
                 for item in storedPhotos {
                     print(item)
                 }
-                print("**")
                 showPreviewOf(index: storedPhotos[i].index as! Int)
             }
 
@@ -699,14 +692,12 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
     func playAudioAt(index: Int) {
         let audio = storedAudios[index]
-        //        playAudio(data: audio.get()!)
         let form = MiFormManager()
         let buttonStyleBlue = MiButtonStyle(textColor: .white, bgColor: BLUE, height: 50, roundCorners: true)
         let buttonStyleRed = MiButtonStyle(textColor: .white, bgColor: RED, height: 50, roundCorners: true)
         let textStyleL = LabelStyle(height: 100, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
         let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
-        let textStyleM = LabelStyle(height: 80, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
-        print(audio.get()?.count)
+
         if audio.title != nil {
             form.addLabel(name: "sounddesc", text: audio.title! , style: textStyleS)
         }
