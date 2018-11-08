@@ -23,7 +23,7 @@ final class InspectionCell: UITableViewCell {
     @IBOutlet weak var disclosureIndicator: UIImageView!
     
     internal var onTransferTouched: (() -> Void)?
-
+    
     override func awakeFromNib() {
         commonInit()
         

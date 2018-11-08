@@ -45,10 +45,18 @@ final class InspectionsController: UIViewController {
         return lm
     }()
     private var data = [PFInspection]()
-//    private var selectedInspection: PFInspection?
     private var selectedInspectionIndexPath: IndexPath?
     private static let inspectionFormControllerSegueID = "InspectionFormControllerSegueID"
     private static let inspectionSetupControllerSegueID = "InspectionSetupControllerSegueID"
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(InspectionsController.handleRefresh(_:)),
+                                 for: UIControlEvents.valueChanged)
+        refreshControl.tintColor = Theme.governmentDeepYellow
+        
+        return refreshControl
+    }()
     internal static var reference: InspectionsController? {
         return (AppDelegate.root?.presentedViewController as? UINavigationController)?.viewControllers.first as? InspectionsController
     }
@@ -66,9 +74,8 @@ final class InspectionsController: UIViewController {
         addObserver(#selector(reload), .reload)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         tableView.contentInset.bottom = 10
-
         
-        load()
+        loadInspections()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -83,12 +90,6 @@ final class InspectionsController: UIViewController {
             }
             dvc.inspection = inspeciton
         }
-        
-//        if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
-//            let inspeciton = data[selectedInspectionIndexPath!.row]
-//            let dvc = segue.destination as! InspectionFormController
-//            dvc.inspection = inspeciton
-//        }
     }
 
 	// MARK: - IB Actions
@@ -128,7 +129,7 @@ final class InspectionsController: UIViewController {
             self.navigationController?.view.isUserInteractionEnabled = true
             self.isBeingUploaded = false
             self.indicator.alpha = 0
-            self.load()
+            self.loadInspections()
         }
 	}
 
@@ -141,9 +142,17 @@ final class InspectionsController: UIViewController {
 	
 	@IBAction func segmentedControlChangedValue(_ sender: UISegmentedControl) {
 
+        if selectedIndex == Sections.Submitted.rawValue {
+            tableView.addSubview(refreshControl)
+        } else {
+            refreshControl.removeFromSuperview()
+        }
+        
         updateDataForSelectedIndex();
+
 		addNewInspectionButton.isHidden = selectedIndex == 0 ? false : true
 		tableViewBottomConstraint.constant = selectedIndex == 0 ? 10 : -60
+
 		tableView.reloadData()
 	}
 	
@@ -182,11 +191,16 @@ final class InspectionsController: UIViewController {
 	
 	// MARK: -
     
-	private func load() {
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        
+        refreshControl.endRefreshing()
+    }
+
+    private func loadInspections(fetchRemote: Bool = false) {
 
 		indicator.startAnimating()
         
-        DataServices.fetchInspections(localOnly: true, saveLocal: true) { (results: [PFInspection]) in
+        DataServices.fetchInspections(localOnly: !fetchRemote) { (results: [PFInspection]) in
             print("user objs count = \(results.count)");
             
             let noObjectId = "n/a"
@@ -222,7 +236,7 @@ final class InspectionsController: UIViewController {
 
     @objc dynamic private func reload() {
 
-        load()
+        loadInspections()
 	}
 
 	private func submitFromInspectionForm(_ notification: Notification?) {
@@ -375,8 +389,13 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+
+        let inspection = self.data[indexPath.row]
+        if !inspection.isStoredLocally {
+            return []
+        }
+
 		let action = UITableViewRowAction(style: .destructive, title: "Remove") { (action, indexPath) in
-            let inspection = self.data[indexPath.row]
             if let idx = self.inspections.submitted.index(of: inspection) {
                 self.inspections.submitted.remove(at: idx)
                 self.updateDataForSelectedIndex()

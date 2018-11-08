@@ -27,7 +27,7 @@ class DataServices {
         }
     }
     
-    internal class func inspectionQueryForCurrentUser(localOnly: Bool = true) -> PFQuery<PFObject>? {
+    internal class func inspectionQueryForCurrentUser(localOnly: Bool) -> PFQuery<PFObject>? {
         //        print("user = \(PFUser.current()!.objectId!)");
         guard let query = PFInspection.query() else {
             return nil
@@ -43,7 +43,7 @@ class DataServices {
         return query
     }
     
-    internal class func fetchInspections(localOnly: Bool = true, saveLocal: Bool = true, completion: ((_ results: [PFInspection]) -> Void)? = nil) {
+    internal class func fetchInspections(localOnly: Bool = true, completion: ((_ results: [PFInspection]) -> Void)? = nil) {
         
         guard let query = DataServices.inspectionQueryForCurrentUser(localOnly: localOnly) else {
             completion?([])
@@ -56,12 +56,10 @@ class DataServices {
                 return
             }
             
-            if saveLocal {
-                objects.forEach({ (inspection) in
-                    inspection.id = UUID().uuidString // Local ID Only, must be set.
-                    inspection.pinInBackground();
-                })
-            }
+            objects.forEach({ (inspection) in
+                inspection.id = UUID().uuidString // Local ID Only, must be set.
+                inspection.pinInBackground();
+            })
             
             completion?(objects);
         })
