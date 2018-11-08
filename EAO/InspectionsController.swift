@@ -68,7 +68,7 @@ final class InspectionsController: UIViewController {
         tableView.contentInset.bottom = 10
 
         
-        self.load()
+        load()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -186,7 +186,7 @@ final class InspectionsController: UIViewController {
 
 		indicator.startAnimating()
         
-        DataServices.fetchInspections(localOnly: false, saveLocal: true) { (results: [PFInspection]) in
+        DataServices.fetchInspections(localOnly: true, saveLocal: true) { (results: [PFInspection]) in
             print("user objs count = \(results.count)");
             
             let noObjectId = "n/a"
@@ -270,8 +270,34 @@ final class InspectionsController: UIViewController {
         if let end = inspection.end {
             date += " - \(end.inspectionFormat())"
         }
+
+        cell.titleLabel.text = inspection.title
+        cell.timeLabel.text = date
+        cell.linkedProjectLabel.text = inspection.project
         
-        cell.setData(title: inspection.title, time: date, isLocal: inspection.isStoredLocally, progress: inspection.progress , isBeingUploaded: inspection.isBeingUploaded , isEnabled: self.isBeingUploaded, linkedProject: inspection.project)
+        print("submitted = \(inspection.isSubmitted as? Bool ?? false), local = \(inspection.isStoredLocally)")
+
+        let isSubmitted = inspection.isSubmitted as? Bool ?? false
+    
+        if !isSubmitted {
+            cell.enableEdit(canEdit: true)
+            cell.configForTransferState(state: .upload)
+        } else if isSubmitted && inspection.isStoredLocally {
+            cell.configForTransferState(state: .disabled)
+            cell.enableEdit(canEdit: false)
+        } else if isSubmitted && !inspection.isStoredLocally {
+            cell.configForTransferState(state: .download)
+            cell.onTransferTouched = {
+                cell.uploadInProgress(isUploading: true)
+                DataServices.fetchFullInspection(inspection: inspection) {
+                    cell.uploadInProgress(isUploading: false)
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
+            }
+        } else {
+            cell.configForTransferState(state: .upload)
+            cell.enableEdit(canEdit: !isSubmitted)
+        }
     }
     
     // MARK: -
@@ -332,16 +358,11 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let d = data[indexPath.row]
-        if selectedIndex == Sections.Submitted.rawValue && !d.isStoredLocally {
-            DataServices.fetchFullInspection(inspection: d) {
-                self.selectedInspectionIndexPath = indexPath
-                self.performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
-            }
-            
+        let inspeciton = data[indexPath.row]
+        if !inspeciton.isStoredLocally {
             return
         }
-        
+
         selectedInspectionIndexPath = indexPath
         performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
 	}

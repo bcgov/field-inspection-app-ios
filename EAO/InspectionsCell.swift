@@ -6,50 +6,99 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 
-final class InspectionCell: UITableViewCell{
-	@IBOutlet fileprivate var linkedProjectLabel: UILabel!
-	@IBOutlet fileprivate var titleLabel : UILabel!
-	@IBOutlet fileprivate var timeLabel  : UILabel!
-	@IBOutlet fileprivate var editButton : UIButton!
-	@IBOutlet fileprivate var uploadButton: UIButton!
-	@IBOutlet fileprivate var progressBar: UIProgressView!
-	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
-	
-	@objc func setData(title: String?,time: String?, isLocal: Bool, progress: Float, isBeingUploaded: Bool, isEnabled: Bool, linkedProject: String?){
-		titleLabel.text = title
-		timeLabel.text  = time
-		linkedProjectLabel.text = linkedProject
-		progressBar.progress = progress
-        
-		if !isLocal {
-			indicator.stopAnimating()
-			progressBar.isHidden = true
-			editButton.isHidden = true
-			uploadButton.isUserInteractionEnabled = false
-            let img = FAFormatter.imageFrom(character: .CloudDownload, color: Theme.governmentDarkBlue, size: 30.0, offset: 0)
-			uploadButton.setBackgroundImage(img, for: .normal)
-			if isBeingUploaded{
-				uploadButton.isHidden = true
-			} else{
-				uploadButton.isHidden = false
-			}
-		} else{
-			if isBeingUploaded{
-				uploadButton.isHidden = true
-				progressBar.isHidden = false
-				indicator.startAnimating()
-			} else{
-				uploadButton.isHidden = false 
-				progressBar.isHidden = true
-				indicator.stopAnimating()
-			}
-			editButton.isHidden = false
-			uploadButton.isUserInteractionEnabled = !isEnabled
-			uploadButton.setBackgroundImage(nil, for: .normal)
-		}
-	}
+enum TransferState {
+    case disabled
+    case download
+    case upload
 }
 
+final class InspectionCell: UITableViewCell {
+    
+    @IBOutlet internal var linkedProjectLabel: UILabel!
+    @IBOutlet internal var titleLabel : UILabel!
+    @IBOutlet internal var timeLabel  : UILabel!
+    @IBOutlet private var editButton : UIButton!
+    @IBOutlet private var transferButton: UIButton!
+    @IBOutlet private var indicator: UIActivityIndicatorView!
+    @IBOutlet weak var disclosureIndicator: UIImageView!
+    
+    internal var onTransferTouched: (() -> Void)?
 
+    override func awakeFromNib() {
+        commonInit()
+        
+        transferButton.addTarget(self, action: #selector(InspectionCell.transferTouched), for: .touchUpInside)
+    }
+    
+    override func prepareForReuse() {
+        commonInit()
+        
+        onTransferTouched = nil
+    }
+    
+    private func commonInit() {
 
+        configForTransferState(state: .disabled)
+        enableEdit(canEdit: false)
+        uploadInProgress(isUploading: false)
 
+        let img = FAFormatter.imageFrom(character: .Edit, color: Theme.governmentDarkBlue, size: 90.0, offset: 2.0)
+        editButton.setBackgroundImage(img, for: .normal)
+        editButton.backgroundColor = UIColor.white
+        transferButton.backgroundColor = UIColor.white
+        contentView.backgroundColor = UIColor.white
+        disclosureIndicator.isHidden = true
+        indicator.color = Theme.governmentDeepYellow
+    }
+    
+    @objc dynamic private func transferTouched(sender: UIButton!) {
+        onTransferTouched?()
+    }
+    
+    // MARK: States
+    
+    internal func enableEdit(canEdit value: Bool) {
+        if value {
+            editButton.isHidden = false
+            return
+        }
+        
+        editButton.isHidden = true
+    }
+    
+    internal func configForTransferState(state: TransferState) {
+        
+        switch state {
+        case .disabled:
+            transferButton.isHidden = true
+            indicator.stopAnimating()
+            disclosureIndicator.isHidden = false
+        case .download:
+            transferButton.isHidden = false
+            disclosureIndicator.isHidden = true
+            let img = FAFormatter.imageFrom(character: .CloudDownload, color: Theme.governmentDarkBlue, size: 90.0, offset: 2.0)
+            transferButton.setBackgroundImage(img, for: .normal)
+            indicator.stopAnimating()
+        case .upload:
+            transferButton.isHidden = false
+            disclosureIndicator.isHidden = true
+            let img = FAFormatter.imageFrom(character: .CloudUpload, color: Theme.governmentDarkBlue, size: 90.0, offset: 2.0)
+            transferButton.setBackgroundImage(img, for: .normal)
+            indicator.stopAnimating()
+        }
+    }
+
+    internal func uploadInProgress(isUploading value: Bool) {
+        configForTransferState(state: .disabled)
+
+        if value {
+            indicator.startAnimating()
+//            progressBar.isHidden = false
+            
+            return
+        }
+        
+        indicator.stopAnimating()
+//        progressBar.isHidden = true
+    }
+}
