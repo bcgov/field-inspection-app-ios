@@ -1,6 +1,0 @@
-framework module Pods_EAO {
-  umbrella header "Pods-EAO-umbrella.h"
-
-  export *
-  module * { export * }
-}
