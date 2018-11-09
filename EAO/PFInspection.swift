@@ -7,6 +7,7 @@
 //
 
 import Parse
+import RealmSwift
 
 enum PFInspectionError: Error{
     case zeroObservations
@@ -35,7 +36,24 @@ enum PFInspectionError: Error{
 final class PFInspection: PFObject, PFSubclassing {
     internal var progress: Float = 0
     internal var isBeingUploaded = false
-    internal var isStoredLocally = false
+    internal var isStoredLocally: Bool {
+        get {
+            guard let id = self.id, let realm = try? Realm(), let inspection = realm.objects(InspectionMeta.self).filter("localId == %@", id).first else {
+                return false
+            }
+            
+            return inspection.isStoredLocally
+        }
+        set (value) {
+            guard let id = self.id, let realm = try? Realm(), let inspection = realm.objects(InspectionMeta.self).filter("localId == %@", id).first else {
+                return
+            }
+            
+            try? realm.write {
+                inspection.isStoredLocally = value
+            }
+        }
+    }
     internal var failed = [PFObject]()
     
     //MARK: -
@@ -51,7 +69,8 @@ final class PFInspection: PFObject, PFSubclassing {
     @NSManaged var start	: Date?
     @NSManaged var end		: Date?
     @NSManaged var teamID   : String?
-    
+    @NSManaged var observation: [PFObservation]
+
     static func parseClassName() -> String {
         return "Inspection"
     }

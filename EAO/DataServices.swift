@@ -10,32 +10,118 @@ import Foundation
 import AVFoundation
 import Parse
 import Photos
+import RealmSwift
 
 class DataServices {
     
-    private init() {
-        let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        do {
-            let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
-            // process files
-            for url in fileURLs {
-                print(url)
-            }
-        } catch {
-            
-        }
+    static let realmFileName = "default.realm"
+    static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    
+    // MARK: Realm
+    
+    internal class func setup() {
+        
+        DataServices.configureRealm()
     }
     
-    internal class func inspectionQueryForCurrentUser(localOnly: Bool) -> PFQuery<PFObject>? {
-        //        print("user = \(PFUser.current()!.objectId!)");
+    private class func configureRealm() {
+        
+        let config = Realm.Configuration(fileURL: DataServices.realmPath(),
+                                         schemaVersion: 0,
+                                         migrationBlock: { migration, oldSchemaVersion in
+                                            // check oldSchemaVersion here, if we're newer call
+                                            // a method(s) specifically designed to migrate to
+                                            // the desired schema. ie `self.migrateSchemaV0toV1(migration)`
+                                            if (oldSchemaVersion < 1) {
+                                                // Nothing to do. Realm will automatically remove and add fields
+                                            }
+        },
+                                         shouldCompactOnLaunch: { totalBytes, usedBytes in
+                                            // totalBytes refers to the size of the file on disk in bytes (data + free space)
+                                            // usedBytes refers to the number of bytes used by data in the file
+                                            
+                                            // Compact if the file is over 10MB in size and less than 50% 'used'
+                                            let oneHundredMB = 10 * 1024 * 1024
+                                            return (totalBytes > oneHundredMB) && (Double(usedBytes) / Double(totalBytes)) < 0.5
+        })
+        
+        Realm.Configuration.defaultConfiguration = config
+    }
+    
+    // Allow customization of the Realm; this will let us keep it in a location that is not
+    // backed up if needed.
+    private class func realmPath() -> URL {
+        
+        var workspaceURL = URL(fileURLWithPath: DataServices.documentsURL.path, isDirectory: true).appendingPathComponent("db")
+        var directory: ObjCBool = ObjCBool(false)
+        
+        if !FileManager.default.fileExists(atPath: workspaceURL.path, isDirectory: &directory) {
+            // no backups
+            var resourceValues = URLResourceValues()
+            resourceValues.isExcludedFromBackup = true
+            
+            do  {
+                try FileManager.default.createDirectory(at: workspaceURL, withIntermediateDirectories: false, attributes: nil)
+                try workspaceURL.setResourceValues(resourceValues)
+            } catch {
+                fatalError("Unable to create a location to store the database")
+            }
+        }
+        
+        return URL(fileURLWithPath: realmFileName, isDirectory: false, relativeTo: workspaceURL)
+    }
+
+    private class func add(inspection: PFInspection, isStoredLocally: Bool = false) {
+        
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            return
+        }
+        
+        let doc = InspectionMeta()
+        doc.id = UUID().uuidString
+        doc.localId = inspection.id
+        doc.remoteId = inspection.objectId
+        doc.isStoredLocally = isStoredLocally
+        doc.modifiedAt = Date()
+        
+        do {
+            try realm.write {
+                realm.add(doc)
+            }
+        } catch {
+            fatalError("Unable to write to realm")
+        }
+        
+        return
+    }
+    
+//    private class func update(inspeciton: PFInspection, isStoredLocally: Bool) {
+//
+//        guard let realm = try? Realm() else {
+//            print("Unable open realm")
+//            return
+//        }
+//
+//        if let myInspection = realm.objects(InspectionMeta.self).filter("localId == %@", inspeciton.id!).first {
+//            do {
+//                try realm.write {
+//                    myInspection.isStoredLocally = isStoredLocally
+//                }
+//            } catch {
+//                fatalError("Unable to write to realm")
+//            }
+//        }
+//    }
+
+    // MARK: Parse
+    
+    internal class func inspectionQueryForCurrentUser() -> PFQuery<PFObject>? {
+
         guard let query = PFInspection.query() else {
             return nil
         }
         
-        if localOnly {
-            query.fromLocalDatastore()
-        }
         query.whereKey("userId", equalTo: PFUser.current()!.objectId!)
         query.includeKey("observation");
         query.order(byDescending: "start")
@@ -43,13 +129,13 @@ class DataServices {
         return query
     }
     
-    internal class func fetchInspections(localOnly: Bool = true, completion: ((_ results: [PFInspection]) -> Void)? = nil) {
+    internal class func fetchInspections(completion: ((_ results: [PFInspection]) -> Void)? = nil) {
         
-        guard let query = DataServices.inspectionQueryForCurrentUser(localOnly: localOnly) else {
+        guard let query = DataServices.inspectionQueryForCurrentUser() else {
             completion?([])
             return
         }
-
+        
         query.findObjectsInBackground(block: { (objects, error) in
             guard let objects = objects as? [PFInspection], error == nil else {
                 completion?([])
@@ -57,8 +143,12 @@ class DataServices {
             }
             
             objects.forEach({ (inspection) in
-                inspection.id = UUID().uuidString // Local ID Only, must be set.
+                if let id = inspection.id, id.isEmpty {
+                    inspection.id = UUID().uuidString // Local ID Only, must be set.
+                }
                 inspection.pinInBackground();
+                
+                DataServices.add(inspection: inspection)
             })
             
             completion?(objects);
@@ -76,7 +166,7 @@ class DataServices {
                     dispatchGroup.leave()
                 }
             }
-
+            
             dispatchGroup.notify(queue: .main) {
                 print("DONE FETCHING INSPECTION 👍")
                 inspection.isStoredLocally = true
@@ -142,7 +232,7 @@ class DataServices {
     }
     
     internal class func fetchDataFor(photo: PFPhoto, observation: PFObservation, index: Int, completion: ((_ result: Data?) -> Void)? = nil) {
-
+        
         guard let image = photo["photo"] as? PFFile else {
             completion?(nil)
             return
@@ -152,7 +242,7 @@ class DataServices {
         if let lat = photo.coordinate?.latitude, let lng = photo.coordinate?.longitude {
             loc = CLLocation(latitude: lat, longitude: lng)
         }
-    
+        
         if image.isDataAvailable {
             if let imageData = try? image.getData() {
                 DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: photo.caption, completion: { (success) in
@@ -171,7 +261,34 @@ class DataServices {
             }
         })
     }
+    
+    internal class func deleteLocalObservations(forInspection inspection: PFInspection, completion: (() -> Void)? = nil) {
+        
+        guard let query = PFObservation.query() else {
+            completion?()
+            return
+        }
+        
+        query.whereKey("inspection", equalTo: inspection)
+        query.findObjectsInBackground { (objects, error) -> Void in
+            DispatchQueue.global(qos: .background).async {
+                guard let objects = objects as? [PFObservation], error == nil else {
+                    return
+                }
+                
+                objects.forEach({ (observation) in
+                    try? observation.unpin()
+                })
 
+                inspection.isStoredLocally = false
+
+                DispatchQueue.main.async {
+                    completion?()
+                }
+            }
+        }
+    }
+    
     // MARK: -
     
     internal class func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {

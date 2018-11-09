@@ -1,18 +1,23 @@
 PODS:
-  - Alamofire (4.7.0)
-  - AlamofireObjectMapper (5.0.0):
+  - Alamofire (4.7.3)
+  - AlamofireObjectMapper (5.1.0):
     - Alamofire (~> 4.1)
-    - ObjectMapper (~> 3.0)
+    - ObjectMapper (~> 3.3)
   - Bolts/Tasks (1.9.0)
-  - Crashlytics (3.10.1):
-    - Fabric (~> 1.7.5)
-  - Fabric (1.7.6)
-  - IQKeyboardManager (5.0.8)
-  - ObjectMapper (3.1.0)
+  - Crashlytics (3.10.7):
+    - Fabric (~> 1.7.11)
+  - Fabric (1.7.11)
+  - IQKeyboardManager (6.1.1)
+  - ObjectMapper (3.3.0)
   - Parse (1.17.1):
     - Parse/Core (= 1.17.1)
   - Parse/Core (1.17.1):
     - Bolts/Tasks (~> 1.9)
+  - Realm (3.10.0):
+    - Realm/Headers (= 3.10.0)
+  - Realm/Headers (3.10.0)
+  - RealmSwift (3.10.0):
+    - Realm (= 3.10.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -21,9 +26,10 @@ DEPENDENCIES:
   - Fabric
   - IQKeyboardManager
   - Parse
+  - RealmSwift
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireObjectMapper
     - Bolts
@@ -32,17 +38,21 @@ SPEC REPOS:
     - IQKeyboardManager
     - ObjectMapper
     - Parse
+    - Realm
+    - RealmSwift
 
 SPEC CHECKSUMS:
-  Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
-  AlamofireObjectMapper: 5fafc816351cbbc0d486611aaeba7461c0cbad49
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  AlamofireObjectMapper: 3395e698901d8b0e6f48b7d0c43bd47875325102
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
-  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
-  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
-  IQKeyboardManager: 266cb7b1d11f94a3e71229d77f960f9a1b538e5b
-  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  Crashlytics: ccaac42660eb9351b9960c0d66106b0bcf99f4fa
+  Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
+  IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
+  ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   Parse: d3edaf8c7c722cb33cb83ba7821d015ae32d362d
+  Realm: 85ab9e4f779d66f6e9ffeb118dc25b7f130c96ac
+  RealmSwift: 69121c8b86d0ae005fb779efdb10e606732e1c74
 
-PODFILE CHECKSUM: 610cb65011ab32c58df1c2219678d82038b3c4b4
+PODFILE CHECKSUM: e3d337f539fd1db95afdf654913daff833edee5d
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

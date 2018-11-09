@@ -108,7 +108,7 @@ final class InspectionsController: UIViewController {
 		}
 
         selectedInspectionIndexPath = indexPath
-        performSegue(withIdentifier: InspectionsController.inspectionSetupControllerSegueID, sender: nil)
+        performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
 	}
 
 	@IBAction func uploadTapped(_ sender: UIButton, forEvent event: UIEvent) {
@@ -200,7 +200,7 @@ final class InspectionsController: UIViewController {
 
 		indicator.startAnimating()
         
-        DataServices.fetchInspections(localOnly: !fetchRemote) { (results: [PFInspection]) in
+        DataServices.fetchInspections() { (results: [PFInspection]) in
             print("user objs count = \(results.count)");
             
             let noObjectId = "n/a"
@@ -296,6 +296,9 @@ final class InspectionsController: UIViewController {
         if !isSubmitted {
             cell.enableEdit(canEdit: true)
             cell.configForTransferState(state: .upload)
+            cell.onTransferTouched = {
+                self.submit(inspection: inspection, indexPath: indexPath)
+            }
         } else if isSubmitted && inspection.isStoredLocally {
             cell.configForTransferState(state: .disabled)
             cell.enableEdit(canEdit: false)
@@ -396,14 +399,9 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
         }
 
 		let action = UITableViewRowAction(style: .destructive, title: "Remove") { (action, indexPath) in
-            if let idx = self.inspections.submitted.index(of: inspection) {
-                self.inspections.submitted.remove(at: idx)
-                self.updateDataForSelectedIndex()
-                inspection.deleteAllData()
+            DataServices.deleteLocalObservations(forInspection: inspection) {
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-
-            try? inspection.unpin()
-            tableView.deleteRows(at: [indexPath], with: .none)
 		}
 
 		return [action]
