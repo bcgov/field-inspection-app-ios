@@ -68,12 +68,12 @@ final class InspectionsController: UIViewController {
 
         super.viewDidLoad()
         
+        commonInit()
+
         locationManager.delegate = self
-        style()
         addObserver(#selector(insertByDate(_ :)), .insertByDate)
         addObserver(#selector(reload), .reload)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        tableView.contentInset.bottom = 10
         
         loadInspections()
     }
@@ -83,13 +83,19 @@ final class InspectionsController: UIViewController {
         if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
             let inspeciton = data[selectedInspectionIndexPath!.row]
             let dvc = segue.destination as! InspectionFormController
-            if selectedIndex == 0 {
-                dvc.submit = {
-                    self.submit(inspection: inspeciton, indexPath: self.selectedInspectionIndexPath!)
-                }
-            }
             dvc.inspection = inspeciton
         }
+    }
+
+    private func commonInit() {
+        
+        addNewInspectionButton.layer.cornerRadius = 5
+        addNewInspectionButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        addNewInspectionButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        addNewInspectionButton.layer.shadowOpacity = 0.7
+        addNewInspectionButton.layer.shadowRadius = 4
+        
+        tableView.contentInset.bottom = 10
     }
 
 	// MARK: - IB Actions
@@ -109,28 +115,6 @@ final class InspectionsController: UIViewController {
 
         selectedInspectionIndexPath = indexPath
         performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
-	}
-
-	@IBAction func uploadTapped(_ sender: UIButton, forEvent event: UIEvent) {
-
-		guard let indexPath = tableView.indexPath(for: event) else {
-			AlertView.present(on: self, with: "Inspection was not found")
-			return
-		}
-
-        let inspection = data[indexPath.row]
-        indicator.alpha = 1
-        indicator.startAnimating()
-        navigationController?.view.isUserInteractionEnabled = false
-        isBeingUploaded = true
-        
-        DataServices.uploadInspection(inspection: inspection) { (done) in
-            self.indicator.stopAnimating()
-            self.navigationController?.view.isUserInteractionEnabled = true
-            self.isBeingUploaded = false
-            self.indicator.alpha = 0
-            self.loadInspections()
-        }
 	}
 
 	@IBAction func settingsTapped(_ sender: UIBarButtonItem) {
@@ -155,40 +139,7 @@ final class InspectionsController: UIViewController {
 
 		tableView.reloadData()
 	}
-	
-	// MARK: - Submission
 
-	internal func submit(inspection: PFInspection, indexPath: IndexPath) {
-		let alert = UIAlertController(title: "Are You Sure?", message: "You will NOT be able to edit this inspection after submission", yes: {
-			self.indicator.startAnimating()
-			self.navigationController?.view.isUserInteractionEnabled = false
-			self.isBeingUploaded = true
-			inspection.isBeingUploaded = true
-			self.tableView.reloadData()
-			inspection.submit(completion: { (success, error) in
-				self.indicator.stopAnimating()
-				inspection.isBeingUploaded = false
-				self.isBeingUploaded = false
-				self.navigationController?.view.isUserInteractionEnabled = true
-
-				if let error = error {
-					self.present(controller: UIAlertController(title: "Unable to Submit", message: error.message))
-				}
-				self.tableView.reloadData()
-				guard success else{
-					self.tableView.reloadData()
-					return
-				}
-				self.showSuccessImageView()
-				self.moveToSubmitted(inspection: inspection)
-			}, block: { (progress) in
-				inspection.progress = progress
-				self.tableView.reloadRows(at: [indexPath], with: .none)
-			})
-		})
-		present(controller: alert)
-	}
-	
 	// MARK: -
     
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
@@ -230,6 +181,7 @@ final class InspectionsController: UIViewController {
                 return startL > startR
             })
 
+            updateDataForSelectedIndex()
 			self.tableView.reloadData()
 		}
 	}
@@ -237,10 +189,6 @@ final class InspectionsController: UIViewController {
     @objc dynamic private func reload() {
 
         loadInspections()
-	}
-
-	private func submitFromInspectionForm(_ notification: Notification?) {
-		
 	}
 	
 	// Use this method to put an inspection from 'In Progress' to 'Submitted'
@@ -296,9 +244,7 @@ final class InspectionsController: UIViewController {
         if !isSubmitted {
             cell.enableEdit(canEdit: true)
             cell.configForTransferState(state: .upload)
-            cell.onTransferTouched = {
-                self.submit(inspection: inspection, indexPath: indexPath)
-            }
+            cell.onTransferTouched = uploadTouchedCallback(inspection: inspection)
         } else if isSubmitted && inspection.isStoredLocally {
             cell.configForTransferState(state: .disabled)
             cell.enableEdit(canEdit: false)
@@ -324,13 +270,70 @@ final class InspectionsController: UIViewController {
         return segmentedControl.selectedSegmentIndex
     }
 
-    private func style() {
+    private func checkUploadStatus(inspection: PFInspection, completion: @escaping (_ canUpload: Bool) -> Void) {
+        
+        DataServices.fetchObservationsFor(inspection: inspection, localOnly: true) { (observations: [PFObservation]) in
+            if observations.count == 0 {
+                let title = "No Observations"
+                let message = "This inspeciton does not have any observations; there is nothing to upload"
+                self.showAlert(with: title, message: message)
+                
+                completion(false)
+                return
+            }
+            
+            completion(true)
+        }
+    }
+    
+    private func confirmUploadWithUser(completion: @escaping (_ action: UIAlertAction) -> Void) {
+        
+        let title = "Upload"
+        let message = "Do you want to upload this inspection? You won't be able to edit it later"
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Ok", style: .default, handler: completion)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: completion)
+        ac.addAction(cancel)
+        ac.addAction(ok)
 
-        addNewInspectionButton.layer.cornerRadius = 5
-        addNewInspectionButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        addNewInspectionButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
-        addNewInspectionButton.layer.shadowOpacity = 0.7
-        addNewInspectionButton.layer.shadowRadius = 4
+        present(controller: ac)
+    }
+    
+    private func uploadTouchedCallback(inspection: PFInspection) -> (() -> Void) {
+        
+        return {
+            self.checkUploadStatus(inspection: inspection, completion: { (canUpload: Bool) in
+                if !canUpload {
+                    return
+                }
+                
+                self.confirmUploadWithUser(completion: { (action: UIAlertAction) in
+                    if action.style == .cancel {
+                        return
+                    }
+                    
+                    self.upload(inspection: inspection, completion: nil)
+                })
+            })
+        }
+    }
+    
+    private func upload(inspection: PFInspection, completion: (() -> Void)? = nil) {
+
+        self.indicator.alpha = 1
+        self.indicator.startAnimating()
+        self.navigationController?.view.isUserInteractionEnabled = false
+        self.isBeingUploaded = true
+        
+        DataServices.uploadInspection(inspection: inspection) { (done) in
+            self.indicator.stopAnimating()
+            self.navigationController?.view.isUserInteractionEnabled = true
+            self.isBeingUploaded = false
+            self.indicator.alpha = 0
+            self.loadInspections()
+            
+            completion?()
+        }
     }
 
     // MARK: Helpers

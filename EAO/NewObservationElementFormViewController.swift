@@ -116,7 +116,6 @@ class NewObservationElementFormViewController: UIViewController {
     //Mark: View did load
     override func viewDidLoad() {
 
-        print(" ********************** ******************* ")
         super.viewDidLoad()
         lockdown()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

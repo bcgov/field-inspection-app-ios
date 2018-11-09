@@ -7,14 +7,13 @@
 //
 import Parse
 final class InspectionFormController: UIViewController{
-	@objc var inspection : PFInspection!
-	@objc var observations = [PFObservation]()
-	@objc var submit: (()->Void)?
-	//MARK: -
-	@IBOutlet fileprivate var addButton : UIButton!
+
+    @IBOutlet fileprivate var addButton : UIButton!
 	@IBOutlet fileprivate var indicator : UIActivityIndicatorView!
 	@IBOutlet fileprivate var tableView : UITableView!
 
+    @objc var inspection : PFInspection!
+    @objc var observations = [PFObservation]()
 	
 	@IBAction fileprivate func backTapped(_ sender: UIBarButtonItem) {
 		sender.isEnabled = false

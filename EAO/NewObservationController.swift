@@ -187,8 +187,6 @@ final class NewObservationController: UIViewController{
     }
 
     fileprivate func loadPhotos() {
-//        print(observation.id)
-        print("***************************************************")
 
         guard let query = PFPhoto.query() else{
             indicator.stopAnimating()

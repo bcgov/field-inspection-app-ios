@@ -93,8 +93,6 @@ class NewObservationElementViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        print("ppppp ******************************************")
-
         super.viewDidLoad()
         style()
         lock()

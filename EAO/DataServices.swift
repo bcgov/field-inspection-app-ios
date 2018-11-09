@@ -123,7 +123,7 @@ class DataServices {
         }
         
         query.whereKey("userId", equalTo: PFUser.current()!.objectId!)
-        query.includeKey("observation");
+        query.fromLocalDatastore()
         query.order(byDescending: "start")
         
         return query
@@ -175,14 +175,18 @@ class DataServices {
         }
     }
     
-    internal class func fetchObservationsFor(inspection: PFInspection, completion: ((_ results: [PFObservation]) -> Void)? = nil) {
+    internal class func fetchObservationsFor(inspection: PFInspection, localOnly: Bool = false, completion: ((_ results: [PFObservation]) -> Void)? = nil) {
         
         guard let query = PFObservation.query() else {
             completion?([])
             return
         }
-        
-        query.whereKey("inspection", equalTo: inspection)
+
+        query.whereKey("inspectionId", equalTo: inspection.id!)
+        if localOnly {
+            query.fromLocalDatastore()
+        }
+
         query.findObjectsInBackground { (objects, error) -> Void in
             guard let objects = objects as? [PFObservation], error == nil else {
                 completion?([])
@@ -190,9 +194,13 @@ class DataServices {
             }
             
             objects.forEach({ (object) in
-                object.id = UUID().uuidString // Local ID Only, must be set.
+                if let oid = object.id, !oid.isEmpty {
+                    object.id = UUID().uuidString // Local ID Only, must be set.
+                }
                 object.inspectionId = inspection.id!
-                object.pinInBackground();
+                if !localOnly {
+                    object.pinInBackground();
+                }
             })
             
             completion?(objects)
@@ -311,7 +319,6 @@ class DataServices {
         object["number"] = number
         object["start"] = start
         object["end"] = end
-        
         object["uploaded"] = false
         
         object.saveInBackground { (success, error) in
@@ -391,7 +398,6 @@ class DataServices {
     }
     
     internal class func uploadObserbation(observation: PFObservation, inspection: PFObject, completion: @escaping (_ done: Bool, _ observation: PFObject?) -> Void) {
-        print(observation)
         let object = PFObject(className: "Observation")
         
         let title = observation.title
@@ -803,8 +809,7 @@ class DataServices {
                 // fail
                 return completion(false, nil)
             }
-            print(storedVideos.count)
-            print(storedVideos)
+
             if storedVideos.first?.get() == nil{
                 // fail
                 return completion(false, nil)
@@ -879,7 +884,7 @@ class DataServices {
             for audio in storedAudios {
                 foundAudios.append(audio)
             }
-            print(foundAudios.count)
+
             // success
             return completion(true, foundAudios)
         })

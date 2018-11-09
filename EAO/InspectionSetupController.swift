@@ -140,11 +140,6 @@ final class InspectionSetupController: UIViewController{
 					let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
 					inspectionFormController.inspection = inspection
 					if inspection.id != nil {
-						inspectionFormController.submit = {
-                            if let index = InspectionsController.reference?.inspections.draft.index(of: inspection){
-								InspectionsController.reference?.submit(inspection: self.inspection!, indexPath: IndexPath(row: index, section: 0))
-							}
-						}
 						self.push(controller: inspectionFormController)
 						self.navigationController?.viewControllers.remove(at: 1)
 						self.setMode()
