@@ -46,7 +46,6 @@
 		1186B52E1ECA634C00681426 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186B52D1ECA634C00681426 /* UIViewController.swift */; };
 		1186B53B1ECB699D00681426 /* EAOUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186B53A1ECB699D00681426 /* EAOUITests.swift */; };
 		119A0B841EE785300077D9B5 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A0B831EE785300077D9B5 /* Reachability.swift */; };
-		11D70EB01E8D7A9800CBF92C /* InspectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EAF1E8D7A9800CBF92C /* InspectionsController.swift */; };
 		11D70EB31E8D852800CBF92C /* InspectionSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EB21E8D852800CBF92C /* InspectionSetupController.swift */; };
 		11D70EB61E8D856400CBF92C /* InspectionSetupController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D70EB51E8D856400CBF92C /* InspectionSetupController.storyboard */; };
 		11D70EBB1E8D8DE400CBF92C /* ProjectListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EBA1E8D8DE400CBF92C /* ProjectListController.swift */; };
@@ -136,7 +135,6 @@
 		2936BEF320BF64A500775F5E /* PFVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298EDDB6203B4BB1004530F5 /* PFVideo.swift */; };
 		2936BEF420BF64A500775F5E /* UIReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA665420040DC800673013 /* UIReusableView.swift */; };
 		2936BEF520BF64A500775F5E /* MiFormManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295304E82017FF4B001E5C7F /* MiFormManager.swift */; };
-		2936BEF620BF64A500775F5E /* InspectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EAF1E8D7A9800CBF92C /* InspectionsController.swift */; };
 		2936BEF720BF64A500775F5E /* GalleryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D3C1FFC146100562508 /* GalleryManager.swift */; };
 		2936BEF820BF64A500775F5E /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112F74731E97FDD90076926A /* SignupController.swift */; };
 		2936BEF920BF64A500775F5E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A4FFA5207358DD0036549D /* User.swift */; };
@@ -276,6 +274,10 @@
 		561F2AD720D1ADE90072C0D0 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2AD320D1AD490072C0D0 /* Parse.plist */; };
 		56447C62219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
 		56447C63219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
+		56447C6821966B0E0018A828 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C65219664ED0018A828 /* NetworkManager.swift */; };
+		56447C6921966B0F0018A828 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C65219664ED0018A828 /* NetworkManager.swift */; };
+		56447C6A219671C50018A828 /* InspectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EAF1E8D7A9800CBF92C /* InspectionsController.swift */; };
+		56447C6B219671C70018A828 /* InspectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EAF1E8D7A9800CBF92C /* InspectionsController.swift */; };
 		5675DA9321927196008409AB /* FAFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5675DA9221927196008409AB /* FAFormatter.swift */; };
 		5675DA9521935C00008409AB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5675DA9421935C00008409AB /* Theme.swift */; };
 		5675DA9721935CE6008409AB /* FAFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5675DA9221927196008409AB /* FAFormatter.swift */; };
@@ -1545,6 +1547,7 @@
 				2936BEB220BF64A500775F5E /* NewDescriptionTableViewCell.swift in Sources */,
 				2936BEB320BF64A500775F5E /* NewObservationElementViewController.swift in Sources */,
 				2936BEB420BF64A500775F5E /* GalleryMode.swift in Sources */,
+				56447C6921966B0F0018A828 /* NetworkManager.swift in Sources */,
 				2936BEB520BF64A500775F5E /* NewObservationElementFormViewController.swift in Sources */,
 				2936BEB620BF64A500775F5E /* ObservationElementAddNewPhotoCell.swift in Sources */,
 				2936BEB720BF64A500775F5E /* BaseFormCell.swift in Sources */,
@@ -1599,6 +1602,7 @@
 				2936BEE720BF64A500775F5E /* InspectionsCell.swift in Sources */,
 				2936BEE820BF64A500775F5E /* DescriptionNewObservationCollectionViewCell.swift in Sources */,
 				2936BEE920BF64A500775F5E /* OldDescriptionFieldTableViewCell.swift in Sources */,
+				56447C6B219671C70018A828 /* InspectionsController.swift in Sources */,
 				2936BEEA20BF64A500775F5E /* UIImage.swift in Sources */,
 				2936BEEB20BF64A500775F5E /* ImageCollectionTableViewCell.swift in Sources */,
 				2936BEEC20BF64A500775F5E /* UINavigationItem.swift in Sources */,
@@ -1614,7 +1618,6 @@
 				56447C63219635D90018A828 /* UIViewControllerExtensions.swift in Sources */,
 				5675DAA52194FBD8008409AB /* InspectionMeta.swift in Sources */,
 				2936BEF520BF64A500775F5E /* MiFormManager.swift in Sources */,
-				2936BEF620BF64A500775F5E /* InspectionsController.swift in Sources */,
 				2936BEF720BF64A500775F5E /* GalleryManager.swift in Sources */,
 				2936BEF820BF64A500775F5E /* SignupController.swift in Sources */,
 				2936BEF920BF64A500775F5E /* User.swift in Sources */,
@@ -1645,6 +1648,7 @@
 				29AA664A2003F2FC00673013 /* NewDescriptionTableViewCell.swift in Sources */,
 				29424D2B1FFC140E00562508 /* NewObservationElementViewController.swift in Sources */,
 				291C4D9F203A599000390523 /* GalleryMode.swift in Sources */,
+				56447C6821966B0E0018A828 /* NetworkManager.swift in Sources */,
 				29FF560A200E675200FCF230 /* NewObservationElementFormViewController.swift in Sources */,
 				1186B5231ECA20E700681426 /* ObservationElementAddNewPhotoCell.swift in Sources */,
 				29AA66502003F73100673013 /* BaseFormCell.swift in Sources */,
@@ -1699,6 +1703,7 @@
 				29FF561A200EC29100FCF230 /* DataServices.swift in Sources */,
 				110FF18D1E8C5B65000DB1A5 /* InspectionsCell.swift in Sources */,
 				29FF5616200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.swift in Sources */,
+				56447C6A219671C50018A828 /* InspectionsController.swift in Sources */,
 				29AA663C2003EF2200673013 /* OldDescriptionFieldTableViewCell.swift in Sources */,
 				110FF0A71E8C25C5000DB1A5 /* UIImage.swift in Sources */,
 				2931581B200929FB008E2FF4 /* ImageCollectionTableViewCell.swift in Sources */,
@@ -1714,7 +1719,6 @@
 				56447C62219635D90018A828 /* UIViewControllerExtensions.swift in Sources */,
 				5675DAA42194FBD8008409AB /* InspectionMeta.swift in Sources */,
 				295304EB2017FF4D001E5C7F /* MiFormManager.swift in Sources */,
-				11D70EB01E8D7A9800CBF92C /* InspectionsController.swift in Sources */,
 				29424D431FFC146200562508 /* GalleryManager.swift in Sources */,
 				112F74741E97FDD90076926A /* SignupController.swift in Sources */,
 				29A4FFA6207358DD0036549D /* User.swift in Sources */,

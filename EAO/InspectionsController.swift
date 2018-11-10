@@ -144,6 +144,19 @@ final class InspectionsController: UIViewController {
     
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         
+        if !NetworkManager.shared.isReachable {
+            let title = "Network Required"
+            let message = "You must be connected to a WiFi or celular network to fetch updates"
+            
+            self.showAlert(withTitle: title, message: message) {
+                self.loadInspections(fetchRemote: false)
+                refreshControl.endRefreshing()
+            }
+            
+            return
+        }
+    
+        loadInspections(fetchRemote: false)
         refreshControl.endRefreshing()
     }
 
@@ -250,13 +263,7 @@ final class InspectionsController: UIViewController {
             cell.enableEdit(canEdit: false)
         } else if isSubmitted && !inspection.isStoredLocally {
             cell.configForTransferState(state: .download)
-            cell.onTransferTouched = {
-                cell.uploadInProgress(isUploading: true)
-                DataServices.fetchFullInspection(inspection: inspection) {
-                    cell.uploadInProgress(isUploading: false)
-                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                }
-            }
+            cell.onTransferTouched = downloadTouchedCallback(inspection: inspection, cell: cell)
         } else {
             cell.configForTransferState(state: .upload)
             cell.enableEdit(canEdit: !isSubmitted)
@@ -276,7 +283,7 @@ final class InspectionsController: UIViewController {
             if observations.count == 0 {
                 let title = "No Observations"
                 let message = "This inspeciton does not have any observations; there is nothing to upload"
-                self.showAlert(with: title, message: message)
+                self.showAlert(withTitle: title, message: message)
                 
                 completion(false)
                 return
@@ -299,9 +306,40 @@ final class InspectionsController: UIViewController {
         present(controller: ac)
     }
     
+    private func downloadTouchedCallback(inspection: PFInspection, cell: InspectionCell) -> (() -> Void) {
+        
+        return {
+            
+            if !NetworkManager.shared.isReachableOnEthernetOrWiFi {
+                let title = "WiFi Required"
+                let message = "You must be connected to a WiFi network to download an inspection"
+                
+                self.showAlert(withTitle: title, message: message)
+                return
+            }
+            
+            cell.uploadInProgress(isUploading: true)
+            DataServices.fetchFullInspection(inspection: inspection) {
+                cell.uploadInProgress(isUploading: false)
+                if let indexPath = self.tableView.indexPath(for: cell) {
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
+            }
+        }
+    }
+
     private func uploadTouchedCallback(inspection: PFInspection) -> (() -> Void) {
         
         return {
+            
+            if !NetworkManager.shared.isReachableOnEthernetOrWiFi {
+                let title = "WiFi Required"
+                let message = "You must be connected to a WiFi network to upload inspections"
+                
+                self.showAlert(withTitle: title, message: message)
+                return
+            }
+
             self.checkUploadStatus(inspection: inspection, completion: { (canUpload: Bool) in
                 if !canUpload {
                     return

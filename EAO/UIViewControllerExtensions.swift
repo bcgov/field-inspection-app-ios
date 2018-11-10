@@ -23,10 +23,12 @@ import UIKit
 
 extension UIViewController {
     
-    internal func showAlert(with title: String, message: String) {
+    internal func showAlert(withTitle title: String, message: String, completed: (() -> Void)? = nil) {
         
         let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        let cancel = UIAlertAction(title: "Ok", style: .cancel) { _ in
+            completed?()
+        }
         ac.addAction(cancel)
         
         present(ac, animated: true, completion: nil)

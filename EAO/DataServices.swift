@@ -278,6 +278,7 @@ class DataServices {
         }
         
         query.whereKey("inspection", equalTo: inspection)
+        query.fromLocalDatastore()
         query.findObjectsInBackground { (objects, error) -> Void in
             DispatchQueue.global(qos: .background).async {
                 guard let objects = objects as? [PFObservation], error == nil else {
@@ -287,8 +288,6 @@ class DataServices {
                 objects.forEach({ (observation) in
                     try? observation.unpin()
                 })
-
-//                inspection.isStoredLocally = false
 
                 DispatchQueue.main.async {
                     inspection.isStoredLocally = false

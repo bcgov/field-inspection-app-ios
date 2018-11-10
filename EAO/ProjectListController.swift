@@ -76,7 +76,7 @@ final class ProjectListController: UIViewController {
 				
                 let title = "Network Error"
                 let message = "Project list was not refreshed due to an error. Cached projects are displayed"
-                self.showAlert(with: title, message: message)
+                self.showAlert(withTitle: title, message: message)
                 
 				return
 			}
