@@ -45,16 +45,19 @@ final class InspectionSetupController: UIViewController{
 		push(controller: projectListController)
 	}
 
-    @IBAction func selectTeamAction(_ sender: Any) {
+    @IBAction func selectTeamAction(_ sender: UIButton!) {
         let team = TeamSearch()
+        
+        sender.isEnabled = false
+        
         DataServices.getTeams { (done, teams) in
+            sender.isEnabled = true
+
             if done {
                 let vc = team.getVC(teams: teams!, callBack: { (done, selected) in
                     if done {
                         self.inspection?.teamID = selected?.objectID
                         self.teamID = (selected?.objectID)!
-                        print(self.inspection?.teamID)
-                        print(selected?.objectID)
                         self.selectTeamButton.setTitle(selected?.name, for: .normal)
                         team.remove(from: self.popUpContainer, then: true)
                     } else {
@@ -124,18 +127,22 @@ final class InspectionSetupController: UIViewController{
 			inspection.isSubmitted = false
             inspection.teamID = self.teamID
 			inspection.pinInBackground(block: { (success, error) in
-				guard success, error == nil else{
+				guard success, error == nil else {
 					self.indicator.stopAnimating()
 					sender.isEnabled = true
 					self.present(controller: UIAlertController(title: "ERROR!", message: "Inspection failed to save"))
 					return
 				}
-				if self.isNew{
+
+                DataServices.add(inspection: inspection, isStoredLocally: true)
+
+				if self.isNew {
 					Notification.post(name: .insertByDate, inspection)
 				} else{
 					Notification.post(name: .reload)
 				}
-				if self.isNew{
+                
+				if self.isNew {
 					self.isNew = false
 					let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
 					inspectionFormController.inspection = inspection
@@ -145,9 +152,8 @@ final class InspectionSetupController: UIViewController{
 						self.setMode()
 					}
 				}
+
 				self.indicator.stopAnimating()
-//                self.navigationController?.viewControllers.remove(at: 1)
-//                self.showSuccessImageView()
 			})
 		}
 	}

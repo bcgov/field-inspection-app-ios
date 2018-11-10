@@ -665,8 +665,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
             let current = storedPhotos[i]
 
-            print(current.originalType)
-
             if current.originalType == nil {return}
 
             if current.originalType == "video" {

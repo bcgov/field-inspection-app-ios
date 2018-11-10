@@ -30,15 +30,7 @@ final class InspectionFormController: UIViewController{
 	}
 
 	@IBAction fileprivate func addTapped(_ sender: UIButton) {
-//        sender.isEnabled = false
-//        let observationElementController = NewObservationController.storyboardInstance() as! NewObservationController
-//        observationElementController.inspection = inspection
-//        observationElementController.saveAction = { (observation) in
-//            self.observations.insert(observation, at: 0)
-//            self.tableView.reloadData()
-//        }
-//        push(controller: observationElementController)
-//        sender.isEnabled = true
+
         let newObservationManager = NewObservationElementManager()
         self.present(newObservationManager.getVCFor(inspection: inspection), animated: true, completion: nil)
 	}

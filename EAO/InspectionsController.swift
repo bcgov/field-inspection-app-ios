@@ -312,13 +312,13 @@ final class InspectionsController: UIViewController {
                         return
                     }
                     
-                    self.upload(inspection: inspection, completion: nil)
+                    self.upload(inspection: inspection)
                 })
             })
         }
     }
     
-    private func upload(inspection: PFInspection, completion: (() -> Void)? = nil) {
+    private func upload(inspection: PFInspection) {
 
         self.indicator.alpha = 1
         self.indicator.startAnimating()
@@ -331,8 +331,6 @@ final class InspectionsController: UIViewController {
             self.isBeingUploaded = false
             self.indicator.alpha = 0
             self.loadInspections()
-            
-            completion?()
         }
     }
 

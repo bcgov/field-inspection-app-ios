@@ -479,6 +479,7 @@
 		561F2AD120D1AD3A0072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/test/Parse.plist"; sourceTree = SOURCE_ROOT; };
 		561F2AD320D1AD490072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/prod/Parse.plist"; sourceTree = SOURCE_ROOT; };
 		56447C61219635D90018A828 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
+		56447C65219664ED0018A828 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5675DA9221927196008409AB /* FAFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAFormatter.swift; sourceTree = "<group>"; };
 		5675DA9421935C00008409AB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5675DA9B21936279008409AB /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
@@ -1000,6 +1001,7 @@
 			isa = PBXGroup;
 			children = (
 				29FF5619200EC29100FCF230 /* DataServices.swift */,
+				56447C65219664ED0018A828 /* NetworkManager.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";

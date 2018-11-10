@@ -71,7 +71,7 @@ class DataServices {
         return URL(fileURLWithPath: realmFileName, isDirectory: false, relativeTo: workspaceURL)
     }
 
-    private class func add(inspection: PFInspection, isStoredLocally: Bool = false) {
+    internal class func add(inspection: PFInspection, isStoredLocally: Bool = false) {
         
         guard let realm = try? Realm() else {
             print("Unable open realm")
@@ -288,9 +288,10 @@ class DataServices {
                     try? observation.unpin()
                 })
 
-                inspection.isStoredLocally = false
+//                inspection.isStoredLocally = false
 
                 DispatchQueue.main.async {
+                    inspection.isStoredLocally = false
                     completion?()
                 }
             }
@@ -374,7 +375,6 @@ class DataServices {
                 return completion(false)
             }
         }
-        
     }
     
     internal class func recursiveObservationUpload(observations: [PFObservation], inspection: PFObject, objects: [PFObject], completion: @escaping (_ done: Bool, _ observations: [PFObject]?) -> Void) {

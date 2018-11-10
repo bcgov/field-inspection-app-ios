@@ -73,7 +73,11 @@ final class ProjectListController: UIViewController {
 					self.tableView.reloadData()
 				}
 				self.indicator.stopAnimating()
-				self.present(controller: Alerts.error)
+				
+                let title = "Network Error"
+                let message = "Project list was not refreshed due to an error. Cached projects are displayed"
+                self.showAlert(with: title, message: message)
+                
 				return
 			}
 			var projects = [String?]()
@@ -143,12 +147,3 @@ extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
 		pop()
 	}
 }
-
-//MARK: -
-extension ProjectListController{
-	fileprivate struct Alerts{
-		static let error = UIAlertController(title: "Network Error", message: "Project list was not refreshed due to an error.\n Cached projects are displayed")
-	}
-}
-
-

@@ -6,7 +6,11 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 
-class Constants {
+struct Constants {
 	static let textFieldLenght = 500
 	static let textViewLenght  = 5000
+}
+
+extension Notification.Name {
+    static let wifiAvailabilityChanged = Notification.Name("wifiAvailabilityChanged")
 }
