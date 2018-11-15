@@ -9,6 +9,10 @@
 struct Constants {
 	static let textFieldLenght = 500
 	static let textViewLenght  = 5000
+    
+    struct API {
+        static let projectListURI = "https://projects.eao.gov.bc.ca/api/projects/published"
+    }
 }
 
 extension Notification.Name {

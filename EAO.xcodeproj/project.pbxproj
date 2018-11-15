@@ -272,6 +272,12 @@
 		561F2AC020D19C5F0072C0D0 /* Info-Test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */; };
 		561F2AD520D1ADA80072C0D0 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2AD120D1AD3A0072C0D0 /* Parse.plist */; };
 		561F2AD720D1ADE90072C0D0 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2AD320D1AD490072C0D0 /* Parse.plist */; };
+		562C4318219CE45000247E0B /* Inspection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C4317219CE45000247E0B /* Inspection.swift */; };
+		562C4319219CE45000247E0B /* Inspection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C4317219CE45000247E0B /* Inspection.swift */; };
+		562C431B219CE5A000247E0B /* Observation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C431A219CE5A000247E0B /* Observation.swift */; };
+		562C431C219CE5A000247E0B /* Observation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C431A219CE5A000247E0B /* Observation.swift */; };
+		562C431E219CEA6600247E0B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C431D219CEA6600247E0B /* Project.swift */; };
+		562C431F219CEA6600247E0B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C431D219CEA6600247E0B /* Project.swift */; };
 		56447C62219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
 		56447C63219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
 		56447C6821966B0E0018A828 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C65219664ED0018A828 /* NetworkManager.swift */; };
@@ -480,6 +486,9 @@
 		561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Test.plist"; sourceTree = SOURCE_ROOT; };
 		561F2AD120D1AD3A0072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/test/Parse.plist"; sourceTree = SOURCE_ROOT; };
 		561F2AD320D1AD490072C0D0 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/prod/Parse.plist"; sourceTree = SOURCE_ROOT; };
+		562C4317219CE45000247E0B /* Inspection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspection.swift; sourceTree = "<group>"; };
+		562C431A219CE5A000247E0B /* Observation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observation.swift; sourceTree = "<group>"; };
+		562C431D219CEA6600247E0B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		56447C61219635D90018A828 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		56447C65219664ED0018A828 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5675DA9221927196008409AB /* FAFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAFormatter.swift; sourceTree = "<group>"; };
@@ -999,6 +1008,16 @@
 			name = Test;
 			sourceTree = "<group>";
 		};
+		562C4315219CE42100247E0B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				562C4317219CE45000247E0B /* Inspection.swift */,
+				562C431A219CE5A000247E0B /* Observation.swift */,
+				562C431D219CEA6600247E0B /* Project.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		5675DA8E2190C33E008409AB /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -1042,6 +1061,7 @@
 		9688D51A1E69DA4300C49CD7 /* EAO */ = {
 			isa = PBXGroup;
 			children = (
+				562C4315219CE42100247E0B /* Model */,
 				5675DA9221927196008409AB /* FAFormatter.swift */,
 				5675DA9421935C00008409AB /* Theme.swift */,
 				56447C61219635D90018A828 /* UIViewControllerExtensions.swift */,
@@ -1561,6 +1581,7 @@
 				2936BEBF20BF64A500775F5E /* UITableView.swift in Sources */,
 				2936BEC020BF64A500775F5E /* NewObservationController.swift in Sources */,
 				2936BEC120BF64A500775F5E /* TeamSearchViewController.swift in Sources */,
+				562C4319219CE45000247E0B /* Inspection.swift in Sources */,
 				2936BEC220BF64A500775F5E /* TeamSearchTableViewCell.swift in Sources */,
 				2936BEC320BF64A500775F5E /* ParseMaster.swift in Sources */,
 				2936BEC420BF64A500775F5E /* MiButtonStyle.swift in Sources */,
@@ -1585,6 +1606,7 @@
 				2936BED720BF64A500775F5E /* MiFormTextViewTableViewCell.swift in Sources */,
 				2936BED820BF64A500775F5E /* UIViewController.swift in Sources */,
 				2936BED920BF64A500775F5E /* PHAsset.swift in Sources */,
+				562C431F219CEA6600247E0B /* Project.swift in Sources */,
 				2936BEDA20BF64A500775F5E /* UIColor.swift in Sources */,
 				2936BEDB20BF64A500775F5E /* RequirementNewObservationCollectionViewCell.swift in Sources */,
 				2936BEDC20BF64A500775F5E /* InspectionFormController.swift in Sources */,
@@ -1630,6 +1652,7 @@
 				2936BF0020BF64A500775F5E /* ChooseImageViewController.swift in Sources */,
 				2936BF0120BF64A500775F5E /* miFormImageTableViewCell.swift in Sources */,
 				2936BF0220BF64A500775F5E /* NewObservationElementManager.swift in Sources */,
+				562C431C219CE5A000247E0B /* Observation.swift in Sources */,
 				2936BF0320BF64A500775F5E /* InspectionSetupController.swift in Sources */,
 				2936BF0420BF64A500775F5E /* LaunchScreen.swift in Sources */,
 				2936BF0520BF64A500775F5E /* UIAlertController.swift in Sources */,
@@ -1662,6 +1685,7 @@
 				110FF0AA1E8C25C5000DB1A5 /* UITableView.swift in Sources */,
 				11D70EDC1E8DA83D00CBF92C /* NewObservationController.swift in Sources */,
 				291746792073EB06005F70B4 /* TeamSearchViewController.swift in Sources */,
+				562C4318219CE45000247E0B /* Inspection.swift in Sources */,
 				2917467C2073EC42005F70B4 /* TeamSearchTableViewCell.swift in Sources */,
 				290FE8D82033F057009DDAA2 /* ParseMaster.swift in Sources */,
 				295304F02017FF59001E5C7F /* MiButtonStyle.swift in Sources */,
@@ -1686,6 +1710,7 @@
 				29424D4B1FFC14A000562508 /* OptionCollectionViewCell.swift in Sources */,
 				295304E22017FF47001E5C7F /* MiFormTextViewTableViewCell.swift in Sources */,
 				1186B52E1ECA634C00681426 /* UIViewController.swift in Sources */,
+				562C431E219CEA6600247E0B /* Project.swift in Sources */,
 				298EDDB9203B4D01004530F5 /* PHAsset.swift in Sources */,
 				110FF0A61E8C25C5000DB1A5 /* UIColor.swift in Sources */,
 				29FF5612200E9F6E00FCF230 /* RequirementNewObservationCollectionViewCell.swift in Sources */,
@@ -1731,6 +1756,7 @@
 				29424D411FFC146200562508 /* ChooseImageViewController.swift in Sources */,
 				295304DF2017FF47001E5C7F /* miFormImageTableViewCell.swift in Sources */,
 				29424D2A1FFC140E00562508 /* NewObservationElementManager.swift in Sources */,
+				562C431B219CE5A000247E0B /* Observation.swift in Sources */,
 				11D70EB31E8D852800CBF92C /* InspectionSetupController.swift in Sources */,
 				110FF1091E8C3847000DB1A5 /* LaunchScreen.swift in Sources */,
 				110FF0A41E8C25C5000DB1A5 /* UIAlertController.swift in Sources */,

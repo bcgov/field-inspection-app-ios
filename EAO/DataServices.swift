@@ -11,6 +11,27 @@ import AVFoundation
 import Parse
 import Photos
 import RealmSwift
+import Alamofire
+
+protocol LocalizedDescriptionError: Error {
+    var localizedDescription: String { get }
+}
+
+public enum DataServicesError: LocalizedDescriptionError {
+    case unknownError
+    case noNetworkConnectivity
+    case internalError(message: String)
+    case requestFailed(error: Error)
+    
+    var localizedDescription: String {
+        switch self {
+        case .internalError(message: let message):
+            return message
+        default:
+            return "No Error Provided"
+        }
+    }
+}
 
 class DataServices {
     
@@ -297,9 +318,71 @@ class DataServices {
         }
     }
     
+    internal class func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
+     
+        inspection["isActive"] = true // so it shows up in the EAO admin site
+        fetchObservationsFor(inspection: inspection, localOnly: true) { (results: [PFObservation]) in
+            let inspectionId = inspection.id
+            inspection["id"] = NSNull()
+            results.forEach({ (observation) in
+                observation["inspection"] = inspection
+                observation.saveInBackground(block: { (status, error) in
+                    inspection.id = inspectionId
+                    inspection.isSubmitted = true
+                    inspection.pinInBackground()
+                    
+                    completion(true)
+                })
+            })
+        }
+    }
+    
+    
+    internal class func fetchProjectList(completion: @escaping (_ error: DataServicesError?) -> Void) {
+        
+        Alamofire.request(Constants.API.projectListURI).responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                if let objects = value as? [[String: Any]] {
+                    guard let realm = try? Realm() else {
+                        completion(DataServicesError.internalError(message: "Unable to parse response"))
+                        return
+                    }
+                    
+                    objects.forEach({ (object) in
+                        if let name = object["name"] as? String, let objID = object["_id"] as? String {
+                            do {
+                                if let aProject = realm.objects(Project.self).filter("id == %@", objID).first {
+                                    try realm.write {
+                                        aProject.name = name
+                                        aProject.updatedAt = Date()
+                                    }
+                                } else {
+                                    let p = Project()
+                                    p.id = objID
+                                    p.name = name
+                                    
+                                    try realm.write {
+                                        realm.add(p)
+                                    }
+                                }
+                            } catch {
+                                fatalError("Unable to write to realm")
+                            }
+                        }
+                    })
+                }
+
+                completion(nil)
+            case .failure(let error):
+                completion(DataServicesError.requestFailed(error: error))
+            }
+        }
+    }
+    
     // MARK: -
     
-    internal class func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
+    internal class func uploadInspection2(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
         let object = PFObject(className: "Inspection")
         
         let userId = inspection.userId ?? ""

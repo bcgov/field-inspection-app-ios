@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Realm must be initalized here, in `init` because `didFinishLaunchingWithOptions`
         // often executes after `viewDidLoad` et al.
         DataServices.setup()
+        DataServices.fetchProjectList() { (error: Error?) in
+            print("OK")
+        }
         NetworkManager.shared.start()
 
         super.init()
