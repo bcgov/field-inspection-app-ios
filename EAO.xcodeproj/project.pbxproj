@@ -407,7 +407,7 @@
 		291C4D9E203A599000390523 /* GalleryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryMode.swift; sourceTree = "<group>"; };
 		29315819200929FB008E2FF4 /* ImageCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		2931581A200929FB008E2FF4 /* ImageCollectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionTableViewCell.xib; sourceTree = "<group>"; };
-		2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Field Insp. TEST.app"; path = "Field Insp TEST.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2936BF3F20BF64A500775F5E /* Field Insp TEST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp TEST.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29424D271FFC140E00562508 /* NewObservationElementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationElementManager.swift; sourceTree = "<group>"; };
 		29424D281FFC140E00562508 /* NewObservationElementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationElementViewController.swift; sourceTree = "<group>"; };
 		29424D291FFC140E00562508 /* NewObservationElement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewObservationElement.storyboard; sourceTree = "<group>"; };
@@ -1053,7 +1053,7 @@
 			children = (
 				9688D5181E69DA4300C49CD7 /* Field Insp.app */,
 				1186B5381ECB699D00681426 /* EAOUITests.xctest */,
-				2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */,
+				2936BF3F20BF64A500775F5E /* Field Insp TEST.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1139,6 +1139,7 @@
 				1186B5351ECB699D00681426 /* Frameworks */,
 				1186B5361ECB699D00681426 /* Resources */,
 				2A623D30E7396E5FE9C278B0 /* [CP] Embed Pods Frameworks */,
+				476304337120393E4BBF4FFE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1161,6 +1162,7 @@
 				2936BF3820BF64A500775F5E /* [CP] Embed Pods Frameworks */,
 				2936BF3920BF64A500775F5E /* ShellScript */,
 				2936BF3A20BF64A500775F5E /* Embed Frameworks */,
+				3D6DEB2E1D0CB340E118DEFB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1168,7 +1170,7 @@
 			);
 			name = "Field Insp TEST";
 			productName = EAO;
-			productReference = 2936BF3F20BF64A500775F5E /* Field Insp. TEST.app */;
+			productReference = 2936BF3F20BF64A500775F5E /* Field Insp TEST.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9688D5171E69DA4300C49CD7 /* Field Insp */ = {
@@ -1182,6 +1184,7 @@
 				E23EB65DCCD5C906002871A9 /* [CP] Embed Pods Frameworks */,
 				11134A641E984B1C00D06FF0 /* ShellScript */,
 				1186B52B1ECA35AC00681426 /* Embed Frameworks */,
+				FC82FC060DCB07DEF33E729B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1209,12 +1212,10 @@
 						TestTargetID = 9688D5171E69DA4300C49CD7;
 					};
 					2936BEAE20BF64A500775F5E = {
-						DevelopmentTeam = KH9MTRSDAZ;
 						ProvisioningStyle = Automatic;
 					};
 					9688D5171E69DA4300C49CD7 = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = KH9MTRSDAZ;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
@@ -1449,8 +1450,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
@@ -1463,8 +1462,6 @@
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireObjectMapper.framework",
@@ -1478,6 +1475,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3D6DEB2E1D0CB340E118DEFB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Field Insp TEST/Pods-Field Insp TEST-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		476304337120393E4BBF4FFE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		89D032AA60EE8AE24CA3CFAF /* [CP] Check Pods Manifest.lock */ = {
@@ -1546,6 +1573,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Field Insp/Pods-Field Insp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FC82FC060DCB07DEF33E729B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Field Insp/Pods-Field Insp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1825,7 +1867,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = KH9MTRSDAZ;
+				DEVELOPMENT_TEAM = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1847,7 +1889,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KH9MTRSDAZ;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ca.bc.gov.pathfinder.mobile.FieldInspection-Test";
@@ -1977,7 +2019,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = KH9MTRSDAZ;
+				DEVELOPMENT_TEAM = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = EAO/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1999,7 +2041,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KH9MTRSDAZ;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = EAO/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.bc.gov.pathfinder.mobile.FieldInspection;
