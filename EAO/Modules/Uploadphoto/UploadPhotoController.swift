@@ -50,57 +50,57 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 	}
 
     @IBAction fileprivate func save(_ sender: UIBarButtonItem?) {
-		if !validate() { return }
-		sender?.isEnabled = false
-		indicator.startAnimating()
-		if photo == nil{
-			photo = PFPhoto()
-		} else {
-			photo.caption = captionTextView.text
-			photo.pinInBackground(block: { (success, error) in
-				if success && error == nil{
-					_ = self.navigationController?.popViewController(animated: true)
-				} else{
-					AlertView.present(on: self, with: "Error occured while updating caption text")
-					self.indicator.stopAnimating()
-					sender?.isEnabled = true
-				}
-			})
-			return
-		}
-		if photo.observationId == nil{
-			photo.observationId = observation.id 
-		}
-		if photo.id == nil{
-			photo.id = UUID().uuidString
-		}
-		photo.caption = captionTextView.text
-		photo.timestamp = date
-		photo.coordinate = PFGeoPoint(location: location)
-		if let data = imageView.image?.scale(width: UIScreen.width)?.toData(quality: .medium){
-			photo.image = UIImage(data: data)
-			do{
-				try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-				photo.pinInBackground { (success, error) in
-					if success && error == nil{
-						self.uploadPhotoAction?(self.photo)
-						_ = self.navigationController?.popViewController(animated: true)
-					} else{
-						AlertView.present(on: self, with: "Error occured while saving image to local storage")
-					}
-					self.indicator.stopAnimating()
-					sender?.isEnabled = true
-				}
-			} catch {
-				AlertView.present(on: self, with: "Error occured while saving image to local storage")
-				self.indicator.stopAnimating()
-				sender?.isEnabled = true
-			}
-		} else{
-			AlertView.present(on: self, with: "Error occured while compressing image")
-			self.indicator.stopAnimating()
-			sender?.isEnabled = true
-		}
+//        if !validate() { return }
+//        sender?.isEnabled = false
+//        indicator.startAnimating()
+//        if photo == nil{
+//            photo = PFPhoto()
+//        } else {
+//            photo.caption = captionTextView.text
+//            photo.pinInBackground(block: { (success, error) in
+//                if success && error == nil{
+//                    _ = self.navigationController?.popViewController(animated: true)
+//                } else{
+//                    AlertView.present(on: self, with: "Error occured while updating caption text")
+//                    self.indicator.stopAnimating()
+//                    sender?.isEnabled = true
+//                }
+//            })
+//            return
+//        }
+//        if photo.observationId == nil{
+//            photo.observationId = observation.id
+//        }
+//        if photo.id == nil{
+//            photo.id = UUID().uuidString
+//        }
+//        photo.caption = captionTextView.text
+//        photo.timestamp = date
+//        photo.coordinate = PFGeoPoint(location: location)
+//        if let data = imageView.image?.scale(width: UIScreen.width)?.toData(quality: .medium){
+//            photo.image = UIImage(data: data)
+//            do{
+//                try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
+//                photo.pinInBackground { (success, error) in
+//                    if success && error == nil{
+//                        self.uploadPhotoAction?(self.photo)
+//                        _ = self.navigationController?.popViewController(animated: true)
+//                    } else{
+//                        AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//                    }
+//                    self.indicator.stopAnimating()
+//                    sender?.isEnabled = true
+//                }
+//            } catch {
+//                AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//                self.indicator.stopAnimating()
+//                sender?.isEnabled = true
+//            }
+//        } else{
+//            AlertView.present(on: self, with: "Error occured while compressing image")
+//            self.indicator.stopAnimating()
+//            sender?.isEnabled = true
+//        }
     }
     
     @IBAction fileprivate func photoTapped(_ sender: UIButton) {
@@ -151,7 +151,7 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 		}
 		captionTextView.text = photo.caption
 		timestampLabel.text = photo.timestamp?.timeStampFormat()
-		gpsLabel.text = photo.coordinate?.toString()
+		gpsLabel.text = photo.coordinate?.printableString()
 		indicator.stopAnimating()
 	}
 }

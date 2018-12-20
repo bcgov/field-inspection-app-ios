@@ -25,6 +25,7 @@ DEPENDENCIES:
   - Crashlytics
   - Fabric
   - IQKeyboardManager
+  - ObjectMapper
   - Parse
   - RealmSwift
 
@@ -40,6 +41,6 @@ SPEC CHECKSUMS:
   Realm: 5edd2ee65406aef591a4f9895de5a3440e51b3d8
   RealmSwift: be5ebc7930e37cd3376b41cec7f21984528aaa16
 
-PODFILE CHECKSUM: e3d337f539fd1db95afdf654913daff833edee5d
+PODFILE CHECKSUM: e84ea9551a8550d511a18db7c0df6169a2ddda99
 
 COCOAPODS: 1.4.0

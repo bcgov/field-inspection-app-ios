@@ -75,26 +75,26 @@ final class NewObservationController: UIViewController{
         observation.title = titleTextField.text
         observation.requirement = requirementTextField.text
         observation.observationDescription = descriptionTextView.text
-        if observation.coordinate == nil{
-            observation.coordinate = PFGeoPoint(location: locationManager.location)
-        }
+//        if observation.coordinate == nil{
+//            observation.coordinate = PFGeoPoint(location: locationManager.location)
+//        }
         if observation.inspectionId == nil{
             observation.inspectionId = inspection.id
         }
         if observation.id == nil{
             observation.id = UUID().uuidString
         }
-        observation.pinInBackground { (success, error) in
-            if success && error == nil{
-                if self.observation.pinnedAt == nil{
-                    self.observation.pinnedAt = Date()
-                }
-                _ = self.navigationController?.popViewController(animated: true)
-            } else{
-                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
-            }
-            self.indicator.stopAnimating()
-        }
+//        observation.pinInBackground { (success, error) in
+//            if success && error == nil{
+//                if self.observation.pinnedAt == nil{
+//                    self.observation.pinnedAt = Date()
+//                }
+//                _ = self.navigationController?.popViewController(animated: true)
+//            } else{
+//                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
+//            }
+//            self.indicator.stopAnimating()
+//        }
     }
 
     @IBAction func descriptionTapped(_ sender: UIButton) {
@@ -168,7 +168,7 @@ final class NewObservationController: UIViewController{
             view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
         }
         view.layoutIfNeeded()
-        GPSLabel.setTitle("GPS: \(observation?.coordinate?.toString() ?? locationManager.coordinateAsString() ?? "unavailable")", for: .normal)
+        GPSLabel.setTitle("GPS: \(observation?.coordinate?.printableString() ?? locationManager.coordinateAsString() ?? "unavailable")", for: .normal)
     }
 
     //MARK: -
@@ -188,35 +188,35 @@ final class NewObservationController: UIViewController{
 
     fileprivate func loadPhotos() {
 
-        guard let query = PFPhoto.query() else{
-            indicator.stopAnimating()
-            return
-        }
-        query.fromLocalDatastore()
-        query.whereKey("observationId", equalTo: observation.id!)
-        query.findObjectsInBackground(block: { (photos, error) in
-            guard let photos = photos as? [PFPhoto], error == nil else {
-                self.indicator.stopAnimating()
-                AlertView.present(on: self, with: "Couldn't retrieve observation photos")
-                return
-            }
-            if self.photos == nil{
-                self.photos = []
-            }
-           
-            for photo in photos{
-                print("file = \(photo.file!)")
-                if let id = photo.id{
-                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-                    photo.image = UIImage(contentsOfFile: url.path)
-                    self.photos?.append(photo)
-                }
-            }
-            self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
-            self.view.layoutIfNeeded()
-            self.collectionView.reloadData()
-            self.indicator.stopAnimating()
-        })
+//        guard let query = PFPhoto.query() else{
+//            indicator.stopAnimating()
+//            return
+//        }
+//        query.fromLocalDatastore()
+//        query.whereKey("observationId", equalTo: observation.id!)
+//        query.findObjectsInBackground(block: { (photos, error) in
+//            guard let photos = photos as? [PFPhoto], error == nil else {
+//                self.indicator.stopAnimating()
+//                AlertView.present(on: self, with: "Couldn't retrieve observation photos")
+//                return
+//            }
+//            if self.photos == nil{
+//                self.photos = []
+//            }
+//
+//            for photo in photos{
+//                print("file = \(photo.file!)")
+//                if let id = photo.id{
+//                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+//                    photo.image = UIImage(contentsOfFile: url.path)
+//                    self.photos?.append(photo)
+//                }
+//            }
+//            self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
+//            self.view.layoutIfNeeded()
+//            self.collectionView.reloadData()
+//            self.indicator.stopAnimating()
+//        })
     }
 
     fileprivate func getConstraintHeight()->CGFloat{
@@ -338,7 +338,7 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
             }
         } else {
             let uploadPhotoController = UploadPhotoController.storyboardInstance() as! UploadPhotoController
-            uploadPhotoController.isReadOnly = inspection.isSubmitted?.boolValue ?? false
+            uploadPhotoController.isReadOnly = inspection.isSubmitted
             uploadPhotoController.observation = observation
             uploadPhotoController.photo = photos?[indexPath.row]
             push(controller: uploadPhotoController)
@@ -352,7 +352,7 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
 
 extension NewObservationController{
     @objc var isReadOnly: Bool{
-        return inspection.isSubmitted?.boolValue == true
+        return inspection.isSubmitted == true
     }
 }
 

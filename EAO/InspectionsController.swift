@@ -172,8 +172,8 @@ final class InspectionsController: UIViewController {
                 print("recieved inspection ID = \(item.id ?? noObjectId)")
             })
             
-            self.inspections.draft = results.filter { $0.isSubmitted?.intValue == 0 }
-            self.inspections.submitted = results.filter { $0.isSubmitted?.intValue == 1 }
+            self.inspections.draft = results.filter { $0.isSubmitted == false }
+            self.inspections.submitted = results.filter { $0.isSubmitted == true }
             self.sort()
             self.updateDataForSelectedIndex()
 
@@ -250,24 +250,24 @@ final class InspectionsController: UIViewController {
         cell.timeLabel.text = date
         cell.linkedProjectLabel.text = inspection.project
         
-        print("submitted = \(inspection.isSubmitted as? Bool ?? false), local = \(inspection.isStoredLocally)")
-
-        let isSubmitted = inspection.isSubmitted as? Bool ?? false
-    
-        if !isSubmitted {
-            cell.enableEdit(canEdit: true)
-            cell.configForTransferState(state: .upload)
-            cell.onTransferTouched = uploadTouchedCallback(inspection: inspection)
-        } else if isSubmitted && inspection.isStoredLocally {
-            cell.configForTransferState(state: .disabled)
-            cell.enableEdit(canEdit: false)
-        } else if isSubmitted && !inspection.isStoredLocally {
-            cell.configForTransferState(state: .download)
-            cell.onTransferTouched = downloadTouchedCallback(inspection: inspection, cell: cell)
-        } else {
-            cell.configForTransferState(state: .upload)
-            cell.enableEdit(canEdit: !isSubmitted)
-        }
+//        print("submitted = \(inspection.isSubmitted as? Bool ?? false), local = \(inspection.isStoredLocally)")
+//
+//        let isSubmitted = inspection.isSubmitted as? Bool ?? false
+//
+//        if !isSubmitted {
+//            cell.enableEdit(canEdit: true)
+//            cell.configForTransferState(state: .upload)
+//            cell.onTransferTouched = uploadTouchedCallback(inspection: inspection)
+//        } else if isSubmitted && inspection.isStoredLocally {
+//            cell.configForTransferState(state: .disabled)
+//            cell.enableEdit(canEdit: false)
+//        } else if isSubmitted && !inspection.isStoredLocally {
+//            cell.configForTransferState(state: .download)
+//            cell.onTransferTouched = downloadTouchedCallback(inspection: inspection, cell: cell)
+//        } else {
+//            cell.configForTransferState(state: .upload)
+//            cell.enableEdit(canEdit: !isSubmitted)
+//        }
     }
     
     // MARK: -

@@ -122,7 +122,7 @@ final class LoginController: UIViewController{
 				projects.append(title)
 			}
 
-			let array = NSArray(array: projects.flatMap({$0}))
+            let array = NSArray(array: projects.compactMap({$0}))
 			array.write(to: FileManager.directory.appendingPathComponent(.projects), atomically: true)
 			completion()
 		}

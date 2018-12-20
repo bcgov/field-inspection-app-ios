@@ -326,29 +326,29 @@ class NewObservationElementFormViewController: UIViewController {
     }
 
     func saveObservationDetails() {
-        if observation.coordinate == nil {
-            observation.coordinate = PFGeoPoint(location: locationManager.location)
-        }
-
-        observation.title = elementTitle
-        observation.requirement = elementRequirement
-        if observation.observationDescription == nil {
-            observation.observationDescription = ""
-        }
-        if elementnewDescription != "" {
-            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
-        }
-        observation.pinInBackground { (success, error) in
-            if success && error == nil {
-                if self.observation.pinnedAt == nil {
-                    self.observation.pinnedAt = Date()
-                }
-                self.close()
-            } else {
-                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
-            }
-            self.unlock()
-        }
+//        if observation.coordinate == nil {
+//            observation.coordinate = PFGeoPoint(location: locationManager.location)
+//        }
+//
+//        observation.title = elementTitle
+//        observation.requirement = elementRequirement
+//        if observation.observationDescription == nil {
+//            observation.observationDescription = ""
+//        }
+//        if elementnewDescription != "" {
+//            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+//        }
+//        observation.pinInBackground { (success, error) in
+//            if success && error == nil {
+//                if self.observation.pinnedAt == nil {
+//                    self.observation.pinnedAt = Date()
+//                }
+//                self.close()
+//            } else {
+//                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
+//            }
+//            self.unlock()
+//        }
     }
 
     func setUpObservationObject() {
@@ -371,17 +371,9 @@ class NewObservationElementFormViewController: UIViewController {
         self.elementTitle = observation.title!
         self.elementRequirement = observation.requirement!
         self.elementoldDescription = observation.observationDescription!
-        let lat: Double = round(num: (observation.coordinate?.latitude)!, toPlaces: 5)
-        let long: Double = round(num: (observation.coordinate?.longitude)!, toPlaces: 5)
-        self.currentCoordinatesString = "Lat: \(lat), Long: \(long)"
+        self.currentCoordinatesString = observation.coordinate?.printableString()
         self.load()
         self.isAutofilled = true
-    }
-
-    func getLocString(observ: PFObservation)-> String {
-        let lat: Double = round(num: (observ.coordinate?.latitude)!, toPlaces: 5)
-        let long: Double = round(num: (observ.coordinate?.longitude)!, toPlaces: 5)
-        return "Lat: \(lat), Long: \(long)"
     }
 
     func load() {
@@ -768,9 +760,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
             if found {
                 let location = photo?.coordinate
-                let lat = self.round(num: (location?.latitude)!, toPlaces: 5)
-                let long = self.round(num: (location?.longitude)!, toPlaces: 5)
-                let locationString = "lat: \(String(lat))\nLon: \(String(long))"
+                let locationString = photo?.coordinate?.printableString() ?? ""
 
                 if let image = photo?.image {
                     form.addImage(image:image)

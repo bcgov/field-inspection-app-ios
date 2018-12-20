@@ -52,18 +52,18 @@ final class InspectionFormController: UIViewController{
 	}
  
 	fileprivate func load(){
-		let query = PFObservation.query()
-		query?.fromLocalDatastore()
-		query?.whereKey("inspectionId", equalTo: inspection.id!)
-		query?.order(byDescending: "pinnedAt")
-		query?.findObjectsInBackground(block: { (objects, error) in
-			guard let objects = objects as? [PFObservation], error == nil else{
-				AlertView.present(on: self, with: "Error occured while retrieving inspections from local storage")
-				return
-			}
-			self.observations = objects
-			self.tableView.reloadData()
-		})
+//        let query = PFObservation.query()
+//        query?.fromLocalDatastore()
+//        query?.whereKey("inspectionId", equalTo: inspection.id!)
+//        query?.order(byDescending: "pinnedAt")
+//        query?.findObjectsInBackground(block: { (objects, error) in
+//            guard let objects = objects as? [PFObservation], error == nil else{
+//                AlertView.present(on: self, with: "Error occured while retrieving inspections from local storage")
+//                return
+//            }
+//            self.observations = objects
+//            self.tableView.reloadData()
+//        })
 	}
 	
 	fileprivate func setElements(enabled: Bool){
@@ -97,7 +97,7 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 //            return cell
 //        }
 		let cell = tableView.dequeue(identifier: "InspectionFormCell") as! InspectionFormCell
-		cell.setData(number: "\(indexPath.row+1)", title: observations[indexPath.row].title, time: observations[indexPath.row].createdAt?.inspectionFormat(),isReadOnly: isReadOnly)
+		cell.setData(number: "\(indexPath.row+1)", title: observations[indexPath.row].title, time: observations[indexPath.row].createdAt.inspectionFormat(),isReadOnly: isReadOnly)
 		return cell
 	}
 	
@@ -131,7 +131,7 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 //MARK: -
 extension InspectionFormController{
 	fileprivate var isReadOnly: Bool{
-		return inspection.isSubmitted?.boolValue == true
+		return inspection.isSubmitted == true
 	}
 }
 

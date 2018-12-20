@@ -116,46 +116,46 @@ final class InspectionSetupController: UIViewController{
 	}
 	
 	@IBAction fileprivate func saveTapped(_ sender: UIControl) {
-		sender.isEnabled = false
-		indicator.startAnimating()
-		validate { (inspection) in
-			guard let inspection = inspection else {
-				sender.isEnabled = true
-				self.indicator.stopAnimating()
-				return
-			}
-			inspection.isSubmitted = false
-            inspection.teamID = self.teamID
-			inspection.pinInBackground(block: { (success, error) in
-				guard success, error == nil else {
-					self.indicator.stopAnimating()
-					sender.isEnabled = true
-					self.present(controller: UIAlertController(title: "ERROR!", message: "Inspection failed to save"))
-					return
-				}
-
-                DataServices.add(inspection: inspection, isStoredLocally: true)
-
-				if self.isNew {
-					Notification.post(name: .insertByDate, inspection)
-				} else{
-					Notification.post(name: .reload)
-				}
-                
-				if self.isNew {
-					self.isNew = false
-					let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
-					inspectionFormController.inspection = inspection
-					if inspection.id != nil {
-						self.push(controller: inspectionFormController)
-						self.navigationController?.viewControllers.remove(at: 1)
-						self.setMode()
-					}
-				}
-
-				self.indicator.stopAnimating()
-			})
-		}
+//        sender.isEnabled = false
+//        indicator.startAnimating()
+//        validate { (inspection) in
+//            guard let inspection = inspection else {
+//                sender.isEnabled = true
+//                self.indicator.stopAnimating()
+//                return
+//            }
+//            inspection.isSubmitted = false
+//            inspection.teamID = self.teamID
+//            inspection.pinInBackground(block: { (success, error) in
+//                guard success, error == nil else {
+//                    self.indicator.stopAnimating()
+//                    sender.isEnabled = true
+//                    self.present(controller: UIAlertController(title: "ERROR!", message: "Inspection failed to save"))
+//                    return
+//                }
+//
+//                DataServices.add(inspection: inspection, isStoredLocally: true)
+//
+//                if self.isNew {
+//                    Notification.post(name: .insertByDate, inspection)
+//                } else{
+//                    Notification.post(name: .reload)
+//                }
+//
+//                if self.isNew {
+//                    self.isNew = false
+//                    let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
+//                    inspectionFormController.inspection = inspection
+//                    if inspection.id != nil {
+//                        self.push(controller: inspectionFormController)
+//                        self.navigationController?.viewControllers.remove(at: 1)
+//                        self.setMode()
+//                    }
+//                }
+//
+//                self.indicator.stopAnimating()
+//            })
+//        }
 	}
 
 	//MARK: -
@@ -287,7 +287,7 @@ extension InspectionSetupController{
 //MARK: -
 extension InspectionSetupController{
 	fileprivate var isReadOnly: Bool{
-		return inspection?.isSubmitted?.boolValue == true
+		return inspection?.isSubmitted == true
 	}
 }
 

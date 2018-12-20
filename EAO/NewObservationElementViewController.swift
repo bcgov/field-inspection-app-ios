@@ -132,70 +132,70 @@ class NewObservationElementViewController: UIViewController {
     }
 
     @IBAction func savePressed(_ sender: Any) {
-        if !isValid {return}
-        self.lock()
-        if observation.coordinate == nil {
-            observation.coordinate = PFGeoPoint(location: locationManager.location)
-        }
-
-        observation.title = elementTitle
-        observation.requirement = elementRequirement
-        if observation.observationDescription == nil {
-            observation.observationDescription = ""
-        }
-        if elementnewDescription != "" {
-            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
-        }
-        observation.pinInBackground { (success, error) in
-            if success && error == nil {
-                if self.observation.pinnedAt == nil {
-                    self.observation.pinnedAt = Date()
-                }
-                self.close()
-            } else {
-                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
-            }
-            self.unlock()
-        }
+//        if !isValid {return}
+//        self.lock()
+//        if observation.coordinate == nil {
+//            observation.coordinate = PFGeoPoint(location: locationManager.location)
+//        }
+//
+//        observation.title = elementTitle
+//        observation.requirement = elementRequirement
+//        if observation.observationDescription == nil {
+//            observation.observationDescription = ""
+//        }
+//        if elementnewDescription != "" {
+//            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+//        }
+//        observation.pinInBackground { (success, error) in
+//            if success && error == nil {
+//                if self.observation.pinnedAt == nil {
+//                    self.observation.pinnedAt = Date()
+//                }
+//                self.close()
+//            } else {
+//                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
+//            }
+//            self.unlock()
+//        }
     }
 
     func autofill() {
         self.elementTitle = observation.title!
         self.elementRequirement = observation.requirement!
         self.elementoldDescription = observation.observationDescription!
-        let lat: Double = round(num: (observation.coordinate?.latitude)!, toPlaces: 5)
-        let long: Double = round(num: (observation.coordinate?.longitude)!, toPlaces: 5)
-        self.currentCoordinatesString = "Lat: \(lat), Long: \(long)"
+//        let lat: Double = round(num: (observation.coordinate?.latitude)!, toPlaces: 5)
+//        let long: Double = round(num: (observation.coordinate?.longitude)!, toPlaces: 5)
+        self.currentCoordinatesString = observation.coordinate?.printableString() ?? ""
         self.loadPhotos()
         self.isAutofilled = true
     }
 
     fileprivate func loadPhotos(){
-        guard let query = PFPhoto.query() else {
-            self.unlock()
-            return
-        }
-
-        query.fromLocalDatastore()
-        query.whereKey("observationId", equalTo: observation.id!)
-        query.findObjectsInBackground(block: { (photos, error) in
-            guard let storedPhotos = photos as? [PFPhoto], error == nil else {
-                self.lock()
-                AlertView.present(on: self, with: "Couldn't retrieve observation photos")
-                return
-            }
-
-            for photo in storedPhotos {
-                if let id = photo.id {
-                    print("iiiiii = \(id)")
-                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-                    photo.image = UIImage(contentsOfFile: url.path)
-                    self.storedPhotos.append(photo)
-                }
-            }
-            self.mediaOptionsCollection.reloadData()
-            self.unlock()
-        })
+//        guard let query = PFPhoto.query() else {
+//            self.unlock()
+//            return
+//        }
+//
+//        query.fromLocalDatastore()
+//        query.whereKey("observationId", equalTo: observation.id!)
+//        query.findObjectsInBackground(block: { (photos, error) in
+//            guard let storedPhotos = photos as? [PFPhoto], error == nil else {
+//                self.lock()
+//                AlertView.present(on: self, with: "Couldn't retrieve observation photos")
+//                return
+//            }
+//
+//            for photo in storedPhotos {
+//                if let id = photo.id {
+//                    print("iiiiii = \(id)")
+//                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+//                    photo.image = UIImage(contentsOfFile: url.path)
+//                    self.storedPhotos.append(photo)
+//                }
+//            }
+//            self.mediaOptionsCollection.reloadData()
+//            self.unlock()
+//        })
     }
 
     func updateImageResults() {
@@ -344,67 +344,67 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
 extension NewObservationElementViewController {
 
     func saveSelectedPhotos() {
-        if multiSelectResult.isEmpty{
-            mediaOptionsCollection.reloadData()
-            return
-        }
-        self.lock()
-        let asset = multiSelectResult.last
-        let photo = PFPhoto()
-        photo.observationId = observation.id
-        photo.id = UUID().uuidString
-        photo.timestamp = asset?.creationDate
-        photo.coordinate = PFGeoPoint(location: asset?.location)
-        AssetManager.sharedInstance.getOriginal(phAsset: asset!, completion: { (image) in
-            photo.image = image
-            let data = image.toData(quality: .medium)
-            do {
-                try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-                photo.pinInBackground { (success, error) in
-                    if success && error == nil {
-                        self.multiSelectResult.removeLast()
-                        if self.multiSelectResult.isEmpty {
-                            self.storedPhotos.removeAll()
-                            self.loadPhotos()
-                        } else {
-                            self.saveSelectedPhotos()
-                        }
-                    } else {
-                        AlertView.present(on: self, with: "Error occured while saving image to local storage")
-                        self.unlock()
-                    }
-                }
-            } catch {
-                AlertView.present(on: self, with: "Error occured while saving image to local storage")
-                self.unlock()
-            }
-        })
+//        if multiSelectResult.isEmpty{
+//            mediaOptionsCollection.reloadData()
+//            return
+//        }
+//        self.lock()
+//        let asset = multiSelectResult.last
+//        let photo = PFPhoto()
+//        photo.observationId = observation.id
+//        photo.id = UUID().uuidString
+//        photo.timestamp = asset?.creationDate
+//        photo.coordinate = PFGeoPoint(location: asset?.location)
+//        AssetManager.sharedInstance.getOriginal(phAsset: asset!, completion: { (image) in
+//            photo.image = image
+//            let data = image.toData(quality: .medium)
+//            do {
+//                try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
+//                photo.pinInBackground { (success, error) in
+//                    if success && error == nil {
+//                        self.multiSelectResult.removeLast()
+//                        if self.multiSelectResult.isEmpty {
+//                            self.storedPhotos.removeAll()
+//                            self.loadPhotos()
+//                        } else {
+//                            self.saveSelectedPhotos()
+//                        }
+//                    } else {
+//                        AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//                        self.unlock()
+//                    }
+//                }
+//            } catch {
+//                AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//                self.unlock()
+//            }
+//        })
     }
 
     func storePhotoTaken(image: UIImage, description: String, location: CLLocation){
-        self.lock()
-        let photo = PFPhoto()
-        photo.observationId = observation.id
-        photo.id = UUID().uuidString
-        photo.timestamp = Date()
-        photo.coordinate = PFGeoPoint(location: location)
-        let data = image.toData(quality: .medium)
-
-        do {
-            try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-            photo.pinInBackground { (success, error) in
-                if success && error == nil {
-                    self.loadPhotos()
-                    self.unlock()
-                } else {
-                    AlertView.present(on: self, with: "Error occured while saving image to local storage")
-                    self.unlock()
-                }
-            }
-        } catch {
-            AlertView.present(on: self, with: "Error occured while saving image to local storage")
-            self.unlock()
-        }
+//        self.lock()
+//        let photo = PFPhoto()
+//        photo.observationId = observation.id
+//        photo.id = UUID().uuidString
+//        photo.timestamp = Date()
+//        photo.coordinate = PFGeoPoint(location: location)
+//        let data = image.toData(quality: .medium)
+//
+//        do {
+//            try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
+//            photo.pinInBackground { (success, error) in
+//                if success && error == nil {
+//                    self.loadPhotos()
+//                    self.unlock()
+//                } else {
+//                    AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//                    self.unlock()
+//                }
+//            }
+//        } catch {
+//            AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//            self.unlock()
+//        }
     }
 }
 
