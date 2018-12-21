@@ -66,6 +66,19 @@ final class ProjectListController: UIViewController {
 	
 	fileprivate func load(){
 		indicator.startAnimating()
+        
+        DataServices.fetchProjectList() { (error: Error?) in
+            if let error = error {
+                print(error)
+            }
+        }
+        /** TODO: #11
+         
+         reload and save all project to Realm
+         load all project from Realm
+         show projects in the table
+         */
+        
 		Alamofire.request(String.projects_API).responseJSON { response in
 			guard let objects = response.result.value as? [Any] else{
 				if let array = NSArray(contentsOf: FileManager.directory.appendingPathComponent(.projects)) as? [String]{
@@ -85,10 +98,10 @@ final class ProjectListController: UIViewController {
 				guard let title = object[.name] as? String else { continue }
 				projects.append(title)
 			}
-			self.projects = projects.flatMap({$0})
+            self.projects = projects.compactMap({$0})
 			self.tableView.reloadData()
 			self.indicator.stopAnimating()
-			let array = NSArray(array: projects.flatMap({$0}))
+            let array = NSArray(array: projects.compactMap({$0}))
 			array.write(to: FileManager.directory.appendingPathComponent(.projects), atomically: true)
 		}
 	}

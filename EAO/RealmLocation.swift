@@ -16,8 +16,8 @@ class RealmLocation: Object, Mappable {
         static let longitude = "longitude"
     }
     
-    @objc dynamic var latitude : NSNumber?
-    @objc dynamic var longitude : NSNumber?
+    @objc dynamic var latitude : NSNumber? = 0
+    @objc dynamic var longitude : NSNumber? = 0
     
     required convenience init?(map: Map) {
         self.init()

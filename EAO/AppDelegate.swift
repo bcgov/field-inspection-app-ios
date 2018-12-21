@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // often executes after `viewDidLoad` et al.
         DataServices.setup()
         DataServices.fetchProjectList() { (error: Error?) in
-            print("OK")
         }
         NetworkManager.shared.start()
 

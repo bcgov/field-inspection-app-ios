@@ -110,22 +110,11 @@ final class LoginController: UIViewController{
 
 	///This function caches projects on every login
 	fileprivate func load(completion: @escaping ()->()){
-		Alamofire.request(String.projects_API).responseJSON { response in
-			guard let objects = response.result.value as? [Any] else{
-				completion()
-				return
-			}
-            
-			var projects = [String?]()
-			for case let object as [String: Any] in objects {
-				guard let title = object[.name] as? String else { continue }
-				projects.append(title)
-			}
-
-            let array = NSArray(array: projects.compactMap({$0}))
-			array.write(to: FileManager.directory.appendingPathComponent(.projects), atomically: true)
-			completion()
-		}
+        DataServices.fetchProjectList() { (error: Error?) in
+            if let error = error {
+                print(error)
+            }
+        }
 	}
 }
 

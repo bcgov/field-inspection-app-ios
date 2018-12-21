@@ -1225,118 +1225,33 @@ class DataServices {
 // MARK: Network Requests
 // TODO: move to the network manager
 extension DataServices{
-    
-    enum NetworkError: Error{
-        case OK
-        case NetworkError
-        case RequestTimedOut
-        case Error(String)
-    }
-    
-    class func processResponse<T>(_ response: Alamofire.DataResponse<T>)->(T?, Error?){
         
-        if let error = process(statusCode: response.response?.statusCode){
-            return (nil, error)
-        }
-        
-        switch response.result {
-        case .success(let value):
-            return (value, nil)
-            
-        case .failure(let error):
-            
-            switch (response.response?.statusCode){
-            case 200?:
-                if response.data?.count == 0{
-                    return (nil, nil)
-                }
-                return (nil, error)
-            default:
-                if (error as NSError).code == 2{
-                    return (nil, NetworkError.NetworkError)
-                }
-                
-                return (nil, error)
-            }
-        }
-        
-    }
-    
-    class func process(statusCode:Int? = nil)->Error?{
-        
-        switch (statusCode){
-        case NSURLErrorTimedOut?:
-            return NetworkError.RequestTimedOut
-            
-        case 401?:
-            return NetworkError.NetworkError
-            
-        case 404?:
-            return NetworkError.NetworkError
-            
-        case 405?:
-            return NetworkError.NetworkError
-            
-        default:
-            return nil
-        }
-    }
-    
-    internal class func fetchProjectList(completion: @escaping (_ error: DataServicesError?) -> Void) {
+    class func fetchProjectList(completion: @escaping (_ error: DataServicesError?) -> Void) {
         
         let sessionManager = Alamofire.SessionManager.default
         sessionManager.request(Constants.API.projectListURI).responseArray { (response: DataResponse<[EAOProject]>) in
             
-            print(response)
-            let (response, error) = self.processResponse(response)
-            if let responseArray = response {
-                print(response)
+            let (response, error) = NetworkManager.processResponse(response)
+            
+            if let error = error {
+                completion(DataServicesError.internalError(message: error.localizedDescription))
+                return
             }
             
             // save/update all projects in the data base
-            
+            if let responseArray = response {
+                do {
+                    let realm = try Realm()
+                    try realm.write {
+                        for responseObject in responseArray {
+                            realm.add(responseObject, update: true)
+                        }
+                    }
+                } catch let error as NSError {
+                    completion(DataServicesError.requestFailed(error: error))
+                }
+            }
         }
-        
-        //        Alamofire.req
-        
-        //        Alamofire.request(Constants.API.projectListURI).responseJSON { response in
-        //            switch response.result {
-        //            case .success(let value):
-        //                if let objects = value as? [[String: Any]] {
-        //                    guard let realm = try? Realm() else {
-        //                        completion(DataServicesError.internalError(message: "Unable to parse response"))
-        //                        return
-        //                    }
-        //
-        //                    objects.forEach({ (object) in
-        //                        if let name = object["name"] as? String, let objID = object["_id"] as? String {
-        //                            do {
-        //                                if let aProject = realm.objects(Project.self).filter("id == %@", objID).first {
-        //                                    try realm.write {
-        //                                        aProject.name = name
-        //                                        aProject.updatedAt = Date()
-        //                                    }
-        //                                } else {
-        //                                    let p = Project()
-        //                                    p.id = objID
-        //                                    p.name = name
-        //
-        //                                    try realm.write {
-        //                                        realm.add(p)
-        //                                    }
-        //                                }
-        //                            } catch {
-        //                                fatalError("Unable to write to realm")
-        //                            }
-        //                        }
-        //                    })
-        //                }
-        //
-        //                completion(nil)
-        //            case .failure(let error):
-        //                completion(DataServicesError.requestFailed(error: error))
-        //            }
-        //        }
     }
     
 }

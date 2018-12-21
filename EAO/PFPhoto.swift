@@ -21,7 +21,9 @@ class PFPhoto: Object, Mappable{
     }
     
     ///Use this variable for image caching
-    @objc var image : UIImage?
+    var image : UIImage?{
+        return nil
+    }
     
     // MARK: Properties
     @objc dynamic var id            : String?
@@ -30,7 +32,7 @@ class PFPhoto: Object, Mappable{
     @objc dynamic var caption       : String?
     @objc dynamic var timestamp     : Date?
     @objc dynamic var coordinate    : RealmLocation?
-    @objc dynamic var index         : NSNumber?
+    @objc dynamic var index         : NSNumber? = 0
     
     required convenience init?(map: Map) {
         self.init()

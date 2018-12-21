@@ -19,12 +19,14 @@ class PFPhotoThumb: Object, Mappable{
     }
     
     ///Use this variable for image caching
-    @objc var image : UIImage?
+    var image : UIImage? {
+        return nil
+    }
     
     // MARK: Properties
     @objc dynamic var id            : String?
     @objc dynamic var observationId : String?
-    @objc dynamic var index         : NSNumber?
+    @objc dynamic var index         : NSNumber? = 0
     // original asset type: Video? Photo?
     @objc dynamic var originalType  : String?
     

@@ -26,10 +26,10 @@ final class PFAudio: Object, Mappable{
     @objc dynamic var id            : String?
     @objc dynamic var observationId : String?
     @objc dynamic var inspectionId : String?
-    @objc dynamic var index: NSNumber?
+    @objc dynamic var index: NSNumber? = 0
     @objc dynamic var notes: String?
     @objc dynamic var title: String?
-    @objc dynamic var url: URL?
+    @objc dynamic var url: String?
     @objc dynamic var coordinate: RealmLocation?
     //    @objc dynamic var file : PFFile?
     
