@@ -39,9 +39,11 @@ class DataServices {
     
     static let realmFileName = "default.realm"
     static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    
+
+    static let shared = DataServices()
+
     // MARK: Realm
-    
+
     internal class func setup() {
         
         DataServices.configureRealm()
@@ -1234,6 +1236,7 @@ extension DataServices{
             let (response, error) = NetworkManager.processResponse(response)
             
             if let error = error {
+                print(error)
                 completion(DataServicesError.internalError(message: error.localizedDescription))
                 return
             }
@@ -1247,11 +1250,30 @@ extension DataServices{
                             realm.add(responseObject, update: true)
                         }
                     }
+                    completion(nil)
                 } catch let error as NSError {
+                    print(error)
                     completion(DataServicesError.requestFailed(error: error))
                 }
             }
         }
+    }
+    
+}
+
+extension DataServices {
+    
+    func getProjects()->Results<EAOProject>?{
+        
+        do {
+            let realm = try Realm()
+            let projects = realm.objects(EAOProject.self).sorted(byKeyPath: "name", ascending: true)
+            return projects
+            
+        } catch {
+        }
+        
+        return nil
     }
     
 }

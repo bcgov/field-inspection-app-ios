@@ -6,10 +6,13 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 import Alamofire
+import RealmSwift
 
 final class ProjectListController: UIViewController {
 	@objc var result : ((_: String?)->Void)?
 
+    var eao_projects: Results<EAOProject>?
+    
 	fileprivate var projects : [String]?
 	fileprivate var filtered : [NSMutableAttributedString]?
 	
@@ -68,6 +71,12 @@ final class ProjectListController: UIViewController {
 		indicator.startAnimating()
         
         DataServices.fetchProjectList() { (error: Error?) in
+            
+            DispatchQueue.main.async {
+                self.eao_projects = DataServices.shared.getProjects()
+                print(self.eao_projects?.count)
+            }
+            
             if let error = error {
                 print(error)
             }

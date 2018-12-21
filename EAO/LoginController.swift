@@ -29,7 +29,15 @@ final class LoginController: UIViewController{
 	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
     @IBOutlet weak var loginButton: UIButton!
     //MARK: IB Actions
+    
 	@IBAction fileprivate func loginTapped(_ sender: UIButton) {
+        
+        //TODO: 
+        if Settings.skipLogin == true {
+            self.present(controller: InspectionsController.storyboardInstance())
+            return
+        }
+        
 		do{
 			let credentials = try validateCredentials()
 			if !Reachability.isConnectedToNetwork(){
