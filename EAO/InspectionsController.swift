@@ -34,7 +34,7 @@ final class InspectionsController: UIViewController {
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var segmentedControl: UISegmentedControl!
     @IBOutlet private var indicator: UIActivityIndicatorView!
-
+    
 	private var isBeingUploaded = false
     private var locationManager: CLLocationManager = {
         // TODO:(jl) This should be moved to where its used and the user advised
@@ -44,10 +44,12 @@ final class InspectionsController: UIViewController {
         
         return lm
     }()
+    
     private var data = [PFInspection]()
     private var selectedInspectionIndexPath: IndexPath?
     private static let inspectionFormControllerSegueID = "InspectionFormControllerSegueID"
     private static let inspectionSetupControllerSegueID = "InspectionSetupControllerSegueID"
+    
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
@@ -57,13 +59,14 @@ final class InspectionsController: UIViewController {
         
         return refreshControl
     }()
+    
     internal static var reference: InspectionsController? {
         return (AppDelegate.root?.presentedViewController as? UINavigationController)?.viewControllers.first as? InspectionsController
     }
+
     internal var inspections = (draft: [PFInspection](), submitted: [PFInspection]())
 
     // MARK: -
-
     override func viewDidLoad() {
 
         super.viewDidLoad()
@@ -144,7 +147,7 @@ final class InspectionsController: UIViewController {
     
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         
-        if !NetworkManager.shared.isReachable {
+        if NetworkManager.shared.isReachable == false {
             let title = "Network Required"
             let message = "You must be connected to a WiFi or celular network to fetch updates"
             
@@ -165,8 +168,7 @@ final class InspectionsController: UIViewController {
 		indicator.startAnimating()
         
         DataServices.fetchInspections() { (results: [PFInspection]) in
-            print("user objs count = \(results.count)");
-            
+
             let noObjectId = "n/a"
             results.forEach({ (item) in
                 print("recieved inspection ID = \(item.id ?? noObjectId)")
@@ -222,12 +224,15 @@ final class InspectionsController: UIViewController {
     private func updateDataForSelectedIndex() {
         
         switch selectedIndex {
-        case 0:
+            
+        case Sections.Draft.rawValue:
             self.data = self.inspections.draft
-            print(self.data.count)
-        case 1:
+            print("updateDataForSelectedIndex: Draft:\(self.data.count)")
+            
+        case Sections.Submitted.rawValue:
             self.data = self.inspections.submitted
-            print(self.data.count)
+            print("updateDataForSelectedIndex: Submitted:\(self.data.count)")
+            
         default:
             self.data = []
         }
@@ -236,44 +241,30 @@ final class InspectionsController: UIViewController {
     private func configureCell(cell: InspectionCell, atIndexPath indexPath: IndexPath) {
 
         let inspection = data[indexPath.row]
-        var date = ""
 
-        if let start = inspection.start {
-            date = start.inspectionFormat()
-        }
-        
-        if let end = inspection.end {
-            date += " - \(end.inspectionFormat())"
-        }
+        print("inspection \(inspection.debugDescription)")
 
-        cell.titleLabel.text = inspection.title
-        cell.timeLabel.text = date
-        cell.linkedProjectLabel.text = inspection.project
-        
-//        print("submitted = \(inspection.isSubmitted as? Bool ?? false), local = \(inspection.isStoredLocally)")
-//
-//        let isSubmitted = inspection.isSubmitted as? Bool ?? false
-//
-//        if !isSubmitted {
-//            cell.enableEdit(canEdit: true)
-//            cell.configForTransferState(state: .upload)
-//            cell.onTransferTouched = uploadTouchedCallback(inspection: inspection)
-//        } else if isSubmitted && inspection.isStoredLocally {
-//            cell.configForTransferState(state: .disabled)
-//            cell.enableEdit(canEdit: false)
-//        } else if isSubmitted && !inspection.isStoredLocally {
-//            cell.configForTransferState(state: .download)
-//            cell.onTransferTouched = downloadTouchedCallback(inspection: inspection, cell: cell)
-//        } else {
-//            cell.configForTransferState(state: .upload)
-//            cell.enableEdit(canEdit: !isSubmitted)
-//        }
+        if inspection.isSubmitted == false {
+            cell.enableEdit(canEdit: true)
+            cell.configForTransferState(state: .upload)
+            cell.onTransferTouched = uploadTouchedCallback(inspection: inspection)
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally {
+            cell.configForTransferState(state: .disabled)
+            cell.enableEdit(canEdit: false)
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally == false {
+            cell.configForTransferState(state: .download)
+            cell.onTransferTouched = downloadTouchedCallback(inspection: inspection, cell: cell)
+            
+        } else {
+            cell.configForTransferState(state: .upload)
+            cell.enableEdit(canEdit: !inspection.isSubmitted)
+        }
     }
     
     // MARK: -
-    
     private var selectedIndex: Int {
-
         return segmentedControl.selectedSegmentIndex
     }
 

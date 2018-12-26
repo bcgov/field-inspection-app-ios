@@ -31,7 +31,7 @@ class Inspection: Object {
     @objc dynamic var end: Date?
     @objc dynamic var createdAt: Date = Date()
     @objc dynamic var modifiedAt: Date = Date()
-    @objc dynamic var project: Project?
+//    @objc dynamic var project: Project?
     
     internal let observations = List<Observation>()
 

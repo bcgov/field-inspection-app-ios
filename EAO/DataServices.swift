@@ -157,28 +157,18 @@ class DataServices {
     
     internal class func fetchInspections(completion: ((_ results: [PFInspection]) -> Void)? = nil) {
         
-        guard let query = DataServices.inspectionQueryForCurrentUser() else {
+        //TODO: #11
+        //filter inspections by user ID
+        do {
+            let realm = try Realm()
+            let inspections = realm.objects(PFInspection.self).sorted(byKeyPath: "title", ascending: true)
+            let inspectionsArray = Array(inspections)
+            
+            print("fetchInspections: count = \(inspections.count)");
+            completion?(inspectionsArray)
+        } catch {
             completion?([])
-            return
         }
-        
-//        query.findObjectsInBackground(block: { (objects, error) in
-//            guard let objects = objects as? [PFInspection], error == nil else {
-//                completion?([])
-//                return
-//            }
-//
-//            objects.forEach({ (inspection) in
-//                if let id = inspection.id, id.isEmpty {
-//                    inspection.id = UUID().uuidString // Local ID Only, must be set.
-//                }
-//                inspection.pinInBackground();
-//
-//                DataServices.add(inspection: inspection)
-//            })
-//
-//            completion?(objects);
-//        })
     }
     
     internal class func fetchFullInspection(inspection: PFInspection, completion: (() -> Void)? = nil) {
@@ -1237,7 +1227,9 @@ extension DataServices{
             
             if let error = error {
                 print(error)
-                completion(DataServicesError.internalError(message: error.localizedDescription))
+                DispatchQueue.main.async {
+                    completion(DataServicesError.internalError(message: error.localizedDescription))
+                }
                 return
             }
             
@@ -1253,7 +1245,9 @@ extension DataServices{
                     completion(nil)
                 } catch let error as NSError {
                     print(error)
-                    completion(DataServicesError.requestFailed(error: error))
+                    DispatchQueue.main.async {
+                        completion(DataServicesError.requestFailed(error: error))
+                    }
                 }
             }
         }
@@ -1275,5 +1269,16 @@ extension DataServices {
         
         return nil
     }
-    
+
+    func getProjectsAsStrings()->[String]{
+
+        guard let projects = getProjects() else {
+            return []
+        }
+
+        var projectStrings = [String]()
+        projectStrings = projects.compactMap({ $0.name })
+        return projectStrings
+    }
+
 }

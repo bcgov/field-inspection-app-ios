@@ -57,6 +57,38 @@ final class InspectionCell: UITableViewCell {
     
     // MARK: States
     
+    func configureCell(with inspection: PFInspection){
+        
+        var date = ""
+        
+        if let start = inspection.start {
+            date = start.inspectionFormat()
+        }
+        
+        if let end = inspection.end {
+            date += " - \(end.inspectionFormat())"
+        }
+        
+        titleLabel.text = inspection.title
+        timeLabel.text = date
+        linkedProjectLabel.text = inspection.project
+
+        if inspection.isSubmitted == false {
+            enableEdit(canEdit: true)
+            configForTransferState(state: .upload)
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally {
+            configForTransferState(state: .disabled)
+            enableEdit(canEdit: false)
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally == false {
+            configForTransferState(state: .download)
+            
+        } else {
+            configForTransferState(state: .upload)
+        }
+    }
+    
     internal func enableEdit(canEdit value: Bool) {
         if value {
             editButton.isHidden = false

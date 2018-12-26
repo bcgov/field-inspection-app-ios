@@ -87,6 +87,16 @@ class PFInspection: Object, Mappable{
         teamID <- map[SerializationKeys.teamID]
     }
     
+    override var debugDescription: String{
+
+        var parameters = [String: Any?]()
+        
+        parameters["title"] = title ?? "N/A"
+        parameters["submitted"] = isSubmitted
+        parameters["local"] = isStoredLocally
+        return "inspection \(parameters)"
+    }
+    
     //MARK: - Submission
     func submit(completion: @escaping (_ success: Bool,_ error: PFInspectionError?)->Void, block: @escaping (_ progress : Float)->Void){
         //        var objects = [PFObject]()
