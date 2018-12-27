@@ -52,7 +52,7 @@ class PFInspection: Object, Mappable{
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String?
+    @objc dynamic var id            : String = UUID().uuidString
     @objc dynamic var userId        : String?
     @objc dynamic var isSubmitted   : Bool = false
     @objc dynamic var project       : String?
@@ -68,10 +68,10 @@ class PFInspection: Object, Mappable{
         self.init()
     }
 
-    //    override static func primaryKey() -> String? {
-    //        return "id"
-    //    }
-    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+
     func mapping(map: Map) {
         
         id <- map[SerializationKeys.id]

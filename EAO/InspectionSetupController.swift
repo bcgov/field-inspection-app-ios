@@ -34,6 +34,28 @@ final class InspectionSetupController: UIViewController{
     @IBOutlet weak var selectTeamButton: UIButton!
     @IBOutlet weak var popUpContainer: UIView!
 
+    //MARK: -
+    override func viewDidLoad() {
+        style()
+        addDismissKeyboardOnTapRecognizer(on: scrollView)
+        if inspection == nil{
+            subtextTextField.text = PFUser.current()?.username
+            isNew = true
+        } else{
+            button.isHidden = true
+        }
+        setMode()
+        populate()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        addKeyboardObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeKeyboardObservers()
+    }
+    
 	//MARK: - IB Actions
 	@IBAction fileprivate func linkProjectTapped(_ sender: UIButton) {
 		let projectListController = ProjectListController.storyboardInstance() as! ProjectListController
@@ -54,7 +76,7 @@ final class InspectionSetupController: UIViewController{
             sender.isEnabled = true
 
             if done {
-                let vc = team.getVC(teams: teams!, callBack: { (done, selected) in
+                let _ = team.getVC(teams: teams!, callBack: { (done, selected) in
                     if done {
                         self.inspection?.teamID = selected?.objectID
                         self.teamID = (selected?.objectID)!
@@ -68,7 +90,6 @@ final class InspectionSetupController: UIViewController{
             }
         }
     }
-
 	
 	//sender: tag 10 is start date button, tag 11 is end date button
 	@IBAction fileprivate func dateTapped(_ sender: UIButton) {
@@ -116,75 +137,53 @@ final class InspectionSetupController: UIViewController{
 	}
 	
 	@IBAction fileprivate func saveTapped(_ sender: UIControl) {
-//        sender.isEnabled = false
-//        indicator.startAnimating()
-//        validate { (inspection) in
-//            guard let inspection = inspection else {
-//                sender.isEnabled = true
-//                self.indicator.stopAnimating()
-//                return
-//            }
-//            inspection.isSubmitted = false
-//            inspection.teamID = self.teamID
-//            inspection.pinInBackground(block: { (success, error) in
-//                guard success, error == nil else {
-//                    self.indicator.stopAnimating()
-//                    sender.isEnabled = true
-//                    self.present(controller: UIAlertController(title: "ERROR!", message: "Inspection failed to save"))
-//                    return
-//                }
-//
-//                DataServices.add(inspection: inspection, isStoredLocally: true)
-//
-//                if self.isNew {
-//                    Notification.post(name: .insertByDate, inspection)
-//                } else{
-//                    Notification.post(name: .reload)
-//                }
-//
-//                if self.isNew {
-//                    self.isNew = false
-//                    let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
-//                    inspectionFormController.inspection = inspection
-//                    if inspection.id != nil {
-//                        self.push(controller: inspectionFormController)
-//                        self.navigationController?.viewControllers.remove(at: 1)
-//                        self.setMode()
-//                    }
-//                }
-//
-//                self.indicator.stopAnimating()
-//            })
-//        }
+        sender.isEnabled = false
+        indicator.startAnimating()
+        
+        validate { (inspection) in
+            
+            guard let inspection = inspection else {
+                sender.isEnabled = true
+                self.indicator.stopAnimating()
+                return
+            }
+            
+            inspection.isSubmitted = false
+            inspection.teamID = self.teamID
+            
+            let result = DataServices.add(inspection: inspection, isStoredLocally: true)
+            self.indicator.stopAnimating()
+
+            if result == true {
+                
+                if self.isNew {
+                    Notification.post(name: .insertByDate, inspection)
+                } else{
+                    Notification.post(name: .reload)
+                }
+                
+                if self.isNew {
+                    self.isNew = false
+                    let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
+                    inspectionFormController.inspection = inspection
+                    if inspection.id != nil {
+                        self.push(controller: inspectionFormController)
+                        self.navigationController?.viewControllers.remove(at: 1)
+                        self.setMode()
+                    }
+                }
+
+            } else {
+                sender.isEnabled = true
+                self.present(controller: UIAlertController(title: "ERROR!", message: "Inspection failed to save"))
+            }
+        }
 	}
 
-	//MARK: -
-	override func viewDidLoad() {
-        style()
-		addDismissKeyboardOnTapRecognizer(on: scrollView)
-		if inspection == nil{
-			subtextTextField.text = PFUser.current()?.username
-			isNew = true
-		} else{
-			button.isHidden = true
-		}
-		setMode()
-		populate()
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		addKeyboardObservers()
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		removeKeyboardObservers()
-	}
-	
 	fileprivate func setMode(){
 		if isReadOnly{
 			linkProjectButton.isEnabled = false
 			titleTextField.isEnabled    = false
-//            subtitleTextField.isEnabled = false
 			subtextTextField.isEnabled  = false
 			numberTextField.isEnabled   = false
 			startDateButton.isEnabled   = false
@@ -210,7 +209,6 @@ final class InspectionSetupController: UIViewController{
 		startDateButton.setTitle(inspection.start?.datePickerFormat(), for: .normal)
 		endDateButton.setTitle(inspection.end?.datePickerFormat() ?? "Inspection End Date", for: .normal)
 		titleTextField.text = inspection.title
-//        subtitleTextField.text = inspection.subtitle
 		subtextTextField.text = inspection.subtext
 		numberTextField.text = inspection.number
         dates["start"] = inspection.start
@@ -220,9 +218,11 @@ final class InspectionSetupController: UIViewController{
 
 //MARK: -
 extension InspectionSetupController: KeyboardDelegate{
+    
 	func keyboardWillShow(with height: NSNumber) {
-		scrollView.contentInset.bottom = CGFloat(height)
+        scrollView.contentInset.bottom = CGFloat(height.floatValue)
 	}
+    
 	func keyboardWillHide() {
 		scrollView.contentInset.bottom = 0
 	}
@@ -233,8 +233,8 @@ extension InspectionSetupController: KeyboardDelegate{
 extension InspectionSetupController: UITextFieldDelegate{
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		navigationItem.rightBarButtonItem?.isEnabled = true
-		var length = textField.text?.characters.count ?? 0
-		length += string.characters.count
+		var length = textField.text?.count ?? 0
+		length += string.count
 		length -= range.length
 		return length < Constants.textFieldLenght
 	}
@@ -247,14 +247,16 @@ extension InspectionSetupController: UITextFieldDelegate{
 
 //MARK: -
 extension InspectionSetupController{
+    
 	@objc func validate(completion: @escaping (_ inspection : PFInspection?)->Void){
+        
 		if linkProjectButton.title(for: .normal) == "Link Project" || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil{
             // remove ^
 			present(controller: Alerts.fields)
 			completion(nil)
 			return
 		}
-		if !validateDates() {
+		if validateDates() == false {
 			present(controller: Alerts.dates)
 			completion(nil)
 			return
@@ -267,7 +269,6 @@ extension InspectionSetupController{
 		}
 		inspection?.project = linkProjectButton.title(for: .normal)
 		inspection?.title = titleTextField.text
-//        inspection?.subtitle = subtitleTextField.text
 		inspection?.subtext = subtextTextField.text
 		inspection?.number = numberTextField.text
 		inspection?.start = dates["start"]

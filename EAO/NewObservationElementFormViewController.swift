@@ -826,11 +826,13 @@ extension NewObservationElementFormViewController {
     }
 
     func goToRecord() {
-        if inspection.id == nil || observation.id == nil {
+        
+        if inspection.id.isEmpty || observation.id == nil {
             return
         }
+        
         let recorder = Recorder()
-        let vc = recorder.getVC(inspectionID: inspection.id!, observationID: observation.id!) { (done) in
+        let vc = recorder.getVC(inspectionID: inspection.id, observationID: observation.id!) { (done) in
             self.load()
         }
         self.present(vc, animated: true, completion: nil)

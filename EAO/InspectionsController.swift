@@ -244,6 +244,8 @@ final class InspectionsController: UIViewController {
 
         print("inspection \(inspection.debugDescription)")
 
+        cell.configureCell(with: inspection)
+        
         if inspection.isSubmitted == false {
             cell.enableEdit(canEdit: true)
             cell.configForTransferState(state: .upload)

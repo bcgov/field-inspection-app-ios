@@ -96,11 +96,19 @@ class DataServices {
         return URL(fileURLWithPath: realmFileName, isDirectory: false, relativeTo: workspaceURL)
     }
 
-    internal class func add(inspection: PFInspection, isStoredLocally: Bool = false) {
+    class func add(inspection: PFInspection, isStoredLocally: Bool = false) -> Bool {
         
         guard let realm = try? Realm() else {
             print("Unable open realm")
-            return
+            return false
+        }
+        
+        do {
+            try realm.write {
+                realm.add(inspection, update: true)
+            }
+        } catch {
+            return false
         }
         
         let doc = InspectionMeta()
@@ -115,10 +123,10 @@ class DataServices {
                 realm.add(doc)
             }
         } catch {
-            fatalError("Unable to write to realm")
+            return false
         }
         
-        return
+        return true
     }
     
 //    private class func update(inspeciton: PFInspection, isStoredLocally: Bool) {
@@ -474,7 +482,7 @@ class DataServices {
     }
     
     internal class func getObservationsFor(inspection: PFInspection, completion: @escaping (_ done: Bool, _ observations: [PFObservation]?) -> Void) {
-        PFObservation.load(for: inspection.id!) { (results) in
+        PFObservation.load(for: inspection.id) { (results) in
             guard let observations = results, !observations.isEmpty else{
                 return completion(false, nil)
             }
@@ -965,13 +973,18 @@ class DataServices {
     }
     
     internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
-        let data: Data = UIImageJPEGRepresentation(DataServices.resizeImage(image: image), 0)!
+        
+        guard let data: Data = UIImageJPEGRepresentation(UIImage.resizeImage(image: image), 0) else {
+            return completion(false)
+        }
+        
         print("thumb size of \(index) is \(data.count)")
         let photo = PFPhotoThumb()
         photo.observationId = observationID
         photo.id = "\(UUID().uuidString).jpeg"
         photo.originalType = originalType
         photo.index = index as NSNumber
+        
         do {
             try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
 //            photo.pinInBackground { (success, error) in
@@ -1105,69 +1118,36 @@ class DataServices {
 //        })
     }
     
-    internal class func resizeImage(image: UIImage) -> UIImage {
-        var actualHeight: Float = Float(image.size.height)
-        var actualWidth: Float = Float(image.size.width)
-        let maxHeight: Float = 120.0
-        let maxWidth: Float = 120.0
-        var imgRatio: Float = actualWidth / actualHeight
-        let maxRatio: Float = maxWidth / maxHeight
-        let compressionQuality: Float = 0.25
-        //50 percent compression
-        
-        if actualHeight > maxHeight || actualWidth > maxWidth {
-            if imgRatio < maxRatio {
-                //adjust width according to maxHeight
-                imgRatio = maxHeight / actualHeight
-                actualWidth = imgRatio * actualWidth
-                actualHeight = maxHeight
-            }
-            else if imgRatio > maxRatio {
-                //adjust height according to maxWidth
-                imgRatio = maxWidth / actualWidth
-                actualHeight = imgRatio * actualHeight
-                actualWidth = maxWidth
-            }
-            else {
-                actualHeight = maxHeight
-                actualWidth = maxWidth
-            }
-        }
-        
-        let rect = CGRect(x: 0.0, y: 0.0, width: CGFloat(actualWidth), height: CGFloat(actualHeight))
-        UIGraphicsBeginImageContext(rect.size)
-        image.draw(in: rect)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        let imageData = UIImageJPEGRepresentation(img!,CGFloat(compressionQuality))
-        UIGraphicsEndImageContext()
-        return UIImage(data: imageData!)!
-    }
-    
     internal class func isUserMobileAccessEnabled(completion: @escaping (_ success: Bool) -> Void) {
-        let user = PFUser.current()
-        if user != nil, let id = user?.objectId {
-            let query: PFQuery = PFUser.query()!
-            query.getObjectInBackground(withId: id) { (userObj, error) in
-                if let obj = userObj,
-                    let access: [String: Any] = obj["access"] as? [String : Any],
-                    let mobileAccess: Bool = access["mobileAccess"] as? Bool,
-                    let isActive: Bool = obj["isActive"] as? Bool {
-                    print(access)
-                    if mobileAccess && isActive {
-                        return completion(true)
-                    } else {
-                        return completion(false)
-                    }
+        
+        guard let user: User = PFUser.current() as? User, let id = user.objectId else {
+            return completion(false)
+        }
+
+        guard let query: PFQuery = PFUser.query() else {
+            return completion(false)
+        }
+
+        query.getObjectInBackground(withId: id) { (userObj, error) in
+            if let obj = userObj,
+                let access: [String: Any] = obj["access"] as? [String : Any],
+                let mobileAccess: Bool = access["mobileAccess"] as? Bool,
+                let isActive: Bool = obj["isActive"] as? Bool {
+                print(access)
+                if mobileAccess && isActive {
+                    return completion(true)
                 } else {
                     return completion(false)
                 }
+            } else {
+                return completion(false)
             }
-        } else {
-            return completion(false)
         }
+        
     }
     
     internal class func getUserTeams(user: User, completion: @escaping (_ success: Bool,_ teams: [PFObject]) -> Void) {
+        
         let query = PFQuery(className: "Team")
         var downloadedTeams = [PFObject]()
         query.whereKey("users", equalTo: user)
@@ -1186,7 +1166,12 @@ class DataServices {
     }
     
     internal class func getTeams(completion: @escaping (_ success: Bool, _ teams: [Team]?) -> Void) {
-        let user: User =  PFUser.current() as! User
+        
+        guard let user: User = PFUser.current() as? User else {
+            print("\(#function) user is missing")
+            return completion(false, nil)
+        }
+        
         self.getUserTeams(user: user) { (done, downloaded)  in
             if done {
                 var results = [Team]()
