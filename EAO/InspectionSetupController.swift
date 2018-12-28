@@ -6,6 +6,8 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 import Parse
+import RealmSwift
+
 final class InspectionSetupController: UIViewController{
 	@objc var inspection: PFInspection?
 
@@ -148,9 +150,6 @@ final class InspectionSetupController: UIViewController{
                 return
             }
             
-            inspection.isSubmitted = false
-            inspection.teamID = self.teamID
-            
             let result = DataServices.add(inspection: inspection, isStoredLocally: true)
             self.indicator.stopAnimating()
 
@@ -166,7 +165,7 @@ final class InspectionSetupController: UIViewController{
                     self.isNew = false
                     let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
                     inspectionFormController.inspection = inspection
-                    if inspection.id != nil {
+                    if inspection.id.isEmpty == false {
                         self.push(controller: inspectionFormController)
                         self.navigationController?.viewControllers.remove(at: 1)
                         self.setMode()
@@ -265,14 +264,42 @@ extension InspectionSetupController{
 			inspection = PFInspection()
 			inspection?.userId = PFUser.current()?.objectId
 			inspection?.id = UUID().uuidString
+            
+            inspection?.project = linkProjectButton.title(for: .normal)
+            inspection?.title = titleTextField.text
+            inspection?.subtext = subtextTextField.text
+            inspection?.number = numberTextField.text
+            inspection?.start = dates["start"]
+            inspection?.end = dates["end"]
+            
+            inspection?.isSubmitted = false
+            inspection?.teamID = self.teamID
 
-		}
-		inspection?.project = linkProjectButton.title(for: .normal)
-		inspection?.title = titleTextField.text
-		inspection?.subtext = subtextTextField.text
-		inspection?.number = numberTextField.text
-		inspection?.start = dates["start"]
-		inspection?.end = dates["end"]
+        } else {
+            
+            guard let realm = try? Realm() else {
+                print("Unable open realm")
+                completion(nil)
+                return
+            }
+
+            do {
+                realm.beginWrite()
+                inspection?.project = linkProjectButton.title(for: .normal)
+                inspection?.title = titleTextField.text
+                inspection?.subtext = subtextTextField.text
+                inspection?.number = numberTextField.text
+                inspection?.start = dates["start"]
+                inspection?.end = dates["end"]
+                inspection?.isSubmitted = false
+                inspection?.teamID = self.teamID
+                try realm.commitWrite()
+                
+            } catch let error {
+                print("Realm save exception \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
 		completion(inspection)
 	}
 	
