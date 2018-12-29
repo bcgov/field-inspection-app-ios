@@ -266,7 +266,7 @@ class NewObservationElementFormViewController: UIViewController {
                 asset?.getURL(completionHandler: { (videoURL) in
                     if videoURL != nil {
                         let thumbnail = AssetManager.sharedInstance.getThumbnailForVideo(url: videoURL! as NSURL)
-                        DataServices.saveVideo(avAsset: avAsset, thumbnail: thumbnail!, index: currIndex, observationID: self.observation.id!, description: "**Video Loaded From Gallery**", completion: { (success) in
+                        DataServices.saveVideo(avAsset: avAsset, thumbnail: thumbnail!, index: currIndex, observationID: self.observation.id, description: "**Video Loaded From Gallery**", completion: { (success) in
                             if success {
                                 selectedAssets.removeFirst()
                                 self.saveAssets(assets: selectedAssets, currIndex: (currIndex + 1), lastIndex: lastIndex, completion: completion)
@@ -283,7 +283,7 @@ class NewObservationElementFormViewController: UIViewController {
         } else {
             // if asset is image:
             AssetManager.sharedInstance.getOriginal(phAsset: asset!) { (img) in
-                DataServices.savePhoto(image: img, index: currIndex, location: asset?.location, observationID: self.observation.id!, description: "**PHOTO LOADED FROM GALLERY**", completion: { (success) in
+                DataServices.savePhoto(image: img, index: currIndex, location: asset?.location, observationID: self.observation.id, description: "**PHOTO LOADED FROM GALLERY**", completion: { (success) in
                     if success {
                         // successful? Remove last asset from array and call saveAssets recursively
                         selectedAssets.removeFirst()
@@ -326,29 +326,27 @@ class NewObservationElementFormViewController: UIViewController {
     }
 
     func saveObservationDetails() {
-//        if observation.coordinate == nil {
-//            observation.coordinate = PFGeoPoint(location: locationManager.location)
-//        }
-//
-//        observation.title = elementTitle
-//        observation.requirement = elementRequirement
-//        if observation.observationDescription == nil {
-//            observation.observationDescription = ""
-//        }
-//        if elementnewDescription != "" {
-//            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
-//        }
-//        observation.pinInBackground { (success, error) in
-//            if success && error == nil {
-//                if self.observation.pinnedAt == nil {
-//                    self.observation.pinnedAt = Date()
-//                }
-//                self.close()
-//            } else {
-//                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
-//            }
-//            self.unlock()
-//        }
+        if let location = locationManager.location, observation.coordinate == nil {
+            observation.coordinate = RealmLocation(location: location)
+        }
+
+        observation.title = elementTitle
+        observation.requirement = elementRequirement
+        if observation.observationDescription == nil {
+            observation.observationDescription = ""
+        }
+        if elementnewDescription != "" {
+            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+        }
+        
+        let result = DataServices.add(observation: observation)
+        if result {
+            self.close()
+        } else {
+            AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
+        }
+        self.unlock()
+
     }
 
     func setUpObservationObject() {
@@ -356,9 +354,6 @@ class NewObservationElementFormViewController: UIViewController {
         // otherwise autofill data
         if observation == nil {
             observation = PFObservation()
-            if observation.id == nil {
-                observation.id = UUID().uuidString
-            }
             if observation.inspectionId == nil {
                 observation.inspectionId = inspection.id
             }
@@ -378,12 +373,12 @@ class NewObservationElementFormViewController: UIViewController {
 
     func load() {
         print("load")
-        DataServices.getThumbnailsFor(observationID: observation.id!) { (success, photos) in
+        DataServices.getThumbnailsFor(observationID: observation.id) { (success, photos) in
             if success {
                 self.storedPhotos = photos!
             }
         }
-        DataServices.getAudiosFor(observationID: self.observation.id!) { (success, audios) in
+        DataServices.getAudiosFor(observationID: self.observation.id) { (success, audios) in
             if success {
                 self.storedAudios = audios!
             }
@@ -722,7 +717,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
 //        self.containerHeight.constant = 450
         self.containerHeight.constant = self.view.frame.height - 200
-        DataServices.getVideoFor(observationID: observation.id!, at: index) { (found, pfVideo) in
+        DataServices.getVideoFor(observationID: observation.id, at: index) { (found, pfVideo) in
             if found {
                 guard let assetURL = pfVideo?.getURL() else {return}
 //                let avurlasset = AVURLAsset(url: assetURL)
@@ -756,7 +751,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        DataServices.getPhotoFor(observationID: observation.id!, at: index) { (found, photo) in
+        DataServices.getPhotoFor(observationID: observation.id, at: index) { (found, photo) in
 
             if found {
                 let location = photo?.coordinate
@@ -832,7 +827,7 @@ extension NewObservationElementFormViewController {
         }
         
         let recorder = Recorder()
-        let vc = recorder.getVC(inspectionID: inspection.id, observationID: observation.id!) { (done) in
+        let vc = recorder.getVC(inspectionID: inspection.id, observationID: observation.id) { (done) in
             self.load()
         }
         self.present(vc, animated: true, completion: nil)
@@ -877,12 +872,14 @@ extension  NewObservationElementFormViewController:  UIImagePickerControllerDele
             var comments = ""
             
             if !results.isEmpty {
-                //                self.warn(message: results["details"] as! String)
-                comments = results["details"] as! String
+                if let details = results["details"] as? String {
+                    //                self.warn(message: results["details"] as! String)
+                    comments = details
+                }
             }
 
             // TODO:: Store nowDate
-            DataServices.savePhoto(image: image, index: self.storedPhotos.count, location:location, observationID: self.observation.id!, description: comments, completion: { (done) in
+            DataServices.savePhoto(image: image, index: self.storedPhotos.count, location:location, observationID: self.observation.id, description: comments, completion: { (done) in
                 if done {
                     self.load()
                     self.enabledPopUp = false

@@ -94,7 +94,7 @@ class PFInspection: Object, Mappable{
         parameters["title"] = title ?? "N/A"
         parameters["submitted"] = isSubmitted
         parameters["local"] = isStoredLocally
-        return "inspection \(parameters)"
+        return "\(self) \(parameters)"
     }
     
     //MARK: - Submission

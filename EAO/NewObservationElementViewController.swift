@@ -163,8 +163,6 @@ class NewObservationElementViewController: UIViewController {
         self.elementTitle = observation.title!
         self.elementRequirement = observation.requirement!
         self.elementoldDescription = observation.observationDescription!
-//        let lat: Double = round(num: (observation.coordinate?.latitude)!, toPlaces: 5)
-//        let long: Double = round(num: (observation.coordinate?.longitude)!, toPlaces: 5)
         self.currentCoordinatesString = observation.coordinate?.printableString() ?? ""
         self.loadPhotos()
         self.isAutofilled = true
@@ -539,9 +537,11 @@ extension NewObservationElementViewController:  UIImagePickerControllerDelegate,
             let results = form.getFormResults()
             var comments = ""
 
-            if !results.isEmpty {
-//                self.warn(message: results["details"] as! String)
-                comments = results["details"] as! String
+            if results.isEmpty == false {
+                if let details = results["details"] as? String{
+                    //                self.warn(message: results["details"] as! String)
+                    comments = details
+                }
             }
 
             self.storePhotoTaken(image: image, description: comments, location: self.locationManager.location!)

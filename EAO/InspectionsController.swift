@@ -241,9 +241,8 @@ final class InspectionsController: UIViewController {
     private func configureCell(cell: InspectionCell, atIndexPath indexPath: IndexPath) {
 
         let inspection = data[indexPath.row]
-
-        print("inspection \(inspection.debugDescription)")
-
+        print("[inspection] \(inspection.debugDescription)")
+        
         cell.configureCell(with: inspection)
         
         if inspection.isSubmitted == false {

@@ -22,7 +22,7 @@ class PFObservation: Object, Mappable{
     }
     
     // MARK: Properties
-    @objc dynamic var id           : String?
+    @objc dynamic var id           : String = UUID().uuidString
     @objc dynamic var inspectionId : String?
     @objc dynamic var title        : String?
     @objc dynamic var requirement  : String?
@@ -37,10 +37,10 @@ class PFObservation: Object, Mappable{
         self.init()
     }
     
-    //    override static func primaryKey() -> String? {
-    //        return "id"
-    //    }
-    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+
     func mapping(map: Map) {
         
         id <- map[SerializationKeys.id]
@@ -51,6 +51,18 @@ class PFObservation: Object, Mappable{
         pinnedAt <- (map[SerializationKeys.pinnedAt], DateFormatterTransform(dateFormatter: Settings.formatter))
         observationDescription <- map[SerializationKeys.observationDescription]
     }
+    
+    override var debugDescription: String{
+        
+        var parameters = [String: Any?]()
+        
+        parameters["title"] = title ?? "N/A"
+        parameters["inspectionId"] = inspectionId
+        parameters["requirement"] = requirement ?? "N/A"
+        parameters["observationDescription"] = observationDescription ?? "N/A"
+        return "\(self) \(parameters)"
+    }
+
 }
 
 extension PFObservation {

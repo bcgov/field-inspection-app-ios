@@ -128,6 +128,25 @@ class DataServices {
         
         return true
     }
+
+    class func add(observation: PFObservation) -> Bool {
+        
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            return false
+        }
+        
+        do {
+            try realm.write {
+                realm.add(observation, update: true)
+            }
+        } catch {
+            return false
+        }
+        
+        return true
+    }
+
     
 //    private class func update(inspeciton: PFInspection, isStoredLocally: Bool) {
 //
@@ -164,8 +183,7 @@ class DataServices {
     }
     
     internal class func fetchInspections(completion: ((_ results: [PFInspection]) -> Void)? = nil) {
-        
-        //TODO: #11
+        //TODONE: #11
         //filter inspections by user ID
         do {
             let realm = try Realm()
@@ -197,6 +215,20 @@ class DataServices {
                 completion?()
             }
         }
+    }
+    
+    class func fetchObservations(for inspection: PFInspection) -> [PFObservation]? {
+        do {
+            let realm = try Realm()
+            let observations = realm.objects(PFObservation.self).filter("inspectionId in %@", [inspection.id]).sorted(byKeyPath: "pinnedAt", ascending: true)
+            let observationsArray = Array(observations)
+            
+            print("fetchObservations: count = \(observations.count)");
+            return observationsArray
+        } catch let error {
+            print("fetchObservations: \(error.localizedDescription)");
+        }
+        return nil
     }
     
     internal class func fetchObservationsFor(inspection: PFInspection, localOnly: Bool = false, completion: ((_ results: [PFObservation]) -> Void)? = nil) {
@@ -684,7 +716,7 @@ class DataServices {
     }
     
     internal class func uploadAudios(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
-        getAudiosFor(observationID: observation.id!) { (success, pfaudios) in
+        getAudiosFor(observationID: observation.id) { (success, pfaudios) in
             if success {
                 if let count = pfaudios?.count {
 //                    let parseSoundObjects: [PFAudio] = [PFAudio]()
@@ -709,7 +741,7 @@ class DataServices {
     }
     
     internal class func uploadVideos(for observation: PFObservation, observObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
-        getVideosFor(observationID: observation.id!) { (success, pfvideos) in
+        getVideosFor(observationID: observation.id) { (success, pfvideos) in
             if success {
                 if let count = pfvideos?.count {
                     let parseVideObjects: [PFObject] = [PFObject]()
@@ -735,7 +767,7 @@ class DataServices {
     }
     
     internal class func uploadPhotos(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
-        getPhotosFor(observationID: observation.id!) { (success, pfphotos) in
+        getPhotosFor(observationID: observation.id) { (success, pfphotos) in
             if success {
                 if let count = pfphotos?.count {
                     let parsePhotoObjects: [PFObject] = [PFObject]()

@@ -52,18 +52,13 @@ final class InspectionFormController: UIViewController{
 	}
  
 	fileprivate func load(){
-//        let query = PFObservation.query()
-//        query?.fromLocalDatastore()
-//        query?.whereKey("inspectionId", equalTo: inspection.id!)
-//        query?.order(byDescending: "pinnedAt")
-//        query?.findObjectsInBackground(block: { (objects, error) in
-//            guard let objects = objects as? [PFObservation], error == nil else{
-//                AlertView.present(on: self, with: "Error occured while retrieving inspections from local storage")
-//                return
-//            }
-//            self.observations = objects
-//            self.tableView.reloadData()
-//        })
+        
+        if let observations = DataServices.fetchObservations(for: inspection) {
+            self.observations = observations
+        } else {
+            AlertView.present(on: self, with: "Error occured while retrieving inspections from local storage")
+        }
+        self.tableView.reloadData()
 	}
 	
 	fileprivate func setElements(enabled: Bool){
