@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import Parse
+import RealmSwift
 
 class NewObservationElementFormViewController: UIViewController {
     
@@ -326,24 +327,34 @@ class NewObservationElementFormViewController: UIViewController {
     }
 
     func saveObservationDetails() {
-        if let location = locationManager.location, observation.coordinate == nil {
-            observation.coordinate = RealmLocation(location: location)
-        }
-
-        observation.title = elementTitle
-        observation.requirement = elementRequirement
-        if observation.observationDescription == nil {
-            observation.observationDescription = ""
-        }
-        if elementnewDescription != "" {
-            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
-        }
         
-        let result = DataServices.add(observation: observation)
-        if result {
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            return
+        }
+        do {
+            realm.beginWrite()
+            
+            if let location = locationManager.location, observation.coordinate == nil {
+                observation.coordinate = RealmLocation(location: location)
+            }
+            
+            observation.title = elementTitle
+            observation.requirement = elementRequirement
+            if observation.observationDescription == nil {
+                observation.observationDescription = ""
+            }
+            if elementnewDescription != "" {
+                observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+            }
+            
+            realm.add(observation, update: true)
+            try realm.commitWrite()
             self.close()
-        } else {
+
+        } catch let error {
             AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
+            print("Realm exception \(error.localizedDescription)")
         }
         self.unlock()
 
