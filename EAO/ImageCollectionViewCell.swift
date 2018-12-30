@@ -43,8 +43,8 @@ class ImageCollectionViewCell: BaseCollectionCell {
 
     func setWithPFThumb(photo: PFPhotoThumb, type: MediaCellType) {
         self.type = type
-//        guard let img = photo.image else { return}
-//        imageView.image = img
+        guard let img = photo.image else { return}
+        imageView.image = img
     }
 
     func setAudio(audio: PFAudio, type: MediaCellType) {

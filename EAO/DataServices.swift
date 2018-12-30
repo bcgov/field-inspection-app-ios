@@ -14,27 +14,6 @@ import RealmSwift
 import Alamofire
 import AlamofireObjectMapper
 
-
-protocol LocalizedDescriptionError: Error {
-    var localizedDescription: String { get }
-}
-
-public enum DataServicesError: LocalizedDescriptionError {
-    case unknownError
-    case noNetworkConnectivity
-    case internalError(message: String)
-    case requestFailed(error: Error)
-    
-    var localizedDescription: String {
-        switch self {
-        case .internalError(message: let message):
-            return message
-        default:
-            return "No Error Provided"
-        }
-    }
-}
-
 class DataServices {
     
     static let realmFileName = "default.realm"
@@ -98,49 +77,39 @@ class DataServices {
 
     class func add(inspection: PFInspection, isStoredLocally: Bool = false) -> Bool {
         
-        guard let realm = try? Realm() else {
-            print("Unable open realm")
-            return false
-        }
-        
         do {
+            let realm = try Realm()
             try realm.write {
                 realm.add(inspection, update: true)
             }
-        } catch {
-            return false
-        }
-        
-        let doc = InspectionMeta()
-        doc.id = UUID().uuidString
-        doc.localId = inspection.id
-//        doc.remoteId = inspection.objectId
-        doc.isStoredLocally = isStoredLocally
-        doc.modifiedAt = Date()
-        
-        do {
+            
+            let doc = InspectionMeta()
+            doc.id = UUID().uuidString
+            doc.localId = inspection.id
+            //        doc.remoteId = inspection.objectId
+            doc.isStoredLocally = isStoredLocally
+            doc.modifiedAt = Date()
+
             try realm.write {
                 realm.add(doc)
             }
+
         } catch {
+            print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
-        
         return true
     }
 
     class func add(observation: PFObservation) -> Bool {
         
-        guard let realm = try? Realm() else {
-            print("Unable open realm")
-            return false
-        }
-        
         do {
+            let realm = try Realm()
             try realm.write {
                 realm.add(observation, update: true)
             }
-        } catch {
+        } catch let error {
+            print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
         
@@ -1096,59 +1065,33 @@ class DataServices {
     }
     
     internal class func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhotoThumb]? ) -> Void) {
-        var foundPhotos = [PFPhotoThumb]()
-//        guard let query = PFPhotoThumb.query() else {
-//            // fail
-//            return completion(false, nil)
-//        }
-//
-//        query.fromLocalDatastore()
-//        query.whereKey("observationId", equalTo: observationID)
-//        query.findObjectsInBackground(block: { (photos, error) in
-//            guard let storedPhotos = photos as? [PFPhotoThumb], error == nil else {
-//                // fail
-//                return completion(false, nil)
-//            }
-//
-//            for photo in storedPhotos {
-//                if let id = photo.id{
-//                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-//                    photo.image = UIImage(contentsOfFile: url.path)
-//                    foundPhotos.append(photo)
-//                }
-//            }
-//            print(foundPhotos.count)
-//            // success
-//            return completion(true, foundPhotos)
-//        })
+        
+        do {
+            let realm = try Realm()
+            let results = realm.objects(PFPhotoThumb.self).filter("observationId in %@", [observationID])
+            let resultsArray = Array(results)
+            
+            print("\(#function): count = \(results.count)");
+            return completion(true, resultsArray)
+        } catch let error {
+            print("\(#function): \(error.localizedDescription)");
+            return completion(false, nil)
+        }
     }
     
     internal class func getPhotosFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhoto]? ) -> Void) {
-        var foundPhotos = [PFPhoto]()
-//        guard let query = PFPhoto.query() else {
-//            // fail
-//            return completion(false, nil)
-//        }
-//
-//        query.fromLocalDatastore()
-//        query.whereKey("observationId", equalTo: observationID)
-//        query.findObjectsInBackground(block: { (photos, error) in
-//            guard let storedPhotos = photos as? [PFPhoto], error == nil else {
-//                // fail
-//                return completion(false, nil)
-//            }
-//
-//            for photo in storedPhotos {
-//                if let id = photo.id{
-//                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-//                    photo.image = UIImage(contentsOfFile: url.path)
-//                    foundPhotos.append(photo)
-//                }
-//            }
-//            print(foundPhotos.count)
-//            // success
-//            return completion(true, foundPhotos)
-//        })
+        
+        do {
+            let realm = try Realm()
+            let results = realm.objects(PFPhoto.self).filter("observationId in %@", [observationID])
+            let resultsArray = Array(results)
+            
+            print("\(#function): count = \(results.count)");
+            return completion(true, resultsArray)
+        } catch let error {
+            print("\(#function): \(error.localizedDescription)");
+            return completion(false, nil)
+        }
     }
     
     internal class func isUserMobileAccessEnabled(completion: @escaping (_ success: Bool) -> Void) {
@@ -1232,71 +1175,3 @@ class DataServices {
 }
 
 
-// MARK: Network Requests
-// TODO: move to the network manager
-extension DataServices{
-        
-    class func fetchProjectList(completion: @escaping (_ error: DataServicesError?) -> Void) {
-        
-        let sessionManager = Alamofire.SessionManager.default
-        sessionManager.request(Constants.API.projectListURI).responseArray { (response: DataResponse<[EAOProject]>) in
-            
-            let (response, error) = NetworkManager.processResponse(response)
-            
-            if let error = error {
-                print(error)
-                DispatchQueue.main.async {
-                    completion(DataServicesError.internalError(message: error.localizedDescription))
-                }
-                return
-            }
-            
-            // save/update all projects in the data base
-            if let responseArray = response {
-                do {
-                    let realm = try Realm()
-                    try realm.write {
-                        for responseObject in responseArray {
-                            realm.add(responseObject, update: true)
-                        }
-                    }
-                    completion(nil)
-                } catch let error as NSError {
-                    print(error)
-                    DispatchQueue.main.async {
-                        completion(DataServicesError.requestFailed(error: error))
-                    }
-                }
-            }
-        }
-    }
-    
-}
-
-extension DataServices {
-    
-    func getProjects()->Results<EAOProject>?{
-        
-        do {
-            let realm = try Realm()
-            let projects = realm.objects(EAOProject.self).sorted(byKeyPath: "name", ascending: true)
-            return projects
-            
-        } catch {
-        }
-        
-        return nil
-    }
-
-    func getProjectsAsStrings()->[String]{
-
-        guard let projects = getProjects() else {
-            return []
-        }
-
-        var projectStrings = [String]()
-        projectStrings = projects.compactMap({ $0.name })
-        return projectStrings
-    }
-
-}

@@ -22,7 +22,8 @@ class PFPhoto: Object, Mappable{
     
     ///Use this variable for image caching
     var image : UIImage?{
-        return nil
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        return UIImage(contentsOfFile: url.path)
     }
     
     // MARK: Properties

@@ -294,6 +294,8 @@
 		D53B6DE321CB63C700A0F546 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE221CB63C700A0F546 /* Settings.swift */; };
 		D53B6DE921CB705800A0F546 /* EAOProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE621CB705700A0F546 /* EAOProject.swift */; };
 		D53B6DEC21CE0FF500A0F546 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53B6DEB21CE0FF400A0F546 /* Parse.plist */; };
+		D5B6F72521D9424D007FF921 /* DataServices+Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */; };
+		D5B6F72821D94277007FF921 /* DataServicesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72721D94277007FF921 /* DataServicesError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -509,6 +511,8 @@
 		D53B6DE221CB63C700A0F546 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D53B6DE621CB705700A0F546 /* EAOProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAOProject.swift; sourceTree = "<group>"; };
 		D53B6DEB21CE0FF400A0F546 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Parse.plist; sourceTree = "<group>"; };
+		D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataServices+Projects.swift"; sourceTree = "<group>"; };
+		D5B6F72721D94277007FF921 /* DataServicesError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServicesError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1025,6 +1029,8 @@
 			isa = PBXGroup;
 			children = (
 				29FF5619200EC29100FCF230 /* DataServices.swift */,
+				D5B6F72721D94277007FF921 /* DataServicesError.swift */,
+				D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */,
 				56447C65219664ED0018A828 /* NetworkManager.swift */,
 			);
 			name = Services;
@@ -1749,6 +1755,7 @@
 				291746742073E77F005F70B4 /* Team.swift in Sources */,
 				112F74721E97FDC80076926A /* LoginController.swift in Sources */,
 				1186B5251ECA235900681426 /* URL.swift in Sources */,
+				D5B6F72821D94277007FF921 /* DataServicesError.swift in Sources */,
 				29AA664E2003F3F900673013 /* UIView.swift in Sources */,
 				29AA66362003EB4600673013 /* FormTitleTableViewCell.swift in Sources */,
 				295304F22017FF59001E5C7F /* LabelStyle.swift in Sources */,
@@ -1804,6 +1811,7 @@
 				29424D401FFC146200562508 /* AssetManager.swift in Sources */,
 				1159B3A71EB1236700F72750 /* PFInspection.swift in Sources */,
 				29424D4D1FFC14A000562508 /* RecultCollectionViewCell.swift in Sources */,
+				D5B6F72521D9424D007FF921 /* DataServices+Projects.swift in Sources */,
 				117D3BFC1EEF5D7A00791D07 /* String.swift in Sources */,
 				29A029EE2029FECC0085DCE8 /* AudioRecorderViewController.swift in Sources */,
 				29424D411FFC146200562508 /* ChooseImageViewController.swift in Sources */,
