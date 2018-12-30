@@ -140,15 +140,16 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 
 	//MARK: -
 	fileprivate func populate(){
+        
 		guard let photo = photo else { return }
 		uploadButton.isEnabled = false
 		uploadButton.alpha = 0
 		uploadLabel.alpha = 0
 		indicator.startAnimating()
-		if let id = photo.id{
-			let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-			imageView.image = UIImage(contentsOfFile: url.path)
-		}
+
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(photo.id, isDirectory: true)
+        imageView.image = UIImage(contentsOfFile: url.path)
+        
 		captionTextView.text = photo.caption
 		timestampLabel.text = photo.timestamp?.timeStampFormat()
 		gpsLabel.text = photo.coordinate?.printableString()

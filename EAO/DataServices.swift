@@ -148,26 +148,7 @@ class DataServices {
     }
 
     
-//    private class func update(inspeciton: PFInspection, isStoredLocally: Bool) {
-//
-//        guard let realm = try? Realm() else {
-//            print("Unable open realm")
-//            return
-//        }
-//
-//        if let myInspection = realm.objects(InspectionMeta.self).filter("localId == %@", inspeciton.id!).first {
-//            do {
-//                try realm.write {
-//                    myInspection.isStoredLocally = isStoredLocally
-//                }
-//            } catch {
-//                fatalError("Unable to write to realm")
-//            }
-//        }
-//    }
-
     // MARK: Parse
-    
     internal class func inspectionQueryForCurrentUser() -> PFQuery<PFObject>? {
 
 //        guard let query = PFInspection.query() else {
@@ -183,7 +164,7 @@ class DataServices {
     }
     
     internal class func fetchInspections(completion: ((_ results: [PFInspection]) -> Void)? = nil) {
-        //TODONE: #11
+        //TODO: #11
         //filter inspections by user ID
         do {
             let realm = try Realm()
@@ -528,15 +509,17 @@ class DataServices {
         DataServices.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
             // then save video
+            
             let video = PFVideo()
             video.id = "\(UUID().uuidString).mp4"
             video.observationId = observationID
             video.index = index as NSNumber
             video.notes = description
-            let exportURL: URL = FileManager.directory.appendingPathComponent(video.id!, isDirectory: true)
+            let exportURL: URL = FileManager.directory.appendingPathComponent(video.id, isDirectory: true)
             let exporter = AVAssetExportSession(asset: avAsset, presetName: AVAssetExportPresetHighestQuality)
             exporter?.outputFileType = AVFileType.mov
             exporter?.outputURL = exportURL
+            
             exporter?.exportAsynchronously(completionHandler: {
                 DataServices.savePFVideo(video: video, completion: completion)
             })
@@ -544,15 +527,22 @@ class DataServices {
     }
     
     internal class func savePFVideo(video: PFVideo, completion: @escaping (_ created: Bool) -> Void) {
-//        video.pinInBackground { (success, error) in
-//            if success && error == nil {
-//                // success
-//                return completion(true)
-//            } else {
-//                // fail
-//                return completion(false)
-//            }
-//        }
+        
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            return
+        }
+        do {
+            realm.beginWrite()
+            realm.add(video, update: true)
+            try realm.commitWrite()
+            return completion(true)
+
+        } catch let error {
+            print("Realm save exception \(error.localizedDescription)")
+            return completion(false)
+        }
+
     }
     
     internal class func getVideoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ video: PFVideo? ) -> Void) {
@@ -826,6 +816,7 @@ class DataServices {
     
     
     internal class func uploadPhoto(for observation: PFObservation, obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
+        
 //        let photo = PFObject(className: "Photo")
 //        getPhotoAt(observationID: observation.id!, at: index) { (found, pfphoto) in
 //            if !found {
@@ -916,29 +907,32 @@ class DataServices {
     }
     
     internal class func saveAudio(audioURL: URL, index: Int, observationID: String, inspectionID: String, notes: String, title: String, completion: @escaping (_ created: Bool) -> Void) {
-//        let audio = PFAudio()
-//        audio.id = "\(UUID().uuidString).mp4a"
-//        audio.observationId = observationID
-//        audio.index = index as NSNumber
-//        audio.inspectionId = inspectionID
-//        audio.notes = notes
-//        audio.title = title
-//        let data = NSData(contentsOf: audioURL)
-//        do {
-//            try data?.write(to: FileManager.directory.appendingPathComponent(audio.id!, isDirectory: true))
-//            audio.pinInBackground { (success, error) in
-//                if success && error == nil {
-//                    // success
-//                    return completion(true)
-//                } else {
-//                    // fail
-//                    return completion(false)
-//                }
-//            }
-//        } catch {
-//            // fail
-//            return completion(false)
-//        }
+        
+        let audio = PFAudio()
+        audio.id = "\(UUID().uuidString).mp4a"
+        audio.observationId = observationID
+        audio.index = index as NSNumber
+        audio.inspectionId = inspectionID
+        audio.notes = notes
+        audio.title = title
+        let data = NSData(contentsOf: audioURL)
+        
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            return
+        }
+        do {
+            try data?.write(to: FileManager.directory.appendingPathComponent(audio.id, isDirectory: true))
+            realm.beginWrite()
+            realm.add(audio, update: true)
+            try realm.commitWrite()
+            
+            return completion(true)
+            
+        } catch let error {
+            print("Realm or Data save exception \(error.localizedDescription)")
+            return completion(false)
+        }
     }
     
     internal class func getAudiosFor(observationID: String, completion: @escaping (_ success: Bool, _ audios: [PFAudio]? ) -> Void) {
@@ -966,6 +960,7 @@ class DataServices {
     }
     
     internal class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+        
         DataServices.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (done) in
             if !done{ return completion (false)}
             
@@ -978,30 +973,34 @@ class DataServices {
     }
     
     internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+        
         let photo = PFPhoto()
-//        photo.caption = description
-//        photo.observationId = observationID
-//        photo.id = "\(UUID().uuidString).jpeg"
-//        photo.timestamp = Date()
-//        photo.index = index as NSNumber
-//        photo.coordinate = PFGeoPoint(location: location)
-//        let data = image.toData(quality: .uncompressed)
-//        print("full size of \(index) is \(data.count)")
-//        do {
-//            try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-//            photo.pinInBackground { (success, error) in
-//                if success && error == nil {
-//                    // success
-//                    return completion(true)
-//                } else {
-//                    // fail
-//                    return completion(false)
-//                }
-//            }
-//        } catch {
-//            // fail
-//            return completion(false)
-//        }
+        photo.caption = description
+        photo.observationId = observationID
+        photo.id = "\(UUID().uuidString).jpeg"
+        photo.timestamp = Date()
+        photo.index = index as NSNumber
+        photo.coordinate = RealmLocation(location: location)
+        
+        let data = image.toData(quality: .uncompressed)
+        print("full size of \(index) is \(data.count)")
+
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            return
+        }
+        do {
+            try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
+            realm.beginWrite()
+            realm.add(photo, update: true)
+            try realm.commitWrite()
+
+            return completion(true)
+
+        } catch let error {
+            print("Realm or Data save exception \(error.localizedDescription)")
+            return completion(false)
+        }
     }
     
     internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
@@ -1009,29 +1008,31 @@ class DataServices {
         guard let data: Data = UIImageJPEGRepresentation(UIImage.resizeImage(image: image), 0) else {
             return completion(false)
         }
-        
         print("thumb size of \(index) is \(data.count)")
+        
         let photo = PFPhotoThumb()
         photo.observationId = observationID
         photo.id = "\(UUID().uuidString).jpeg"
         photo.originalType = originalType
         photo.index = index as NSNumber
         
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            return
+        }
         do {
-            try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-//            photo.pinInBackground { (success, error) in
-//                if success && error == nil {
-//                    // success
-//                    return completion(true)
-//                } else {
-//                    // fail
-//                    return completion(false)
-//                }
-//            }
-        } catch {
-            // fail
+            try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
+            realm.beginWrite()
+            realm.add(photo, update: true)
+            try realm.commitWrite()
+            
+            return completion(true)
+            
+        } catch let error {
+            print("Realm or Data save exception \(error.localizedDescription)")
             return completion(false)
         }
+        
     }
     
     internal class func getThumbnailFor(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhotoThumb? ) -> Void) {

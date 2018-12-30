@@ -24,7 +24,7 @@ class PFPhotoThumb: Object, Mappable{
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String?
+    @objc dynamic var id            : String = UUID().uuidString
     @objc dynamic var observationId : String?
     @objc dynamic var index         : NSNumber? = 0
     // original asset type: Video? Photo?
@@ -32,6 +32,10 @@ class PFPhotoThumb: Object, Mappable{
     
     required convenience init?(map: Map) {
         self.init()
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
     
     func mapping(map: Map) {

@@ -23,10 +23,14 @@ class RealmLocation: Object, Mappable {
         self.init()
     }
     
-    required convenience init?(location: CLLocation) {
-        self.init()
-        latitude = location.coordinate.latitude
-        longitude = location.coordinate.longitude
+    required convenience init?(location: CLLocation?) {
+        if let location = location{
+            self.init()
+            latitude = location.coordinate.latitude
+            longitude = location.coordinate.longitude
+        } else {
+            return nil
+        }
     }
     
     func mapping(map: Map) {

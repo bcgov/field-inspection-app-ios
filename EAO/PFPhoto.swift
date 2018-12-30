@@ -26,7 +26,7 @@ class PFPhoto: Object, Mappable{
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String?
+    @objc dynamic var id            : String = UUID().uuidString
     @objc dynamic var observationId : String?
     //    @objc dynamic var file          : PFFile?
     @objc dynamic var caption       : String?
@@ -36,6 +36,10 @@ class PFPhoto: Object, Mappable{
     
     required convenience init?(map: Map) {
         self.init()
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
     
     func mapping(map: Map) {

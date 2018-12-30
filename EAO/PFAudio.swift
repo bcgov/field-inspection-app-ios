@@ -23,7 +23,7 @@ final class PFAudio: Object, Mappable{
         static let coordinate = "coordinate"
     }
     
-    @objc dynamic var id            : String?
+    @objc dynamic var id            : String = UUID().uuidString
     @objc dynamic var observationId : String?
     @objc dynamic var inspectionId : String?
     @objc dynamic var index: NSNumber? = 0
@@ -37,6 +37,10 @@ final class PFAudio: Object, Mappable{
         self.init()
     }
     
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+
     func mapping(map: Map) {
         id <- map[SerializationKeys.id]
         observationId <- map[SerializationKeys.observationId]
