@@ -27,13 +27,13 @@ class PFPhoto: Object, Mappable{
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String = UUID().uuidString
+    @objc dynamic var id            : String = "\(UUID().uuidString).jpeg"
     @objc dynamic var observationId : String?
     //    @objc dynamic var file          : PFFile?
     @objc dynamic var caption       : String?
-    @objc dynamic var timestamp     : Date?
+    @objc dynamic var timestamp     : Date? = Date()
     @objc dynamic var coordinate    : RealmLocation?
-    @objc dynamic var index         : NSNumber? = 0
+    @objc dynamic var index         : Int = 0
     
     required convenience init?(map: Map) {
         self.init()

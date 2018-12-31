@@ -25,9 +25,9 @@ class PFPhotoThumb: Object, Mappable{
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String = UUID().uuidString
+    @objc dynamic var id            : String = "\(UUID().uuidString).jpeg"
     @objc dynamic var observationId : String?
-    @objc dynamic var index         : NSNumber? = 0
+    @objc dynamic var index         : Int = 0
     // original asset type: Video? Photo?
     @objc dynamic var originalType  : String?
     
@@ -62,12 +62,8 @@ extension PFPhotoThumb {
     }
     
     @objc func get() -> Data?{
-        //        guard let id = id else{
-        //            return nil
-        //        }
-        //        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-        //        return try? Data(contentsOf: url)
-        return nil
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        return try? Data(contentsOf: url)
     }
     
 }

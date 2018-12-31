@@ -296,6 +296,9 @@
 		D53B6DEC21CE0FF500A0F546 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53B6DEB21CE0FF400A0F546 /* Parse.plist */; };
 		D5B6F72521D9424D007FF921 /* DataServices+Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */; };
 		D5B6F72821D94277007FF921 /* DataServicesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72721D94277007FF921 /* DataServicesError.swift */; };
+		D5B6F72A21D9AAE5007FF921 /* DataServices+Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72921D9AAE5007FF921 /* DataServices+Photos.swift */; };
+		D5B6F72C21D9AB4A007FF921 /* DataServices+Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72B21D9AB4A007FF921 /* DataServices+Audio.swift */; };
+		D5B6F72E21D9ABEC007FF921 /* DataServices+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72D21D9ABEC007FF921 /* DataServices+Video.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -513,6 +516,9 @@
 		D53B6DEB21CE0FF400A0F546 /* Parse.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Parse.plist; sourceTree = "<group>"; };
 		D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataServices+Projects.swift"; sourceTree = "<group>"; };
 		D5B6F72721D94277007FF921 /* DataServicesError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServicesError.swift; sourceTree = "<group>"; };
+		D5B6F72921D9AAE5007FF921 /* DataServices+Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataServices+Photos.swift"; sourceTree = "<group>"; };
+		D5B6F72B21D9AB4A007FF921 /* DataServices+Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataServices+Audio.swift"; sourceTree = "<group>"; };
+		D5B6F72D21D9ABEC007FF921 /* DataServices+Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataServices+Video.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1031,6 +1037,9 @@
 				29FF5619200EC29100FCF230 /* DataServices.swift */,
 				D5B6F72721D94277007FF921 /* DataServicesError.swift */,
 				D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */,
+				D5B6F72921D9AAE5007FF921 /* DataServices+Photos.swift */,
+				D5B6F72B21D9AB4A007FF921 /* DataServices+Audio.swift */,
+				D5B6F72D21D9ABEC007FF921 /* DataServices+Video.swift */,
 				56447C65219664ED0018A828 /* NetworkManager.swift */,
 			);
 			name = Services;
@@ -1768,6 +1777,7 @@
 				110FF0A21E8C25C5000DB1A5 /* Date.swift in Sources */,
 				29424D4B1FFC14A000562508 /* OptionCollectionViewCell.swift in Sources */,
 				295304E22017FF47001E5C7F /* MiFormTextViewTableViewCell.swift in Sources */,
+				D5B6F72E21D9ABEC007FF921 /* DataServices+Video.swift in Sources */,
 				1186B52E1ECA634C00681426 /* UIViewController.swift in Sources */,
 				298EDDB9203B4D01004530F5 /* PHAsset.swift in Sources */,
 				110FF0A61E8C25C5000DB1A5 /* UIColor.swift in Sources */,
@@ -1803,6 +1813,7 @@
 				29AA665520040DC800673013 /* UIReusableView.swift in Sources */,
 				56447C62219635D90018A828 /* UIViewControllerExtensions.swift in Sources */,
 				5675DAA42194FBD8008409AB /* InspectionMeta.swift in Sources */,
+				D5B6F72A21D9AAE5007FF921 /* DataServices+Photos.swift in Sources */,
 				295304EB2017FF4D001E5C7F /* MiFormManager.swift in Sources */,
 				29424D431FFC146200562508 /* GalleryManager.swift in Sources */,
 				112F74741E97FDD90076926A /* SignupController.swift in Sources */,
@@ -1815,6 +1826,7 @@
 				117D3BFC1EEF5D7A00791D07 /* String.swift in Sources */,
 				29A029EE2029FECC0085DCE8 /* AudioRecorderViewController.swift in Sources */,
 				29424D411FFC146200562508 /* ChooseImageViewController.swift in Sources */,
+				D5B6F72C21D9AB4A007FF921 /* DataServices+Audio.swift in Sources */,
 				295304DF2017FF47001E5C7F /* miFormImageTableViewCell.swift in Sources */,
 				29424D2A1FFC140E00562508 /* NewObservationElementManager.swift in Sources */,
 				11D70EB31E8D852800CBF92C /* InspectionSetupController.swift in Sources */,
