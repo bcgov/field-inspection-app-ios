@@ -84,10 +84,10 @@ final class LoginController: UIViewController{
                 })
 //                PFInspection.loadAndPin {
 //                    self.load(completion: {
-//                        self.clearTextFields()
-//                        self.present(controller: InspectionsController.storyboardInstance())
-//                        self.indicator.stopAnimating()
-//                        sender.isEnabled = true
+                        self.clearTextFields()
+                        self.present(controller: InspectionsController.storyboardInstance())
+                        self.indicator.stopAnimating()
+                        sender.isEnabled = true
 //                    })
 //                }
 			}
