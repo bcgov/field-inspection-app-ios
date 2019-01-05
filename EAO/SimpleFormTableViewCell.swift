@@ -78,7 +78,7 @@ class SimpleFormTableViewCell: BaseFormCell {
         }
     }
 
-    var borderStyle = UITextBorderStyle.roundedRect {
+    var borderStyle = UITextField.BorderStyle.roundedRect {
         didSet{
             inputField.borderStyle = borderStyle
         }
@@ -96,7 +96,7 @@ class SimpleFormTableViewCell: BaseFormCell {
 
     func setup(obj: SimpleCell) {
         self.obj = obj
-        if obj.currValue != nil && obj.currValue != "" && inputField.text != obj.currValue {
+        if obj.currValue.count > 0 && inputField.text != obj.currValue {
             inputField.text = ""
         }
     }

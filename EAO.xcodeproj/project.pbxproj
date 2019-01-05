@@ -269,7 +269,6 @@
 		29FF5616200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5614200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.swift */; };
 		29FF5617200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5615200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib */; };
 		29FF561A200EC29100FCF230 /* DataServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5619200EC29100FCF230 /* DataServices.swift */; };
-		561F2AC020D19C5F0072C0D0 /* Info-Test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561F2ABF20D19C5F0072C0D0 /* Info-Test.plist */; };
 		56447C62219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
 		56447C63219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
 		56447C6821966B0E0018A828 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C65219664ED0018A828 /* NetworkManager.swift */; };
@@ -1243,7 +1242,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Province of British Columbia";
 				TargetAttributes = {
 					1186B5371ECB699D00681426 = {
@@ -1253,6 +1252,7 @@
 						TestTargetID = 9688D5171E69DA4300C49CD7;
 					};
 					2936BEAE20BF64A500775F5E = {
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 					9688D5171E69DA4300C49CD7 = {
@@ -1329,7 +1329,6 @@
 				2936BF1D20BF64A500775F5E /* SettingsController.storyboard in Resources */,
 				2936BF1E20BF64A500775F5E /* OptionCollectionViewCell.xib in Resources */,
 				2936BF1F20BF64A500775F5E /* GPSLabelTableViewCell.xib in Resources */,
-				561F2AC020D19C5F0072C0D0 /* Info-Test.plist in Resources */,
 				2936BF2020BF64A500775F5E /* MiForm.storyboard in Resources */,
 				2936BF2120BF64A500775F5E /* SignupController.storyboard in Resources */,
 				2936BF2220BF64A500775F5E /* ImageCollectionTableViewCell.xib in Resources */,
@@ -1933,7 +1932,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/EAO/Resources/EAO-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1953,7 +1952,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/EAO/Resources/EAO-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

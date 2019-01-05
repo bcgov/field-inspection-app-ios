@@ -187,8 +187,12 @@ extension UploadPhotoController: UITextViewDelegate{
 
 //MARK: -
 extension UploadPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+    
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+        
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        if let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {
 			didMakeChange = true
 			imageView.image = image
             uploadButton.alpha = 0.25
@@ -199,7 +203,7 @@ extension UploadPhotoController: UIImagePickerControllerDelegate, UINavigationCo
 		self.dismiss(animated: true, completion: nil)
     }
     
-    fileprivate func media(sourceType: UIImagePickerControllerSourceType) {
+    fileprivate func media(sourceType: UIImagePickerController.SourceType) {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = sourceType
@@ -238,3 +242,13 @@ extension UploadPhotoController{
 
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
+}

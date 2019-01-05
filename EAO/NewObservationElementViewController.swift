@@ -112,9 +112,6 @@ class NewObservationElementViewController: UIViewController {
     func setUpObservationObject() {
         if observation == nil {
             observation = PFObservation()
-            if observation.id == nil {
-                observation.id = UUID().uuidString
-            }
             if observation.inspectionId == nil {
                 observation.inspectionId = inspection.id
             }
@@ -501,8 +498,8 @@ extension NewObservationElementViewController {
 // Utilities
 extension NewObservationElementViewController {
     func warn(message: String) {
-        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
 
@@ -513,9 +510,12 @@ extension NewObservationElementViewController {
 }
 
 extension NewObservationElementViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         imagePicker.dismiss(animated: true, completion: nil)
-        let image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage
 //        let image = info[UIImagePickerControllerEditedImage] as? UIImage
         promptImageDetails(image: image!)
     }
@@ -526,7 +526,7 @@ extension NewObservationElementViewController:  UIImagePickerControllerDelegate,
 
         let commonFieldStyle = MiTextFieldStyle(titleColor: blue, inputColor: blue, fieldBG: .white, bgColor: .white, height: 150, roundCorners: true)
 
-        commonFieldStyle.borderStyle = UITextBorderStyle.none
+        commonFieldStyle.borderStyle = UITextField.BorderStyle.none
 
         let commonButtonStyle = MiButtonStyle(textColor: .white, bgColor: blue, height: 50, roundCorners: true)
 
@@ -538,8 +538,7 @@ extension NewObservationElementViewController:  UIImagePickerControllerDelegate,
             var comments = ""
 
             if results.isEmpty == false {
-                if let details = results["details"] as? String{
-                    //                self.warn(message: results["details"] as! String)
+                if let details = results["details"]{
                     comments = details
                 }
             }
@@ -561,3 +560,13 @@ extension NewObservationElementViewController:  UIImagePickerControllerDelegate,
 
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
+}

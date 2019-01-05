@@ -12,7 +12,7 @@ import Parse
 
 class ParseMaster {
     func create(object: [String: Any], name: String) {
-        var obj = PFObject(className: name)
+        let obj = PFObject(className: name)
         for (key, value) in object {
             obj[key] = value
         }

@@ -193,19 +193,19 @@ extension MiFormManager {
 
     func getDefaultTextFieldStyle() -> MiTextFieldStyle {
         let commonFieldStyle = MiTextFieldStyle(titleColor: .purple, inputColor: .purple, fieldBG: .white, bgColor: .white, height: 70, roundCorners: true)
-        commonFieldStyle.borderStyle = UITextBorderStyle.none
+        commonFieldStyle.borderStyle = UITextField.BorderStyle.none
         return commonFieldStyle
     }
 
     func getDefaultTextFieldStyleERROR() -> MiTextFieldStyle {
         let commonFieldStyleError = MiTextFieldStyle(titleColor: .white, inputColor: .purple, fieldBG: .white, bgColor: .red, height: 70, roundCorners: true)
-        commonFieldStyleError.borderStyle = UITextBorderStyle.none
+        commonFieldStyleError.borderStyle = UITextField.BorderStyle.none
         return commonFieldStyleError
     }
 
     func getDefaultTextViewStyle() -> MiTextFieldStyle {
         let commonTextViewStyle = MiTextFieldStyle(titleColor: .purple, inputColor: .purple, fieldBG: .white, bgColor: .white, height: 300, roundCorners: true)
-        commonTextViewStyle.borderStyle = UITextBorderStyle.none
+        commonTextViewStyle.borderStyle = UITextField.BorderStyle.none
         return commonTextViewStyle
     }
 }
@@ -218,20 +218,20 @@ extension MiFormManager {
             sub.removeFromSuperview()
         }
         container.alpha = 1
-        viewController.addChildViewController(miForm)
+        viewController.addChild(miForm)
         container.addSubview(miForm.view)
         miForm.view.frame = container.bounds
         miForm.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        miForm.didMove(toParentViewController: viewController)
+        miForm.didMove(toParent: viewController)
     }
 
     /**
      Note: also hides container by setting alpha to 0
     */
     func remove(from container: UIView, then hide: Bool? = true) {
-        miForm.willMove(toParentViewController: nil)
+        miForm.willMove(toParent: nil)
         miForm.view.removeFromSuperview()
-        miForm.removeFromParentViewController()
+        miForm.removeFromParent()
         if hide! {
             container.alpha = 0
         }

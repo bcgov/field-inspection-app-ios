@@ -222,10 +222,10 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
 
     func initRecorder() -> Bool {
 
-        if AVAudioSession.sharedInstance().recordPermission() == .granted {
+        if AVAudioSession.sharedInstance().recordPermission == .granted {
             let session = AVAudioSession.sharedInstance()
             do {
-                try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+                try session.setCategory(.playAndRecord, mode: .default)
                 try session.setActive(true)
                 let settings = [
                     AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -239,7 +239,7 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
                 audioRecorder.prepareToRecord()
                 return true
             } catch let error {
-                //error
+                print("\(#function)\(error.localizedDescription)")
                 return false
             }
         } else {
@@ -251,14 +251,14 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
     }
 
     func checkRecordingPermission() {
-        switch AVAudioSession.sharedInstance().recordPermission() {
-        case AVAudioSessionRecordPermission.granted:
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case AVAudioSession.RecordPermission.granted:
             isAudioRecordingGranted = true
             break
-        case AVAudioSessionRecordPermission.denied:
+        case AVAudioSession.RecordPermission.denied:
             isAudioRecordingGranted = false
             break
-        case AVAudioSessionRecordPermission.undetermined:
+        case AVAudioSession.RecordPermission.undetermined:
             AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
                 DispatchQueue.main.async {
                     if allowed {
@@ -357,7 +357,7 @@ extension AudioRecorderViewController {
         do {
             let attribute = try FileManager.default.attributesOfItem(atPath: filePath)
             if let size = attribute[FileAttributeKey.size] as? NSNumber {
-                return Double(size)
+                return size.doubleValue
             }
         } catch {
             print("Error: \(error)")
@@ -391,4 +391,9 @@ extension AudioRecorderViewController {
 //        return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
 //    }
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

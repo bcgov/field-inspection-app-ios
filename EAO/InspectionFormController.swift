@@ -100,9 +100,6 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 //        if indexPath.section == 0{
 //            return
 //        }
-		if observations[indexPath.row].id == nil{
-			return
-		}
         
 //        let observationElementController = NewObservationController.storyboardInstance() as! NewObservationController
 //        observationElementController.inspection = inspection

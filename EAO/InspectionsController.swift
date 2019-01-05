@@ -54,7 +54,7 @@ final class InspectionsController: UIViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
             #selector(InspectionsController.handleRefresh(_:)),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         refreshControl.tintColor = Theme.governmentDeepYellow
         
         return refreshControl
@@ -169,9 +169,8 @@ final class InspectionsController: UIViewController {
         
         DataServices.fetchInspections() { (results: [PFInspection]) in
 
-            let noObjectId = "n/a"
             results.forEach({ (item) in
-                print("recieved inspection ID = \(item.id ?? noObjectId)")
+                print("recieved inspection ID = \(item.id)")
             })
             
             self.inspections.draft = results.filter { $0.isSubmitted == false }

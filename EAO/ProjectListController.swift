@@ -58,7 +58,7 @@ final class ProjectListController: UIViewController {
 				let location = string.distance(from: string.startIndex, to: range.lowerBound)
 				let lenght = string.distance(from: range.lowerBound, to: range.upperBound)
 				let ns_range = NSRange.init(location: location, length: lenght)
-				attributed.addAttribute(NSAttributedStringKey.backgroundColor, value: UIColor.yellow, range: ns_range)
+				attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: UIColor.yellow, range: ns_range)
 			}
 			array.append(attributed)
 		})

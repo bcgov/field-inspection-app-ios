@@ -20,20 +20,20 @@ class TeamSearch {
 
     func display(in container: UIView, on viewController: UIViewController) {
         container.alpha = 1
-        viewController.addChildViewController(vc)
+        viewController.addChild(vc)
         container.addSubview(vc.view)
         vc.view.frame = container.bounds
         vc.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vc.didMove(toParentViewController: viewController)
+        vc.didMove(toParent: viewController)
     }
 
     /**
      Note: also hides container by setting alpha to 0
      */
     func remove(from container: UIView, then hide: Bool? = true) {
-        vc.willMove(toParentViewController: nil)
+        vc.willMove(toParent: nil)
         vc.view.removeFromSuperview()
-        vc.removeFromParentViewController()
+        vc.removeFromParent()
         if hide! {
             container.alpha = 0
         }

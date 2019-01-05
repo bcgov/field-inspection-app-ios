@@ -28,9 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         super.init()
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        UIApplication.shared.statusBarStyle = .lightContent
-		if ProcessInfo.processInfo.arguments.contains("UITests") {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        if ProcessInfo.processInfo.arguments.contains("UITests") {
 			UIView.setAnimationsEnabled(false)
 			window?.layer.speed = 500
 		}
@@ -53,11 +53,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self])
 
         //Camera
-        AVCaptureDevice.requestAccess(for: AVMediaType.video) {response in}
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { _ in
+        }
 
         //Photos
         let photos = PHPhotoLibrary.authorizationStatus()
-        if photos == .notDetermined {PHPhotoLibrary.requestAuthorization({status in})}
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization { (_) in
+            }
+        }
         return true
     }
 

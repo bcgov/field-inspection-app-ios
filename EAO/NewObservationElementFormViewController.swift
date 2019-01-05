@@ -666,14 +666,14 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
             if current.originalType == nil {return}
 
             if current.originalType == "video" {
-                showPreviewOfVideo(index: storedPhotos[i].index as! Int)
+                showPreviewOfVideo(index: storedPhotos[i].index)
             }
 
             if current.originalType == "photo" {
                 for item in storedPhotos {
                     print(item)
                 }
-                showPreviewOf(index: storedPhotos[i].index as! Int)
+                showPreviewOf(index: storedPhotos[i].index)
             }
 
         } else if i - storedPhotos.count < multiSelectResult.count {
@@ -765,7 +765,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         DataServices.getPhotoFor(observationID: observation.id, at: index) { (found, photo) in
 
             if found {
-                let location = photo?.coordinate
                 let locationString = photo?.coordinate?.printableString() ?? ""
 
                 if let image = photo?.image {
@@ -833,7 +832,7 @@ extension NewObservationElementFormViewController {
 
     func goToRecord() {
         
-        if inspection.id.isEmpty || observation.id == nil {
+        if inspection.id.isEmpty {
             return
         }
         
@@ -847,9 +846,12 @@ extension NewObservationElementFormViewController {
 
 //MARK: Collection view
 extension  NewObservationElementFormViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         imagePicker.dismiss(animated: true, completion: nil)
-        let image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage
         promptImageDetails(image: image!)
     }
     
@@ -883,8 +885,7 @@ extension  NewObservationElementFormViewController:  UIImagePickerControllerDele
             var comments = ""
             
             if !results.isEmpty {
-                if let details = results["details"] as? String {
-                    //                self.warn(message: results["details"] as! String)
+                if let details = results["details"] {
                     comments = details
                 }
             }
@@ -913,13 +914,13 @@ extension  NewObservationElementFormViewController:  UIImagePickerControllerDele
 // Utilities
 extension NewObservationElementFormViewController {
     func warn(message: String) {
-        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
 
     func warn(title: String, description: String, yesButtonTapped:@escaping () -> (), noButtonTapped:@escaping () -> ()) {
-        let alert = UIAlertController(title: title, message: description, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: title, message: description, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             DispatchQueue.main.async {
                 yesButtonTapped()
@@ -991,4 +992,14 @@ extension NewObservationElementFormViewController : AVAudioPlayerDelegate{
 
 extension NewObservationElementFormViewController{
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

@@ -81,9 +81,7 @@ final class NewObservationController: UIViewController{
         if observation.inspectionId == nil{
             observation.inspectionId = inspection.id
         }
-        if observation.id == nil{
-            observation.id = UUID().uuidString
-        }
+        observation.id = UUID().uuidString
 //        observation.pinInBackground { (success, error) in
 //            if success && error == nil{
 //                if self.observation.pinnedAt == nil{
@@ -127,9 +125,6 @@ final class NewObservationController: UIViewController{
             return
         }
         sender.isEnabled = false
-        if observation.id == nil{
-            observation.id = UUID().uuidString
-        }
         let uploadPhotoController = UploadPhotoController.storyboardInstance() as! UploadPhotoController
         uploadPhotoController.observation = observation
         uploadPhotoController.uploadPhotoAction = { (photo) in
@@ -242,9 +237,7 @@ extension NewObservationController {
             present(controller: UIAlertController(title: "You've reached maximum number of photos per element", message: nil))
             return
         }
-        if observation.id == nil{
-            observation.id = UUID().uuidString
-        }
+
         let uploadPhotoController = UploadPhotoController.storyboardInstance() as! UploadPhotoController
         uploadPhotoController.observation = observation
         uploadPhotoController.uploadPhotoAction = { (photo) in

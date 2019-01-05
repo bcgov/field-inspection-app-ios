@@ -183,7 +183,7 @@ class DataServices {
     
     internal class func fetchObservationsFor(inspection: PFInspection, localOnly: Bool = false, completion: ((_ results: [PFObservation]) -> Void)? = nil) {
         
-        let observations = DataServices.fetchObservations(for: inspection)
+//        let observations = DataServices.fetchObservations(for: inspection)
         
 //        guard let query = PFObservation.query() else {
 //            completion?([])
@@ -608,26 +608,26 @@ class DataServices {
     
     internal class func uploadAudios(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
         getAudiosFor(observationID: observation.id) { (success, pfaudios) in
-            if success {
-                if let count = pfaudios?.count {
-//                    let parseSoundObjects: [PFAudio] = [PFAudio]()
-//                    self.recursiveAudioUpload(last: (count - 1), for: observation, obsObj: obsObj, parseAudioObjects: parseSoundObjects, completion: { (done, audios) in
-//                        if done {
-//                            return completion(true)
-//                        } else {
-//                            // couldnt upload
-//                            return completion(false)
-//                        }
-//                    })
-                } else {
-                    // couldnt upload
-                    return completion(false)
-                }
-            } else {
-                // couldnt upload
-                return completion(false)
-                
-            }
+//            if success {
+//                if let count = pfaudios?.count {
+////                    let parseSoundObjects: [PFAudio] = [PFAudio]()
+////                    self.recursiveAudioUpload(last: (count - 1), for: observation, obsObj: obsObj, parseAudioObjects: parseSoundObjects, completion: { (done, audios) in
+////                        if done {
+////                            return completion(true)
+////                        } else {
+////                            // couldnt upload
+////                            return completion(false)
+////                        }
+////                    })
+//                } else {
+//                    // couldnt upload
+//                    return completion(false)
+//                }
+//            } else {
+//                // couldnt upload
+//                return completion(false)
+//
+//            }
         }
     }
     

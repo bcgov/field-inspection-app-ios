@@ -53,7 +53,7 @@ extension DataServices{
     
     internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         
-        guard let data: Data = UIImageJPEGRepresentation(UIImage.resizeImage(image: image), 0) else {
+        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
             return completion(false)
         }
         print("thumb size of \(index) is \(data.count)")
