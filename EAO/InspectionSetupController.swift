@@ -284,17 +284,17 @@ extension InspectionSetupController{
             }
 
             do {
-                realm.beginWrite()
-                inspection?.project = linkProjectButton.title(for: .normal)
-                inspection?.title = titleTextField.text
-                inspection?.subtext = subtextTextField.text
-                inspection?.number = numberTextField.text
-                inspection?.start = dates["start"]
-                inspection?.end = dates["end"]
-                inspection?.isSubmitted = false
-                inspection?.teamID = self.teamID
-                try realm.commitWrite()
-                
+                try realm.write {
+                    inspection?.project = linkProjectButton.title(for: .normal)
+                    inspection?.title = titleTextField.text
+                    inspection?.subtext = subtextTextField.text
+                    inspection?.number = numberTextField.text
+                    inspection?.start = dates["start"]
+                    inspection?.end = dates["end"]
+                    inspection?.isSubmitted = false
+                    inspection?.teamID = self.teamID
+                }
+
             } catch let error {
                 print("Realm save exception \(error.localizedDescription)")
                 completion(nil)

@@ -66,9 +66,9 @@ extension DataServices {
         
         do {
             let realm = try Realm()
-            realm.beginWrite()
-            realm.add(video, update: true)
-            try realm.commitWrite()
+            try realm.write {
+                realm.add(video, update: true)
+            }
             return completion(true)
             
         } catch let error {

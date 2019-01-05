@@ -25,10 +25,10 @@ extension DataServices {
         do {
             let realm = try Realm()
             try data?.write(to: FileManager.directory.appendingPathComponent(audio.id, isDirectory: true))
-            realm.beginWrite()
-            realm.add(audio, update: true)
-            try realm.commitWrite()
-            
+            try realm.write {
+                realm.add(audio, update: true)
+            }
+
             return completion(true)
             
         } catch let error {

@@ -39,10 +39,9 @@ extension DataServices{
         do {
             let realm = try Realm()
             try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
-            realm.beginWrite()
-            realm.add(photo, update: true)
-            try realm.commitWrite()
-            
+            try realm.write {
+                realm.add(photo, update: true)
+            }
             return completion(true)
             
         } catch let error {
@@ -66,9 +65,10 @@ extension DataServices{
         do {
             let realm = try Realm()
             try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
-            realm.beginWrite()
-            realm.add(photo, update: true)
-            try realm.commitWrite()
+            
+            try realm.write {
+                realm.add(photo, update: true)
+            }
             
             return completion(true)
             

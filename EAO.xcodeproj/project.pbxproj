@@ -56,7 +56,6 @@
 		11D70ED51E8DA02000CBF92C /* InspectionFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70ED41E8DA02000CBF92C /* InspectionFormCell.swift */; };
 		11D70ED91E8DA36800CBF92C /* NewObservationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D70ED81E8DA36800CBF92C /* NewObservationController.storyboard */; };
 		11D70EDC1E8DA83D00CBF92C /* NewObservationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EDB1E8DA83D00CBF92C /* NewObservationController.swift */; };
-		290FE8D82033F057009DDAA2 /* ParseMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290FE8D72033F057009DDAA2 /* ParseMaster.swift */; };
 		291746742073E77F005F70B4 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291746732073E77F005F70B4 /* Team.swift */; };
 		291746772073EAEF005F70B4 /* Team.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 291746762073EAEF005F70B4 /* Team.storyboard */; };
 		291746792073EB06005F70B4 /* TeamSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291746782073EB06005F70B4 /* TeamSearchViewController.swift */; };
@@ -84,7 +83,6 @@
 		2936BEC020BF64A500775F5E /* NewObservationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EDB1E8DA83D00CBF92C /* NewObservationController.swift */; };
 		2936BEC120BF64A500775F5E /* TeamSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291746782073EB06005F70B4 /* TeamSearchViewController.swift */; };
 		2936BEC220BF64A500775F5E /* TeamSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2917467A2073EC42005F70B4 /* TeamSearchTableViewCell.swift */; };
-		2936BEC320BF64A500775F5E /* ParseMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290FE8D72033F057009DDAA2 /* ParseMaster.swift */; };
 		2936BEC420BF64A500775F5E /* MiButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295304EC2017FF53001E5C7F /* MiButtonStyle.swift */; };
 		2936BEC520BF64A500775F5E /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A029EC2029FECC0085DCE8 /* Recorder.swift */; };
 		2936BEC620BF64A500775F5E /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D3D1FFC146100562508 /* HexColor.swift */; };
@@ -689,7 +687,6 @@
 			isa = PBXGroup;
 			children = (
 				5675DAA32194FBD8008409AB /* InspectionMeta.swift */,
-				290FE8D62033F044009DDAA2 /* Test */,
 				11823BEC1EB24FE80028719B /* PFObjects */,
 				113B20421EC11BFD00F04811 /* PFExtension */,
 			);
@@ -820,14 +817,6 @@
 				112F74F01E9815A70076926A /* SettingsController.swift */,
 			);
 			name = Settings;
-			sourceTree = "<group>";
-		};
-		290FE8D62033F044009DDAA2 /* Test */ = {
-			isa = PBXGroup;
-			children = (
-				290FE8D72033F057009DDAA2 /* ParseMaster.swift */,
-			);
-			name = Test;
 			sourceTree = "<group>";
 		};
 		291746752073EAD5005F70B4 /* Team Search */ = {
@@ -1032,14 +1021,14 @@
 			name = Test;
 			sourceTree = "<group>";
 		};
-		562C4315219CE42100247E0B /* Model */ = {
+		562C4315219CE42100247E0B /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				D53B6DE621CB705700A0F546 /* EAOProject.swift */,
 				562C4317219CE45000247E0B /* Inspection.swift */,
 				562C431A219CE5A000247E0B /* Observation.swift */,
 			);
-			name = Model;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		5675DA8E2190C33E008409AB /* Services */ = {
@@ -1092,7 +1081,7 @@
 			children = (
 				D5B6F73F21DF32E2007FF921 /* Parse.plist */,
 				D53B6DED21D30B1600A0F546 /* ToRemove */,
-				562C4315219CE42100247E0B /* Model */,
+				562C4315219CE42100247E0B /* Models */,
 				5675DA9221927196008409AB /* FAFormatter.swift */,
 				5675DA9421935C00008409AB /* Theme.swift */,
 				56447C61219635D90018A828 /* UIViewControllerExtensions.swift */,
@@ -1163,6 +1152,7 @@
 			isa = PBXGroup;
 			children = (
 				562C431D219CEA6600247E0B /* Project.swift */,
+				290FE8D72033F057009DDAA2 /* ParseMaster.swift */,
 			);
 			name = ToRemove;
 			sourceTree = "<group>";
@@ -1665,7 +1655,6 @@
 				2936BEC120BF64A500775F5E /* TeamSearchViewController.swift in Sources */,
 				D5B6F73621DF30E9007FF921 /* DataServices+Photos.swift in Sources */,
 				2936BEC220BF64A500775F5E /* TeamSearchTableViewCell.swift in Sources */,
-				2936BEC320BF64A500775F5E /* ParseMaster.swift in Sources */,
 				2936BEC420BF64A500775F5E /* MiButtonStyle.swift in Sources */,
 				2936BEC520BF64A500775F5E /* Recorder.swift in Sources */,
 				D5B6F73921DF30F6007FF921 /* EAOProject.swift in Sources */,
@@ -1776,7 +1765,6 @@
 				11D70EDC1E8DA83D00CBF92C /* NewObservationController.swift in Sources */,
 				291746792073EB06005F70B4 /* TeamSearchViewController.swift in Sources */,
 				2917467C2073EC42005F70B4 /* TeamSearchTableViewCell.swift in Sources */,
-				290FE8D82033F057009DDAA2 /* ParseMaster.swift in Sources */,
 				295304F02017FF59001E5C7F /* MiButtonStyle.swift in Sources */,
 				29A029EF2029FECC0085DCE8 /* Recorder.swift in Sources */,
 				29424D441FFC146200562508 /* HexColor.swift in Sources */,

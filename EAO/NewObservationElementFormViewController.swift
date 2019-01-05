@@ -333,23 +333,22 @@ class NewObservationElementFormViewController: UIViewController {
             return
         }
         do {
-            realm.beginWrite()
-            
-            if let location = locationManager.location, observation.coordinate == nil {
-                observation.coordinate = RealmLocation(location: location)
+            try realm.write {
+                if let location = locationManager.location, observation.coordinate == nil {
+                    observation.coordinate = RealmLocation(location: location)
+                }
+                
+                observation.title = elementTitle
+                observation.requirement = elementRequirement
+                if observation.observationDescription == nil {
+                    observation.observationDescription = ""
+                }
+                if elementnewDescription != "" {
+                    observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+                }
+                
+                realm.add(observation, update: true)
             }
-            
-            observation.title = elementTitle
-            observation.requirement = elementRequirement
-            if observation.observationDescription == nil {
-                observation.observationDescription = ""
-            }
-            if elementnewDescription != "" {
-                observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
-            }
-            
-            realm.add(observation, update: true)
-            try realm.commitWrite()
             self.close()
 
         } catch let error {
