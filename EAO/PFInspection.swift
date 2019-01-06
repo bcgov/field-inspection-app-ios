@@ -288,6 +288,7 @@ extension PFInspection {
                 }
                 let _ = DataServices.add(inspection: inspection)
             }
+            completion()
         })
     }
     

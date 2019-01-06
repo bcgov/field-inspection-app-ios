@@ -50,7 +50,7 @@ extension DataServices {
             let doc = InspectionMeta()
             doc.id = UUID().uuidString
             doc.localId = inspection.id
-            doc.isStoredLocally = true
+            doc.isStoredLocally = false
             doc.modifiedAt = Date()
             
             inspection.meta = doc
@@ -58,6 +58,7 @@ extension DataServices {
             let realm = try Realm()
             try realm.write {
                 realm.add(inspection, update: true)
+                realm.add(doc, update: true)
             }
             
         } catch {
