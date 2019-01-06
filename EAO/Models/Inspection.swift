@@ -6,10 +6,9 @@
 //  Copyright © 2019 Province of British Columbia. All rights reserved.
 //
 
-import ObjectMapper
 import RealmSwift
 
-class Inspection: Object, Mappable{
+class Inspection: Object{
     
     @objc var progress: Float = 0
     @objc var isBeingUploaded = false
@@ -35,21 +34,6 @@ class Inspection: Object, Mappable{
         }
     }
     
-    
-    private struct SerializationKeys {
-        static let id = "id"
-        static let userId = "userId"
-        static let isSubmitted = "isSubmitted"
-        static let title = "title"
-        static let project = "project"
-        static let subtitle = "subtitle"
-        static let subtext = "subtext"
-        static let number = "number"
-        static let start = "start"
-        static let end = "end"
-        static let teamID = "teamID"
-    }
-    
     // MARK: Properties
     @objc dynamic var id            : String = UUID().uuidString
     @objc dynamic var userId        : String?
@@ -62,28 +46,10 @@ class Inspection: Object, Mappable{
     @objc dynamic var start         : Date?
     @objc dynamic var end           : Date?
     @objc dynamic var teamID        : String?
-    
-    required convenience init?(map: Map) {
-        self.init()
-    }
+    @objc dynamic var meta: InspectionMeta?
     
     override static func primaryKey() -> String? {
         return "id"
-    }
-    
-    func mapping(map: Map) {
-        
-        id <- map[SerializationKeys.id]
-        userId <- map[SerializationKeys.userId]
-        isSubmitted <- map[SerializationKeys.isSubmitted]
-        project <- map[SerializationKeys.project]
-        title <- map[SerializationKeys.title]
-        subtitle <- map[SerializationKeys.subtitle]
-        subtext <- map[SerializationKeys.subtext]
-        number <- map[SerializationKeys.number]
-        start <- (map[SerializationKeys.start], DateFormatterTransform(dateFormatter: Settings.formatter))
-        end <- (map[SerializationKeys.end], DateFormatterTransform(dateFormatter: Settings.formatter))
-        teamID <- map[SerializationKeys.teamID]
     }
     
     override var debugDescription: String{

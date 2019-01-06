@@ -6,17 +6,9 @@
 //  Copyright © 2019 Province of British Columbia. All rights reserved.
 //
 
-import ObjectMapper
 import RealmSwift
 
-class PhotoThumb: Object, Mappable{
-    
-    private struct SerializationKeys {
-        static let id = "id"
-        static let observationId = "observationId"
-        static let index = "index"
-        static let originalType = "originalType"
-    }
+class PhotoThumb: Object{
     
     ///Use this variable for image caching
     var image : UIImage? {
@@ -31,27 +23,13 @@ class PhotoThumb: Object, Mappable{
     // original asset type: Video? Photo?
     @objc dynamic var originalType  : String?
     
-    required convenience init?(map: Map) {
-        self.init()
-    }
-    
     override static func primaryKey() -> String? {
         return "id"
     }
-    
-    func mapping(map: Map) {
-        id <- map[SerializationKeys.id]
-        observationId <- map[SerializationKeys.observationId]
-        index <- map[SerializationKeys.index]
-        originalType <- map[SerializationKeys.originalType]
-    }
-}
 
-extension PhotoThumb {
-    
     @objc func get() -> Data?{
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return try? Data(contentsOf: url)
     }
-    
+
 }

@@ -6,22 +6,9 @@
 //  Copyright © 2018 FreshWorks. All rights reserved.
 //
 
-import ObjectMapper
 import RealmSwift
 
-final class Video: Object, Mappable{
-    
-    private struct SerializationKeys {
-        static let id = "id"
-        static let observationId = "observationId"
-        static let inspectionId = "inspectionId"
-        static let index = "index"
-        static let notes = "notes"
-        static let title = "title"
-        static let url = "url"
-        static let file = "file"
-        static let coordinate = "coordinate"
-    }
+final class Video: Object{
     
     @objc dynamic var id            : String = "\(UUID().uuidString).mp4"
     @objc dynamic var observationId : String?
@@ -32,23 +19,8 @@ final class Video: Object, Mappable{
     @objc dynamic var url: String?
     @objc dynamic var coordinate: RealmLocation?
     
-    required convenience init?(map: Map) {
-        self.init()
-    }
-    
     override static func primaryKey() -> String? {
         return "id"
-    }
-    
-    func mapping(map: Map) {
-        id <- map[SerializationKeys.id]
-        observationId <- map[SerializationKeys.observationId]
-        inspectionId <- map[SerializationKeys.inspectionId]
-        index <- map[SerializationKeys.index]
-        notes <- map[SerializationKeys.notes]
-        title <- map[SerializationKeys.title]
-        url <- map[SerializationKeys.url]
-        coordinate <- map[SerializationKeys.coordinate]
     }
     
     @objc func get() -> Data?{
