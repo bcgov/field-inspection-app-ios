@@ -267,77 +267,131 @@ extension PFInspection {
 }
 
 extension PFInspection {
-    
-    @objc static func loadAndPin(completion: @escaping ()->()){
-        let query = PFInspection.query()
-        query!.whereKey("userId", equalTo: PFUser.current()!.objectId!)
-        query!.findObjectsInBackground(block: { (inspections, error) in
-            for case let inspection as PFInspection in inspections ?? []{
-                guard let id = inspection.id else {
+
+    /**
+     Sync list of all user's inspections to the local Realm database
+     Inspection details are not synced
+     */
+    static func syncInspectionsOnly(completion: @escaping ()->()){
+        guard   let query = PFInspection.query(),
+            let userID = PFUser.current()?.objectId else {
+                completion()
+                return
+        }
+
+        query.whereKey("userId", equalTo: userID)
+        query.findObjectsInBackground(block: { (inspections, error) in
+            
+            for inspection in inspections as? [PFInspection] ?? [] {
+                guard let _ = inspection.id else {
                     continue
                 }
-                try? inspection.pin()
-                let observationQuery = PFObservation.query()
-                observationQuery?.whereKey("inspectionId", equalTo: id)
-                observationQuery?.findObjectsInBackground(block: { (observations, error) in
-                    for case let observation as PFObservation in observations ?? [] {
-                        guard let observationId = observation.id else{
+                let _ = DataServices.add(inspection: inspection)
+            }
+        })
+    }
+    
+    /**
+     Sync list of all user's inspections to the local Realm database
+     All Inspection details are synced
+     */
+    static func loadAndPinAll(completion: @escaping ()->()){
+        
+        guard   let query = PFInspection.query(),
+                let userID = PFUser.current()?.objectId else {
+                completion()
+                return
+        }
+        
+        query.whereKey("userId", equalTo: userID)
+        query.findObjectsInBackground(block: { (inspections, error) in
+            
+            for inspection in inspections as? [PFInspection] ?? [] {
+                guard let inspectionId = inspection.id else {
+                    continue
+                }
+                let _ = DataServices.add(inspection: inspection)
+                
+                guard let observationQuery = PFObservation.query() else {
+                    continue
+                }
+                
+                observationQuery.whereKey("inspectionId", equalTo: inspectionId)
+                observationQuery.findObjectsInBackground(block: { (observations, error) in
+                    
+                    for observation in observations as? [PFObservation] ?? [] {
+                        guard let observationId = inspection.id else {
                             continue
                         }
-                        try? observation.pin()
-                        let photoQuery = PFPhoto.query()
-                        photoQuery?.whereKey("observationId", equalTo: observationId)
-                        photoQuery?.findObjectsInBackground(block: { (photos, error) in
-                            for case let photo as PFPhoto in photos ?? []{
-                                try? photo.pin()
-//                                photo.file?.getDataInBackground(block: { (data, error) in
-//                                    if let data = data{
-//                                        try? data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-//                                    }
-//                                })
+
+                        let _ = DataServices.add(observation: observation)
+                        
+                        guard let photoQuery = PFPhoto.query() else {
+                            continue
+                        }
+                        photoQuery.whereKey("observationId", equalTo: observationId)
+                        photoQuery.findObjectsInBackground(block: { (photos, error) in
+                            for photo in photos as? [PFPhoto] ?? []{
+                                guard let photoId = photo.id else {
+                                    continue
+                                }
+
+                                let _ = DataServices.add(photo: photo)
+
+                                photo.file?.getDataInBackground(block: { (data, error) in
+                                    if let data = data{
+                                        try? data.write(to: FileManager.directory.appendingPathComponent(photoId, isDirectory: true))
+                                    }
+                                })
                             }
                         })
+                        
                     }
                 })
-                
+                completion()
             }
+
             completion()
         })
     }
 }
 
-//MARK: -
+/**
+ Gets photo data from local file, converts it to PFFileObject, and sets each element's file to corresponding PFFile
+ */
 extension Array where Element == PFPhoto{
-    ///Gets photo data from local file, converts it to PFFile, and sets each element's file to corresponding PFFile
     fileprivate func setPFFiles(){
         self.forEach({ (photo) in
-            //            if let data = photo.get(){
-            //                photo.file = PFFile(data: data)
-            //            }
+            if let data = photo.get(){
+                photo.file = PFFileObject(data: data)
+            }
         })
     }
 }
 
-//MARK: -
+/**
+Gets photo data from local file, converts it to PFFileObject, and sets each element's file to corresponding PFFile
+ */
 extension Array where Element == PFVideo{
-    ///Gets photo data from local file, converts it to PFFile, and sets each element's file to corresponding PFFile
+    
     fileprivate func setPFFiles(){
         self.forEach({ (video) in
-            //            if let data = video.get(){
-            //                video.file = PFFile(data: data)
-            //            }
+            if let data = video.get(){
+                video.file = PFFileObject(data: data)
+            }
         })
     }
 }
 
-//MARK: -
+/**
+ Gets autdio data from local file, converts it to PFFileObject, and sets each element's file to corresponding PFFile
+ */
 extension Array where Element == PFAudio{
-    ///Gets photo data from local file, converts it to PFFile, and sets each element's file to corresponding PFFile
     fileprivate func setPFFiles(){
         self.forEach({ (audio) in
-            //            if let data = audio.get(){
-            //                audio.file = PFFile(data: data)
-            //            }
+            if let data = audio.get(){
+                audio.file = PFFileObject(data: data)
+            }
         })
     }
 }

@@ -13,7 +13,7 @@ final class PFPhoto: PFObject, PFSubclassing{
     
     @NSManaged var id            : String?
     @NSManaged var observationId : String?
-//    @NSManaged var file          : PFFile?
+    @NSManaged var file          : PFFileObject?
     @NSManaged var caption       : String?
     @NSManaged var timestamp     : Date?
     @NSManaged var coordinate    : PFGeoPoint?

@@ -66,7 +66,7 @@ final class LoginController: UIViewController{
                         DataServices.getUserTeams(user: user, completion: { (done, downloaded) in
                             print("ended \(done)")
                         })
-                        PFInspection.loadAndPin {
+                        PFInspection.syncInspectionsOnly {
                             self.load(completion: {
                                 self.clearTextFields()
                                 self.present(controller: InspectionsController.storyboardInstance())
@@ -82,13 +82,13 @@ final class LoginController: UIViewController{
                     }
                     
                 })
-                PFInspection.loadAndPin {
-//                    self.load(completion: {
+                PFInspection.syncInspectionsOnly {
+                    self.load(completion: {
                         self.clearTextFields()
                         self.present(controller: InspectionsController.storyboardInstance())
                         self.indicator.stopAnimating()
                         sender.isEnabled = true
-//                    })
+                    })
                 }
 			}
 		} catch{
@@ -111,8 +111,15 @@ final class LoginController: UIViewController{
 	@objc func presentMainScreen(){
 		if PFUser.current() != nil{
 			clearTextFields()
-			let inspectionsController = InspectionsController.storyboardInstance()
-			self.present(controller: inspectionsController)
+            
+            self.indicator.startAnimating()
+            PFInspection.syncInspectionsOnly {
+                self.load(completion: {
+                    self.clearTextFields()
+                    self.present(controller: InspectionsController.storyboardInstance())
+                    self.indicator.stopAnimating()
+                })
+            }
 		}
 	}
 
@@ -122,6 +129,7 @@ final class LoginController: UIViewController{
             if let error = error {
                 print(error)
             }
+            completion()
         }
 	}
 }

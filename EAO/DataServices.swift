@@ -84,26 +84,25 @@ class DataServices {
         do {
             let realm = try Realm()
             try realm.write {
+                
+                let doc = InspectionMeta()
+                doc.id = UUID().uuidString
+                doc.localId = inspection.id
+                doc.isStoredLocally = isStoredLocally
+                doc.modifiedAt = Date()
+                
                 inspection.userId = userID
+                inspection.meta = doc
                 realm.add(inspection, update: true)
             }
             
-            let doc = InspectionMeta()
-            doc.id = UUID().uuidString
-            doc.localId = inspection.id
-            doc.isStoredLocally = isStoredLocally
-            doc.modifiedAt = Date()
-
-            try realm.write {
-                realm.add(doc)
-            }
-
         } catch {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
         return true
     }
+
 
     class func add(observation: Observation) -> Bool {
         
