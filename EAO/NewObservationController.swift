@@ -11,10 +11,10 @@ import MapKit
 final class NewObservationController: UIViewController{
     @objc let maximumNumberOfPhotos = 20
     fileprivate var locationManager = CLLocationManager()
-    @objc var saveAction  : ((PFObservation)->Void)?
-    @objc var inspection  : PFInspection!
-    @objc var observation : PFObservation!
-    @objc var photos		: [PFPhoto]?
+    @objc var saveAction  : ((Observation)->Void)?
+    @objc var inspection  : Inspection!
+    @objc var observation : Observation!
+    @objc var photos		: [Photo]?
     @objc var didMakeChange = false
 
     //MARK: -
@@ -37,7 +37,6 @@ final class NewObservationController: UIViewController{
     let galleryManager = GalleryManager()
 
     override func viewDidAppear(_ animated: Bool) {
-        print("99999999999999")
         super.viewDidAppear(animated)
 //        populate()
         collectionView.reloadData()
@@ -149,7 +148,7 @@ final class NewObservationController: UIViewController{
         addDismissKeyboardOnTapRecognizer(on: scrollView)
         populate()
         if observation == nil{
-            observation = PFObservation()
+            observation = Observation()
         }
         if isReadOnly{
             navigationItem.rightBarButtonItem = nil

@@ -39,13 +39,13 @@ class NewObservationElementFormViewController: UIViewController {
     var videoPlayer: AVPlayer!
     var imagePicker: UIImagePickerController!
     var multiSelectResult = [PHAsset]()
-    var storedPhotos = [PFPhotoThumb]() {
+    var storedPhotos = [PhotoThumb]() {
         didSet{
             self.collectionView.reloadData()
         }
     }
 
-    var storedAudios = [PFAudio]() {
+    var storedAudios = [Audio]() {
         didSet{
             self.collectionView.reloadData()
         }
@@ -72,8 +72,8 @@ class NewObservationElementFormViewController: UIViewController {
     var uniqueButtonID = 0
     var isAutofilled: Bool = false
     
-    var inspection: PFInspection!
-    var observation: PFObservation!
+    var inspection: Inspection!
+    var observation: Observation!
 
     var currForm: MiFormManager?
 
@@ -363,7 +363,7 @@ class NewObservationElementFormViewController: UIViewController {
         // if observation is not set, create it
         // otherwise autofill data
         if observation == nil {
-            observation = PFObservation()
+            observation = Observation()
             if observation.inspectionId == nil {
                 observation.inspectionId = inspection.id
             }

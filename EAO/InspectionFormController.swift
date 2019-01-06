@@ -12,8 +12,8 @@ final class InspectionFormController: UIViewController{
 	@IBOutlet fileprivate var indicator : UIActivityIndicatorView!
 	@IBOutlet fileprivate var tableView : UITableView!
 
-    @objc var inspection : PFInspection!
-    @objc var observations = [PFObservation]()
+    @objc var inspection : Inspection!
+    @objc var observations = [Observation]()
 	
 	@IBAction fileprivate func backTapped(_ sender: UIBarButtonItem) {
 		sender.isEnabled = false

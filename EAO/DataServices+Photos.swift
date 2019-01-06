@@ -27,7 +27,7 @@ extension DataServices{
     
     internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         
-        let photo = PFPhoto()
+        let photo = Photo()
         photo.caption = description
         photo.observationId = observationID
         photo.index = index
@@ -57,7 +57,7 @@ extension DataServices{
         }
         print("thumb size of \(index) is \(data.count)")
         
-        let photo = PFPhotoThumb()
+        let photo = PhotoThumb()
         photo.observationId = observationID
         photo.originalType = originalType
         photo.index = index
@@ -79,7 +79,7 @@ extension DataServices{
         
     }
     
-    internal class func getThumbnailFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ photos: PFPhotoThumb? ) -> Void) {
+    internal class func getThumbnailFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ photos: PhotoThumb? ) -> Void) {
         
         DataServices.getThumbnailsFor(observationID: observationID) { (result, thumbnails) in
             if result == true, (thumbnails?.count ?? 0) > 0 {
@@ -91,7 +91,7 @@ extension DataServices{
         }
     }
     
-    internal class func getPhotoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ photos: PFPhoto? ) -> Void) {
+    internal class func getPhotoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ photos: Photo? ) -> Void) {
         
         DataServices.getPhotosFor(observationID: observationID) { (result, photos) in
             if result == true, (photos?.count ?? 0) > 0 {
@@ -103,11 +103,11 @@ extension DataServices{
         }
     }
     
-    internal class func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhotoThumb]? ) -> Void) {
+    internal class func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PhotoThumb]? ) -> Void) {
         
         do {
             let realm = try Realm()
-            let results = realm.objects(PFPhotoThumb.self).filter("observationId in %@", [observationID])
+            let results = realm.objects(PhotoThumb.self).filter("observationId in %@", [observationID])
             let resultsArray = Array(results)
             
             print("\(#function): count = \(results.count)");
@@ -118,11 +118,11 @@ extension DataServices{
         }
     }
     
-    internal class func getPhotosFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PFPhoto]? ) -> Void) {
+    internal class func getPhotosFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [Photo]? ) -> Void) {
         
         do {
             let realm = try Realm()
-            let results = realm.objects(PFPhoto.self).filter("observationId in %@", [observationID])
+            let results = realm.objects(Photo.self).filter("observationId in %@", [observationID])
             let resultsArray = Array(results)
             
             print("\(#function): count = \(results.count)");
@@ -133,7 +133,7 @@ extension DataServices{
         }
     }
     
-    internal class func getPhotoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: PFPhoto? ) -> Void) {
+    internal class func getPhotoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: Photo? ) -> Void) {
         getPhotosFor(observationID: observationID) { (found, pfphotos) in
             if found {
                 if (pfphotos?.count)! >= at {

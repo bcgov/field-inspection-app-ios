@@ -5,15 +5,17 @@
 //  Created by Micha Volin on 2017-03-15.
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
+
 import MapKit
 import Parse
 import Photos
+
 class UploadPhotoController: UIViewController, KeyboardDelegate{
 	fileprivate var didMakeChange = false
 	@objc var isReadOnly = false
-	@objc var photo: PFPhoto!
-	@objc var observation: PFObservation!
-	@objc var uploadPhotoAction: ((_ photo: PFPhoto?)-> Void)?
+	@objc var photo: Photo!
+	@objc var observation: Observation!
+	@objc var uploadPhotoAction: ((_ photo: Photo?)-> Void)?
     fileprivate var locationManager = CLLocationManager()
 	fileprivate var date: Date?{
 		didSet{

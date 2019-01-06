@@ -1,12 +1,12 @@
 //
-//  PFInspectionError.swift
+//  InspectionError.swift
 //  Field Insp
 //
 //  Created by Evgeny Yagrushkin on 2018-12-15.
 //  Copyright © 2018 Goverment BC. All rights reserved.
 //
 
-enum PFInspectionError: Error{
+enum InspectionError: Error{
     case zeroObservations
     case someObjectsFailed(Int)
     case inspectionIdNotFound

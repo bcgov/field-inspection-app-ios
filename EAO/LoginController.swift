@@ -82,14 +82,14 @@ final class LoginController: UIViewController{
                     }
                     
                 })
-//                PFInspection.loadAndPin {
+                PFInspection.loadAndPin {
 //                    self.load(completion: {
                         self.clearTextFields()
                         self.present(controller: InspectionsController.storyboardInstance())
                         self.indicator.stopAnimating()
                         sender.isEnabled = true
 //                    })
-//                }
+                }
 			}
 		} catch{
 			self.present(controller: UIAlertController(title: "Couldn't log in", message: (error as? LoginError)?.message))

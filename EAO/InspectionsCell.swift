@@ -57,7 +57,7 @@ final class InspectionCell: UITableViewCell {
     
     // MARK: States
     
-    func configureCell(with inspection: PFInspection){
+    func configureCell(with inspection: Inspection){
         
         var date = ""
         

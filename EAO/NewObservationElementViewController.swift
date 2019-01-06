@@ -28,8 +28,8 @@ class NewObservationElementViewController: UIViewController {
 
     var uniqueButtonID = 0
 
-    var inspection: PFInspection!
-    var observation: PFObservation!
+    var inspection: Inspection!
+    var observation: Observation!
 
     var photos: [PFPhoto]?
 
@@ -111,7 +111,7 @@ class NewObservationElementViewController: UIViewController {
 
     func setUpObservationObject() {
         if observation == nil {
-            observation = PFObservation()
+            observation = Observation()
             if observation.inspectionId == nil {
                 observation.inspectionId = inspection.id
             }

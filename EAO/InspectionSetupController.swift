@@ -9,7 +9,7 @@ import Parse
 import RealmSwift
 
 final class InspectionSetupController: UIViewController{
-	@objc var inspection: PFInspection?
+	@objc var inspection: Inspection?
 
 	fileprivate var isNew = false
 	fileprivate var dates = [String: Date]()
@@ -247,7 +247,7 @@ extension InspectionSetupController: UITextFieldDelegate{
 //MARK: -
 extension InspectionSetupController{
     
-	@objc func validate(completion: @escaping (_ inspection : PFInspection?)->Void){
+	@objc func validate(completion: @escaping (_ inspection : Inspection?)->Void){
         
 		if linkProjectButton.title(for: .normal) == "Link Project" || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil{
             // remove ^
@@ -261,7 +261,7 @@ extension InspectionSetupController{
 			return
 		}
 		if self.isNew {
-			inspection = PFInspection()
+			inspection = Inspection()
 			inspection?.userId = PFUser.current()?.objectId
 			inspection?.id = UUID().uuidString
             

@@ -23,13 +23,13 @@ class NewObservationElementManager {
         return newObservationElementVC
     }
 
-    func getVCFor(inspection: PFInspection) -> UIViewController {
+    func getVCFor(inspection: Inspection) -> UIViewController {
         self.newObservationElementVC.observation = nil
         self.newObservationElementVC.inspection = inspection
         return newObservationElementVC
     }
 
-    func getEditVCFor(observation: PFObservation, inspection: PFInspection, isReadOnly: Bool) -> UIViewController {
+    func getEditVCFor(observation: Observation, inspection: Inspection, isReadOnly: Bool) -> UIViewController {
         self.newObservationElementVC.inspection = inspection
         self.newObservationElementVC.observation = observation
         self.newObservationElementVC.isReadOnly = isReadOnly

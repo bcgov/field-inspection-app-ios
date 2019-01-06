@@ -1,5 +1,5 @@
 //
-//  PFInspectionError.swift
+//  RealmLocation.swift
 //  Field Insp
 //
 //  Created by Evgeny Yagrushkin on 2018-12-15.

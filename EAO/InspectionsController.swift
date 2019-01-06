@@ -45,7 +45,7 @@ final class InspectionsController: UIViewController {
         return lm
     }()
     
-    private var data = [PFInspection]()
+    private var data = [Inspection]()
     private var selectedInspectionIndexPath: IndexPath?
     private static let inspectionFormControllerSegueID = "InspectionFormControllerSegueID"
     private static let inspectionSetupControllerSegueID = "InspectionSetupControllerSegueID"
@@ -64,7 +64,7 @@ final class InspectionsController: UIViewController {
         return (AppDelegate.root?.presentedViewController as? UINavigationController)?.viewControllers.first as? InspectionsController
     }
 
-    internal var inspections = (draft: [PFInspection](), submitted: [PFInspection]())
+    internal var inspections = (draft: [Inspection](), submitted: [Inspection]())
 
     // MARK: -
     override func viewDidLoad() {
@@ -167,7 +167,7 @@ final class InspectionsController: UIViewController {
 
 		indicator.startAnimating()
         
-        DataServices.fetchInspections() { (results: [PFInspection]) in
+        DataServices.fetchInspections() { (results: [Inspection]) in
 
             results.forEach({ (item) in
                 print("recieved inspection ID = \(item.id)")
@@ -186,7 +186,7 @@ final class InspectionsController: UIViewController {
 	// Use this method to insert an inspection to the 'In Progress' tab
     @objc dynamic public func insertByDate(_ notification: Notification?) {
 
-		if let inspection = notification?.object as? PFInspection {
+		if let inspection = notification?.object as? Inspection {
             self.inspections.draft.append(inspection);
             self.inspections.draft.sort(by: { (left, right) -> Bool in
                 guard let startL = left.start, let startR = right.start else{
@@ -206,7 +206,7 @@ final class InspectionsController: UIViewController {
 	}
 	
 	// Use this method to put an inspection from 'In Progress' to 'Submitted'
-	public func moveToSubmitted(inspection: PFInspection?) {
+	public func moveToSubmitted(inspection: Inspection?) {
 
         guard let inspection = inspection, let idx = inspections.draft.index(of: inspection)  else {
             return
@@ -268,9 +268,9 @@ final class InspectionsController: UIViewController {
         return segmentedControl.selectedSegmentIndex
     }
 
-    private func checkUploadStatus(inspection: PFInspection, completion: @escaping (_ canUpload: Bool) -> Void) {
+    private func checkUploadStatus(inspection: Inspection, completion: @escaping (_ canUpload: Bool) -> Void) {
         
-        DataServices.fetchObservationsFor(inspection: inspection, localOnly: true) { (observations: [PFObservation]) in
+        DataServices.fetchObservationsFor(inspection: inspection, localOnly: true) { (observations: [Observation]) in
             if observations.count == 0 {
                 let title = "No Observations"
                 let message = "This inspeciton does not have any observations; there is nothing to upload"
@@ -297,7 +297,7 @@ final class InspectionsController: UIViewController {
         present(controller: ac)
     }
     
-    private func downloadTouchedCallback(inspection: PFInspection, cell: InspectionCell) -> (() -> Void) {
+    private func downloadTouchedCallback(inspection: Inspection, cell: InspectionCell) -> (() -> Void) {
         
         return {
             
@@ -319,7 +319,7 @@ final class InspectionsController: UIViewController {
         }
     }
 
-    private func uploadTouchedCallback(inspection: PFInspection) -> (() -> Void) {
+    private func uploadTouchedCallback(inspection: Inspection) -> (() -> Void) {
         
         return {
             
@@ -347,7 +347,7 @@ final class InspectionsController: UIViewController {
         }
     }
     
-    private func upload(inspection: PFInspection) {
+    private func upload(inspection: Inspection) {
 
         self.indicator.alpha = 1
         self.indicator.startAnimating()

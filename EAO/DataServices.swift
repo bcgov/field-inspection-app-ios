@@ -75,18 +75,22 @@ class DataServices {
         return URL(fileURLWithPath: realmFileName, isDirectory: false, relativeTo: workspaceURL)
     }
 
-    class func add(inspection: PFInspection, isStoredLocally: Bool = false) -> Bool {
+    class func add(inspection: Inspection, isStoredLocally: Bool = false) -> Bool {
+        
+        guard let userID = PFUser.current()?.objectId else {
+            return false
+        }
         
         do {
             let realm = try Realm()
             try realm.write {
+                inspection.userId = userID
                 realm.add(inspection, update: true)
             }
             
             let doc = InspectionMeta()
             doc.id = UUID().uuidString
             doc.localId = inspection.id
-            //        doc.remoteId = inspection.objectId
             doc.isStoredLocally = isStoredLocally
             doc.modifiedAt = Date()
 
@@ -101,7 +105,7 @@ class DataServices {
         return true
     }
 
-    class func add(observation: PFObservation) -> Bool {
+    class func add(observation: Observation) -> Bool {
         
         do {
             let realm = try Realm()
@@ -117,27 +121,16 @@ class DataServices {
     }
 
     
-    // MARK: Parse
-    internal class func inspectionQueryForCurrentUser() -> PFQuery<PFObject>? {
-
-//        guard let query = PFInspection.query() else {
-//            return nil
-//        }
-//
-//        query.whereKey("userId", equalTo: PFUser.current()!.objectId!)
-//        query.fromLocalDatastore()
-//        query.order(byDescending: "start")
-        
-//        return query
-        return nil
-    }
-    
-    internal class func fetchInspections(completion: ((_ results: [PFInspection]) -> Void)? = nil) {
+    internal class func fetchInspections(completion: ((_ results: [Inspection]) -> Void)? = nil) {
         //TODO: #11
-        //filter inspections by user ID
+        guard let userID = PFUser.current()?.objectId else {
+            completion?([])
+            return
+        }
+        
         do {
             let realm = try Realm()
-            let inspections = realm.objects(PFInspection.self).sorted(byKeyPath: "title", ascending: true)
+            let inspections = realm.objects(Inspection.self).filter("userId in %@", [userID]).sorted(byKeyPath: "title", ascending: true)
             let inspectionsArray = Array(inspections)
             
             print("fetchInspections: count = \(inspections.count)");
@@ -147,7 +140,7 @@ class DataServices {
         }
     }
     
-    internal class func fetchFullInspection(inspection: PFInspection, completion: (() -> Void)? = nil) {
+    internal class func fetchFullInspection(inspection: Inspection, completion: (() -> Void)? = nil) {
         
         let dispatchGroup = DispatchGroup()
         
@@ -167,10 +160,10 @@ class DataServices {
         }
     }
     
-    class func fetchObservations(for inspection: PFInspection) -> [PFObservation]? {
+    class func fetchObservations(for inspection: Inspection) -> [Observation]? {
         do {
             let realm = try Realm()
-            let observations = realm.objects(PFObservation.self).filter("inspectionId in %@", [inspection.id]).sorted(byKeyPath: "pinnedAt", ascending: true)
+            let observations = realm.objects(Observation.self).filter("inspectionId in %@", [inspection.id]).sorted(byKeyPath: "pinnedAt", ascending: true)
             let observationsArray = Array(observations)
             
             print("fetchObservations: count = \(observations.count)");
@@ -181,7 +174,7 @@ class DataServices {
         return nil
     }
     
-    internal class func fetchObservationsFor(inspection: PFInspection, localOnly: Bool = false, completion: ((_ results: [PFObservation]) -> Void)? = nil) {
+    internal class func fetchObservationsFor(inspection: Inspection, localOnly: Bool = false, completion: ((_ results: [Observation]) -> Void)? = nil) {
         
 //        let observations = DataServices.fetchObservations(for: inspection)
         
@@ -215,7 +208,7 @@ class DataServices {
 //        }
     }
     
-    internal class func fetchPhotosFor(observation: PFObservation, completion: ((_ results: [PFPhoto]) -> Void)? = nil) {
+    internal class func fetchPhotosFor(observation: Observation, completion: ((_ results: [PFPhoto]) -> Void)? = nil) {
         
 //        guard let query = PFPhoto.query() else {
 //            completion?([])
@@ -247,7 +240,7 @@ class DataServices {
 //        }
     }
     
-    internal class func fetchDataFor(photo: PFPhoto, observation: PFObservation, index: Int, completion: ((_ result: Data?) -> Void)? = nil) {
+    internal class func fetchDataFor(photo: PFPhoto, observation: Observation, index: Int, completion: ((_ result: Data?) -> Void)? = nil) {
         
 //        guard let image = photo["photo"] as? PFFile else {
 //            completion?(nil)
@@ -278,7 +271,7 @@ class DataServices {
 //        })
     }
     
-    internal class func deleteLocalObservations(forInspection inspection: PFInspection, completion: (() -> Void)? = nil) {
+    internal class func deleteLocalObservations(forInspection inspection: Inspection, completion: (() -> Void)? = nil) {
         
 //        guard let query = PFObservation.query() else {
 //            completion?()
@@ -305,7 +298,7 @@ class DataServices {
 //        }
     }
     
-    internal class func uploadInspection(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
+    internal class func uploadInspection(inspection: Inspection, completion: @escaping (_ done: Bool) -> Void) {
      
 //        inspection["isActive"] = true // so it shows up in the EAO admin site
 //        fetchObservationsFor(inspection: inspection, localOnly: true) { (results: [PFObservation]) in
@@ -327,7 +320,7 @@ class DataServices {
    
     // MARK: -
     
-    internal class func uploadInspection2(inspection: PFInspection, completion: @escaping (_ done: Bool) -> Void) {
+    internal class func uploadInspection2(inspection: Inspection, completion: @escaping (_ done: Bool) -> Void) {
 //        let object = PFObject(className: "Inspection")
 //
 //        let userId = inspection.userId ?? ""
@@ -465,7 +458,7 @@ class DataServices {
 //        }
     }
     
-    internal class func getObservationsFor(inspection: PFInspection, completion: @escaping (_ done: Bool, _ observations: [PFObservation]?) -> Void) {
+    internal class func getObservationsFor(inspection: Inspection, completion: @escaping (_ done: Bool, _ observations: [PFObservation]?) -> Void) {
         PFObservation.load(for: inspection.id) { (results) in
             guard let observations = results, !observations.isEmpty else{
                 return completion(false, nil)
@@ -545,7 +538,7 @@ class DataServices {
         }
     }
     
-    internal class func uploadAudio(for observation: PFObservation,  obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
+    internal class func uploadAudio(for observation: Observation,  obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
 //        let audio = PFObject(className: "Audio")
 //        getAudiosFor(observationID: observation.id!) { (success, audios) in
 //            if success, let results = audios {
@@ -581,7 +574,7 @@ class DataServices {
 //        }
     }
     
-    internal class func recursiveAudioUpload(last index: Int,for observation: PFObservation,  obsObj: PFObject, parseAudioObjects: [PFObject],completion: @escaping (_ done: Bool, _ audios: [PFObject]) -> Void) {
+    internal class func recursiveAudioUpload(last index: Int,for observation: Observation,  obsObj: PFObject, parseAudioObjects: [PFObject],completion: @escaping (_ done: Bool, _ audios: [PFObject]) -> Void) {
         if index > -1 {
             uploadAudio(for: observation, obsObj: obsObj, at: index, completion: { (success, audioObjsect) in
                 if success {
@@ -606,7 +599,7 @@ class DataServices {
         }
     }
     
-    internal class func uploadAudios(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
+    internal class func uploadAudios(for observation: Observation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
         getAudiosFor(observationID: observation.id) { (success, pfaudios) in
 //            if success {
 //                if let count = pfaudios?.count {
@@ -632,81 +625,81 @@ class DataServices {
     }
     
     internal class func uploadVideos(for observation: PFObservation, observObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
-        getVideosFor(observationID: observation.id) { (success, pfvideos) in
-            if success {
-                if let count = pfvideos?.count {
-                    let parseVideObjects: [PFObject] = [PFObject]()
-                    self.recursiveVideoUpload(last: (count - 1), for: observation, observObj: observObj, parseVideoObjects: parseVideObjects, completion: { (done, videos) in
-                        if done {
-                            return completion(true)
-                        } else {
-                            // fail
-                            // couldnt upload videos
-                            return completion(false)
-                        }
-                    })
-                } else {
-                    // unlikely yo get here
-                    return completion(false)
-                }
-            } else {
-                // fail.
-                // could npt find videos
-                return completion(false)
-            }
-        }
+//        getVideosFor(observationID: observation.id) { (success, pfvideos) in
+//            if success {
+//                if let count = pfvideos?.count {
+//                    let parseVideObjects: [PFObject] = [PFObject]()
+//                    self.recursiveVideoUpload(last: (count - 1), for: observation, observObj: observObj, parseVideoObjects: parseVideObjects, completion: { (done, videos) in
+//                        if done {
+//                            return completion(true)
+//                        } else {
+//                            // fail
+//                            // couldnt upload videos
+//                            return completion(false)
+//                        }
+//                    })
+//                } else {
+//                    // unlikely yo get here
+//                    return completion(false)
+//                }
+//            } else {
+//                // fail.
+//                // could npt find videos
+//                return completion(false)
+//            }
+//        }
     }
     
-    internal class func uploadPhotos(for observation: PFObservation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
-        getPhotosFor(observationID: observation.id) { (success, pfphotos) in
-            if success {
-                if let count = pfphotos?.count {
-                    let parsePhotoObjects: [PFObject] = [PFObject]()
-                    self.recursivePhotoUpload(last: (count - 1), for: observation, obsObj: obsObj, parsePhotoObjects: parsePhotoObjects, completion: { (done, photos) in
-                        if done {
-                            return completion(true)
-                        } else {
-                            // fail
-                            return completion(false)
-                        }
-                    })
-                } else {
-                    return completion(false)
-                }
-            } else {
-                return completion(false)
-            }
-        }
-    }
+//    internal class func uploadPhotos(for observation: Observation, obsObj: PFObject, completion: @escaping (_ success: Bool) -> Void) {
+//        getPhotosFor(observationID: observation.id) { (success, pfphotos) in
+//            if success {
+//                if let count = pfphotos?.count {
+//                    let parsePhotoObjects: [PFObject] = [PFObject]()
+//                    self.recursivePhotoUpload(last: (count - 1), for: observation, obsObj: obsObj, parsePhotoObjects: parsePhotoObjects, completion: { (done, photos) in
+//                        if done {
+//                            return completion(true)
+//                        } else {
+//                            // fail
+//                            return completion(false)
+//                        }
+//                    })
+//                } else {
+//                    return completion(false)
+//                }
+//            } else {
+//                return completion(false)
+//            }
+//        }
+//    }
     
-    internal class func recursivePhotoUpload(last index: Int,for observation: PFObservation, obsObj: PFObject, parsePhotoObjects: [PFObject],completion: @escaping (_ done: Bool, _ photos: [PFObject]) -> Void) {
-        if index > -1 {
-            uploadPhoto(for: observation, obsObj: obsObj, at: index, completion: { (success, photoObject) in
-                if success {
-                    var objects = parsePhotoObjects
-                    objects.append(photoObject!)
-                    
-                    let nextIndex = index - 1
-                    if nextIndex > -1 {
-                        self.recursivePhotoUpload(last: nextIndex, for: observation, obsObj: obsObj, parsePhotoObjects: objects, completion: completion)
-                    } else {
-                        // done
-                        completion(true, objects)
-                    }
-                } else {
-                    completion(false, parsePhotoObjects)
-                }
-            })
-        } else {
-            // done
-            completion(true, parsePhotoObjects)
-        }
-    }
+//    internal class func recursivePhotoUpload(last index: Int,for observation: Observation, obsObj: PFObject, parsePhotoObjects: [PFObject],completion: @escaping (_ done: Bool, _ photos: [PFObject]) -> Void) {
+//        if index > -1 {
+//            uploadPhoto(for: observation, obsObj: obsObj, at: index, completion: { (success, photoObject) in
+//                if success {
+//                    var objects = parsePhotoObjects
+//                    objects.append(photoObject!)
+//
+//                    let nextIndex = index - 1
+//                    if nextIndex > -1 {
+//                        self.recursivePhotoUpload(last: nextIndex, for: observation, obsObj: obsObj, parsePhotoObjects: objects, completion: completion)
+//                    } else {
+//                        // done
+//                        completion(true, objects)
+//                    }
+//                } else {
+//                    completion(false, parsePhotoObjects)
+//                }
+//            })
+//        } else {
+//            // done
+//            completion(true, parsePhotoObjects)
+//        }
+//    }
     
     
     
-    internal class func uploadPhoto(for observation: PFObservation, obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
-        
+//    internal class func uploadPhoto(for observation: Observation, obsObj: PFObject, at index: Int, completion: @escaping (_ success: Bool, _ pfObject: PFObject? ) -> Void) {
+//
 //        let photo = PFObject(className: "Photo")
 //        getPhotoAt(observationID: observation.id!, at: index) { (found, pfphoto) in
 //            if !found {
@@ -747,7 +740,7 @@ class DataServices {
 //                }
 //            })
 //        }
-    }
+//    }
     
     
         

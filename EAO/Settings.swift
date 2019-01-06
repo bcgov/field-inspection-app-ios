@@ -10,7 +10,7 @@ struct Settings{
     
     static let skipLogin = false
     
-    static let REALM_SCHEMA_NUMBER: UInt64 = 5
+    static let REALM_SCHEMA_NUMBER: UInt64 = 1
     static var shouldRotate = false
     
     static var formatter: DateFormatter {

@@ -13,11 +13,11 @@ import AVFoundation
 
 extension DataServices {
 
-    internal class func getVideosFor(observationID: String, completion: @escaping (_ success: Bool, _ videos: [PFVideo]? ) -> Void) {
+    internal class func getVideosFor(observationID: String, completion: @escaping (_ success: Bool, _ videos: [Video]? ) -> Void) {
         
         do {
             let realm = try Realm()
-            let results = realm.objects(PFVideo.self).filter("observationId in %@", [observationID])
+            let results = realm.objects(Video.self).filter("observationId in %@", [observationID])
             let resultsArray = Array(results)
             
             print("\(#function): count = \(results.count)");
@@ -29,7 +29,7 @@ extension DataServices {
 
     }
     
-    internal class func getVideoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: PFVideo? ) -> Void) {
+    internal class func getVideoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: Video? ) -> Void) {
         
         DataServices.getVideosFor(observationID: observationID) { (success, results) in
             if success == true, (results?.count ?? 0) > 0 {
@@ -47,7 +47,7 @@ extension DataServices {
             if !done{ return completion (false)}
             // then save video
             
-            let video = PFVideo()
+            let video = Video()
             video.observationId = observationID
             video.index = index
             video.notes = description
@@ -62,7 +62,7 @@ extension DataServices {
         }
     }
     
-    internal class func savePFVideo(video: PFVideo, completion: @escaping (_ created: Bool) -> Void) {
+    internal class func savePFVideo(video: Video, completion: @escaping (_ created: Bool) -> Void) {
         
         do {
             let realm = try Realm()
@@ -78,11 +78,11 @@ extension DataServices {
         
     }
     
-    internal class func getVideoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ video: PFVideo? ) -> Void) {
-        getVideosFor(observationID: observationID) { (found, pfvideos) in
+    internal class func getVideoAt(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: Video? ) -> Void) {
+        getVideosFor(observationID: observationID) { (found, videos) in
             if found {
-                if (pfvideos?.count)! >= at {
-                    return completion(true,  pfvideos?[at])
+                if (videos?.count)! >= index {
+                    return completion(true,  videos?[index])
                 } else {
                     return completion(false, nil)
                 }

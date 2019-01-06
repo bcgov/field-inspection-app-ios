@@ -14,7 +14,7 @@ extension DataServices {
     
     internal class func saveAudio(audioURL: URL, index: Int, observationID: String, inspectionID: String, notes: String, title: String, completion: @escaping (_ created: Bool) -> Void) {
         
-        let audio = PFAudio()
+        let audio = Audio()
         audio.observationId = observationID
         audio.index = index
         audio.inspectionId = inspectionID
@@ -37,11 +37,11 @@ extension DataServices {
         }
     }
     
-    internal class func getAudiosFor(observationID: String, completion: @escaping (_ success: Bool, _ audios: [PFAudio]? ) -> Void) {
+    internal class func getAudiosFor(observationID: String, completion: @escaping (_ success: Bool, _ audios: [Audio]? ) -> Void) {
         
         do {
             let realm = try Realm()
-            let results = realm.objects(PFAudio.self).filter("observationId in %@", [observationID])
+            let results = realm.objects(Audio.self).filter("observationId in %@", [observationID])
             let resultsArray = Array(results)
             
             print("\(#function): count = \(results.count)");
@@ -53,7 +53,7 @@ extension DataServices {
         
     }
     
-    internal class func getAudioFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ audio: PFAudio? ) -> Void) {
+    internal class func getAudioFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ audio: Audio? ) -> Void) {
         
         DataServices.getAudiosFor(observationID: observationID) { (result, photos) in
             if result == true, (photos?.count ?? 0) > 0 {
