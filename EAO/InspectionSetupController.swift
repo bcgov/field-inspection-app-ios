@@ -9,6 +9,7 @@ import Parse
 import RealmSwift
 
 final class InspectionSetupController: UIViewController{
+    
 	@objc var inspection: Inspection?
 
 	fileprivate var isNew = false
@@ -261,7 +262,8 @@ extension InspectionSetupController{
 			return
 		}
 		if self.isNew {
-			inspection = Inspection()
+			
+            inspection = Inspection()
 			inspection?.userId = PFUser.current()?.objectId
 			inspection?.id = UUID().uuidString
             

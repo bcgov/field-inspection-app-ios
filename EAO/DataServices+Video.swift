@@ -43,10 +43,13 @@ extension DataServices {
 
     internal class func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         
-        DataServices.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (done) in
-            if !done{ return completion (false)}
-            // then save video
+        DataServices.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (result) in
             
+            guard result else {
+                return completion (false)
+            }
+            
+            // then save video
             let video = Video()
             video.observationId = observationID
             video.index = index
@@ -80,6 +83,7 @@ extension DataServices {
     
     internal class func getVideoAt(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: Video? ) -> Void) {
         getVideosFor(observationID: observationID) { (found, videos) in
+            
             if found {
                 if (videos?.count)! >= index {
                     return completion(true,  videos?[index])
@@ -87,6 +91,7 @@ extension DataServices {
                     return completion(false, nil)
                 }
             }
+            return completion(false, nil)
         }
     }
 

@@ -343,8 +343,9 @@ class NewObservationElementFormViewController: UIViewController {
                 if observation.observationDescription == nil {
                     observation.observationDescription = ""
                 }
-                if elementnewDescription != "" {
-                    observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+                
+                if let observationDescription = observation.observationDescription, elementnewDescription.isEmpty == false {
+                    observation.observationDescription = observationDescription + separator + elementnewDescription
                 }
                 
                 realm.add(observation, update: true)

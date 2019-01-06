@@ -57,26 +57,25 @@ final class PFInspection: PFObject, PFSubclassing {
     internal var failed = [PFObject]()
     
     //MARK: -
-
+    
     @NSManaged var id : String?
     @NSManaged var userId : String?
     @NSManaged var isSubmitted  : NSNumber?
     @NSManaged var project  : String?
-    @NSManaged var title	: String?
+    @NSManaged var title    : String?
     @NSManaged var subtitle : String?
     @NSManaged var subtext  : String?
-    @NSManaged var number	: String?
-    @NSManaged var start	: Date?
-    @NSManaged var end		: Date?
+    @NSManaged var number    : String?
+    @NSManaged var start    : Date?
+    @NSManaged var end        : Date?
     @NSManaged var teamID   : String?
     @NSManaged var observation: [PFObservation]
-
+    
     static func parseClassName() -> String {
         return "Inspection"
     }
     
     //MARK: - Submission
-    
     func submit(completion: @escaping (_ success: Bool,_ error: PFInspectionError?)->Void, block: @escaping (_ progress : Float)->Void){
         var objects = [PFObject]()
         self.failed.removeAll()
@@ -150,57 +149,57 @@ final class PFInspection: PFObject, PFSubclassing {
                         })
                     }
                 })
-                //                PFAudio.load(for: observationId, result: { (audios) in
-                //                    if let audios = audios {
-                //                        audios.setPFFiles()
-                //                        objects.append(contentsOf: audios as [PFObject])
-                //                    }
-                //                    counter += 1
-                //                    if counter == observations.count{
-                //                        self.save(objects: objects, completion: {
-                //                            var success = true
-                //                            var _error: PFInspectionError? = .someObjectsFailed(self.failed.count)
-                //                            if self.failed.count == objects.count{
-                //                                _error = PFInspectionError.fail
-                //                                success = false
-                //                            } else if self.failed.isEmpty{
-                //                                _error = nil
-                //                            }
-                //                            if !self.failed.isEmpty{
-                //                                success = false
-                //                            }
-                //                            completion(success, _error)
-                //                        }, block: { (progress) in
-                //                            block(progress)
-                //                        })
-                //                    }
-                //                })
+                PFAudio.load(for: observationId, result: { (audios) in
+                    if let audios = audios {
+                        audios.setPFFiles()
+                        objects.append(contentsOf: audios as [PFObject])
+                    }
+                    counter += 1
+                    if counter == observations.count{
+                        self.save(objects: objects, completion: {
+                            var success = true
+                            var _error: PFInspectionError? = .someObjectsFailed(self.failed.count)
+                            if self.failed.count == objects.count{
+                                _error = PFInspectionError.fail
+                                success = false
+                            } else if self.failed.isEmpty{
+                                _error = nil
+                            }
+                            if !self.failed.isEmpty{
+                                success = false
+                            }
+                            completion(success, _error)
+                        }, block: { (progress) in
+                            block(progress)
+                        })
+                    }
+                })
                 
-                //                PFVideo.load(for: observationId, result: { (videos) in
-                //                    if let videos = videos {
-                //                        videos.setPFFiles()
-                //                        objects.append(contentsOf: videos as [PFObject])
-                //                    }
-                //                    counter += 1
-                //                    if counter == observations.count{
-                //                        self.save(objects: objects, completion: {
-                //                            var success = true
-                //                            var _error: PFInspectionError? = .someObjectsFailed(self.failed.count)
-                //                            if self.failed.count == objects.count{
-                //                                _error = PFInspectionError.fail
-                //                                success = false
-                //                            } else if self.failed.isEmpty{
-                //                                _error = nil
-                //                            }
-                //                            if !self.failed.isEmpty{
-                //                                success = false
-                //                            }
-                //                            completion(success, _error)
-                //                        }, block: { (progress) in
-                //                            block(progress)
-                //                        })
-                //                    }
-                //                })
+                PFVideo.load(for: observationId, result: { (videos) in
+                    if let videos = videos {
+                        videos.setPFFiles()
+                        objects.append(contentsOf: videos as [PFObject])
+                    }
+                    counter += 1
+                    if counter == observations.count{
+                        self.save(objects: objects, completion: {
+                            var success = true
+                            var _error: PFInspectionError? = .someObjectsFailed(self.failed.count)
+                            if self.failed.count == objects.count{
+                                _error = PFInspectionError.fail
+                                success = false
+                            } else if self.failed.isEmpty{
+                                _error = nil
+                            }
+                            if !self.failed.isEmpty{
+                                success = false
+                            }
+                            completion(success, _error)
+                        }, block: { (progress) in
+                            block(progress)
+                        })
+                    }
+                })
             }
         }
     }
@@ -312,9 +311,9 @@ extension Array where Element == PFPhoto{
     ///Gets photo data from local file, converts it to PFFile, and sets each element's file to corresponding PFFile
     fileprivate func setPFFiles(){
         self.forEach({ (photo) in
-//            if let data = photo.get(){
-//                photo.file = PFFile(data: data)
-//            }
+            //            if let data = photo.get(){
+            //                photo.file = PFFile(data: data)
+            //            }
         })
     }
 }
@@ -324,9 +323,9 @@ extension Array where Element == PFVideo{
     ///Gets photo data from local file, converts it to PFFile, and sets each element's file to corresponding PFFile
     fileprivate func setPFFiles(){
         self.forEach({ (video) in
-//            if let data = video.get(){
-//                video.file = PFFile(data: data)
-//            }
+            //            if let data = video.get(){
+            //                video.file = PFFile(data: data)
+            //            }
         })
     }
 }
@@ -336,10 +335,11 @@ extension Array where Element == PFAudio{
     ///Gets photo data from local file, converts it to PFFile, and sets each element's file to corresponding PFFile
     fileprivate func setPFFiles(){
         self.forEach({ (audio) in
-//            if let data = audio.get(){
-//                audio.file = PFFile(data: data)
-//            }
+            //            if let data = audio.get(){
+            //                audio.file = PFFile(data: data)
+            //            }
         })
     }
 }
+
 

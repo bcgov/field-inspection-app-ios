@@ -13,6 +13,7 @@ protocol LocalizedDescriptionError: Error {
 }
 
 public enum DataServicesError: LocalizedDescriptionError {
+    
     case unknownError
     case noNetworkConnectivity
     case internalError(message: String)

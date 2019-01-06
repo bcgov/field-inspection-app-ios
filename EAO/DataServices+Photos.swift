@@ -14,8 +14,10 @@ extension DataServices{
     
     internal class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         
-        DataServices.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (done) in
-            if !done{ return completion (false)}
+        DataServices.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (result) in
+            guard result else {
+                return completion (false)
+            }
             
             DataServices.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
                 if !success{ return completion (false)}

@@ -53,7 +53,7 @@ extension DataServices{
 
 extension DataServices {
     
-    func getProjects()->Results<EAOProject>?{
+    func getProjects() -> Results<EAOProject>? {
         
         do {
             let realm = try Realm()
@@ -66,7 +66,7 @@ extension DataServices {
         return nil
     }
     
-    func getProjectsAsStrings()->[String]{
+    func getProjectsAsStrings() -> [String] {
         
         guard let projects = getProjects() else {
             return []

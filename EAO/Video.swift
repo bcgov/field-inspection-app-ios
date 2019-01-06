@@ -31,7 +31,6 @@ final class Video: Object, Mappable{
     @objc dynamic var title: String?
     @objc dynamic var url: String?
     @objc dynamic var coordinate: RealmLocation?
-    //    @objc dynamic var file : PFFile?
     
     required convenience init?(map: Map) {
         self.init()
@@ -50,20 +49,7 @@ final class Video: Object, Mappable{
         title <- map[SerializationKeys.title]
         url <- map[SerializationKeys.url]
         coordinate <- map[SerializationKeys.coordinate]
-        //        file <- map[SerializationKeys.file]
     }
-    
-//    @objc static func load(for observationId: String, result: @escaping (_ videos: [PFVideo]?)->Void){
-//        //        guard let query = PFVideo.query() else{
-//        //            result(nil)
-//        //            return
-//        //        }
-//        //        query.fromLocalDatastore()
-//        //        query.whereKey("observationId", equalTo: observationId)
-//        //        query.findObjectsInBackground(block: { (videos, error) in
-//        //            result(videos as? [PFVideo])
-//        //        })
-//    }
     
     @objc func get() -> Data?{
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)

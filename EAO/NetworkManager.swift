@@ -91,7 +91,7 @@ class NetworkManager {
         NotificationCenter.default.post(name: Notification.Name.wifiAvailabilityChanged, object: nil)
     }
     
-    class func processResponse<T>(_ response: Alamofire.DataResponse<T>)->(T?, Error?){
+    class func processResponse<T>(_ response: Alamofire.DataResponse<T>) -> (T?, Error?) {
         
         if let error = process(statusCode: response.response?.statusCode){
             return (nil, error)
@@ -120,7 +120,7 @@ class NetworkManager {
         
     }
     
-    class func process(statusCode:Int? = nil)->Error?{
+    class func process(statusCode:Int? = nil) -> Error? {
         
         switch (statusCode){
         case NSURLErrorTimedOut?:

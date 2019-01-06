@@ -31,7 +31,6 @@ final class Audio: Object, Mappable{
     @objc dynamic var title: String?
     @objc dynamic var url: String?
     @objc dynamic var coordinate: RealmLocation?
-    //    @objc dynamic var file : PFFile?
     
     required convenience init?(map: Map) {
         self.init()
@@ -50,23 +49,10 @@ final class Audio: Object, Mappable{
         title <- map[SerializationKeys.title]
         url <- map[SerializationKeys.url]
         coordinate <- map[SerializationKeys.coordinate]
-        //        file <- map[SerializationKeys.file]
     }
 }
 
 extension Audio {
-
-//    @objc static func load(for observationId: String, result: @escaping (_ audios: [PFAudio]?)->Void){
-//        //        guard let query = PFAudio.query() else{
-//        //            result(nil)
-//        //            return
-//        //        }
-//        //        query.fromLocalDatastore()
-//        //        query.whereKey("observationId", equalTo: observationId)
-//        //        query.findObjectsInBackground(block: { (audios, error) in
-//        //            result(audios as? [PFAudio])
-//        //        })
-//    }
 
     @objc func get() -> Data?{
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)

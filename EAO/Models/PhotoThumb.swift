@@ -49,18 +49,6 @@ class PhotoThumb: Object, Mappable{
 
 extension PhotoThumb {
     
-    @objc static func load(for observationId: String, result: @escaping (_ photos: [PFPhotoThumb]?)->Void){
-        //        guard let query = PFPhotoThumb.query() else{
-        //            result(nil)
-        //            return
-        //        }
-        //        query.fromLocalDatastore()
-        //        query.whereKey("observationId", equalTo: observationId)
-        //        query.findObjectsInBackground(block: { (photos, error) in
-        //            result(photos as? [PFPhotoThumb])
-        //        })
-    }
-    
     @objc func get() -> Data?{
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return try? Data(contentsOf: url)
