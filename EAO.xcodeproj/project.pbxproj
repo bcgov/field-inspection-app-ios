@@ -321,6 +321,8 @@
 		D5F7DE4A21E1E74100C0A859 /* PFObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE4821E1E74100C0A859 /* PFObservation.swift */; };
 		D5F7DE4D21E2B62200C0A859 /* DataServices+Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE4C21E2B62200C0A859 /* DataServices+Import.swift */; };
 		D5F7DE4E21E2B62200C0A859 /* DataServices+Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE4C21E2B62200C0A859 /* DataServices+Import.swift */; };
+		D5F7DE5321E2C43400C0A859 /* DataServices+Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE5221E2C43400C0A859 /* DataServices+Upload.swift */; };
+		D5F7DE5421E2C43400C0A859 /* DataServices+Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE5221E2C43400C0A859 /* DataServices+Upload.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -546,6 +548,7 @@
 		D5F7DE4521E1E69800C0A859 /* Inspection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Inspection.swift; path = Models/Inspection.swift; sourceTree = "<group>"; };
 		D5F7DE4821E1E74100C0A859 /* PFObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PFObservation.swift; sourceTree = "<group>"; };
 		D5F7DE4C21E2B62200C0A859 /* DataServices+Import.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DataServices+Import.swift"; path = "Services/DataServices+Import.swift"; sourceTree = "<group>"; };
+		D5F7DE5221E2C43400C0A859 /* DataServices+Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DataServices+Upload.swift"; path = "Services/DataServices+Upload.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1043,6 +1046,7 @@
 				D5B6F72721D94277007FF921 /* DataServicesError.swift */,
 				29FF5619200EC29100FCF230 /* DataServices.swift */,
 				D5F7DE4C21E2B62200C0A859 /* DataServices+Import.swift */,
+				D5F7DE5221E2C43400C0A859 /* DataServices+Upload.swift */,
 				D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */,
 				D5B6F72921D9AAE5007FF921 /* DataServices+Photos.swift */,
 				D5B6F72B21D9AB4A007FF921 /* DataServices+Audio.swift */,
@@ -1701,6 +1705,7 @@
 				2936BEE020BF64A500775F5E /* MiFormViewController.swift in Sources */,
 				2936BEE120BF64A500775F5E /* MiFormTableViewCell.swift in Sources */,
 				D5F7DE4721E1E69800C0A859 /* Inspection.swift in Sources */,
+				D5F7DE5421E2C43400C0A859 /* DataServices+Upload.swift in Sources */,
 				2936BEE220BF64A500775F5E /* UIImageView.swift in Sources */,
 				D5F7DE4121E1E66400C0A859 /* Photo.swift in Sources */,
 				2936BEE320BF64A500775F5E /* FormMediaTableViewCell.swift in Sources */,
@@ -1838,6 +1843,7 @@
 				295261B020267EDF00CB02B6 /* Audio.swift in Sources */,
 				117D3BF71EEF0AC800791D07 /* Constants.swift in Sources */,
 				295304DE2017FF47001E5C7F /* SimpleFormTableViewCell.swift in Sources */,
+				D5F7DE5321E2C43400C0A859 /* DataServices+Upload.swift in Sources */,
 				D53B6DE921CB705800A0F546 /* EAOProject.swift in Sources */,
 				D5F7DE3D21E1E60F00C0A859 /* PFPhotoThumb.swift in Sources */,
 				298EDDB7203B4BB1004530F5 /* Video.swift in Sources */,

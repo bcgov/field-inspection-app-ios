@@ -66,7 +66,7 @@ final class LoginController: UIViewController{
                         DataServices.getUserTeams(user: user, completion: { (done, downloaded) in
                             print("ended \(done)")
                         })
-                        PFInspection.syncInspectionsOnly {
+                        PFInspection.fetchInspectionsOnly {
                             self.load(completion: {
                                 self.clearTextFields()
                                 self.present(controller: InspectionsController.storyboardInstance())
@@ -82,7 +82,7 @@ final class LoginController: UIViewController{
                     }
                     
                 })
-                PFInspection.syncInspectionsOnly {
+                PFInspection.fetchInspectionsOnly {
                     self.load(completion: {
                         self.clearTextFields()
                         self.present(controller: InspectionsController.storyboardInstance())
@@ -113,7 +113,7 @@ final class LoginController: UIViewController{
 			clearTextFields()
             
             self.indicator.startAnimating()
-            PFInspection.syncInspectionsOnly {
+            PFInspection.fetchInspectionsOnly {
                 self.load(completion: {
                     self.clearTextFields()
                     self.present(controller: InspectionsController.storyboardInstance())

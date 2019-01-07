@@ -8,6 +8,7 @@
 
 import Parse
 final class PFObservation: PFObject, PFSubclassing{
+    
     @NSManaged var id            : String?
     @NSManaged var inspectionId : String?
     @NSManaged var title        : String?

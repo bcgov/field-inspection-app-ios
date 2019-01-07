@@ -48,7 +48,6 @@ extension DataServices {
             inspection.teamID = pfInspection.teamID
             
             let doc = InspectionMeta()
-            doc.id = UUID().uuidString
             doc.localId = inspection.id
             doc.isStoredLocally = false
             doc.modifiedAt = Date()
@@ -224,6 +223,147 @@ extension DataServices {
             return false
         }
         return true
+    }
+
+    
+    func fetchFullInspection(inspection: Inspection, completion: (() -> Void)? = nil) {
+        
+        let inspectionID = inspection.id
+        
+        DataServices.shared.fetchObservations(for: inspectionID) { (results) in
+            print("DONE FETCHING INSPECTION 👍")
+            inspection.isStoredLocally = true
+            completion?()
+        }
+    }
+    
+    func fetchObservations(for inspectionId: String, completion: @escaping ((_ results: Bool) -> Void)) {
+        
+        guard let observationQuery = PFObservation.query() else {
+            completion(false)
+            return
+        }
+        
+        observationQuery.whereKey("inspectionId", equalTo: inspectionId)
+        observationQuery.findObjectsInBackground(block: { (observations, error) in
+            
+            for observation in observations as? [PFObservation] ?? [] {
+                guard let observationId = observation.id else {
+                    continue
+                }
+                
+                let _ = DataServices.add(observation: observation)
+                self.fetchPhotos(for: observationId, completion: { (result) in
+                    self.fetchPhotoThumbs(for: observationId, completion: { (result) in
+                        self.fetchAudios(for: observationId, completion: { (result) in
+                            self.fetchVideos(for: observationId, completion: { (result) in
+                                completion(result)
+                            })
+                        })
+                    })
+                })
+            }
+        })
+    }
+
+    func fetchPhotos(for observationId: String, completion: @escaping ((_ results: Bool) -> Void)) {
+        
+        guard let query = PFPhoto.query() else {
+            completion(false)
+            return
+        }
+        
+        query.whereKey("observationId", equalTo: observationId)
+        query.findObjectsInBackground(block: { (array, error) in
+            for object in array as? [PFPhoto] ?? []{
+                guard let remoteId = object.id else {
+                    continue
+                }
+                
+                let _ = DataServices.add(photo: object)
+                object.file?.getDataInBackground(block: { (data, error) in
+                    if let data = data{
+                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                    }
+                })
+            }
+            completion(true)
+        })
+    }
+    
+    func fetchPhotoThumbs(for observationId: String, completion: @escaping ((_ results: Bool) -> Void)) {
+        
+        guard let query = PFPhotoThumb.query() else {
+            completion(false)
+            return
+        }
+        
+        query.whereKey("observationId", equalTo: observationId)
+        query.findObjectsInBackground(block: { (array, error) in
+            for object in array as? [PFPhotoThumb] ?? []{
+                guard let remoteId = object.id else {
+                    continue
+                }
+                
+                let _ = DataServices.add(photoThumb: object)
+                object.file?.getDataInBackground(block: { (data, error) in
+                    if let data = data{
+                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                    }
+                })
+            }
+            completion(true)
+        })
+    }
+
+    func fetchAudios(for observationId: String, completion: @escaping ((_ results: Bool) -> Void)) {
+        
+        guard let query = PFAudio.query() else {
+            completion(false)
+            return
+        }
+        
+        query.whereKey("observationId", equalTo: observationId)
+        query.findObjectsInBackground(block: { (array, error) in
+            for object in array as? [PFAudio] ?? []{
+                guard let remoteId = object.id else {
+                    continue
+                }
+                
+                let _ = DataServices.add(audio: object)
+                object.file?.getDataInBackground(block: { (data, error) in
+                    if let data = data{
+                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                    }
+                })
+            }
+            completion(true)
+        })
+    }
+
+    func fetchVideos(for observationId: String, completion: @escaping ((_ results: Bool) -> Void)) {
+        
+        guard let query = PFVideo.query() else {
+            completion(false)
+            return
+        }
+        
+        query.whereKey("observationId", equalTo: observationId)
+        query.findObjectsInBackground(block: { (array, error) in
+            for object in array as? [PFVideo] ?? []{
+                guard let remoteId = object.id else {
+                    continue
+                }
+                
+                let _ = DataServices.add(video: object)
+                object.file?.getDataInBackground(block: { (data, error) in
+                    if let data = data{
+                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                    }
+                })
+            }
+            completion(true)
+        })
     }
 
 }

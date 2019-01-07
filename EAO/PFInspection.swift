@@ -272,7 +272,8 @@ extension PFInspection {
      Sync list of all user's inspections to the local Realm database
      Inspection details are not synced
      */
-    static func syncInspectionsOnly(completion: @escaping ()->()){
+    static func fetchInspectionsOnly(completion: @escaping ()->()){
+        
         guard   let query = PFInspection.query(),
             let userID = PFUser.current()?.objectId else {
                 completion()
@@ -292,69 +293,6 @@ extension PFInspection {
         })
     }
     
-    /**
-     Sync list of all user's inspections to the local Realm database
-     All Inspection details are synced
-     */
-    static func loadAndPinAll(completion: @escaping ()->()){
-        
-        guard   let query = PFInspection.query(),
-                let userID = PFUser.current()?.objectId else {
-                completion()
-                return
-        }
-        
-        query.whereKey("userId", equalTo: userID)
-        query.findObjectsInBackground(block: { (inspections, error) in
-            
-            for inspection in inspections as? [PFInspection] ?? [] {
-                guard let inspectionId = inspection.id else {
-                    continue
-                }
-                let _ = DataServices.add(inspection: inspection)
-                
-                guard let observationQuery = PFObservation.query() else {
-                    continue
-                }
-                
-                observationQuery.whereKey("inspectionId", equalTo: inspectionId)
-                observationQuery.findObjectsInBackground(block: { (observations, error) in
-                    
-                    for observation in observations as? [PFObservation] ?? [] {
-                        guard let observationId = inspection.id else {
-                            continue
-                        }
-
-                        let _ = DataServices.add(observation: observation)
-                        
-                        guard let photoQuery = PFPhoto.query() else {
-                            continue
-                        }
-                        photoQuery.whereKey("observationId", equalTo: observationId)
-                        photoQuery.findObjectsInBackground(block: { (photos, error) in
-                            for photo in photos as? [PFPhoto] ?? []{
-                                guard let photoId = photo.id else {
-                                    continue
-                                }
-
-                                let _ = DataServices.add(photo: photo)
-
-                                photo.file?.getDataInBackground(block: { (data, error) in
-                                    if let data = data{
-                                        try? data.write(to: FileManager.directory.appendingPathComponent(photoId, isDirectory: true))
-                                    }
-                                })
-                            }
-                        })
-                        
-                    }
-                })
-                completion()
-            }
-
-            completion()
-        })
-    }
 }
 
 /**
