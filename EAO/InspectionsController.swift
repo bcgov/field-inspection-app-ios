@@ -268,20 +268,20 @@ final class InspectionsController: UIViewController {
         return segmentedControl.selectedSegmentIndex
     }
 
-    private func checkUploadStatus(inspection: Inspection, completion: @escaping (_ canUpload: Bool) -> Void) {
+    private func checkUploadStatus(inspection: Inspection) -> Bool {
         
-        if let observations = DataServices.fetchObservations(for: inspection), observations.count == 0 {
+        if let observations = DataServices.fetchObservations(for: inspection) {
             
             if observations.count > 0 {
-                completion(true)
+                return true
             } else {
                 let title = "No Observations"
                 let message = "This inspeciton does not have any observations; there is nothing to upload"
                 self.showAlert(withTitle: title, message: message)
-                completion(false)
-                return
+                return false
             }
         }
+        return false
     }
     
     private func confirmUploadWithUser(completion: @escaping (_ action: UIAlertAction) -> Void) {
@@ -331,19 +331,16 @@ final class InspectionsController: UIViewController {
                 return
             }
 
-            self.checkUploadStatus(inspection: inspection, completion: { (canUpload: Bool) in
-                if !canUpload {
-                    return
-                }
-                
+            if self.checkUploadStatus(inspection: inspection) {
                 self.confirmUploadWithUser(completion: { (action: UIAlertAction) in
                     if action.style == .cancel {
                         return
                     }
-                    
                     self.upload(inspection: inspection)
                 })
-            })
+            } else {
+                return
+            }
         }
     }
     
@@ -354,7 +351,7 @@ final class InspectionsController: UIViewController {
         self.navigationController?.view.isUserInteractionEnabled = false
         self.isBeingUploaded = true
         
-        DataServices.uploadInspection(inspection: inspection) { (done) in
+        DataServices.shared.upload(inspection: inspection) { (done) in
             self.indicator.stopAnimating()
             self.navigationController?.view.isUserInteractionEnabled = true
             self.isBeingUploaded = false

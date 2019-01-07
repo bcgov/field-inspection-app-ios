@@ -62,3 +62,25 @@ class Inspection: Object{
         return "\(self) \(parameters)"
     }
 }
+
+extension Inspection {
+    
+    func createPF() -> PFInspection {
+        
+        let pfInspection = PFInspection()
+        pfInspection.id = self.id
+        pfInspection.userId = self.userId
+        pfInspection.project = self.project
+        pfInspection.title = self.title
+        pfInspection.subtitle = self.subtitle
+        pfInspection.subtitle = self.subtitle
+        pfInspection.subtext = self.subtext
+        pfInspection.number = self.number
+        pfInspection.start = self.start
+        pfInspection.end = self.end
+        pfInspection.teamID = self.teamID
+
+        return pfInspection
+    }
+    
+}
