@@ -270,17 +270,17 @@ final class InspectionsController: UIViewController {
 
     private func checkUploadStatus(inspection: Inspection, completion: @escaping (_ canUpload: Bool) -> Void) {
         
-        DataServices.fetchObservationsFor(inspection: inspection, localOnly: true) { (observations: [Observation]) in
-            if observations.count == 0 {
+        if let observations = DataServices.fetchObservations(for: inspection), observations.count == 0 {
+            
+            if observations.count > 0 {
+                completion(true)
+            } else {
                 let title = "No Observations"
                 let message = "This inspeciton does not have any observations; there is nothing to upload"
                 self.showAlert(withTitle: title, message: message)
-                
                 completion(false)
                 return
             }
-            
-            completion(true)
         }
     }
     
@@ -301,7 +301,7 @@ final class InspectionsController: UIViewController {
         
         return {
             
-            if !NetworkManager.shared.isReachableOnEthernetOrWiFi {
+            if NetworkManager.shared.isReachableOnEthernetOrWiFi == false {
                 let title = "WiFi Required"
                 let message = "You must be connected to a WiFi network to download an inspection"
                 
@@ -310,7 +310,7 @@ final class InspectionsController: UIViewController {
             }
             
             cell.uploadInProgress(isUploading: true)
-            DataServices.fetchFullInspection(inspection: inspection) {
+            DataServices.shared.fetchFullInspection(inspection: inspection) {
                 cell.uploadInProgress(isUploading: false)
                 if let indexPath = self.tableView.indexPath(for: cell) {
                     self.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -323,7 +323,7 @@ final class InspectionsController: UIViewController {
         
         return {
             
-            if !NetworkManager.shared.isReachableOnEthernetOrWiFi {
+            if NetworkManager.shared.isReachableOnEthernetOrWiFi == false {
                 let title = "WiFi Required"
                 let message = "You must be connected to a WiFi network to upload inspections"
                 
@@ -364,7 +364,6 @@ final class InspectionsController: UIViewController {
     }
 
     // MARK: Helpers
-    
     private func sort() {
 
         inspections.draft.sort(by: { (left, right) -> Bool in
@@ -388,7 +387,6 @@ extension InspectionsController: CLLocationManagerDelegate {
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
-
 extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
