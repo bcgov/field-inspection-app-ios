@@ -72,7 +72,7 @@ extension Inspection: ParseFactory {
     func createParseObject() -> PFObject {
         
         let pfInspection = PFInspection()
-        pfInspection.id = "upload test \(self.id)"//
+        pfInspection.id = self.id
         pfInspection.userId = self.userId
         pfInspection.project = self.project
         pfInspection.title = self.title
