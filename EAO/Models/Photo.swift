@@ -34,3 +34,24 @@ class Photo: Object{
     }
 
 }
+
+extension Photo: ParseFactory {
+    
+    func createParseObject() -> PFObject {
+        
+        let object = PFPhoto()
+        object.id = self.id
+        object.observationId = self.observationId
+        object.caption = self.caption
+        object.timestamp = self.timestamp
+        object.coordinate = self.coordinate?.createParseObject()
+        object.index = NSNumber(value: self.index)
+        
+        if let fileData = self.get() {
+            object.file = PFFileObject(data: fileData)
+        }
+
+        return object
+    }
+    
+}

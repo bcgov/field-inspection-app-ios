@@ -13,21 +13,27 @@ import RealmSwift
 
 extension DataServices {
     
-    func upload(inspection: Inspection, completion: @escaping (_ done: Bool) -> Void) {
-        
-        let pfInspection = inspection.createPF()
-        pfInspection.saveInBackground()
-        pfInspection.saveInBackground(block: { (status, error) in
-            completion(true)
-        })
-    }
-
     /* TODO:
      add operation to:
      - upload observations
      - upload photos, thumbs
      - upload audio
      - upload videos
-    */
+     */
     
+    func upload(inspection: Inspection, completion: @escaping (_ done: Bool) -> Void) {
+        
+        uploadQueue.maxConcurrentOperationCount = 1
+        uploadQueue.qualityOfService = .background
+        
+        let inspectionId = inspection.id
+        let inspectionOperation = InspectionUploadOperation(objectId: inspectionId) { (_) in
+            print("finish uploading inspection \(inspectionId)")
+            DispatchQueue.main.async {
+                completion(true)
+            }
+        }
+        self.uploadQueue.addOperation(inspectionOperation)
+    }
+
 }

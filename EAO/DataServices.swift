@@ -21,6 +21,8 @@ class DataServices {
 
     static let shared = DataServices()
 
+    let uploadQueue: OperationQueue = OperationQueue()
+    
     // MARK: Realm
 
     internal class func setup() {
@@ -152,102 +154,61 @@ class DataServices {
         }
         return nil
     }
-    
-    
-    internal class func fetchPhotosFor(observation: Observation, completion: ((_ results: [PFPhoto]) -> Void)? = nil) {
-        
-//        guard let query = PFPhoto.query() else {
-//            completion?([])
-//            return
-//        }
-//
-//        query.whereKey("observation", equalTo: observation)
-//        query.findObjectsInBackground { (objects, error) -> Void in
-//            guard let objects = objects as? [PFPhoto], error == nil else {
-//                completion?([])
-//                return
-//            }
-//
-//            let group = DispatchGroup()
-//            for (index, object) in objects.enumerated() {
-//                group.enter()
-//                object.id = UUID().uuidString // Local ID Only, must be set.
-//                object.observationId = observation.id!
-//                object.pinInBackground();
-//                DataServices.fetchDataFor(photo: object, observation: observation, index: index, completion: { (data: Data?) in
-//                    group.leave()
-//                })
-//            }
-//
-//            group.notify(queue: .main) {
-//                // all photo data fetched
-//                completion?(objects)
-//            }
-//        }
+
+    class func fetch<T>(for id: String) -> T? where T: Object{
+        do {
+            let realm = try Realm()
+            let observation = realm.objects(T.self).filter("id in %@", [id]).first
+            
+            return observation
+        } catch let error {
+            print("fetch realm object: \(error.localizedDescription)");
+        }
+        return nil
     }
-    
-    internal class func fetchDataFor(photo: PFPhoto, observation: Observation, index: Int, completion: ((_ result: Data?) -> Void)? = nil) {
+
+    internal class func fetchArray<T>(for id: String, idFieldName: String = "observationId") -> [T] where T: Object {
         
-//        guard let image = photo["photo"] as? PFFile else {
-//            completion?(nil)
-//            return
-//        }
-//
-//        var loc: CLLocation = CLLocation(latitude: 0, longitude: 0)
-//        if let lat = photo.coordinate?.latitude, let lng = photo.coordinate?.longitude {
-//            loc = CLLocation(latitude: lat, longitude: lng)
-//        }
-//
-//        if image.isDataAvailable {
-//            if let imageData = try? image.getData() {
-//                DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: photo.caption, completion: { (success) in
-//                    completion?(imageData)
-//                })
-//            }
-//
-//            return
-//        }
-//
-//        image.getDataInBackground(block: { (data: Data?, err: Error?) in
-//            if let imageData = data {
-//                DataServices.savePhoto(image: UIImage(data: imageData)!, index: index, location: loc, observationID: observation.id!, description: photo.caption, completion: { (success) in
-//                    completion?(imageData)
-//                })
-//            }
-//        })
+        do {
+            let realm = try Realm()
+            let results = realm.objects(T.self).filter("\(idFieldName) in %@", [id])
+            let resultsArray = Array(results)
+            
+            print("\(#function): count = \(results.count)");
+            return resultsArray
+        } catch let error {
+            print("\(#function): \(error.localizedDescription)");
+            return []
+        }
+    }
+
+    class func fetchObservation(for id: String) -> Observation? {
+        do {
+            let realm = try Realm()
+            let observation = realm.objects(Observation.self).filter("id in %@", [id]).first
+            
+            return observation
+        } catch let error {
+            print("fetchObservations: \(error.localizedDescription)");
+        }
+        return nil
+    }
+
+    class func fetchPhoto(for id: String) -> Photo? {
+        do {
+            let realm = try Realm()
+            let observation = realm.objects(Photo.self).filter("id in %@", [id]).first
+            return observation
+        } catch let error {
+            print("fetchObservations: \(error.localizedDescription)");
+        }
+        return nil
     }
     
     internal class func deleteLocalObservations(forInspection inspection: Inspection, completion: (() -> Void)? = nil) {
-        
-//        guard let query = PFObservation.query() else {
-//            completion?()
-//            return
-//        }
-//
-//        query.whereKey("inspection", equalTo: inspection)
-//        query.fromLocalDatastore()
-//        query.findObjectsInBackground { (objects, error) -> Void in
-//            DispatchQueue.global(qos: .background).async {
-//                guard let objects = objects as? [PFObservation], error == nil else {
-//                    return
-//                }
-//
-//                objects.forEach({ (observation) in
-//                    try? observation.unpin()
-//                })
-//
-//                DispatchQueue.main.async {
-//                    inspection.isStoredLocally = false
-//                    completion?()
-//                }
-//            }
-//        }
+        //TODO - delete local observation
     }
     
-
-    
-    
-        
     internal class func isUserMobileAccessEnabled(completion: @escaping (_ success: Bool) -> Void) {
         
         guard let user: User = PFUser.current() as? User, let id = user.objectId else {

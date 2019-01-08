@@ -94,15 +94,15 @@ extension DataServices{
     }
     
     internal class func getPhotoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ photos: Photo? ) -> Void) {
-        
-        DataServices.getPhotosFor(observationID: observationID) { (result, photos) in
-            if result == true, (photos?.count ?? 0) > 0 {
-                let thePhoto = photos?.filter( { $0.index == index } ).first
-                return completion(false, thePhoto)
-            } else {
-                return completion(false, nil)
-            }
+
+        let photos = DataServices.getPhotos(for: observationID)
+        if photos.count > 0 {
+            let thePhoto = photos.filter( { $0.index == index } ).first
+            return completion(false, thePhoto)
+        } else {
+            return completion(false, nil)
         }
+
     }
     
     internal class func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PhotoThumb]? ) -> Void) {
@@ -120,30 +120,28 @@ extension DataServices{
         }
     }
     
-    internal class func getPhotosFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [Photo]? ) -> Void) {
+    internal class func getPhotos(for observationId: String) -> [Photo] {
         
         do {
             let realm = try Realm()
-            let results = realm.objects(Photo.self).filter("observationId in %@", [observationID])
+            let results = realm.objects(Photo.self).filter("observationId in %@", [observationId])
             let resultsArray = Array(results)
             
             print("\(#function): count = \(results.count)");
-            return completion(true, resultsArray)
+            return resultsArray
         } catch let error {
             print("\(#function): \(error.localizedDescription)");
-            return completion(false, nil)
+            return []
         }
     }
     
     internal class func getPhotoAt(observationID: String, at: Int, completion: @escaping (_ success: Bool, _ photos: Photo? ) -> Void) {
-        getPhotosFor(observationID: observationID) { (found, pfphotos) in
-            if found {
-                if (pfphotos?.count)! >= at {
-                    return completion(true,  pfphotos?[at])
-                } else {
-                    return completion(false, nil)
-                }
-            }
+        
+        let photos = getPhotos(for: observationID)
+        if photos.count >= at {
+            return completion(true, photos[at])
+        } else {
+            return completion(false, nil)
         }
     }
     

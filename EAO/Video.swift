@@ -34,3 +34,26 @@ final class Video: Object{
     }
 }
 
+extension Video: ParseFactory {
+    
+    func createParseObject() -> PFObject {
+        
+        let object = PFAudio()
+        object.id = self.id
+        object.observationId = self.observationId
+        object.inspectionId = self.inspectionId
+        object.notes = self.notes
+        if let urlString = self.url{
+            object.url = URL(string: urlString)
+        }
+        object.coordinate = self.coordinate?.createParseObject()
+        object.index = NSNumber(value: self.index)
+        
+        if let fileData = self.get() {
+            object.file = PFFileObject(data: fileData)
+        }
+        
+        return object
+    }
+    
+}

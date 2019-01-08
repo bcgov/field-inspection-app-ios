@@ -8,6 +8,10 @@
 
 import RealmSwift
 
+protocol ParseFactory: class {
+    func createParseObject() -> PFObject
+}
+
 class Inspection: Object{
     
     @objc var progress: Float = 0
@@ -63,12 +67,12 @@ class Inspection: Object{
     }
 }
 
-extension Inspection {
+extension Inspection: ParseFactory {
     
-    func createPF() -> PFInspection {
+    func createParseObject() -> PFObject {
         
         let pfInspection = PFInspection()
-        pfInspection.id = self.id
+        pfInspection.id = "upload test \(self.id)"//
         pfInspection.userId = self.userId
         pfInspection.project = self.project
         pfInspection.title = self.title

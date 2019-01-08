@@ -33,3 +33,20 @@ class PhotoThumb: Object{
     }
 
 }
+
+extension PhotoThumb: ParseFactory {
+    
+    func createParseObject() -> PFObject {
+        
+        let object = PFPhoto()
+        object.id = self.id
+        object.observationId = self.observationId
+        object.index = NSNumber(value: self.index)
+        
+        if let fileData = self.get() {
+            object.file = PFFileObject(data: fileData)
+        }
+        return object
+    }
+    
+}

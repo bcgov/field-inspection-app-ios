@@ -50,3 +50,16 @@ class RealmLocation: Object, Mappable {
     }
     
 }
+
+extension RealmLocation {
+    
+    func createParseObject() -> PFGeoPoint {
+        
+        let object = PFGeoPoint()
+        object.latitude = self.latitude
+        object.longitude = self.longitude
+
+        return object
+    }
+    
+}

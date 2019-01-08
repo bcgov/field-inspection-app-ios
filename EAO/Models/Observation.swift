@@ -38,3 +38,21 @@ class Observation: Object{
     }
     
 }
+
+extension Observation: ParseFactory {
+    
+    func createParseObject() -> PFObject {
+        
+        let object = PFObservation()
+        object.id = self.id
+        object.inspectionId = self.inspectionId
+        object.title = self.title
+        object.requirement = self.requirement
+        object.coordinate = self.coordinate?.createParseObject()
+        object.pinnedAt = self.pinnedAt
+        object.observationDescription = self.observationDescription
+
+        return object
+    }
+    
+}

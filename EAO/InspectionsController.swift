@@ -419,7 +419,7 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 
         let inspection = self.data[indexPath.row]
-        if !inspection.isStoredLocally {
+        if inspection.isStoredLocally == false {
             return []
         }
 
