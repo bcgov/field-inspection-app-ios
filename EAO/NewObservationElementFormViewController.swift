@@ -537,56 +537,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
             return cell
         }
     }
-    /*
-    func getCellsForEditing(indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.row {
-        case 0:
-            let cell = getLabelCell(indexPath: indexPath)
-            cell.setup(location: currentCoordinatesString)
-            return cell
-        case 1:
-            let cell = getTitleCell(indexPath: indexPath)
-            cell.setup(text: elementTitle, enableEditing: !isReadOnly)
-            return cell
-        case 2:
-            let cell = getRequirementCell(indexPath: indexPath)
-            cell.setup(text: elementRequirement, enableEditing: !isReadOnly)
-            return cell
-        case 3:
-            let cell = getDescriptionCell(indexPath: indexPath)
-            cell.setup(text: elementoldDescription)
-            return cell
-        case 4:
-            let cell = getNewDescriptionCell(indexPath: indexPath)
-            return cell
-        default:
-            let indexRow = indexPath.row
-            let statics = STATIC_CELLS_COUNT - 1
-            let i = indexRow - STATIC_CELLS_COUNT
-            let cell = getImageCell(indexPath: indexPath)
-
-            if i < storedPhotos.count {
-                let current = storedPhotos[i]
-
-                if current.originalType == "video" {
-                    cell.setWithPFThumb(photo: storedPhotos[i])
-                }
-
-                if current.originalType == "photo" {
-                    cell.setWithPFThumb(photo: storedPhotos[i])
-                }
-
-            } else if i - storedPhotos.count < multiSelectResult.count {
-                print("multiselect")
-                cell.setWithAsset(asset: multiSelectResult[i - storedPhotos.count])
-            } else if i - storedPhotos.count - multiSelectResult.count < storedAudios.count {
-                print("audio")
-                cell.setAudio(audio: storedAudios[i - storedPhotos.count - multiSelectResult.count])
-            }
-            return cell
-        }
-    }
-     */
 
     func getCellsForViewing(indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.row {

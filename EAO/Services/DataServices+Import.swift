@@ -379,9 +379,9 @@ extension DataServices {
         
         do {
             let realm = try Realm()
-//            let inspections = realm.objects(Inspection.self).filter("isSubmitted = %@", true)
+            let inspections = realm.objects(Inspection.self).filter("isSubmitted = %@", true)
             try realm.write {
-                realm.deleteAll()
+                realm.delete(inspections)
             }
 
         } catch let error{

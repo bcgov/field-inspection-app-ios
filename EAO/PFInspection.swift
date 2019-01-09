@@ -274,7 +274,6 @@ extension PFInspection {
      */
     static func fetchInspectionsOnly(completion: @escaping ()->()){
         
-        _ = DataServices.shared.deleteAllSubmittedInspections()
         guard  let query = PFInspection.query(),
             let userID = PFUser.current()?.objectId else {
                 DispatchQueue.main.async {
