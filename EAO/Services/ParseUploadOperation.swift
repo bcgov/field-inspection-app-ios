@@ -39,11 +39,23 @@ class InspectionUploadOperation : AsyncOperation {
                 operations.append(observationUpload)
             }
             DataServices.shared.uploadQueue.addOperations(operations, waitUntilFinished: false)
-            self.finished()
 
             DataServices.shared.uploadQueue.addOperation({
+                if let inspection: Inspection = DataServices.fetch(for: self.objectId){
+                    do {
+                        let realm = try Realm()
+                        try realm.write {
+                            inspection.isSubmitted = true
+                            realm.add(inspection, update: true)
+                        }
+                    } catch let error {
+                        print("fetchObservations: \(error.localizedDescription)");
+                    }
+                }
                 self.completion(true)
+                self.finished()
             })
+
         })
     }
 }
@@ -78,6 +90,7 @@ class ObservationUploadOperation : AsyncOperation {
                 let upload = AttachmentUploadOperation<Photo>(objectId: objectId.id)
                 operations.append(upload)
             }
+            
             let photoThumbs: [PhotoThumb] = DataServices.fetchArray(for: strongSelf.observationId)
             for objectId in photoThumbs{
                 let upload = AttachmentUploadOperation<PhotoThumb>(objectId: objectId.id)
@@ -89,6 +102,7 @@ class ObservationUploadOperation : AsyncOperation {
                 let upload = AttachmentUploadOperation<Audio>(objectId: objectId.id)
                 operations.append(upload)
             }
+            
             let videos: [Video] = DataServices.fetchArray(for: strongSelf.observationId)
             for objectId in videos{
                 let upload = AttachmentUploadOperation<Video>(objectId: objectId.id)

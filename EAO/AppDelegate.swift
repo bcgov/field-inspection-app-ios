@@ -12,8 +12,16 @@ import Photos
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-	var window: UIWindow?
+
+    var window: UIWindow?
 	@objc var shouldRotate = false
+    
+    @objc static var reference: AppDelegate?{
+        return UIApplication.shared.delegate as? AppDelegate
+    }
+    @objc static var root: UIViewController?{
+        return AppDelegate.reference?.window?.rootViewController
+    }
     
     override init() {
         // Any Realm management must be done before accessing `Realm()` for the first time
@@ -49,32 +57,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Parse.initialize(with: configuration)
         } 
 
-		UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.blue
-		UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self])
-
-        //Camera
-        AVCaptureDevice.requestAccess(for: AVMediaType.video) { _ in
-        }
-
-        //Photos
-        let photos = PHPhotoLibrary.authorizationStatus()
-        if photos == .notDetermined {
-            PHPhotoLibrary.requestAuthorization { (_) in
-            }
-        }
+        appearanceSetup()
+        permissionsSetup()
+        
         return true
     }
 
 	func application(_ application: UIApplication,supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
 		return shouldRotate ? .allButUpsideDown : .portrait
 	}
-}
+    
+    func appearanceSetup(){
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.blue
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self])
+    }
 
-extension AppDelegate{
-	@objc static var reference: AppDelegate?{
-		return UIApplication.shared.delegate as? AppDelegate
-	}
-	@objc static var root: UIViewController?{
-		return AppDelegate.reference?.window?.rootViewController
-	}
+    func permissionsSetup(){
+        //Camera
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { _ in
+        }
+        
+        //Photos
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization { (_) in
+            }
+        }
+    }
+    
 }

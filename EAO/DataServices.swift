@@ -122,11 +122,10 @@ class DataServices {
     }
 
     
-    internal class func fetchInspections(completion: ((_ results: [Inspection]) -> Void)? = nil) {
+    internal func fetchInspections() -> [Inspection] {
         //TODO: #11
         guard let userID = PFUser.current()?.objectId else {
-            completion?([])
-            return
+            return []
         }
         
         do {
@@ -134,10 +133,10 @@ class DataServices {
             let inspections = realm.objects(Inspection.self).filter("userId in %@", [userID]).sorted(byKeyPath: "title", ascending: true)
             let inspectionsArray = Array(inspections)
             
-            print("fetchInspections: count = \(inspections.count)");
-            completion?(inspectionsArray)
+            print("\(#function): count = \(inspections.count)");
+            return inspectionsArray
         } catch {
-            completion?([])
+            return []
         }
     }
     

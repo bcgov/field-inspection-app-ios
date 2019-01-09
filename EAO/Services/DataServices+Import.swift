@@ -247,7 +247,12 @@ extension DataServices {
         observationQuery.whereKey("inspectionId", equalTo: inspectionId)
         observationQuery.findObjectsInBackground(block: { (observations, error) in
             
-            for observation in observations as? [PFObservation] ?? [] {
+            guard let observations = observations as? [PFObservation], observations.count > 0 else {
+                completion(false)
+                return
+            }
+            
+            for observation in observations {
                 guard let observationId = observation.id else {
                     continue
                 }
@@ -366,5 +371,26 @@ extension DataServices {
         })
     }
 
+    /**
+     Delete all submitted inspections
+     - Returns: true or false. False if there are any issues adding an object
+     */
+    func deleteAllSubmittedInspections() -> Bool {
+        
+        do {
+            let realm = try Realm()
+//            let inspections = realm.objects(Inspection.self).filter("isSubmitted = %@", true)
+            try realm.write {
+                realm.deleteAll()
+            }
+
+        } catch let error{
+            print("\(#function) Realm error: \(error.localizedDescription)")
+            return false
+        }
+        return true
+    }
+
+    
 }
 

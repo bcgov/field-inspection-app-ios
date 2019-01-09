@@ -21,7 +21,7 @@ final class PFVideo: PFObject, PFSubclassing{
     @NSManaged var file : PFFileObject?
     
     static func parseClassName() -> String {
-        return "video"
+        return "Video"
     }
     
     @objc static func load(for observationId: String, result: @escaping (_ videos: [PFVideo]?)->Void){

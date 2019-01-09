@@ -23,7 +23,7 @@ extension DataServices {
     
     func upload(inspection: Inspection, completion: @escaping (_ done: Bool) -> Void) {
         
-        uploadQueue.maxConcurrentOperationCount = 1
+        uploadQueue.maxConcurrentOperationCount = 2
         uploadQueue.qualityOfService = .background
         
         let inspectionId = inspection.id

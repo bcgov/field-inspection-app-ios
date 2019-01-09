@@ -22,7 +22,7 @@ final class PFAudio: PFObject, PFSubclassing{
     @NSManaged var file : PFFileObject?
 
     static func parseClassName() -> String {
-        return "audio"
+        return "Audio"
     }
     
     @objc static func load(for observationId: String, result: @escaping (_ audios: [PFAudio]?)->Void){

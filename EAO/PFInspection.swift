@@ -274,9 +274,12 @@ extension PFInspection {
      */
     static func fetchInspectionsOnly(completion: @escaping ()->()){
         
-        guard   let query = PFInspection.query(),
+        _ = DataServices.shared.deleteAllSubmittedInspections()
+        guard  let query = PFInspection.query(),
             let userID = PFUser.current()?.objectId else {
-                completion()
+                DispatchQueue.main.async {
+                    completion()
+                }
                 return
         }
 
@@ -289,7 +292,9 @@ extension PFInspection {
                 }
                 let _ = DataServices.add(inspection: inspection)
             }
-            completion()
+            DispatchQueue.main.async {
+                completion()
+            }
         })
     }
     

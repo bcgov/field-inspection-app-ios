@@ -9,8 +9,6 @@
 import Parse
 
 final class PFPhotoThumb: PFObject, PFSubclassing{
-    ///Use this variable for image caching
-    @objc var image : UIImage?
     
     @NSManaged var id            : String?
     @NSManaged var observationId : String?

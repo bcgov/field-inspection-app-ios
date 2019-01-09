@@ -38,7 +38,7 @@ extension PhotoThumb: ParseFactory {
     
     func createParseObject() -> PFObject {
         
-        let object = PFPhoto()
+        let object = PFPhotoThumb()
         object.id = self.id
         object.observationId = self.observationId
         object.index = NSNumber(value: self.index)

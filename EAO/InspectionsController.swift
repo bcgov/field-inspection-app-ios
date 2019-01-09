@@ -147,40 +147,45 @@ final class InspectionsController: UIViewController {
     
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         
-        if NetworkManager.shared.isReachable == false {
-            let title = "Network Required"
-            let message = "You must be connected to a WiFi or celular network to fetch updates"
+        if selectedIndex == Sections.Submitted.rawValue {
             
-            self.showAlert(withTitle: title, message: message) {
-                self.loadInspections(fetchRemote: false)
-                refreshControl.endRefreshing()
+            guard NetworkManager.shared.isReachable else {
+                let title = "Network Required"
+                let message = "You must be connected to a WiFi or celular network to fetch updates"
+                
+                self.showAlert(withTitle: title, message: message) {
+                    self.loadInspections(fetchRemote: false)
+                    refreshControl.endRefreshing()
+                }
+                return
             }
             
-            return
+            loadInspections(fetchRemote: true)
         }
-    
-        loadInspections(fetchRemote: false)
         refreshControl.endRefreshing()
+
     }
 
     private func loadInspections(fetchRemote: Bool = false) {
 
 		indicator.startAnimating()
         
-        DataServices.fetchInspections() { (results: [Inspection]) in
-
-            results.forEach({ (item) in
-                print("recieved inspection ID = \(item.id)")
-            })
-            
+        if fetchRemote == true {
+            PFInspection.fetchInspectionsOnly {
+                self.indicator.stopAnimating()
+                self.loadInspections(fetchRemote: false)
+            }
+        } else {
+            let results = DataServices.shared.fetchInspections()
             self.inspections.draft = results.filter { $0.isSubmitted == false }
             self.inspections.submitted = results.filter { $0.isSubmitted == true }
             self.sort()
             self.updateDataForSelectedIndex()
-
+            
             self.indicator.stopAnimating()
             self.tableView.reloadData()
         }
+        
 	}
 
 	// Use this method to insert an inspection to the 'In Progress' tab
