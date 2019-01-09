@@ -36,5 +36,21 @@ extension UIViewController{
         let divisor = pow(10.0, Double(places))
         return (num * divisor).rounded() / divisor
     }
+    
+    func warn(title: String, description: String, yesButtonTapped:@escaping () -> (), noButtonTapped:@escaping () -> ()) {
+        let alert = UIAlertController(title: title, message: description, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                yesButtonTapped()
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                noButtonTapped()
+            }
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+
 
 }
