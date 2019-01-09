@@ -22,7 +22,7 @@ import MapKit
 import CoreLocation
 import Parse
 
-final class InspectionsController: UIViewController {
+final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     
     enum Sections: Int {
         case Draft = 0
