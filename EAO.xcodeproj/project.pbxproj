@@ -424,7 +424,6 @@
 		11D70ED41E8DA02000CBF92C /* InspectionFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectionFormCell.swift; sourceTree = "<group>"; };
 		11D70ED81E8DA36800CBF92C /* NewObservationController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewObservationController.storyboard; sourceTree = "<group>"; };
 		11D70EDB1E8DA83D00CBF92C /* NewObservationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationController.swift; sourceTree = "<group>"; };
-		290FE8D72033F057009DDAA2 /* ParseMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseMaster.swift; sourceTree = "<group>"; };
 		291746732073E77F005F70B4 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		291746762073EAEF005F70B4 /* Team.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Team.storyboard; sourceTree = "<group>"; };
 		291746782073EB06005F70B4 /* TeamSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSearchViewController.swift; sourceTree = "<group>"; };
@@ -1171,7 +1170,6 @@
 		D53B6DED21D30B1600A0F546 /* ToRemove */ = {
 			isa = PBXGroup;
 			children = (
-				290FE8D72033F057009DDAA2 /* ParseMaster.swift */,
 			);
 			name = ToRemove;
 			sourceTree = "<group>";

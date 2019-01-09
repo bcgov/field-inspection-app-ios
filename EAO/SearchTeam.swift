@@ -6,7 +6,6 @@
 //  Copyright © 2018 FreshWorks. All rights reserved.
 //
 
-import Foundation
 class TeamSearch {
 
     lazy var vc: TeamSearchViewController = {

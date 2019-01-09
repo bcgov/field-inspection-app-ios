@@ -7,6 +7,7 @@
 //
 
 extension UIViewController{
+    
 	@objc func showSuccessImageView(){
 		let imageView = UIImageView()
 		imageView.image = #imageLiteral(resourceName: "icon_success")
@@ -24,4 +25,16 @@ extension UIViewController{
 			})
 		}
 	}
+    
+    func warn(message: String) {
+        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func round(num:Double, toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (num * divisor).rounded() / divisor
+    }
+
 }
