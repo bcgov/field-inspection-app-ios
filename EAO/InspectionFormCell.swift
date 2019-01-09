@@ -6,6 +6,7 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 final class InspectionFormCell: UITableViewCell{
+    
 	@IBOutlet fileprivate var titleLabel  : UILabel!
 	@IBOutlet fileprivate var numberLabel : UILabel!
 	@IBOutlet fileprivate var timeLabel   : UILabel!

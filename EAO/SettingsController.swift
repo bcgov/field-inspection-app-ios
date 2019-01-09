@@ -8,9 +8,13 @@
 
 import Parse
 final class SettingsController: UITableViewController {
+    
 	//MARK: IB Outlets
 	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
-	//MARK: IB Actions
+    
+    override func viewDidLoad() {
+    }
+    
 	@IBAction fileprivate func logoutTapped(_ sender: UIButton) {
 		if !Reachability.isConnectedToNetwork(){
 			self.present(controller: UIAlertController.noInternet)

@@ -963,9 +963,7 @@
 				29424D3B1FFC146100562508 /* GalleryImageCollectionViewCell.swift */,
 				29424D3E1FFC146100562508 /* GalleryImageCollectionViewCell.xib */,
 				29424D3C1FFC146100562508 /* GalleryManager.swift */,
-				29424D3D1FFC146100562508 /* HexColor.swift */,
 				291C4D9E203A599000390523 /* GalleryMode.swift */,
-				298EDDB8203B4D01004530F5 /* PHAsset.swift */,
 			);
 			name = "Multi Select";
 			sourceTree = "<group>";
@@ -1117,6 +1115,8 @@
 		9688D5521E69DAEE00C49CD7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				298EDDB8203B4D01004530F5 /* PHAsset.swift */,
+				29424D3D1FFC146100562508 /* HexColor.swift */,
 				D5F7DE5821E467ED00C0A859 /* AsyncOperation.swift */,
 				5675DA9221927196008409AB /* FAFormatter.swift */,
 				56447C61219635D90018A828 /* UIViewControllerExtensions.swift */,

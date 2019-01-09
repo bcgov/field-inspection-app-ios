@@ -72,7 +72,6 @@ final class InspectionsController: UIViewController {
         super.viewDidLoad()
         
         commonInit()
-
         locationManager.delegate = self
         addObserver(#selector(insertByDate(_ :)), .insertByDate)
         addObserver(#selector(reload), .reload)
@@ -102,7 +101,6 @@ final class InspectionsController: UIViewController {
     }
 
 	// MARK: - IB Actions
-    
 	@IBAction func addInspectionTapped(_ sender: UIButton) {
 
 		sender.isEnabled = false
@@ -144,7 +142,6 @@ final class InspectionsController: UIViewController {
 	}
 
 	// MARK: -
-    
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         
         if selectedIndex == Sections.Submitted.rawValue {
@@ -382,10 +379,6 @@ final class InspectionsController: UIViewController {
             return startL > startR
         })
     }
-}
-
-extension InspectionsController: CLLocationManagerDelegate {
-    // nothing to do
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource

@@ -8,8 +8,6 @@
 
 struct Settings{
     
-    static let skipLogin = false
-    
     static let REALM_SCHEMA_NUMBER: UInt64 = 3
     static var shouldRotate = false
     

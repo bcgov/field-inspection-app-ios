@@ -77,10 +77,6 @@ class AssetManager {
                     print("Don't include video with size: \(sizeMB)")
                 }
             }
-//            phCache.append(asset)
-//            if phCache.count == phassets.count {
-//                phCache.reverse()
-//            }
         }
         phCache.reverse()
         return phCache
@@ -148,6 +144,4 @@ class AssetManager {
                 }
         }
     }
-
-    
 }

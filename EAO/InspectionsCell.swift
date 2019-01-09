@@ -128,7 +128,6 @@ final class InspectionCell: UITableViewCell {
         if value {
             indicator.startAnimating()
 //            progressBar.isHidden = false
-            
             return
         }
         
