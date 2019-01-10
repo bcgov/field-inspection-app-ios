@@ -6,6 +6,7 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 import Alamofire
+import RealmSwift
 
 final class ProjectListController: UIViewController {
 	@objc var result : ((_: String?)->Void)?
@@ -57,7 +58,7 @@ final class ProjectListController: UIViewController {
 				let location = string.distance(from: string.startIndex, to: range.lowerBound)
 				let lenght = string.distance(from: range.lowerBound, to: range.upperBound)
 				let ns_range = NSRange.init(location: location, length: lenght)
-				attributed.addAttribute(NSAttributedStringKey.backgroundColor, value: UIColor.yellow, range: ns_range)
+				attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: UIColor.yellow, range: ns_range)
 			}
 			array.append(attributed)
 		})
@@ -65,32 +66,28 @@ final class ProjectListController: UIViewController {
 	}
 	
 	fileprivate func load(){
-		indicator.startAnimating()
-		Alamofire.request(String.projects_API).responseJSON { response in
-			guard let objects = response.result.value as? [Any] else{
-				if let array = NSArray(contentsOf: FileManager.directory.appendingPathComponent(.projects)) as? [String]{
-					self.projects = array
-					self.tableView.reloadData()
-				}
-				self.indicator.stopAnimating()
-				
+
+        indicator.startAnimating()
+        DataServices.fetchProjectList() { [weak self] (error: Error?) in
+
+            /** TODONE: #11
+             reload and save all project to Realm - done
+             load all project from Realm - done
+             show projects in the table - done
+             */
+
+            self?.indicator.stopAnimating()
+            
+            if let error = error {
+                print(error)
                 let title = "Network Error"
                 let message = "Project list was not refreshed due to an error. Cached projects are displayed"
-                self.showAlert(withTitle: title, message: message)
-                
-				return
-			}
-			var projects = [String?]()
-			for case let object as [String: Any] in objects  {
-				guard let title = object[.name] as? String else { continue }
-				projects.append(title)
-			}
-			self.projects = projects.flatMap({$0})
-			self.tableView.reloadData()
-			self.indicator.stopAnimating()
-			let array = NSArray(array: projects.flatMap({$0}))
-			array.write(to: FileManager.directory.appendingPathComponent(.projects), atomically: true)
-		}
+                self?.showAlert(withTitle: title, message: message)
+            }
+
+            self?.projects = DataServices.shared.getProjectsAsStrings()
+            self?.tableView.reloadData()
+        }
 	}
 }
 

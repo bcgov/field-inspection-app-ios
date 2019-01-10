@@ -45,7 +45,7 @@ class ChooseImageViewController: UIViewController {
         loadData()
         setUpCollectionView()
         NotificationCenter.default.addObserver(self, selector: #selector(sent), name: .selectedImages, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         styleContainer(view: navBar.layer)
     }
 

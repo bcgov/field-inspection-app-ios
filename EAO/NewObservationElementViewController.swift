@@ -11,57 +11,50 @@ import Photos
 import Parse
 
 class NewObservationElementViewController: UIViewController {
-
+    
     @IBOutlet fileprivate var mediaOptionsCollection: UICollectionView!
-
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityIndicatorContainer: UIView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
-    var imagePicker: UIImagePickerController!
     @IBOutlet weak var viewContainer: UIView!
-
     @IBOutlet weak var grayScreen: UIView!
     @IBOutlet weak var popUpContainer: UIView!
-
     @IBOutlet weak var popUpContainerContainer: UIView!
-
+    @IBOutlet weak var tableView: UITableView!
+    
     var uniqueButtonID = 0
-
-    var inspection: PFInspection!
-    var observation: PFObservation!
-
+    var imagePicker: UIImagePickerController!
+    var inspection: Inspection!
+    var observation: Observation!
     var photos: [PFPhoto]?
-
     var storedPhotos = [PFPhoto]() {
         didSet{
             self.mediaOptionsCollection.reloadData()
         }
     }
-
+    
     var multiSelectResult = [PHAsset]()
-
+    
     var currentLocation: CLLocation?
     var currentCoordinatesString = ""
-
+    
     let resultCellReuseIdentifier = "ResultCell"
     let resultCellXibName = "RecultCollectionViewCell"
     let mediaCellReuseIdentifier = "MediaOptionCell"
     let mediaCellXibName = "OptionCollectionViewCell"
     let ImageCollectionXibName = "ImageCollectionTableViewCell"
     let ImageCollectionReuseIdentified = "ImageCollectionTableViewCell"
-
+    
     let separator = "\n********\n"
-
+    
     let OPTIONS_COUNT = 3
-
+    
     var isAutofilled: Bool = false
-
+    
     let galleryManager = GalleryManager()
     let locationManager = CLLocationManager()
-
-    @IBOutlet weak var tableView: UITableView!
-
+    
     var elementTitle: String = "" {
         didSet {
             print(elementTitle)
@@ -82,7 +75,7 @@ class NewObservationElementViewController: UIViewController {
             print(elementnewDescription)
         }
     }
-
+    
     var isValid: Bool {
         if elementTitle != "" {
             return true
@@ -91,30 +84,25 @@ class NewObservationElementViewController: UIViewController {
             return false
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         style()
         lock()
-        // set gallery view's color theme
-        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
         setUpObservationObject()
         setUpCollectionView()
         setUpTable()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateImageResults()
         unlock()
     }
-
+    
     func setUpObservationObject() {
         if observation == nil {
-            observation = PFObservation()
-            if observation.id == nil {
-                observation.id = UUID().uuidString
-            }
+            observation = Observation()
             if observation.inspectionId == nil {
                 observation.inspectionId = inspection.id
             }
@@ -122,82 +110,90 @@ class NewObservationElementViewController: UIViewController {
             autofill()
         }
     }
-
+    
     func close() {
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func backPressed(_ sender: Any) {
         close()
     }
-
-    @IBAction func savePressed(_ sender: Any) {
-        if !isValid {return}
-        self.lock()
-        if observation.coordinate == nil {
-            observation.coordinate = PFGeoPoint(location: locationManager.location)
-        }
-
-        observation.title = elementTitle
-        observation.requirement = elementRequirement
-        if observation.observationDescription == nil {
-            observation.observationDescription = ""
-        }
-        if elementnewDescription != "" {
-            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
-        }
-        observation.pinInBackground { (success, error) in
-            if success && error == nil {
-                if self.observation.pinnedAt == nil {
-                    self.observation.pinnedAt = Date()
-                }
-                self.close()
-            } else {
-                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
-            }
-            self.unlock()
-        }
+    
+    func style() {
+        // set gallery view's color theme
+        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
+        activityIndicatorContainer.layer.cornerRadius = self.activityIndicatorContainer.frame.height/2
+        activityIndicatorContainer.backgroundColor = UIColor(hex: "083760")
+        activityIndicator.color = UIColor(hex: "ffffff")
     }
 
+    @IBAction func savePressed(_ sender: Any) {
+        //TOFIX
+        //        if !isValid {return}
+        //        self.lock()
+        //        if observation.coordinate == nil {
+        //            observation.coordinate = PFGeoPoint(location: locationManager.location)
+        //        }
+        //
+        //        observation.title = elementTitle
+        //        observation.requirement = elementRequirement
+        //        if observation.observationDescription == nil {
+        //            observation.observationDescription = ""
+        //        }
+        //        if elementnewDescription != "" {
+        //            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+        //        }
+        //        observation.pinInBackground { (success, error) in
+        //            if success && error == nil {
+        //                if self.observation.pinnedAt == nil {
+        //                    self.observation.pinnedAt = Date()
+        //                }
+        //                self.close()
+        //            } else {
+        //                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
+        //            }
+        //            self.unlock()
+        //        }
+    }
+    
     func autofill() {
         self.elementTitle = observation.title!
         self.elementRequirement = observation.requirement!
         self.elementoldDescription = observation.observationDescription!
-        let lat: Double = round(num: (observation.coordinate?.latitude)!, toPlaces: 5)
-        let long: Double = round(num: (observation.coordinate?.longitude)!, toPlaces: 5)
-        self.currentCoordinatesString = "Lat: \(lat), Long: \(long)"
+        self.currentCoordinatesString = observation.coordinate?.printableString() ?? ""
         self.loadPhotos()
         self.isAutofilled = true
     }
-
+    
     fileprivate func loadPhotos(){
-        guard let query = PFPhoto.query() else {
-            self.unlock()
-            return
-        }
-
-        query.fromLocalDatastore()
-        query.whereKey("observationId", equalTo: observation.id!)
-        query.findObjectsInBackground(block: { (photos, error) in
-            guard let storedPhotos = photos as? [PFPhoto], error == nil else {
-                self.lock()
-                AlertView.present(on: self, with: "Couldn't retrieve observation photos")
-                return
-            }
-
-            for photo in storedPhotos {
-                if let id = photo.id {
-                    print("iiiiii = \(id)")
-                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-                    photo.image = UIImage(contentsOfFile: url.path)
-                    self.storedPhotos.append(photo)
-                }
-            }
-            self.mediaOptionsCollection.reloadData()
-            self.unlock()
-        })
+        //TOFIX
+        //        guard let query = PFPhoto.query() else {
+        //            self.unlock()
+        //            return
+        //        }
+        //
+        //        query.fromLocalDatastore()
+        //        query.whereKey("observationId", equalTo: observation.id!)
+        //        query.findObjectsInBackground(block: { (photos, error) in
+        //            guard let storedPhotos = photos as? [PFPhoto], error == nil else {
+        //                self.lock()
+        //                AlertView.present(on: self, with: "Couldn't retrieve observation photos")
+        //                return
+        //            }
+        //
+        //            for photo in storedPhotos {
+        //                if let id = photo.id {
+        //                    print("iiiiii = \(id)")
+        //                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        //                    photo.image = UIImage(contentsOfFile: url.path)
+        //                    self.storedPhotos.append(photo)
+        //                }
+        //            }
+        //            self.mediaOptionsCollection.reloadData()
+        //            self.unlock()
+        //        })
     }
-
+    
     func updateImageResults() {
         self.lock()
         let newResults = galleryManager.multiSelectResult
@@ -209,73 +205,140 @@ class NewObservationElementViewController: UIViewController {
             }
         }
         self.saveSelectedPhotos()
-//        self.collectionView.reloadData()
+        self.mediaOptionsCollection.reloadData()
     }
-
+    
     func lock() {
         activityIndicator.isHidden = false
         activityIndicatorContainer.isHidden = false
         activityIndicator.startAnimating()
         self.view.isUserInteractionEnabled = false
     }
-
+    
     func unlock() {
         activityIndicator.isHidden = true
         activityIndicatorContainer.isHidden = true
         activityIndicator.stopAnimating()
         self.view.isUserInteractionEnabled = true
     }
+    
+    func saveSelectedPhotos() {
+        //TOFIX
+        //        if multiSelectResult.isEmpty{
+        //            mediaOptionsCollection.reloadData()
+        //            return
+        //        }
+        //        self.lock()
+        //        let asset = multiSelectResult.last
+        //        let photo = PFPhoto()
+        //        photo.observationId = observation.id
+        //        photo.id = UUID().uuidString
+        //        photo.timestamp = asset?.creationDate
+        //        photo.coordinate = PFGeoPoint(location: asset?.location)
+        //        AssetManager.sharedInstance.getOriginal(phAsset: asset!, completion: { (image) in
+        //            photo.image = image
+        //            let data = image.toData(quality: .medium)
+        //            do {
+        //                try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
+        //                photo.pinInBackground { (success, error) in
+        //                    if success && error == nil {
+        //                        self.multiSelectResult.removeLast()
+        //                        if self.multiSelectResult.isEmpty {
+        //                            self.storedPhotos.removeAll()
+        //                            self.loadPhotos()
+        //                        } else {
+        //                            self.saveSelectedPhotos()
+        //                        }
+        //                    } else {
+        //                        AlertView.present(on: self, with: "Error occured while saving image to local storage")
+        //                        self.unlock()
+        //                    }
+        //                }
+        //            } catch {
+        //                AlertView.present(on: self, with: "Error occured while saving image to local storage")
+        //                self.unlock()
+        //            }
+        //        })
+    }
+    
+    func storePhotoTaken(image: UIImage, description: String, location: CLLocation){
+        //TOFIX
+        //        self.lock()
+        //        let photo = PFPhoto()
+        //        photo.observationId = observation.id
+        //        photo.id = UUID().uuidString
+        //        photo.timestamp = Date()
+        //        photo.coordinate = PFGeoPoint(location: location)
+        //        let data = image.toData(quality: .medium)
+        //
+        //        do {
+        //            try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
+        //            photo.pinInBackground { (success, error) in
+        //                if success && error == nil {
+        //                    self.loadPhotos()
+        //                    self.unlock()
+        //                } else {
+        //                    AlertView.present(on: self, with: "Error occured while saving image to local storage")
+        //                    self.unlock()
+        //                }
+        //            }
+        //        } catch {
+        //            AlertView.present(on: self, with: "Error occured while saving image to local storage")
+        //            self.unlock()
+        //        }
+    }
+    
 }
 
 // Media Collection view
 extension NewObservationElementViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func setUpCollectionView() {
-
+        
         self.mediaOptionsCollection.delegate = self
         self.mediaOptionsCollection.dataSource = self
-
+        
         self.mediaOptionsCollection.register(UINib(nibName: resultCellXibName, bundle: nil), forCellWithReuseIdentifier: resultCellReuseIdentifier)
         self.mediaOptionsCollection.register(UINib(nibName: mediaCellXibName, bundle: nil), forCellWithReuseIdentifier: mediaCellReuseIdentifier)
         self.mediaOptionsCollection.register(UINib(nibName: ImageCollectionXibName, bundle: nil), forCellWithReuseIdentifier: ImageCollectionReuseIdentified)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return OPTIONS_COUNT + storedPhotos.count + multiSelectResult.count
+        //        return OPTIONS_COUNT + storedPhotos.count + multiSelectResult.count
         return OPTIONS_COUNT + storedPhotos.count
     }
-
+    
     func getGalleryResultCell(indexPath: IndexPath, index: Int) -> UICollectionViewCell {
         print("\(multiSelectResult.count) \(index)")
         let cell : RecultCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: resultCellReuseIdentifier, for: indexPath) as! RecultCollectionViewCell
         cell.setUp(phAsset: multiSelectResult[index])
         return cell
     }
-
+    
     func getSavedImageCell(indexPath: IndexPath, index: Int) -> UICollectionViewCell {
         print("\(storedPhotos.count) \(index)")
         let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = storedPhotos[index].image
         return cell
     }
-
+    
     func getGalleryOptionCell(indexPath: IndexPath) -> UICollectionViewCell {
         let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = #imageLiteral(resourceName: "galleryicon")
         return cell
     }
-
+    
     func getThedoliteOptionCell(indexPath: IndexPath) -> UICollectionViewCell {
         let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = #imageLiteral(resourceName: "cameraicon")
         return cell
     }
-
+    
     func getCameraOptionCell(indexPath: IndexPath) -> UICollectionViewCell {
         let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = #imageLiteral(resourceName: "cameraicon")
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let index = indexPath.row
         if index == 0 {
@@ -296,7 +359,7 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
             }
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row < OPTIONS_COUNT {
             switch indexPath.row {
@@ -311,7 +374,7 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
             }
         }
     }
-
+    
     func goToCamera() {
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
@@ -319,91 +382,23 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
         imagePicker.allowsEditing = false
         present(imagePicker, animated: true, completion: nil)
     }
-
+    
     func gotToGallery() {
-//        self.present(galleryManager.getVC(mode: GalleryMode.Image), animated: true, completion: nil)
+        //        self.present(galleryManager.getVC(mode: GalleryMode.Image), animated: true, completion: nil)
     }
-
+    
     func goToThedolite() {
         let appHookUrl = URL(string: "theodolite://")
-
+        
         if UIApplication.shared.canOpenURL(appHookUrl!)
         {
             UIApplication.shared.open(appHookUrl!, options:[:]) { (success) in
                 if !success {
-
+                    
                 }
             }
         } else {
             warn(message: "Theodolite app is not installed")
-        }
-    }
-}
-
-// Parse database read/write
-extension NewObservationElementViewController {
-
-    func saveSelectedPhotos() {
-        if multiSelectResult.isEmpty{
-            mediaOptionsCollection.reloadData()
-            return
-        }
-        self.lock()
-        let asset = multiSelectResult.last
-        let photo = PFPhoto()
-        photo.observationId = observation.id
-        photo.id = UUID().uuidString
-        photo.timestamp = asset?.creationDate
-        photo.coordinate = PFGeoPoint(location: asset?.location)
-        AssetManager.sharedInstance.getOriginal(phAsset: asset!, completion: { (image) in
-            photo.image = image
-            let data = image.toData(quality: .medium)
-            do {
-                try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-                photo.pinInBackground { (success, error) in
-                    if success && error == nil {
-                        self.multiSelectResult.removeLast()
-                        if self.multiSelectResult.isEmpty {
-                            self.storedPhotos.removeAll()
-                            self.loadPhotos()
-                        } else {
-                            self.saveSelectedPhotos()
-                        }
-                    } else {
-                        AlertView.present(on: self, with: "Error occured while saving image to local storage")
-                        self.unlock()
-                    }
-                }
-            } catch {
-                AlertView.present(on: self, with: "Error occured while saving image to local storage")
-                self.unlock()
-            }
-        })
-    }
-
-    func storePhotoTaken(image: UIImage, description: String, location: CLLocation){
-        self.lock()
-        let photo = PFPhoto()
-        photo.observationId = observation.id
-        photo.id = UUID().uuidString
-        photo.timestamp = Date()
-        photo.coordinate = PFGeoPoint(location: location)
-        let data = image.toData(quality: .medium)
-
-        do {
-            try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-            photo.pinInBackground { (success, error) in
-                if success && error == nil {
-                    self.loadPhotos()
-                    self.unlock()
-                } else {
-                    AlertView.present(on: self, with: "Error occured while saving image to local storage")
-                    self.unlock()
-                }
-            }
-        } catch {
-            AlertView.present(on: self, with: "Error occured while saving image to local storage")
-            self.unlock()
         }
     }
 }
@@ -413,23 +408,23 @@ extension NewObservationElementViewController: UITableViewDelegate, UITableViewD
     func getTitleCell(indexPath: IndexPath) -> FormTitleTableViewCell {
         return tableView.dequeueReusableCell(forIndexPath: indexPath)
     }
-
+    
     func getRequirementCell(indexPath: IndexPath) -> FormReqirementTableViewCell {
-         return tableView.dequeueReusableCell(forIndexPath: indexPath)
+        return tableView.dequeueReusableCell(forIndexPath: indexPath)
     }
-
+    
     func getOldDescriptionCell(indexPath: IndexPath) -> OldDescriptionFieldTableViewCell {
-         return tableView.dequeueReusableCell(forIndexPath: indexPath)
+        return tableView.dequeueReusableCell(forIndexPath: indexPath)
     }
-
+    
     func getNewDescriptionCell(indexPath: IndexPath) -> NewDescriptionTableViewCell {
-         return tableView.dequeueReusableCell(forIndexPath: indexPath)
+        return tableView.dequeueReusableCell(forIndexPath: indexPath)
     }
-
+    
     func getGPSLabelCell(indexPath: IndexPath) -> GPSLabelTableViewCell {
         return tableView.dequeueReusableCell(forIndexPath: indexPath)
     }
-
+    
     func setUpTable() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -444,7 +439,7 @@ extension NewObservationElementViewController: UITableViewDelegate, UITableViewD
         tableView.register(nib3, forCellReuseIdentifier: OldDescriptionFieldTableViewCell.reuseIdentifier)
         tableView.register(nib4, forCellReuseIdentifier: NewDescriptionTableViewCell.reuseIdentifier)
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -454,6 +449,7 @@ extension NewObservationElementViewController: UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let index = indexPath.row
+        
         switch index {
         case 0:
             let cell = getGPSLabelCell(indexPath: indexPath)
@@ -463,16 +459,19 @@ extension NewObservationElementViewController: UITableViewDelegate, UITableViewD
                 cell.setUpForEditing()
             }
             return cell
+            
         case 1:
             let cell = getTitleCell(indexPath: indexPath)
             cell.textField.placeholder = "Title"
             cell.setUp(text: elementTitle)
             return cell
+            
         case 2:
             let cell = getRequirementCell(indexPath: indexPath)
             cell.textField.placeholder = "Requirement"
             cell.setUp(text: elementRequirement)
             return cell
+            
         case 3:
             let cell = getOldDescriptionCell(indexPath: indexPath)
             if elementoldDescription == "" {
@@ -481,83 +480,75 @@ extension NewObservationElementViewController: UITableViewDelegate, UITableViewD
                 cell.setUp(text: elementoldDescription)
             }
             return cell
+            
         case 4:
             let cell = getNewDescriptionCell(indexPath: indexPath)
             return cell
+            
         default:
             let cell = getTitleCell(indexPath: indexPath)
             return cell
+            
         }
-    }
-}
-
-// Style
-extension NewObservationElementViewController {
-    func style() {
-        activityIndicatorContainer.layer.cornerRadius = self.activityIndicatorContainer.frame.height/2
-        activityIndicatorContainer.backgroundColor = UIColor(hex: "083760")
-        activityIndicator.color = UIColor(hex: "ffffff")
-    }
-}
-
-// Utilities
-extension NewObservationElementViewController {
-    func warn(message: String) {
-        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-
-    func round(num:Double, toPlaces places:Int) -> Double {
-        let divisor = pow(10.0, Double(places))
-        return (num * divisor).rounded() / divisor
     }
 }
 
 extension NewObservationElementViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        
         imagePicker.dismiss(animated: true, completion: nil)
-        let image = info[UIImagePickerControllerOriginalImage] as? UIImage
-//        let image = info[UIImagePickerControllerEditedImage] as? UIImage
+        let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage
+        //        let image = info[UIImagePickerControllerEditedImage] as? UIImage
         promptImageDetails(image: image!)
     }
-
+    
     func promptImageDetails(image: UIImage) {
         let form = MiFormManager()
-        let blue = UIColor(hex:"4667a2")
-
+        let blue = Colors.Blue
+        
         let commonFieldStyle = MiTextFieldStyle(titleColor: blue, inputColor: blue, fieldBG: .white, bgColor: .white, height: 150, roundCorners: true)
-
-        commonFieldStyle.borderStyle = UITextBorderStyle.none
-
+        
+        commonFieldStyle.borderStyle = UITextField.BorderStyle.none
+        
         let commonButtonStyle = MiButtonStyle(textColor: .white, bgColor: blue, height: 50, roundCorners: true)
-
+        
         form.addImage(image: image)
         form.addField(name: "details", title: "Caption", placeholder: "", type: .TextViewInput, inputType: .Text, style: commonFieldStyle)
-//        form.addField(name: "details", title: "Details", placeholder: "", keyboardType: .alphabet, type: .TextViewInput, style: commonFieldStyle)
+        //        form.addField(name: "details", title: "Details", placeholder: "", keyboardType: .alphabet, type: .TextViewInput, style: commonFieldStyle)
         form.addButton(name: "submit\(uniqueButtonID)", title: "Add", style: commonButtonStyle) {
             let results = form.getFormResults()
             var comments = ""
-
-            if !results.isEmpty {
-//                self.warn(message: results["details"] as! String)
-                comments = results["details"] as! String
+            
+            if results.isEmpty == false {
+                if let details = results["details"]{
+                    comments = details
+                }
             }
-
+            
             self.storePhotoTaken(image: image, description: comments, location: self.locationManager.location!)
-
+            
             self.grayScreen.alpha = 0
             form.remove(from: self.popUpContainer)
         }
-
+        
         uniqueButtonID += 1
-
+        
         popUpContainerContainer.layer.cornerRadius = 8
         grayScreen.alpha = 1
         form.display(in: popUpContainer, on: self)
     }
 }
 
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+    return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
 
-
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+    return input.rawValue
+}
 

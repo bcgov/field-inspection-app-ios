@@ -38,19 +38,19 @@ class FAFormatter {
         
         var attrs = baseAttributes()
         
-        attrs[NSAttributedStringKey.font] = UIFont(name: "FontAwesome", size: size)!
+        attrs[NSAttributedString.Key.font] = UIFont(name: "FontAwesome", size: size)!
 //        attrs[NSAttributedStringKey.baselineOffset] = Float(offset)
-        attrs[NSAttributedStringKey.foregroundColor] = color
+        attrs[NSAttributedString.Key.foregroundColor] = color
 
         return NSMutableAttributedString(string: "\(character.unicodeCharacter)", attributes:attrs)
     }
 
-    private class func baseAttributes() -> [NSAttributedStringKey: Any] {
+    private class func baseAttributes() -> [NSAttributedString.Key: Any] {
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         
-        return [NSAttributedStringKey.paragraphStyle: paragraphStyle]
+        return [NSAttributedString.Key.paragraphStyle: paragraphStyle]
     }
 
     private class func imageFrom(string: NSAttributedString) -> UIImage {

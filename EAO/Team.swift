@@ -13,7 +13,6 @@ class Team {
     var name: String
     var isActive: Bool
 
-
     init(objectID: String, name: String, isActive: Bool) {
         self.objectID = objectID
         self.name = name

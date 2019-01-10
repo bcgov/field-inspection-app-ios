@@ -6,11 +6,10 @@
 //  Copyright © 2018 FreshWorks. All rights reserved.
 //
 
-import Foundation
 import Parse
 
 final class PFVideo: PFObject, PFSubclassing{
-
+    
     @NSManaged var id            : String?
     @NSManaged var observationId : String?
     @NSManaged var inspectionId : String?
@@ -19,12 +18,12 @@ final class PFVideo: PFObject, PFSubclassing{
     @NSManaged var notes: String?
     @NSManaged var title: String?
     @NSManaged var url: URL?
-    @NSManaged var file : PFFile?
+    @NSManaged var file : PFFileObject?
     
     static func parseClassName() -> String {
-        return "video"
+        return "Video"
     }
-
+    
     @objc static func load(for observationId: String, result: @escaping (_ videos: [PFVideo]?)->Void){
         guard let query = PFVideo.query() else{
             result(nil)
@@ -36,23 +35,22 @@ final class PFVideo: PFObject, PFSubclassing{
             result(videos as? [PFVideo])
         })
     }
-
+    
     @objc func get() -> Data?{
         guard let id = id else{
             return nil
         }
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-        print(url)
-        print("\(try? Data(contentsOf: url).count)")
         return try? Data(contentsOf: url)
     }
-
+    
     @objc func getURL() -> URL?{
         guard let id = id else{
             return nil
         }
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-        return try? url
+        return url
     }
 }
+
 

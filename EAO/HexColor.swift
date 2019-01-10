@@ -9,12 +9,13 @@
 import UIKit
 
 extension UIColor {
+    
     convenience init(hex: String) {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         if cString.hasPrefix("#") {
             cString.remove(at: cString.startIndex)
         }
-        guard cString.characters.count == 6 else {
+        guard cString.count == 6 else {
             self.init(white: 0.5, alpha: 1)
             return
         }

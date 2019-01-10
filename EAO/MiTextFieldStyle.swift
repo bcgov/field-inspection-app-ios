@@ -16,7 +16,7 @@ class MiTextFieldStyle {
     var bgColor: UIColor?
     var height: CGFloat?
     var roundCorners: Bool?
-    var borderStyle: UITextBorderStyle?
+    var borderStyle: UITextField.BorderStyle?
 
     init(titleColor: UIColor, inputColor: UIColor,fieldBG: UIColor, bgColor: UIColor, height: CGFloat, roundCorners: Bool) {
         self.inputColor = inputColor

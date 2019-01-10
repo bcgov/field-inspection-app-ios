@@ -8,8 +8,9 @@
 
 import Parse
 
-final class PFAudio: PFObject, PFSubclassing{
 
+final class PFAudio: PFObject, PFSubclassing{
+    
     @NSManaged var id            : String?
     @NSManaged var observationId : String?
     @NSManaged var inspectionId : String?
@@ -18,12 +19,12 @@ final class PFAudio: PFObject, PFSubclassing{
     @NSManaged var notes: String?
     @NSManaged var title: String?
     @NSManaged var url: URL?
-    @NSManaged var file : PFFile?
+    @NSManaged var file : PFFileObject?
 
     static func parseClassName() -> String {
-        return "audio"
+        return "Audio"
     }
-
+    
     @objc static func load(for observationId: String, result: @escaping (_ audios: [PFAudio]?)->Void){
         guard let query = PFAudio.query() else{
             result(nil)
@@ -35,7 +36,7 @@ final class PFAudio: PFObject, PFSubclassing{
             result(audios as? [PFAudio])
         })
     }
-
+    
     @objc func get() -> Data?{
         guard let id = id else{
             return nil
@@ -43,7 +44,7 @@ final class PFAudio: PFObject, PFSubclassing{
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return try? Data(contentsOf: url)
     }
-
+    
     @objc func getURL() -> Data?{
         guard let id = id else{
             return nil
@@ -52,3 +53,5 @@ final class PFAudio: PFObject, PFSubclassing{
         return try? Data(contentsOf: url)
     }
 }
+
+

@@ -22,7 +22,7 @@ import MapKit
 import CoreLocation
 import Parse
 
-final class InspectionsController: UIViewController {
+final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     
     enum Sections: Int {
         case Draft = 0
@@ -34,7 +34,7 @@ final class InspectionsController: UIViewController {
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var segmentedControl: UISegmentedControl!
     @IBOutlet private var indicator: UIActivityIndicatorView!
-
+    
 	private var isBeingUploaded = false
     private var locationManager: CLLocationManager = {
         // TODO:(jl) This should be moved to where its used and the user advised
@@ -44,32 +44,34 @@ final class InspectionsController: UIViewController {
         
         return lm
     }()
-    private var data = [PFInspection]()
+    
+    private var data = [Inspection]()
     private var selectedInspectionIndexPath: IndexPath?
     private static let inspectionFormControllerSegueID = "InspectionFormControllerSegueID"
     private static let inspectionSetupControllerSegueID = "InspectionSetupControllerSegueID"
+    
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
             #selector(InspectionsController.handleRefresh(_:)),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         refreshControl.tintColor = Theme.governmentDeepYellow
         
         return refreshControl
     }()
+    
     internal static var reference: InspectionsController? {
         return (AppDelegate.root?.presentedViewController as? UINavigationController)?.viewControllers.first as? InspectionsController
     }
-    internal var inspections = (draft: [PFInspection](), submitted: [PFInspection]())
+
+    internal var inspections = (draft: [Inspection](), submitted: [Inspection]())
 
     // MARK: -
-
     override func viewDidLoad() {
 
         super.viewDidLoad()
         
         commonInit()
-
         locationManager.delegate = self
         addObserver(#selector(insertByDate(_ :)), .insertByDate)
         addObserver(#selector(reload), .reload)
@@ -99,7 +101,6 @@ final class InspectionsController: UIViewController {
     }
 
 	// MARK: - IB Actions
-    
 	@IBAction func addInspectionTapped(_ sender: UIButton) {
 
 		sender.isEnabled = false
@@ -141,51 +142,53 @@ final class InspectionsController: UIViewController {
 	}
 
 	// MARK: -
-    
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         
-        if !NetworkManager.shared.isReachable {
-            let title = "Network Required"
-            let message = "You must be connected to a WiFi or celular network to fetch updates"
+        if selectedIndex == Sections.Submitted.rawValue {
             
-            self.showAlert(withTitle: title, message: message) {
-                self.loadInspections(fetchRemote: false)
-                refreshControl.endRefreshing()
+            guard NetworkManager.shared.isReachable else {
+                let title = "Network Required"
+                let message = "You must be connected to a WiFi or celular network to fetch updates"
+                
+                self.showAlert(withTitle: title, message: message) {
+                    self.loadInspections(fetchRemote: false)
+                    refreshControl.endRefreshing()
+                }
+                return
             }
             
-            return
+            loadInspections(fetchRemote: true)
         }
-    
-        loadInspections(fetchRemote: false)
         refreshControl.endRefreshing()
+
     }
 
     private func loadInspections(fetchRemote: Bool = false) {
 
 		indicator.startAnimating()
         
-        DataServices.fetchInspections() { (results: [PFInspection]) in
-            print("user objs count = \(results.count)");
-            
-            let noObjectId = "n/a"
-            results.forEach({ (item) in
-                print("recieved inspection ID = \(item.id ?? noObjectId)")
-            })
-            
-            self.inspections.draft = results.filter { $0.isSubmitted?.intValue == 0 }
-            self.inspections.submitted = results.filter { $0.isSubmitted?.intValue == 1 }
+        if fetchRemote == true {
+            PFInspection.fetchInspectionsOnly {
+                self.indicator.stopAnimating()
+                self.loadInspections(fetchRemote: false)
+            }
+        } else {
+            let results = DataServices.shared.fetchInspections()
+            self.inspections.draft = results.filter { $0.isSubmitted == false }
+            self.inspections.submitted = results.filter { $0.isSubmitted == true }
             self.sort()
             self.updateDataForSelectedIndex()
-
+            
             self.indicator.stopAnimating()
             self.tableView.reloadData()
         }
+        
 	}
 
 	// Use this method to insert an inspection to the 'In Progress' tab
     @objc dynamic public func insertByDate(_ notification: Notification?) {
 
-		if let inspection = notification?.object as? PFInspection {
+		if let inspection = notification?.object as? Inspection {
             self.inspections.draft.append(inspection);
             self.inspections.draft.sort(by: { (left, right) -> Bool in
                 guard let startL = left.start, let startR = right.start else{
@@ -205,7 +208,7 @@ final class InspectionsController: UIViewController {
 	}
 	
 	// Use this method to put an inspection from 'In Progress' to 'Submitted'
-	public func moveToSubmitted(inspection: PFInspection?) {
+	public func moveToSubmitted(inspection: Inspection?) {
 
         guard let inspection = inspection, let idx = inspections.draft.index(of: inspection)  else {
             return
@@ -222,12 +225,15 @@ final class InspectionsController: UIViewController {
     private func updateDataForSelectedIndex() {
         
         switch selectedIndex {
-        case 0:
+            
+        case Sections.Draft.rawValue:
             self.data = self.inspections.draft
-            print(self.data.count)
-        case 1:
+            print("updateDataForSelectedIndex: Draft:\(self.data.count)")
+            
+        case Sections.Submitted.rawValue:
             self.data = self.inspections.submitted
-            print(self.data.count)
+            print("updateDataForSelectedIndex: Submitted:\(self.data.count)")
+            
         default:
             self.data = []
         }
@@ -236,61 +242,48 @@ final class InspectionsController: UIViewController {
     private func configureCell(cell: InspectionCell, atIndexPath indexPath: IndexPath) {
 
         let inspection = data[indexPath.row]
-        var date = ""
-
-        if let start = inspection.start {
-            date = start.inspectionFormat()
-        }
+        print("[inspection] \(inspection.debugDescription)")
         
-        if let end = inspection.end {
-            date += " - \(end.inspectionFormat())"
-        }
-
-        cell.titleLabel.text = inspection.title
-        cell.timeLabel.text = date
-        cell.linkedProjectLabel.text = inspection.project
+        cell.configureCell(with: inspection)
         
-        print("submitted = \(inspection.isSubmitted as? Bool ?? false), local = \(inspection.isStoredLocally)")
-
-        let isSubmitted = inspection.isSubmitted as? Bool ?? false
-    
-        if !isSubmitted {
+        if inspection.isSubmitted == false {
             cell.enableEdit(canEdit: true)
             cell.configForTransferState(state: .upload)
             cell.onTransferTouched = uploadTouchedCallback(inspection: inspection)
-        } else if isSubmitted && inspection.isStoredLocally {
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally {
             cell.configForTransferState(state: .disabled)
             cell.enableEdit(canEdit: false)
-        } else if isSubmitted && !inspection.isStoredLocally {
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally == false {
             cell.configForTransferState(state: .download)
             cell.onTransferTouched = downloadTouchedCallback(inspection: inspection, cell: cell)
+            
         } else {
             cell.configForTransferState(state: .upload)
-            cell.enableEdit(canEdit: !isSubmitted)
+            cell.enableEdit(canEdit: !inspection.isSubmitted)
         }
     }
     
     // MARK: -
-    
     private var selectedIndex: Int {
-
         return segmentedControl.selectedSegmentIndex
     }
 
-    private func checkUploadStatus(inspection: PFInspection, completion: @escaping (_ canUpload: Bool) -> Void) {
+    private func checkUploadStatus(inspection: Inspection) -> Bool {
         
-        DataServices.fetchObservationsFor(inspection: inspection, localOnly: true) { (observations: [PFObservation]) in
-            if observations.count == 0 {
+        if let observations = DataServices.fetchObservations(for: inspection) {
+            
+            if observations.count > 0 {
+                return true
+            } else {
                 let title = "No Observations"
                 let message = "This inspeciton does not have any observations; there is nothing to upload"
                 self.showAlert(withTitle: title, message: message)
-                
-                completion(false)
-                return
+                return false
             }
-            
-            completion(true)
         }
+        return false
     }
     
     private func confirmUploadWithUser(completion: @escaping (_ action: UIAlertAction) -> Void) {
@@ -306,11 +299,11 @@ final class InspectionsController: UIViewController {
         present(controller: ac)
     }
     
-    private func downloadTouchedCallback(inspection: PFInspection, cell: InspectionCell) -> (() -> Void) {
+    private func downloadTouchedCallback(inspection: Inspection, cell: InspectionCell) -> (() -> Void) {
         
         return {
             
-            if !NetworkManager.shared.isReachableOnEthernetOrWiFi {
+            if NetworkManager.shared.isReachableOnEthernetOrWiFi == false {
                 let title = "WiFi Required"
                 let message = "You must be connected to a WiFi network to download an inspection"
                 
@@ -319,7 +312,7 @@ final class InspectionsController: UIViewController {
             }
             
             cell.uploadInProgress(isUploading: true)
-            DataServices.fetchFullInspection(inspection: inspection) {
+            DataServices.shared.fetchFullInspection(inspection: inspection) {
                 cell.uploadInProgress(isUploading: false)
                 if let indexPath = self.tableView.indexPath(for: cell) {
                     self.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -328,11 +321,11 @@ final class InspectionsController: UIViewController {
         }
     }
 
-    private func uploadTouchedCallback(inspection: PFInspection) -> (() -> Void) {
+    private func uploadTouchedCallback(inspection: Inspection) -> (() -> Void) {
         
         return {
             
-            if !NetworkManager.shared.isReachableOnEthernetOrWiFi {
+            if NetworkManager.shared.isReachableOnEthernetOrWiFi == false {
                 let title = "WiFi Required"
                 let message = "You must be connected to a WiFi network to upload inspections"
                 
@@ -340,30 +333,27 @@ final class InspectionsController: UIViewController {
                 return
             }
 
-            self.checkUploadStatus(inspection: inspection, completion: { (canUpload: Bool) in
-                if !canUpload {
-                    return
-                }
-                
+            if self.checkUploadStatus(inspection: inspection) {
                 self.confirmUploadWithUser(completion: { (action: UIAlertAction) in
                     if action.style == .cancel {
                         return
                     }
-                    
                     self.upload(inspection: inspection)
                 })
-            })
+            } else {
+                return
+            }
         }
     }
     
-    private func upload(inspection: PFInspection) {
+    private func upload(inspection: Inspection) {
 
         self.indicator.alpha = 1
         self.indicator.startAnimating()
         self.navigationController?.view.isUserInteractionEnabled = false
         self.isBeingUploaded = true
         
-        DataServices.uploadInspection(inspection: inspection) { (done) in
+        DataServices.shared.upload(inspection: inspection) { (done) in
             self.indicator.stopAnimating()
             self.navigationController?.view.isUserInteractionEnabled = true
             self.isBeingUploaded = false
@@ -373,7 +363,6 @@ final class InspectionsController: UIViewController {
     }
 
     // MARK: Helpers
-    
     private func sort() {
 
         inspections.draft.sort(by: { (left, right) -> Bool in
@@ -392,12 +381,7 @@ final class InspectionsController: UIViewController {
     }
 }
 
-extension InspectionsController: CLLocationManagerDelegate {
-    // nothing to do
-}
-
 // MARK: - UITableViewDelegate, UITableViewDataSource
-
 extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -433,7 +417,7 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 
         let inspection = self.data[indexPath.row]
-        if !inspection.isStoredLocally {
+        if inspection.isStoredLocally == false {
             return []
         }
 
