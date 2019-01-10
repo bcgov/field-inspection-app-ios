@@ -296,7 +296,6 @@
 		D5B6F73921DF30F6007FF921 /* EAOProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE621CB705700A0F546 /* EAOProject.swift */; };
 		D5B6F73C21DF313C007FF921 /* RealmLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DDB21CB61CF00A0F546 /* RealmLocation.swift */; };
 		D5B6F73D21DF3145007FF921 /* InspectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DDE21CB622E00A0F546 /* InspectionError.swift */; };
-		D5B6F74021DF32E3007FF921 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5B6F73F21DF32E2007FF921 /* Parse.plist */; };
 		D5F7DE1321E1BCCF00C0A859 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5F7DE1221E1BCCF00C0A859 /* Parse.plist */; };
 		D5F7DE1421E1BD8500C0A859 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5F7DE1221E1BCCF00C0A859 /* Parse.plist */; };
 		D5F7DE1E21E1C2D800C0A859 /* PFPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE1D21E1C2D800C0A859 /* PFPhoto.swift */; };
@@ -1409,7 +1408,6 @@
 				295304E42017FF47001E5C7F /* MiFormTextViewTableViewCell.xib in Resources */,
 				29795F58200FDCCF00A55B45 /* ImageCollectionViewCell.xib in Resources */,
 				29A029F02029FECC0085DCE8 /* AudioRecorder.storyboard in Resources */,
-				D5B6F74021DF32E3007FF921 /* Parse.plist in Resources */,
 				29795F53200FCF3B00A55B45 /* LabelCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2110,7 +2108,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/EAO/Resources/EAO-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2131,7 +2129,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/EAO/Resources/EAO-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
