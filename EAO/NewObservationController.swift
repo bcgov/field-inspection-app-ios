@@ -9,6 +9,7 @@ import Parse
 import MapKit
 
 final class NewObservationController: UIViewController{
+    
     @objc let maximumNumberOfPhotos = 20
     fileprivate var locationManager = CLLocationManager()
     @objc var saveAction  : ((Observation)->Void)?

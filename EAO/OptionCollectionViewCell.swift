@@ -11,6 +11,7 @@ import UIKit
 class OptionCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imsgeView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

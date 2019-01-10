@@ -25,6 +25,7 @@ final class TextViewController: UIViewController{
 			textView.isEditable = false
 		}
 	}
+    
 	override func viewWillDisappear(_ animated: Bool) {
 		removeKeyboardObservers()
 		AppDelegate.reference?.shouldRotate = false
@@ -32,6 +33,7 @@ final class TextViewController: UIViewController{
 		UIDevice.current.setValue(value, forKey: "orientation")
 		UIViewController.attemptRotationToDeviceOrientation()
 	}
+    
 	override func viewWillAppear(_ animated: Bool) {
 		addKeyboardObservers()
 		AppDelegate.reference?.shouldRotate = true

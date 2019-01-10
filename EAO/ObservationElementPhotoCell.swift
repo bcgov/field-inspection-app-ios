@@ -7,6 +7,7 @@
 //
 
 final class ObservationElementPhotoCell: UICollectionViewCell{
+    
 	@IBOutlet private var imageView: UIImageView!
 	@objc func setData(image: UIImage?){
 		imageView.image = image

@@ -603,10 +603,10 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         let indexRow = indexPath.row
         let statics = STATIC_CELLS_COUNT - 1
         if indexRow < statics {return}
-        //        let total = storedPhotos.count + multiSelectResult.count + STATIC_CELLS_COUNT
         let i = indexRow - STATIC_CELLS_COUNT
         if i < 0 {return}
         if i < storedPhotos.count {
@@ -636,6 +636,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
     }
 
     func playAudioAt(index: Int) {
+        
         let audio = storedAudios[index]
         let form = MiFormManager()
         let buttonStyleBlue = MiButtonStyle(textColor: .white, bgColor: BLUE, height: 50, roundCorners: true)
@@ -668,7 +669,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
         self.enabledPopUp = true
         self.containerHeight.constant = 380
-//        self.containerHeight.constant = self.view.frame.height - 40
         self.currForm = form
         form.display(in: self.popUpContainer, on: self)
 
@@ -676,21 +676,16 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
 
     func showPreviewOfVideo(index: Int) {
 
-//        self.containerHeight.constant = 450
         self.containerHeight.constant = self.view.frame.height - 200
         DataServices.getVideoFor(observationID: observation.id, at: index) { (found, pfVideo) in
             if found {
                 guard let assetURL = pfVideo?.getURL() else {return}
-//                let avurlasset = AVURLAsset(url: assetURL)
-//                let xx = AVAsset(url: avurlasset.url)
-//                let dat = pfVideo?.get()
                 let avasset = AVAsset(url: assetURL)
                 let x = AVPlayerItem(asset: avasset)
                 self.videoPlayer = AVPlayer(playerItem: x)
                 let playerLayer = AVPlayerLayer(player: self.videoPlayer)
                 self.grayScreen.alpha = 1
                 self.popUpContainer.alpha = 1
-//                self.containerHeight.constant = 400
                 self.containerHeight.constant = self.view.frame.height - 200
                 playerLayer.frame = self.popUpContainer.bounds
                 playerLayer.backgroundColor = UIColor.white.cgColor
@@ -728,7 +723,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
                     form.remove(from: self.popUpContainer)
                 })
                 self.enabledPopUp = true
-//                self.containerHeight.constant = 340
                 self.containerHeight.constant = self.view.frame.height - 40
                 self.currForm = form
                 form.display(in: self.popUpContainer, on: self)
@@ -852,9 +846,7 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
         uniqueButtonID += 1
         
-        //        popUpContainerContainer.layer.cornerRadius = 8
         enabledPopUp = true
-//        containerHeight.constant = 500
         self.containerHeight.constant = self.view.frame.height - 40
         self.currForm = form
         form.display(in: popUpContainer, on: self)

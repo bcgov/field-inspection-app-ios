@@ -83,8 +83,6 @@ extension NewDescriptionTableViewCell: UITextViewDelegate {
 
 extension NewDescriptionTableViewCell: CLLocationManagerDelegate {
     func setUpLocation() {
-        // For use when the app is open & in the background
-        //        locationManager.requestAlwaysAuthorization()
 
         // For use when the app is open
         locationManager.requestWhenInUseAuthorization()

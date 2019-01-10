@@ -16,7 +16,6 @@ class OldDescriptionFieldTableViewCell: BaseFormCell {
     @IBOutlet weak var height: NSLayoutConstraint!
     @IBOutlet weak var topContainer: UIView!
 
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         styleContainer(view: container.layer)

@@ -40,9 +40,8 @@ class GPSLabelTableViewCell: BaseFormCell {
 }
 extension GPSLabelTableViewCell: CLLocationManagerDelegate {
     func setUpLocation() {
-        // For use when the app is open & in the background
-        //        locationManager.requestAlwaysAuthorization()
 
+        
         // For use when the app is open
         locationManager.requestWhenInUseAuthorization()
 

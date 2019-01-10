@@ -10,7 +10,6 @@ import UIKit
 
 class MiFormTableViewCell: BaseFormCell {
 
-
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var height: NSLayoutConstraint!
@@ -50,7 +49,6 @@ class MiFormTableViewCell: BaseFormCell {
             labelTextColor = (style?.labelTextColor)!
         }
     }
-
 
     var labelTextColor: UIColor = UIColor.black {
         didSet{

@@ -10,7 +10,6 @@ import UIKit
 
 class NewDescriptionNewObservationCollectionViewCell: BaseCollectionCell {
 
-
     @IBOutlet weak var stampDate: UIButton!
     @IBOutlet weak var stampGPS: UIButton!
     @IBOutlet weak var label: UILabel!
@@ -27,7 +26,6 @@ class NewDescriptionNewObservationCollectionViewCell: BaseCollectionCell {
         styleContainer(view: container.layer)
         roundContainer(view: topContainer.layer)
         roundContainer(view: textView.layer)
-//        topContainer.backgroundColor = UIColor(hex: "4667a2")
         label.textColor = UIColor(hex: "cddfff")
         stampDate.setTitleColor(UIColor.white, for: .normal)
         stampGPS.setTitleColor(UIColor.white, for: .normal)

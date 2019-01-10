@@ -75,7 +75,6 @@ extension MiFormViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = getTextFieldCell(indexPath: indexPath)
             // fix should reset
             cell.setup(obj: currentObj)
-//            cell.inputField.isSecureTextEntry = currentObj.isSecureTextEntry
             if currentObj.textfieldStyle != nil {
                 cell.style = currentObj.textfieldStyle
             }

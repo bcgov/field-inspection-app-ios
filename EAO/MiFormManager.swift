@@ -10,30 +10,28 @@ import Foundation
 import UIKit
 
 class MiFormManager {
-
-//    var completion: ((_ sent: [String : Any]) -> Void)?
-
+    
     lazy var miForm: MiFormViewController = {
         return UIStoryboard(name: "MiForm", bundle: Bundle.main).instantiateViewController(withIdentifier: "MiForm") as! MiFormViewController
     }()
-
+    
     var fields = [SimpleCell]() {
         didSet{
             miForm.fields = fields
         }
     }
-
+    
     init () {
         NotificationCenter.default.addObserver(forName: .miFormCallback, object: nil, queue: nil, using: catchAction)
     }
-
+    
     func close() {
         miForm.close {
             self.fields.removeAll()
             self.miForm.fields.removeAll()
         }
     }
-
+    
     func catchAction(notification:Notification) {
         guard let name = notification.userInfo!["name"] else { return }
         let field = fieldNamed(name: name as! String)
@@ -41,10 +39,8 @@ class MiFormManager {
             return field.completion!()
         }
     }
-}
-
-// Setters
-extension MiFormManager {
+    
+    //MARK: - Setters
     
     func addField(name: String, title: String, placeholder: String, expectedValue: String? = nil, isOptional: Bool? = false, type: SimpleCellType, inputType: FormInputType,style: MiTextFieldStyle? = nil, styleInvalid: MiTextFieldStyle? = nil) {
         let field = SimpleCell(name: name, title: title, placeholder: placeholder, type: type, inputType: inputType)
@@ -61,51 +57,48 @@ extension MiFormManager {
         button.buttonStyle = style
         fields.append(button)
     }
-
+    
     func addImage(image: UIImage) {
         fields.append(SimpleCell(image: image))
     }
-
+    
     func setBG(color: UIColor) {
         miForm.bg = color
     }
-
+    
     func addLabel(name: String, text: String, style: LabelStyle? = nil) {
         let label = SimpleCell(name: name, text: text)
         label.labelStyle = style
         fields.append(label)
     }
-}
-
-// Editing fields
-extension MiFormManager {
+    
+    
+    //MARK: - Editing fields
     func editFieldTitle(named: String, title: String) {
         let i = indexOfField(named: named)
         fields[i].title = title
         miForm.tableView.reloadData()
     }
-
+    
     func editFieldStyle(named: String, style: MiTextFieldStyle) {
         let i = indexOfField(named: named)
         fields[i].textfieldStyle = style
         miForm.tableView.reloadData()
     }
-
+    
     func editLabelText(name: String, newText: String) {
         let i = indexOfField(named: name)
         fields[i].title = newText
         miForm.tableView.reloadData()
     }
-}
-
-// Validation
-extension MiFormManager {
+    
+    
+    //MARK: - Validation
     func validateAuto() -> Bool{
         var valid = true
         let fields = getFormElements()
         var p1: String? = nil
         for field in fields {
-            //            print("\(field.name) has value of: \(field.currValue)")
             if field.type != SimpleCellType.TextInput {
                 continue
             } else {
@@ -134,9 +127,8 @@ extension MiFormManager {
         var valid = true
         let fields = getFormElements()
         let results = getFormResults()
-//        print(results)
+        
         for field in fields {
-//            print("\(field.name) has value of: \(field.currValue)")
             if field.type != SimpleCellType.TextInput {
                 continue
             } else {
@@ -146,7 +138,7 @@ extension MiFormManager {
                     let p2: String = results["password2"]!
                     valid = p1 == p2
                 }
-
+                
                 if !field.isValid {
                     valid = false
                     editFieldStyle(named: field.name, style: invalidStyle)
@@ -157,11 +149,8 @@ extension MiFormManager {
         }
         return valid
     }
-}
-
-// Getters
-extension MiFormManager {
-
+    
+    //MARK: - Getters
     func getFormResults() -> [String: String] {
         var rsp = [String: String]()
         for element in miForm.fields {
@@ -171,47 +160,47 @@ extension MiFormManager {
         }
         return rsp
     }
-
+    
     // careful with optional fields..
     func getResultFor(name: String) -> String {
         let all = getFormResults()
         let r = all[name]
         return r!
     }
-
+    
     func getFormElements() -> [SimpleCell] {
         return miForm.fields
     }
-
+    
     func getForm() -> UIViewController {
         return miForm
     }
-
+    
     func getDefaultButtonStyle() -> MiButtonStyle {
         return MiButtonStyle(textColor: .white, bgColor: .purple, height: 50, roundCorners: true)
     }
-
+    
     func getDefaultTextFieldStyle() -> MiTextFieldStyle {
         let commonFieldStyle = MiTextFieldStyle(titleColor: .purple, inputColor: .purple, fieldBG: .white, bgColor: .white, height: 70, roundCorners: true)
         commonFieldStyle.borderStyle = UITextField.BorderStyle.none
         return commonFieldStyle
     }
-
+    
     func getDefaultTextFieldStyleERROR() -> MiTextFieldStyle {
         let commonFieldStyleError = MiTextFieldStyle(titleColor: .white, inputColor: .purple, fieldBG: .white, bgColor: .red, height: 70, roundCorners: true)
         commonFieldStyleError.borderStyle = UITextField.BorderStyle.none
         return commonFieldStyleError
     }
-
+    
     func getDefaultTextViewStyle() -> MiTextFieldStyle {
         let commonTextViewStyle = MiTextFieldStyle(titleColor: .purple, inputColor: .purple, fieldBG: .white, bgColor: .white, height: 300, roundCorners: true)
         commonTextViewStyle.borderStyle = UITextField.BorderStyle.none
         return commonTextViewStyle
     }
-}
-
-// Displaying form in a container
-extension MiFormManager {
+    
+    
+    //MARK: - Displaying form in a container
+    
     func display(in container: UIView, on viewController: UIViewController) {
         let subs = container.subviews
         for sub in subs {
@@ -224,10 +213,10 @@ extension MiFormManager {
         miForm.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         miForm.didMove(toParent: viewController)
     }
-
+    
     /**
      Note: also hides container by setting alpha to 0
-    */
+     */
     func remove(from container: UIView, then hide: Bool? = true) {
         miForm.willMove(toParent: nil)
         miForm.view.removeFromSuperview()
@@ -236,21 +225,17 @@ extension MiFormManager {
             container.alpha = 0
         }
     }
-}
-
-// Helper functions
-extension MiFormManager {
-
+    
+    //MARK: - Helper functions
+    
     // MARK:: BROKEN
     func clear() {
         for field in miForm.fields {
             field.currValue = ""
         }
-//        miForm.shouldReset = true
         miForm.tableView.reloadData()
-//        miForm.shouldReset = false
     }
-
+    
     // MARK:: BROKEN
     func clear(with style: MiTextFieldStyle) {
         for field in miForm.fields {
@@ -261,10 +246,9 @@ extension MiFormManager {
         }
         miForm.tableView.reloadData()
     }
-}
-
-// Locally used Utilities
-extension MiFormManager {
+    
+    // Locally used Utilities
+    
     /**
      Should be improved
      */
@@ -278,7 +262,7 @@ extension MiFormManager {
         }
         return returnfield
     }
-
+    
     private func indexOfField(named: String) -> Int {
         let x = fields.index { (field) -> Bool in
             field.name == named
@@ -286,6 +270,8 @@ extension MiFormManager {
         return x!
     }
 }
+
+
 
 
 

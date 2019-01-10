@@ -11,32 +11,61 @@ import Parse
 import Photos
 
 class UploadPhotoController: UIViewController, KeyboardDelegate{
-	fileprivate var didMakeChange = false
-	@objc var isReadOnly = false
-	@objc var photo: Photo!
-	@objc var observation: Observation!
-	@objc var uploadPhotoAction: ((_ photo: Photo?)-> Void)?
-    fileprivate var locationManager = CLLocationManager()
-	fileprivate var date: Date?{
-		didSet{
-			timestampLabel.text = date?.timeStampFormat()
-		}
-	}
-	fileprivate var location: CLLocation?{
-		didSet{
-			gpsLabel.text = locationManager.coordinateAsString() ?? "unavailable"
-		}
-	}
-	//MARK: -
-	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
+    
+    struct Alerts{
+        static let error = UIAlertController(title: "Picture Required", message: "Please provide a picture to save")
+    }
+
+    //MARK: -
+    @IBOutlet fileprivate var indicator: UIActivityIndicatorView!
     @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var timestampLabel: UILabel!
     @IBOutlet fileprivate var gpsLabel: UILabel!
     @IBOutlet fileprivate var imageView: UIImageView!
     @IBOutlet fileprivate var uploadButton : UIButton!
     @IBOutlet fileprivate var uploadLabel  : UILabel!
-	@IBOutlet fileprivate var captionTextView: UITextView!
+    @IBOutlet fileprivate var captionTextView: UITextView!
+
+	fileprivate var didMakeChange = false
+	@objc var isReadOnly = false
+	@objc var photo: Photo!
+	@objc var observation: Observation!
+	@objc var uploadPhotoAction: ((_ photo: Photo?)-> Void)?
+    
+    fileprivate var locationManager = CLLocationManager()
+	fileprivate var date: Date?{
+		didSet{
+			timestampLabel.text = date?.timeStampFormat()
+		}
+	}
+    
+	fileprivate var location: CLLocation?{
+		didSet{
+			gpsLabel.text = locationManager.coordinateAsString() ?? "unavailable"
+		}
+	}
 	
+    //MARK: -
+    override func viewDidLoad() {
+        addDismissKeyboardOnTapRecognizer(on: view)
+        populate()
+        if isReadOnly{
+            navigationItem.rightBarButtonItem = nil
+            uploadButton.isEnabled = false
+            uploadButton.alpha = 0
+            uploadLabel.alpha = 0
+            captionTextView.isEditable = false
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        addKeyboardObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeKeyboardObservers()
+    }
+
 	//MARK: -
 
 	@IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
@@ -110,27 +139,6 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
         present(controller: alert)
     }
     
-    //MARK: -
-    override func viewDidLoad() {
-        addDismissKeyboardOnTapRecognizer(on: view)
-		populate()
-		if isReadOnly{
-			navigationItem.rightBarButtonItem = nil
-			uploadButton.isEnabled = false
-			uploadButton.alpha = 0
-			uploadLabel.alpha = 0
-			captionTextView.isEditable = false
-		}
-    }
-
-	override func viewDidAppear(_ animated: Bool) {
-		addKeyboardObservers()
-	}
-
-	override func viewWillDisappear(_ animated: Bool) {
-		removeKeyboardObservers()
-	}
-
 	func keyboardWillShow(with height: NSNumber) {
 		scrollView.contentInset.bottom = CGFloat(height.intValue + 40)
 		scrollView.setContentOffset(CGPoint(x: 0, y: 100), animated: true)
@@ -157,18 +165,28 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 		gpsLabel.text = photo.coordinate?.printableString()
 		indicator.stopAnimating()
 	}
-}
+    
+    fileprivate func validate()->Bool{
+        if imageView.image == nil{
+            present(controller: Alerts.error)
+            return false
+        }
+        return true
+    }
 
- 
-//MARK: -
-extension UploadPhotoController{
-	fileprivate func validate()->Bool{
-		if imageView.image == nil{
-			present(controller: Alerts.error)
-			return false
-		}
-		return true
-	}
+    fileprivate func cameraOptionsController() -> UIAlertController{
+        let alert   = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let camera = UIAlertAction(title: "Take Picture", style: .default, handler: { (_) in
+            self.media(sourceType: .camera)
+        })
+        let library = UIAlertAction(title: "Photo Library", style: .default, handler: { (_) in
+            self.media(sourceType: .photoLibrary)
+        })
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addActions([camera,library,cancel])
+        return alert
+    }
+
 }
 
 //MARK: -
@@ -212,38 +230,6 @@ extension UploadPhotoController: UIImagePickerControllerDelegate, UINavigationCo
         present(picker, animated: true, completion: nil)
     }
 }
-
-//MARK: -
-extension UploadPhotoController{
-    fileprivate func cameraOptionsController() -> UIAlertController{
-        let alert   = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let camera = UIAlertAction(title: "Take Picture", style: .default, handler: { (_) in
-            self.media(sourceType: .camera)
-        })
-        let library = UIAlertAction(title: "Photo Library", style: .default, handler: { (_) in
-            self.media(sourceType: .photoLibrary)
-        })
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addActions([camera,library,cancel])
-        return alert
-    }
-}
-
-//MARK: -
-extension UploadPhotoController{
-	struct Alerts{
-		static let error = UIAlertController(title: "Picture Required", message: "Please provide a picture to save")
-	}
-}
-
-
-
-
-
-
-
-
-
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {

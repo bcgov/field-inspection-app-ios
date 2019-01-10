@@ -43,7 +43,6 @@ class LabelCollectionViewCell: BaseCollectionCell {
     }
 }
 
-
 extension LabelCollectionViewCell: CLLocationManagerDelegate {
     func setUpLocation() {
         // For use when the app is open

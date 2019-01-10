@@ -9,15 +9,22 @@ import Alamofire
 import RealmSwift
 
 final class ProjectListController: UIViewController {
-	@objc var result : ((_: String?)->Void)?
-
-	fileprivate var projects : [String]?
-	fileprivate var filtered : [NSMutableAttributedString]?
-	
+    
 	//MARK: IB Outlets
 	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
 	@IBOutlet fileprivate var tableView: UITableView!
 	@IBOutlet fileprivate var searchBar: UISearchBar!
+
+    @objc var result : ((_: String?)->Void)?
+    
+    fileprivate var projects : [String]?
+    fileprivate var filtered : [NSMutableAttributedString]?
+    
+    //MARK:-
+    override func viewDidLoad() {
+        searchBar.returnKeyType = .default
+        load()
+    }
 
 	//MARK: IB Actions
 	@IBAction func customTapped(_ sender: UIBarButtonItem) {
@@ -36,12 +43,6 @@ final class ProjectListController: UIViewController {
 		present(controller: alert)
 	}
 	
-	//MARK:-
-	override func viewDidLoad() {
-		searchBar.returnKeyType = .default
-		load()
-	}
-
 	//MARK:-
 	fileprivate func filter(by search: String?) -> [NSMutableAttributedString]?{
 		guard let text = search?.lowercased() else { return nil }

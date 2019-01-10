@@ -11,6 +11,7 @@ import UIKit
 import Photos
 
 class GalleryManager {
+    
     lazy var galleryVC: ChooseImageViewController = {
         let storyboard = UIStoryboard(name: "ChooseImage", bundle: Bundle.main)
         return storyboard.instantiateViewController(withIdentifier: "ChooseImage") as! ChooseImageViewController

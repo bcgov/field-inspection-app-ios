@@ -88,10 +88,8 @@ final class InspectionFormController: UIViewController{
 
 //MARK: -
 extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
+    
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if section == 0{
-//            return 1
-//        }
 		return observations.count
 	}
 	
@@ -100,40 +98,18 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if indexPath.section == 0 {
-//            let cell = tableView.dequeue(identifier: "InspectionFormHeaderCell")!
-//            if isReadOnly{
-//                (cell.contentView.subviews.first as? UIButton)?.setTitle("View Inspection Set Up", for: .normal)
-//            } else{
-//                (cell.contentView.subviews.first as? UIButton)?.setTitle("Edit Inspection Set Up", for: .normal)
-//            }
-//            return cell
-//        }
 		let cell = tableView.dequeue(identifier: "InspectionFormCell") as! InspectionFormCell
 		cell.setData(number: "\(indexPath.row+1)", title: observations[indexPath.row].title, time: observations[indexPath.row].createdAt.inspectionFormat(),isReadOnly: isReadOnly)
 		return cell
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if indexPath.section == 0{
-//            return
-//        }
-        
-//        let observationElementController = NewObservationController.storyboardInstance() as! NewObservationController
-//        observationElementController.inspection = inspection
-//        observationElementController.observation = observations[indexPath.row]
-//        observationElementController.saveAction = { (_) in
-//            self.tableView.reloadData()
-//        }
-//        push(controller: observationElementController)
         let newObservationManager = NewObservationElementManager()
         self.present(newObservationManager.getEditVCFor(observation: observations[indexPath.row], inspection: inspection, isReadOnly: isReadOnly), animated: true, completion: nil)
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if indexPath.section == 0{
-//            return 70
-//        }
 		return 80
 	}
+    
 }
