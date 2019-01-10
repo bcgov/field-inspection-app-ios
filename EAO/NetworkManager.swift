@@ -20,9 +20,17 @@
 
 import Foundation
 import Alamofire
+import RealmSwift
 
 class NetworkManager {
     
+    enum NetworkError: Error{
+        case OK
+        case NetworkError
+        case RequestTimedOut
+        case Error(String)
+    }
+
     // singelton
     static let shared = NetworkManager()
     
@@ -82,4 +90,54 @@ class NetworkManager {
         onReacabilityChanged?(isReachableOnEthernetOrWiFi)
         NotificationCenter.default.post(name: Notification.Name.wifiAvailabilityChanged, object: nil)
     }
+    
+    class func processResponse<T>(_ response: Alamofire.DataResponse<T>) -> (T?, Error?) {
+        
+        if let error = process(statusCode: response.response?.statusCode){
+            return (nil, error)
+        }
+        
+        switch response.result {
+        case .success(let value):
+            return (value, nil)
+            
+        case .failure(let error):
+            
+            switch (response.response?.statusCode){
+            case 200?:
+                if response.data?.count == 0{
+                    return (nil, nil)
+                }
+                return (nil, error)
+            default:
+                if (error as NSError).code == 2{
+                    return (nil, NetworkError.NetworkError)
+                }
+                
+                return (nil, error)
+            }
+        }
+        
+    }
+    
+    class func process(statusCode:Int? = nil) -> Error? {
+        
+        switch (statusCode){
+        case NSURLErrorTimedOut?:
+            return NetworkError.RequestTimedOut
+            
+        case 401?:
+            return NetworkError.NetworkError
+            
+        case 404?:
+            return NetworkError.NetworkError
+            
+        case 405?:
+            return NetworkError.NetworkError
+            
+        default:
+            return nil
+        }
+    }
+    
 }

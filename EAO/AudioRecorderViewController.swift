@@ -11,32 +11,6 @@ import AVFoundation
 
 class AudioRecorderViewController: UIViewController {
 
-    // Constants
-    let MAX_FILE_SIZE: Double = 9
-
-    // Variable
-    var callBack: ((_ close: Bool) -> Void )?
-    var updater: CADisplayLink! = nil
-    var meterTimer: Timer!
-    var audioRecorder: AVAudioRecorder!
-    var audioPlayer: AVAudioPlayer!
-    var isAudioRecordingGranted: Bool!
-    var isRecording = false {
-        didSet{
-            if isRecording{
-                self.recordButton.setImage(#imageLiteral(resourceName: "recing"), for: .normal)
-            } else {
-                self.recordButton.setImage(#imageLiteral(resourceName: "rec"), for: .normal)
-            }
-        }
-    }
-
-    var inspectionID = ""
-    var observationID = ""
-    let tempid = String.random()
-
-    var isPlaying = false
-
     // Outlets
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var container: UIView!
@@ -56,6 +30,32 @@ class AudioRecorderViewController: UIViewController {
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var sizeLabel: UILabel!
 
+    // Constants
+    let MAX_FILE_SIZE: Double = 9
+    
+    // Variable
+    var callBack: ((_ close: Bool) -> Void )?
+    var updater: CADisplayLink! = nil
+    var meterTimer: Timer!
+    var audioRecorder: AVAudioRecorder!
+    var audioPlayer: AVAudioPlayer!
+    var isAudioRecordingGranted: Bool!
+    var isRecording = false {
+        didSet{
+            if isRecording{
+                self.recordButton.setImage(#imageLiteral(resourceName: "recing"), for: .normal)
+            } else {
+                self.recordButton.setImage(#imageLiteral(resourceName: "rec"), for: .normal)
+            }
+        }
+    }
+    
+    var inspectionID = ""
+    var observationID = ""
+    let tempid = String.random()
+    
+    var isPlaying = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         checkRecordingPermission()
@@ -63,10 +63,6 @@ class AudioRecorderViewController: UIViewController {
         disablePlaybackButtons()
         self.progressLabel.text = ""
         self.sizeLabel.text = ""
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     func style() {
@@ -159,6 +155,64 @@ class AudioRecorderViewController: UIViewController {
         stopButton.isUserInteractionEnabled = true
     }
 
+    func getFileUrl() -> URL {
+        let filename = "\(tempid).m4a"
+        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
+        return filePath
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+    
+    func getSizeString(size: Double) -> String {
+        let fileSizeWithUnit = ByteCountFormatter.string(fromByteCount: Int64(size), countStyle: .file)
+        return "\(fileSizeWithUnit)"
+    }
+    
+    func getSize(url: URL?) -> Double {
+        guard let filePath = url?.path else {
+            return 0.0
+        }
+        do {
+            let attribute = try FileManager.default.attributesOfItem(atPath: filePath)
+            if let size = attribute[FileAttributeKey.size] as? NSNumber {
+                return size.doubleValue
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+        return 0.0
+    }
+    
+    func isFileSizeLessThan(size: Double, maxMB: Double) -> Bool {
+        let max = 1000000 * maxMB
+        return size < max
+    }
+    
+    func getRemaining(size: Double, maxMB: Double) -> Double {
+        let max = 1000000 * maxMB
+        return max - size
+    }
+    
+    func getRemainingPercent(size: Double, maxMB: Double) -> Float {
+        let max = 1000000 * maxMB
+        return Float(size / max)
+    }
+    
+    //    func getStringSize(with size: UInt64) -> String {
+    //        var convertedValue: Double = Double(size)
+    //        var multiplyFactor = 0
+    //        let tokens = ["bytes", "KB", "MB", "GB", "TB", "PB",  "EB",  "ZB", "YB"]
+    //        while convertedValue > 1024 {
+    //            convertedValue /= 1024
+    //            multiplyFactor += 1
+    //        }
+    //        return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
+    //    }
+
 }
 
 // AV
@@ -187,8 +241,6 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
             // get current size
             let size = getSize(url: getFileUrl())
 
-            // set size from getStringSize()
-
             // if passed max size, stop recording
             if isFileSizeLessThan(size: size, maxMB: MAX_FILE_SIZE) {
 //                recordingTimeLabel.textColor = .green
@@ -204,7 +256,6 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
 
     func updateProgress(size: Double) {
         let rem = getRemainingPercent(size: size, maxMB: MAX_FILE_SIZE)
-//        print(rem)
         self.progressBar.setProgress(rem, animated: true)
     }
 
@@ -222,10 +273,10 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
 
     func initRecorder() -> Bool {
 
-        if AVAudioSession.sharedInstance().recordPermission() == .granted {
+        if AVAudioSession.sharedInstance().recordPermission == .granted {
             let session = AVAudioSession.sharedInstance()
             do {
-                try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+                try session.setCategory(.playAndRecord, mode: .default)
                 try session.setActive(true)
                 let settings = [
                     AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -239,7 +290,7 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
                 audioRecorder.prepareToRecord()
                 return true
             } catch let error {
-                //error
+                print("\(#function)\(error.localizedDescription)")
                 return false
             }
         } else {
@@ -251,14 +302,14 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
     }
 
     func checkRecordingPermission() {
-        switch AVAudioSession.sharedInstance().recordPermission() {
-        case AVAudioSessionRecordPermission.granted:
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case AVAudioSession.RecordPermission.granted:
             isAudioRecordingGranted = true
             break
-        case AVAudioSessionRecordPermission.denied:
+        case AVAudioSession.RecordPermission.denied:
             isAudioRecordingGranted = false
             break
-        case AVAudioSessionRecordPermission.undetermined:
+        case AVAudioSession.RecordPermission.undetermined:
             AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
                 DispatchQueue.main.async {
                     if allowed {
@@ -328,67 +379,7 @@ extension AudioRecorderViewController: AVAudioPlayerDelegate{
 //    }
 }
 
-// File utility functions
-extension AudioRecorderViewController {
-
-    func getFileUrl() -> URL {
-        let filename = "\(tempid).m4a"
-        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
-        return filePath
-    }
-
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
-    }
-
-
-
-    func getSizeString(size: Double) -> String {
-        let fileSizeWithUnit = ByteCountFormatter.string(fromByteCount: Int64(size), countStyle: .file)
-        return "\(fileSizeWithUnit)"
-    }
-
-    func getSize(url: URL?) -> Double {
-        guard let filePath = url?.path else {
-            return 0.0
-        }
-        do {
-            let attribute = try FileManager.default.attributesOfItem(atPath: filePath)
-            if let size = attribute[FileAttributeKey.size] as? NSNumber {
-                return Double(size)
-            }
-        } catch {
-            print("Error: \(error)")
-        }
-        return 0.0
-    }
-
-    func isFileSizeLessThan(size: Double, maxMB: Double) -> Bool {
-        let max = 1000000 * maxMB
-        return size < max
-    }
-
-    func getRemaining(size: Double, maxMB: Double) -> Double {
-        let max = 1000000 * maxMB
-        return max - size
-    }
-
-    func getRemainingPercent(size: Double, maxMB: Double) -> Float {
-        let max = 1000000 * maxMB
-        return Float(size / max)
-    }
-
-//    func getStringSize(with size: UInt64) -> String {
-//        var convertedValue: Double = Double(size)
-//        var multiplyFactor = 0
-//        let tokens = ["bytes", "KB", "MB", "GB", "TB", "PB",  "EB",  "ZB", "YB"]
-//        while convertedValue > 1024 {
-//            convertedValue /= 1024
-//            multiplyFactor += 1
-//        }
-//        return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
-//    }
-
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

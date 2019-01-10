@@ -57,6 +57,38 @@ final class InspectionCell: UITableViewCell {
     
     // MARK: States
     
+    func configureCell(with inspection: Inspection){
+        
+        var date = ""
+        
+        if let start = inspection.start {
+            date = start.inspectionFormat()
+        }
+        
+        if let end = inspection.end {
+            date += " - \(end.inspectionFormat())"
+        }
+        
+        titleLabel.text = inspection.title
+        timeLabel.text = date
+        linkedProjectLabel.text = inspection.project
+
+        if inspection.isSubmitted == false {
+            enableEdit(canEdit: true)
+            configForTransferState(state: .upload)
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally {
+            configForTransferState(state: .disabled)
+            enableEdit(canEdit: false)
+            
+        } else if inspection.isSubmitted && inspection.isStoredLocally == false {
+            configForTransferState(state: .download)
+            
+        } else {
+            configForTransferState(state: .upload)
+        }
+    }
+    
     internal func enableEdit(canEdit value: Bool) {
         if value {
             editButton.isHidden = false
@@ -73,12 +105,14 @@ final class InspectionCell: UITableViewCell {
             transferButton.isHidden = true
             indicator.stopAnimating()
             disclosureIndicator.isHidden = false
+            
         case .download:
             transferButton.isHidden = false
             disclosureIndicator.isHidden = true
             let img = FAFormatter.imageFrom(character: .CloudDownload, color: Theme.governmentDarkBlue, size: 90.0, offset: 2.0)
             transferButton.setBackgroundImage(img, for: .normal)
             indicator.stopAnimating()
+            
         case .upload:
             transferButton.isHidden = false
             disclosureIndicator.isHidden = true
@@ -94,7 +128,6 @@ final class InspectionCell: UITableViewCell {
         if value {
             indicator.startAnimating()
 //            progressBar.isHidden = false
-            
             return
         }
         

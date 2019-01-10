@@ -12,9 +12,37 @@ final class InspectionFormController: UIViewController{
 	@IBOutlet fileprivate var indicator : UIActivityIndicatorView!
 	@IBOutlet fileprivate var tableView : UITableView!
 
-    @objc var inspection : PFInspection!
-    @objc var observations = [PFObservation]()
+    @objc var inspection : Inspection!
+    @objc var observations = [Observation]()
 	
+    struct Alerts{
+        static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be uploaded to the server.\nPlease try again")
+    }
+
+    //MARK: -
+    override func viewDidLoad() {
+        tableView.contentInset.bottom = 120
+        if isReadOnly{
+            addButton.isHidden = true
+            navigationItem.rightBarButtonItem = nil
+        }
+        style()
+        load()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        load()
+    }
+    
+    func style() {
+        addButton.layer.cornerRadius = 5
+        addButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        addButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        addButton.layer.shadowOpacity = 0.7
+        addButton.layer.shadowRadius = 4
+    }
+
 	@IBAction fileprivate func backTapped(_ sender: UIBarButtonItem) {
 		sender.isEnabled = false
 		pop()
@@ -35,35 +63,15 @@ final class InspectionFormController: UIViewController{
         self.present(newObservationManager.getVCFor(inspection: inspection), animated: true, completion: nil)
 	}
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        load()
-    }
-	
-	//MARK: -
-	override func viewDidLoad() {
-		tableView.contentInset.bottom = 120
-		if isReadOnly{
-			addButton.isHidden = true 
-			navigationItem.rightBarButtonItem = nil
-		}
-        style()
-		load()
-	}
- 
+
 	fileprivate func load(){
-		let query = PFObservation.query()
-		query?.fromLocalDatastore()
-		query?.whereKey("inspectionId", equalTo: inspection.id!)
-		query?.order(byDescending: "pinnedAt")
-		query?.findObjectsInBackground(block: { (objects, error) in
-			guard let objects = objects as? [PFObservation], error == nil else{
-				AlertView.present(on: self, with: "Error occured while retrieving inspections from local storage")
-				return
-			}
-			self.observations = objects
-			self.tableView.reloadData()
-		})
+        
+        if let observations = DataServices.fetchObservations(for: inspection) {
+            self.observations = observations
+        } else {
+            AlertView.present(on: self, with: "Error occured while retrieving inspections from local storage")
+        }
+        self.tableView.reloadData()
 	}
 	
 	fileprivate func setElements(enabled: Bool){
@@ -71,6 +79,11 @@ final class InspectionFormController: UIViewController{
 		enabled ? indicator.stopAnimating() : indicator.startAnimating()
 		navigationItem.leftBarButtonItem?.isEnabled = enabled
 	}
+    
+    fileprivate var isReadOnly: Bool{
+        return inspection.isSubmitted == true
+    }
+
 }
 
 //MARK: -
@@ -97,7 +110,7 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 //            return cell
 //        }
 		let cell = tableView.dequeue(identifier: "InspectionFormCell") as! InspectionFormCell
-		cell.setData(number: "\(indexPath.row+1)", title: observations[indexPath.row].title, time: observations[indexPath.row].createdAt?.inspectionFormat(),isReadOnly: isReadOnly)
+		cell.setData(number: "\(indexPath.row+1)", title: observations[indexPath.row].title, time: observations[indexPath.row].createdAt.inspectionFormat(),isReadOnly: isReadOnly)
 		return cell
 	}
 	
@@ -105,9 +118,6 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 //        if indexPath.section == 0{
 //            return
 //        }
-		if observations[indexPath.row].id == nil{
-			return
-		}
         
 //        let observationElementController = NewObservationController.storyboardInstance() as! NewObservationController
 //        observationElementController.inspection = inspection
@@ -127,30 +137,3 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 		return 80
 	}
 }
-
-//MARK: -
-extension InspectionFormController{
-	fileprivate var isReadOnly: Bool{
-		return inspection.isSubmitted?.boolValue == true
-	}
-}
-
-//MARK: -
-extension InspectionFormController{
-	struct Alerts{
-		static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be uploaded to the server.\nPlease try again")
-	}
-}
-
-extension InspectionFormController {
-    func style() {
-        addButton.layer.cornerRadius = 5
-        addButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        addButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
-        addButton.layer.shadowOpacity = 0.7
-        addButton.layer.shadowRadius = 4
-    }
-}
-
-
-

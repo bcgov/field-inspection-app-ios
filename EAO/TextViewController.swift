@@ -8,17 +8,15 @@
 
 ///This is a ViewController is designed to let users input large amount of text. It can auto-rotate.
 final class TextViewController: UIViewController{
+
+    //MARK: IB Outlets
+    @IBOutlet fileprivate var textView: UITextView!
+
 	//MARK: Properties
 	@objc var result: ((_ text: String?)->Void)?
 	@objc var initialText: String?
 	@objc var isReadOnly = false
-	//MARK: IB Outlets
-	@IBOutlet fileprivate var textView: UITextView!
-	//MARK: IB Actions
-	@IBAction fileprivate func doneTapped(_ sender: UIBarButtonItem) {
-		result?(textView.text)
-		pop()
-	}
+    
 	//MARK: -
 	override func viewDidLoad() {
 		textView.text = initialText
@@ -39,10 +37,18 @@ final class TextViewController: UIViewController{
 		AppDelegate.reference?.shouldRotate = true
 		textView.becomeFirstResponder()
 	}
+    
+    //MARK: IB Actions
+    @IBAction fileprivate func doneTapped(_ sender: UIBarButtonItem) {
+        result?(textView.text)
+        pop()
+    }
+
 }
 
 //MARK: - KeyboardDelegate
 extension TextViewController: KeyboardDelegate{
+    
 	func keyboardWillShow(with height: NSNumber) {
 		textView.contentInset.bottom = CGFloat(height.intValue + 60)
 	}
@@ -50,6 +56,7 @@ extension TextViewController: KeyboardDelegate{
 
 //MARK: - UITextViewDelegate
 extension TextViewController: UITextViewDelegate{
+    
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		var length = textView.text?.count ?? 0
 		length += text.count

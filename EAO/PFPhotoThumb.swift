@@ -9,19 +9,18 @@
 import Parse
 
 final class PFPhotoThumb: PFObject, PFSubclassing{
-    ///Use this variable for image caching
-    @objc var image : UIImage?
-
+    
     @NSManaged var id            : String?
     @NSManaged var observationId : String?
     @NSManaged var index: NSNumber?
     // original asset type: Video? Photo?
     @NSManaged var originalType: String?
+    @NSManaged var file : PFFileObject?
 
     static func parseClassName() -> String {
         return "PhotoThumb"
     }
-
+    
     @objc static func load(for observationId: String, result: @escaping (_ photos: [PFPhotoThumb]?)->Void){
         guard let query = PFPhotoThumb.query() else{
             result(nil)
@@ -33,7 +32,7 @@ final class PFPhotoThumb: PFObject, PFSubclassing{
             result(photos as? [PFPhotoThumb])
         })
     }
-
+    
     @objc func get() -> Data?{
         guard let id = id else{
             return nil
@@ -42,3 +41,4 @@ final class PFPhotoThumb: PFObject, PFSubclassing{
         return try? Data(contentsOf: url)
     }
 }
+

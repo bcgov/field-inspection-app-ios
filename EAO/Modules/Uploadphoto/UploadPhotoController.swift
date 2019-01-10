@@ -5,15 +5,17 @@
 //  Created by Micha Volin on 2017-03-15.
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
+
 import MapKit
 import Parse
 import Photos
+
 class UploadPhotoController: UIViewController, KeyboardDelegate{
 	fileprivate var didMakeChange = false
 	@objc var isReadOnly = false
-	@objc var photo: PFPhoto!
-	@objc var observation: PFObservation!
-	@objc var uploadPhotoAction: ((_ photo: PFPhoto?)-> Void)?
+	@objc var photo: Photo!
+	@objc var observation: Observation!
+	@objc var uploadPhotoAction: ((_ photo: Photo?)-> Void)?
     fileprivate var locationManager = CLLocationManager()
 	fileprivate var date: Date?{
 		didSet{
@@ -50,57 +52,57 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 	}
 
     @IBAction fileprivate func save(_ sender: UIBarButtonItem?) {
-		if !validate() { return }
-		sender?.isEnabled = false
-		indicator.startAnimating()
-		if photo == nil{
-			photo = PFPhoto()
-		} else {
-			photo.caption = captionTextView.text
-			photo.pinInBackground(block: { (success, error) in
-				if success && error == nil{
-					_ = self.navigationController?.popViewController(animated: true)
-				} else{
-					AlertView.present(on: self, with: "Error occured while updating caption text")
-					self.indicator.stopAnimating()
-					sender?.isEnabled = true
-				}
-			})
-			return
-		}
-		if photo.observationId == nil{
-			photo.observationId = observation.id 
-		}
-		if photo.id == nil{
-			photo.id = UUID().uuidString
-		}
-		photo.caption = captionTextView.text
-		photo.timestamp = date
-		photo.coordinate = PFGeoPoint(location: location)
-		if let data = imageView.image?.scale(width: UIScreen.width)?.toData(quality: .medium){
-			photo.image = UIImage(data: data)
-			do{
-				try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
-				photo.pinInBackground { (success, error) in
-					if success && error == nil{
-						self.uploadPhotoAction?(self.photo)
-						_ = self.navigationController?.popViewController(animated: true)
-					} else{
-						AlertView.present(on: self, with: "Error occured while saving image to local storage")
-					}
-					self.indicator.stopAnimating()
-					sender?.isEnabled = true
-				}
-			} catch {
-				AlertView.present(on: self, with: "Error occured while saving image to local storage")
-				self.indicator.stopAnimating()
-				sender?.isEnabled = true
-			}
-		} else{
-			AlertView.present(on: self, with: "Error occured while compressing image")
-			self.indicator.stopAnimating()
-			sender?.isEnabled = true
-		}
+//        if !validate() { return }
+//        sender?.isEnabled = false
+//        indicator.startAnimating()
+//        if photo == nil{
+//            photo = PFPhoto()
+//        } else {
+//            photo.caption = captionTextView.text
+//            photo.pinInBackground(block: { (success, error) in
+//                if success && error == nil{
+//                    _ = self.navigationController?.popViewController(animated: true)
+//                } else{
+//                    AlertView.present(on: self, with: "Error occured while updating caption text")
+//                    self.indicator.stopAnimating()
+//                    sender?.isEnabled = true
+//                }
+//            })
+//            return
+//        }
+//        if photo.observationId == nil{
+//            photo.observationId = observation.id
+//        }
+//        if photo.id == nil{
+//            photo.id = UUID().uuidString
+//        }
+//        photo.caption = captionTextView.text
+//        photo.timestamp = date
+//        photo.coordinate = PFGeoPoint(location: location)
+//        if let data = imageView.image?.scale(width: UIScreen.width)?.toData(quality: .medium){
+//            photo.image = UIImage(data: data)
+//            do{
+//                try data.write(to: FileManager.directory.appendingPathComponent(photo.id!, isDirectory: true))
+//                photo.pinInBackground { (success, error) in
+//                    if success && error == nil{
+//                        self.uploadPhotoAction?(self.photo)
+//                        _ = self.navigationController?.popViewController(animated: true)
+//                    } else{
+//                        AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//                    }
+//                    self.indicator.stopAnimating()
+//                    sender?.isEnabled = true
+//                }
+//            } catch {
+//                AlertView.present(on: self, with: "Error occured while saving image to local storage")
+//                self.indicator.stopAnimating()
+//                sender?.isEnabled = true
+//            }
+//        } else{
+//            AlertView.present(on: self, with: "Error occured while compressing image")
+//            self.indicator.stopAnimating()
+//            sender?.isEnabled = true
+//        }
     }
     
     @IBAction fileprivate func photoTapped(_ sender: UIButton) {
@@ -140,18 +142,19 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 
 	//MARK: -
 	fileprivate func populate(){
+        
 		guard let photo = photo else { return }
 		uploadButton.isEnabled = false
 		uploadButton.alpha = 0
 		uploadLabel.alpha = 0
 		indicator.startAnimating()
-		if let id = photo.id{
-			let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-			imageView.image = UIImage(contentsOfFile: url.path)
-		}
+
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(photo.id, isDirectory: true)
+        imageView.image = UIImage(contentsOfFile: url.path)
+        
 		captionTextView.text = photo.caption
 		timestampLabel.text = photo.timestamp?.timeStampFormat()
-		gpsLabel.text = photo.coordinate?.toString()
+		gpsLabel.text = photo.coordinate?.printableString()
 		indicator.stopAnimating()
 	}
 }
@@ -186,8 +189,12 @@ extension UploadPhotoController: UITextViewDelegate{
 
 //MARK: -
 extension UploadPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+    
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+        
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        if let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {
 			didMakeChange = true
 			imageView.image = image
             uploadButton.alpha = 0.25
@@ -198,7 +205,7 @@ extension UploadPhotoController: UIImagePickerControllerDelegate, UINavigationCo
 		self.dismiss(animated: true, completion: nil)
     }
     
-    fileprivate func media(sourceType: UIImagePickerControllerSourceType) {
+    fileprivate func media(sourceType: UIImagePickerController.SourceType) {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = sourceType
@@ -237,3 +244,13 @@ extension UploadPhotoController{
 
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
+}

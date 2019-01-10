@@ -19,7 +19,7 @@ class ImageCollectionViewCell: BaseCollectionCell {
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var imageView: UIImageView!
     var type: MediaCellType?
-    var audio: PFAudio?
+    var audio: Audio?
     var setting: Bool = false
     var asset: PHAsset?
 
@@ -41,13 +41,13 @@ class ImageCollectionViewCell: BaseCollectionCell {
         }
     }
 
-    func setWithPFThumb(photo: PFPhotoThumb, type: MediaCellType) {
+    func setWithPFThumb(photo: PhotoThumb, type: MediaCellType) {
         self.type = type
         guard let img = photo.image else { return}
         imageView.image = img
     }
 
-    func setAudio(audio: PFAudio, type: MediaCellType) {
+    func setAudio(audio: Audio, type: MediaCellType) {
         self.type = type
         self.imageView.image = #imageLiteral(resourceName: "soundPlaceHolder")
         self.audio = audio

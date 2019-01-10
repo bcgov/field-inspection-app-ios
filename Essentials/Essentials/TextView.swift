@@ -112,13 +112,13 @@ extension TextView: UITextViewDelegate{
 	}
 	
 	public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		if text == "\n" && textView.text.characters.last == "\n"{
+		if text == "\n" && textView.text.last == "\n"{
 			return false
 		}
 		if text == "\n" && textView.text == ""{
 			return false
 		}
-		let length = textView.text.characters.count + text.characters.count - range.length
+		let length = textView.text.count + text.count - range.length
 		let count = maximum - length
 		if showCounter{
 			counterLabel.text = "\(count)"

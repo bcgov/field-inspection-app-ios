@@ -12,6 +12,7 @@ def shared_pods
   pod 'Parse'
   pod 'Alamofire'
   pod 'AlamofireObjectMapper'
+  pod 'ObjectMapper'
   pod 'RealmSwift'
   pod 'IQKeyboardManager'
 end
