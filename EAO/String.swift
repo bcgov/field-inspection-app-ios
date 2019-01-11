@@ -21,8 +21,3 @@ extension String{
 extension String{
 	static let name = "name"
 }
-
-//MARK: - Epic APIs
-extension String{
-	static let projects_API = "https://projects.eao.gov.bc.ca/api/projects/published"
-}
