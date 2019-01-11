@@ -11,13 +11,14 @@ import UIKit
 class TeamSearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
+    let refreshControl = UIRefreshControl()
 
     var completion: ((_ done: Bool,_ team: Team?) -> Void)?
     var teams: [Team] = [Team]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpTable()
+        style()
     }
 
     @IBAction func closeAction(_ sender: Any) {
@@ -33,16 +34,31 @@ class TeamSearchViewController: UIViewController, UITableViewDelegate, UITableVi
         completion?(true, team)
     }
 
-    func setUpTable() {
-        if self.tableView == nil { return }
+    func style() {
         tableView.delegate = self
         tableView.dataSource = self
+        
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh")
+        refreshControl.addTarget(self, action: #selector(ProjectListController.refreshData), for: UIControl.Event.valueChanged)
+        tableView.addSubview(refreshControl)
+        
         registerCell(name: "TeamSearchTableViewCell")
     }
     
+    @objc func refreshData(){
+        DataServices.getTeams { [weak self] (done, teams) in
+            self?.refreshControl.endRefreshing()
+            
+            guard let teams = teams, done == true else {
+                return
+            }
+            self?.teams = teams
+            self?.tableView.reloadData()
+        }
+    }
+    
     func registerCell(name: String) {
-        let nib = UINib(nibName: name, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: name)
+        tableView.register(UINib(nibName: name, bundle: nil), forCellReuseIdentifier: name)
     }
     
     func getCell(indexPath: IndexPath) -> TeamSearchTableViewCell {

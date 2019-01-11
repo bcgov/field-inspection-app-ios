@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        DataServices.shared.reloadBasicData { (_) in
+        DataServices.shared.reloadReferenceData { (_) in
         }
     }
     

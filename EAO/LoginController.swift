@@ -117,12 +117,10 @@ final class LoginController: UIViewController{
             clearTextFields()
             
             self.indicator.startAnimating()
-            PFInspection.fetchInspectionsOnly {
-                self.load(completion: {
-                    self.clearTextFields()
-                    self.present(controller: InspectionsController.storyboardInstance())
-                    self.indicator.stopAnimating()
-                })
+            DataServices.shared.reloadReferenceData { (_) in
+                self.clearTextFields()
+                self.present(controller: InspectionsController.storyboardInstance())
+                self.indicator.stopAnimating()
             }
         }
     }

@@ -30,10 +30,11 @@ class TeamSearch {
      Note: also hides container by setting alpha to 0
      */
     func remove(from container: UIView, then hide: Bool? = true) {
+        
         vc.willMove(toParent: nil)
         vc.view.removeFromSuperview()
         vc.removeFromParent()
-        if hide! {
+        if hide == false {
             container.alpha = 0
         }
     }
