@@ -286,6 +286,29 @@ class DataServices {
             }
         }
     }
+    
+    /*
+     update important remote data:
+     - teams
+     - Projects
+     - Remote inspections (?)
+     */
+    func reloadReferenceData(completion: @escaping (_ error: Error?)->()){
+        
+        guard Reachability.isConnectedToNetwork() else {
+            completion(DataServicesError.noNetworkConnectivity)
+            return
+        }
+        
+        DataServices.getTeams { (sucess, _) in
+            DataServices.fetchProjectList() { (error: Error?) in
+                completion(error)
+            }
+//            PFInspection.fetchInspectionsOnly {
+//            }
+        }
+    }
+
 }
 
 

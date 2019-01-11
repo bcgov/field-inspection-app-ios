@@ -66,6 +66,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication,supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
 		return shouldRotate ? .allButUpsideDown : .portrait
 	}
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        DataServices.shared.reloadBasicData { (_) in
+        }
+    }
     
     func appearanceSetup(){
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.blue
