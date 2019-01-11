@@ -1147,8 +1147,9 @@
 				11D70EE51E8DD5F900CBF92C /* Settings */,
 				1152C1F51EDB4F3F005B0E6A /* TextViewController */,
 			);
-			path = UI;
-			sourceTree = "<group>";
+			name = UI;
+			path = EAO/UI;
+			sourceTree = SOURCE_ROOT;
 		};
 		D5391DBD21E712C100FC4055 /* API */ = {
 			isa = PBXGroup;
