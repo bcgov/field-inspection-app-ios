@@ -57,26 +57,30 @@ final class NewObservationController: UIViewController{
 
     //MARK: -
     @IBAction func addVoiceTapped(_ sender: UIButton) {
-        present(controller: UIAlertController(title: "This feature is coming soon", message: nil))
+        presentAlert(title: "This feature is coming soon", message: nil)
     }
 
     @IBAction func addVideoTapped(_ sender: UIButton) {
-        present(controller: UIAlertController(title: "This feature is coming soon", message: nil))
+        presentAlert(title: "This feature is coming soon", message: nil)
     }
 
     @IBAction func backTapped(_ sender: UIBarButtonItem) {
+        
         if isReadOnly{
-            pop()
+            popViewController()
             return
         }
         if didMakeChange{
-            present(controller: UIAlertController(title: "Would you like to save this observation element?", message: nil, yes: {
+            
+            let alert = UIAlertController(title: "Would you like to save this observation element?", message: nil, yes: {
                 self.saveTapped(sender)
             }, cancel: {
-                self.pop()
-            }))
+                self.popViewController()
+            })
+            presentAlert(controller: alert)
+            
         } else{
-            pop()
+            popViewController()
         }
     }
 
@@ -128,12 +132,12 @@ final class NewObservationController: UIViewController{
                 }
             }
         }
-        push(controller: textViewController)
+        pushViewController(controller: textViewController)
     }
 
     @IBAction fileprivate func addPhotoTapped(_ sender: UIButton) {
         if photos?.count == maximumNumberOfPhotos{
-            present(controller: UIAlertController(title: "You've reached maximum number of photos per element", message: nil))
+            presentAlert(title: "You've reached maximum number of photos per element", message: nil)
             return
         }
         sender.isEnabled = false
@@ -151,7 +155,7 @@ final class NewObservationController: UIViewController{
             self.view.layoutIfNeeded()
             self.collectionView.reloadData()
         }
-        push(controller: uploadPhotoController)
+        pushViewController(controller: uploadPhotoController)
         sender.isEnabled = true
     }
 
@@ -245,7 +249,7 @@ final class NewObservationController: UIViewController{
     }
     func goToUploadPhoto() {
         if photos?.count == maximumNumberOfPhotos{
-            present(controller: UIAlertController(title: "You've reached maximum number of photos per element", message: nil))
+            presentAlert(title: "You've reached maximum number of photos per element", message: nil)
             return
         }
         
@@ -263,7 +267,7 @@ final class NewObservationController: UIViewController{
             self.view.layoutIfNeeded()
             self.collectionView.reloadData()
         }
-        push(controller: uploadPhotoController)
+        pushViewController(controller: uploadPhotoController)
     }
 }
 
@@ -345,7 +349,7 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
             uploadPhotoController.isReadOnly = inspection.isSubmitted
             uploadPhotoController.observation = observation
             uploadPhotoController.photo = photos?[indexPath.row]
-            push(controller: uploadPhotoController)
+            pushViewController(controller: uploadPhotoController)
         }
     }
 
@@ -355,15 +359,15 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
     
     fileprivate func validate() ->Bool{
         if titleTextField.text?.isEmpty() == true{
-            present(controller: Alerts.fields)
+            presentAlert(controller: Alerts.fields)
             return false
         }
         if requirementTextField.text?.isEmpty() == true {
-            present(controller: Alerts.fields)
+            presentAlert(controller: Alerts.fields)
             return false
         }
         if descriptionTextView.text == "Tap to enter description"{
-            present(controller: Alerts.fields)
+            presentAlert(controller: Alerts.fields)
             return false
         }
         return true

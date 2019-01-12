@@ -51,7 +51,7 @@ final class InspectionFormController: UIViewController{
 
 	@IBAction fileprivate func backTapped(_ sender: UIBarButtonItem) {
 		sender.isEnabled = false
-		pop()
+		popViewController()
 	}
 	
 	@IBAction fileprivate func saveTapped(_ sender: UIBarButtonItem) {
@@ -59,7 +59,7 @@ final class InspectionFormController: UIViewController{
         sender.isEnabled = false
         let inspectionSetupController = InspectionSetupController.storyboardInstance() as! InspectionSetupController
         inspectionSetupController.inspection = inspection
-        push(controller: inspectionSetupController)
+        pushViewController(controller: inspectionSetupController)
         sender.isEnabled = true
 	}
 

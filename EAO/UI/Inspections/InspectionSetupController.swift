@@ -84,7 +84,7 @@ final class InspectionSetupController: UIViewController{
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
 			sender.setTitle(title, for: .normal)
 		}
-		push(controller: projectListController)
+		pushViewController(controller: projectListController)
 	}
 
     @IBAction func selectTeamAction(_ sender: UIButton!) {
@@ -184,7 +184,7 @@ final class InspectionSetupController: UIViewController{
                     let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
                     inspectionFormController.inspection = inspection
                     if inspection.id.isEmpty == false {
-                        self.push(controller: inspectionFormController)
+                        self.pushViewController(controller: inspectionFormController)
                         self.navigationController?.viewControllers.remove(at: 1)
                         self.setMode()
                     }
@@ -192,7 +192,7 @@ final class InspectionSetupController: UIViewController{
 
             } else {
                 sender.isEnabled = true
-                self.present(controller: UIAlertController(title: "ERROR!", message: "Inspection failed to save"))
+                self.presentAlert(title: "ERROR!", message: "Inspection failed to save")
             }
         }
 	}
@@ -236,12 +236,12 @@ final class InspectionSetupController: UIViewController{
         
         if linkProjectButton.title(for: .normal) == "Link Project" || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil{
             // remove ^
-            present(controller: Alerts.fields)
+            presentAlert(controller: Alerts.fields)
             completion(nil)
             return
         }
         if validateDates() == false {
-            present(controller: Alerts.dates)
+            presentAlert(controller: Alerts.dates)
             completion(nil)
             return
         }
