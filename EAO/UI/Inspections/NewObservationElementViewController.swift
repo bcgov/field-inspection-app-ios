@@ -292,8 +292,8 @@ class NewObservationElementViewController: UIViewController {
 
 // Media Collection view
 extension NewObservationElementViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func setUpCollectionView() {
-        
         self.mediaOptionsCollection.delegate = self
         self.mediaOptionsCollection.dataSource = self
         
@@ -303,7 +303,6 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //        return OPTIONS_COUNT + storedPhotos.count + multiSelectResult.count
         return OPTIONS_COUNT + storedPhotos.count
     }
     
@@ -405,6 +404,7 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
 
 // Tableview
 extension NewObservationElementViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func getTitleCell(indexPath: IndexPath) -> FormTitleTableViewCell {
         return tableView.dequeueReusableCell(forIndexPath: indexPath)
     }

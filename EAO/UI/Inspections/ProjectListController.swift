@@ -94,6 +94,7 @@ final class ProjectListController: UIViewController {
 
 //MARK: -
 extension ProjectListController: UISearchBarDelegate{
+    
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		searchBar.resignFirstResponder()
 	}
@@ -126,6 +127,7 @@ extension ProjectListController: UISearchBarDelegate{
 
 //MARK: -
 extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
+    
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return filtered?.count ?? projects?.count ?? 0
 	}

@@ -8,11 +8,9 @@
 
 extension Int{
    
-   
    static postfix func ++ (value: inout Int){
       value += 1
    }
-   
    
    static prefix func ++ (value: inout Int){
       value += 1

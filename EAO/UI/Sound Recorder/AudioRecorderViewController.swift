@@ -203,8 +203,9 @@ class AudioRecorderViewController: UIViewController {
 
 }
 
-// AV
+
 extension AudioRecorderViewController: AVAudioRecorderDelegate{
+    
     func beginRec() {
         if initRecorder() {
             audioRecorder.record()
