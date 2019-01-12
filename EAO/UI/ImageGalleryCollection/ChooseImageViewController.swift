@@ -15,12 +15,14 @@ extension Notification.Name {
 
 class ChooseImageViewController: UIViewController {
 
+    //MARK: IB Outlets
     @IBOutlet weak var navBar: UIView!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     @IBOutlet weak var loadingContainer: UIView!
 
+    //MARK: variables
     var images = [PHAsset]()
     var selectedIndexs = [Int]()
 

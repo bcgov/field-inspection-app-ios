@@ -35,6 +35,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet private var segmentedControl: UISegmentedControl!
     @IBOutlet private var indicator: UIActivityIndicatorView!
     
+    //MARK: variables
 	private var isBeingUploaded = false
     private var locationManager: CLLocationManager = {
         // TODO:(jl) This should be moved to where its used and the user advised
@@ -66,6 +67,11 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
 
     internal var inspections = (draft: [Inspection](), submitted: [Inspection]())
 
+    // MARK: -
+    private var selectedIndex: Int {
+        return segmentedControl.selectedSegmentIndex
+    }
+    
     // MARK: -
     override func viewDidLoad() {
 
@@ -265,11 +271,6 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    // MARK: -
-    private var selectedIndex: Int {
-        return segmentedControl.selectedSegmentIndex
-    }
-
     private func checkUploadStatus(inspection: Inspection) -> Bool {
         
         if let observations = DataServices.fetchObservations(for: inspection) {

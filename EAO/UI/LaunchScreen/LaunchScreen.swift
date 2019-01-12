@@ -7,6 +7,7 @@
 //
 
 class LaunchScreen: UIViewController{
+    
 	static private let appDelegate = UIApplication.shared.delegate as! AppDelegate
 	static private let controller  = LaunchScreen.storyboardInstance()
 	

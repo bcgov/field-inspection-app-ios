@@ -14,6 +14,12 @@ import RealmSwift
 class NewObservationElementFormViewController: UIViewController {
     
     //Mark: COMPUTED VARIABLES
+    var storedPhotos = [PhotoThumb]() {
+        didSet{
+            self.collectionView.reloadData()
+        }
+    }
+    
     var isValid: Bool {
         if elementTitle != "" {
             return true
@@ -30,18 +36,6 @@ class NewObservationElementFormViewController: UIViewController {
             } else {
                 grayScreen.alpha = 0
             }
-        }
-    }
-    
-    //MARK: VARIABLES
-    var playingAudio: Bool = false
-    var audioPlayer: AVAudioPlayer!
-    var videoPlayer: AVPlayer!
-    var imagePicker: UIImagePickerController!
-    var multiSelectResult = [PHAsset]()
-    var storedPhotos = [PhotoThumb]() {
-        didSet{
-            self.collectionView.reloadData()
         }
     }
 
@@ -61,6 +55,21 @@ class NewObservationElementFormViewController: UIViewController {
         }
     }
     
+    var STATIC_CELLS_COUNT: Int {
+        if isReadOnly {
+            return 4
+        } else {
+            return 5
+        }
+    }
+
+    //MARK: VARIABLES
+    var playingAudio: Bool = false
+    var audioPlayer: AVAudioPlayer!
+    var videoPlayer: AVPlayer!
+    var imagePicker: UIImagePickerController!
+    var multiSelectResult = [PHAsset]()
+    
     var elementTitle: String = ""
     var elementRequirement: String = ""
     var elementoldDescription: String = ""
@@ -79,20 +88,10 @@ class NewObservationElementFormViewController: UIViewController {
 
     var isReadOnly: Bool = false
 
-    var STATIC_CELLS_COUNT: Int {
-        if isReadOnly {
-            return 4
-        } else {
-            return 5
-        }
-    }
-    
     //MARK: CONSTANTS
     var galleryManager = GalleryManager()
     let locationManager = CLLocationManager()
 
-    let BLUE = UIColor(hex:"4667a2")
-    let RED = UIColor(hex:"e03850")
 
     //MARK: OUTLETS
 
@@ -130,13 +129,10 @@ class NewObservationElementFormViewController: UIViewController {
         setUpObservationObject()
         roundContainer(view: mediaContainer.layer)
         styleContainer(view: mediaContainer.layer)
-//        styleContainer(view: navBar.layer)
         if isReadOnly {
             self.mediaHeight.constant = 0
             self.mediaContainer.alpha = 0
         }
-        // hot fix for video preview
-//        self.containerHeight.constant = 450
         self.containerHeight.constant = self.view.frame.height - 40
         unlock()
     }
@@ -302,18 +298,9 @@ class NewObservationElementFormViewController: UIViewController {
     func saveObservation() {
         if !isValid {self.unlock(); return}
 
-        //        var index = storedPhotos.count
-
-//        var startingIndex = (storedPhotos.count - 1)
-//        if startingIndex < 0 {startingIndex = 0}
-//        let lastIndex = startingIndex + (multiSelectResult.count - 1)
-//        print("from index: \(startingIndex), to \(lastIndex)")
         saveObservationAssets {
              self.saveObservationDetails()
         }
-//        saveAssets(assets: multiSelectResult, currIndex: startingIndex, lastIndex: lastIndex) {
-//            self.saveObservationDetails()
-//        }
     }
 
     func saveObservationAssets(completion: @escaping () -> Void){
@@ -694,10 +681,10 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         
         let audio = storedAudios[index]
         let form = MiFormManager()
-        let buttonStyleBlue = MiButtonStyle(textColor: .white, bgColor: BLUE, height: 50, roundCorners: true)
-        let buttonStyleRed = MiButtonStyle(textColor: .white, bgColor: RED, height: 50, roundCorners: true)
-        let textStyleL = LabelStyle(height: 100, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
-        let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
+        let buttonStyleBlue = MiButtonStyle(textColor: .white, bgColor: Colors.Blue, height: 50, roundCorners: true)
+        let buttonStyleRed = MiButtonStyle(textColor: .white, bgColor: Colors.Red, height: 50, roundCorners: true)
+        let textStyleL = LabelStyle(height: 100, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
+        let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
 
         if audio.title != nil {
             form.addLabel(name: "sounddesc", text: audio.title! , style: textStyleS)
@@ -755,10 +742,10 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
     func showPreviewOf(index: Int) {
 
         let form = MiFormManager()
-        let style = MiButtonStyle(textColor: .white, bgColor: BLUE, height: 50, roundCorners: true)
-        let textStyleL = LabelStyle(height: 100, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
-        let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
-        let textStyleM = LabelStyle(height: 80, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
+        let style = MiButtonStyle(textColor: .white, bgColor: Colors.Blue, height: 50, roundCorners: true)
+        let textStyleL = LabelStyle(height: 100, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
+        let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
+        let textStyleM = LabelStyle(height: 80, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
 
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -802,12 +789,12 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         print(image)
         let form = MiFormManager()
         
-        let commonFieldStyle = MiTextFieldStyle(titleColor: BLUE, inputColor: BLUE, fieldBG: .white, bgColor: .white, height: 150, roundCorners: true)
+        let commonFieldStyle = MiTextFieldStyle(titleColor: Colors.Blue, inputColor: Colors.Blue, fieldBG: .white, bgColor: .white, height: 150, roundCorners: true)
         
-        let commonButtonStyle = MiButtonStyle(textColor: .white, bgColor: BLUE, height: 50, roundCorners: true)
+        let commonButtonStyle = MiButtonStyle(textColor: .white, bgColor: Colors.Blue, height: 50, roundCorners: true)
 
-        let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
-        let textStyleM = LabelStyle(height: 80, roundCorners: true, bgColor: UIColor.white, labelTextColor: BLUE)
+        let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
+        let textStyleM = LabelStyle(height: 80, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
 
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

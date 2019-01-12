@@ -12,6 +12,7 @@ import Parse
 
 class NewObservationElementViewController: UIViewController {
     
+    //MARK: IB Outlets
     @IBOutlet fileprivate var mediaOptionsCollection: UICollectionView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityIndicatorContainer: UIView!
@@ -23,6 +24,7 @@ class NewObservationElementViewController: UIViewController {
     @IBOutlet weak var popUpContainerContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    //MARK: variables
     var uniqueButtonID = 0
     var imagePicker: UIImagePickerController!
     var inspection: Inspection!

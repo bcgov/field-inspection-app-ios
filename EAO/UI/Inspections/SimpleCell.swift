@@ -11,6 +11,11 @@ import UIKit
 
 class SimpleCell {
 
+    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+    // have at least one uppercase, at least a number, and a minimum length of 6 characters and a maximum of 15
+    let passwordRegex = "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,15}"
+    let phoneRegex = "[0-9]{10}"
+
     var name: String = ""
     var title: String = ""
     var placeholder: String = ""
@@ -26,9 +31,7 @@ class SimpleCell {
     var labelStyle: LabelStyle?
 
     var isOptional: Bool = false
-
     var regEx: String?
-
     var inputType: FormInputType?
 
     var currValue: String = "" {
@@ -38,9 +41,7 @@ class SimpleCell {
     }
 
     var expectedValue: String?
-
     var isValid: Bool = false
-
     var image: UIImage?
 
     init(name: String, title: String, placeholder: String, type: SimpleCellType, inputType: FormInputType) {
@@ -119,12 +120,7 @@ class SimpleCell {
         self.isValid = isValueValid()
     }
 
-    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-    // have at least one uppercase, at least a number, and a minimum length of 6 characters and a maximum of 15
-    let passwordRegex = "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,15}"
-    let phoneRegex = "[0-9]{10}"
 }
-
 
 enum SimpleCellType {
     case Button
