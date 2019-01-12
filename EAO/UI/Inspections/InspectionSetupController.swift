@@ -78,6 +78,7 @@ final class InspectionSetupController: UIViewController{
     
 	//MARK: - IB Actions
 	@IBAction fileprivate func linkProjectTapped(_ sender: UIButton) {
+        
 		let projectListController = ProjectListController.storyboardInstance() as! ProjectListController
 		projectListController.result = { (title) in
 			guard let title = title else { return }
@@ -161,47 +162,46 @@ final class InspectionSetupController: UIViewController{
 	}
 	
 	@IBAction fileprivate func saveTapped(_ sender: UIControl) {
+        
         sender.isEnabled = false
         indicator.startAnimating()
         
-        validate { (inspection) in
-            
-            guard let inspection = inspection else {
-                sender.isEnabled = true
-                self.indicator.stopAnimating()
-                return
-            }
-            
-            let result = DataServices.add(inspection: inspection, isStoredLocally: true)
+        guard let inspection = validate() else {
+            sender.isEnabled = true
             self.indicator.stopAnimating()
-
-            if result == true {
-                
-                if self.isNew {
-                    Notification.post(name: .insertByDate, inspection)
-                } else{
-                    Notification.post(name: .reload)
-                }
-                
-                if self.isNew {
-                    self.isNew = false
-                    let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
-                    inspectionFormController.inspection = inspection
-                    if inspection.id.isEmpty == false {
-                        self.pushViewController(controller: inspectionFormController)
-                        self.navigationController?.viewControllers.remove(at: 1)
-                        self.setMode()
-                    }
-                }
-
-            } else {
-                sender.isEnabled = true
-                self.presentAlert(title: "ERROR!", message: "Inspection failed to save")
-            }
+            return
         }
-	}
+        
+        let result = DataServices.add(inspection: inspection, isStoredLocally: true)
+        self.indicator.stopAnimating()
+        
+        if result == true {
+            
+            if self.isNew {
+                Notification.post(name: .insertByDate, inspection)
+            } else{
+                Notification.post(name: .reload)
+            }
+            
+            if self.isNew {
+                self.isNew = false
+                let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
+                inspectionFormController.inspection = inspection
+                if inspection.id.isEmpty == false {
+                    self.pushViewController(controller: inspectionFormController)
+                    self.navigationController?.viewControllers.remove(at: 1)
+                    self.setMode()
+                }
+            }
+            
+        } else {
+            sender.isEnabled = true
+            self.presentAlert(title: "ERROR!", message: "Inspection failed to save")
+        }
+    }
 
 	fileprivate func setMode(){
+        
 		if isReadOnly{
 			linkProjectButton.isEnabled = false
 			titleTextField.isEnabled    = false
@@ -225,7 +225,11 @@ final class InspectionSetupController: UIViewController{
 	
 	//MARK: -
 	@objc func populate(){
-		guard let inspection = inspection else { return }
+        
+		guard let inspection = inspection else {
+            return
+        }
+        
 		linkProjectButton.setTitle(inspection.project, for: .normal)
 		startDateButton.setTitle(inspection.start?.datePickerFormat(), for: .normal)
 		endDateButton.setTitle(inspection.end?.datePickerFormat() ?? "Inspection End Date", for: .normal)
@@ -236,19 +240,19 @@ final class InspectionSetupController: UIViewController{
         dates["end"] = inspection.end
 	}
     
-    @objc func validate(completion: @escaping (_ inspection : Inspection?)->Void){
+    @objc func validate() -> Inspection?{
         
-        if linkProjectButton.title(for: .normal) == "Link Project" || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil{
+        if linkProjectButton.title(for: .normal) == "Link Project" || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil {
             // remove ^
             presentAlert(controller: Alerts.fields)
-            completion(nil)
-            return
+            return nil
         }
+        
         if validateDates() == false {
             presentAlert(controller: Alerts.dates)
-            completion(nil)
-            return
+            return nil
         }
+        
         if self.isNew {
             
             inspection = Inspection()
@@ -269,8 +273,7 @@ final class InspectionSetupController: UIViewController{
             
             guard let realm = try? Realm() else {
                 print("Unable open realm")
-                completion(nil)
-                return
+                return nil
             }
             
             do {
@@ -287,13 +290,14 @@ final class InspectionSetupController: UIViewController{
                 
             } catch let error {
                 print("Realm save exception \(error.localizedDescription)")
-                completion(nil)
+                return nil
             }
         }
-        completion(inspection)
+        return inspection
     }
     
     @objc func validateDates() -> Bool{
+        
         guard let startDate = dates["start"],
             let endDate = dates["end"] else {
                 return dates["start"] != nil

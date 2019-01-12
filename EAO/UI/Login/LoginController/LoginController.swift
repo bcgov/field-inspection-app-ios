@@ -118,7 +118,7 @@ final class LoginController: UIViewController{
             self.indicator.startAnimating()
             DataServices.shared.reloadReferenceData { (_) in
                 self.clearTextFields()
-                self.present(controller: InspectionsController.storyboardInstance())
+                self.presentManually(controller: InspectionsController.storyboardInstance())
                 self.indicator.stopAnimating()
             }
         }
