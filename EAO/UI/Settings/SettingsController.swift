@@ -17,14 +17,15 @@ final class SettingsController: UITableViewController {
     
 	@IBAction fileprivate func logoutTapped(_ sender: UIButton) {
         
-		if Reachability.isConnectedToNetwork() == false{
-			self.presentAlert(controller: UIAlertController.noInternet)
-			return
-		}
+        guard Reachability.isConnectedToNetwork() else {
+            self.self.presentAlert(controller: UIAlertController.noInternet)
+            return
+        }
         
 		sender.isEnabled = false
 		navigationController?.view.isUserInteractionEnabled = false
 		indicator.startAnimating()
+        
 		PFUser.logOutInBackground { (error) in
 			guard error == nil else{
 				sender.isEnabled = true

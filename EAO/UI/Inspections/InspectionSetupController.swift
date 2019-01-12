@@ -95,8 +95,12 @@ final class InspectionSetupController: UIViewController{
         DataServices.getTeams { (done, teams) in
             sender.isEnabled = true
 
+            guard let teams = teams else {
+                return
+            }
+            
             if done {
-                let _ = team.getVC(teams: teams!, callBack: { (done, selected) in
+                let _ = team.getVC(teams: teams, callBack: { (done, selected) in
                     if done {
                         self.inspection?.teamID = selected?.objectID
                         self.teamID = (selected?.objectID)!

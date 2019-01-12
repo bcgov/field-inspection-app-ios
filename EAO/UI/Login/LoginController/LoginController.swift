@@ -49,12 +49,15 @@ final class LoginController: UIViewController{
     @IBAction fileprivate func loginTapped(_ sender: UIButton) {
         do{
             let credentials = try validateCredentials()
-            if !Reachability.isConnectedToNetwork(){
+            
+            guard Reachability.isConnectedToNetwork() else {
                 presentAlert(controller: UIAlertController.noInternet)
                 return
             }
+            
             sender.isEnabled = false
             indicator.startAnimating()
+            
             PFUser.logInWithUsername(inBackground: credentials.0, password: credentials.1) { (user, error) in
                 guard let _ = user, error == nil else{
                     let code = (error! as NSError).code
@@ -69,20 +72,20 @@ final class LoginController: UIViewController{
                     self.indicator.stopAnimating()
                     return
                 }
+                
                 DataServices.isUserMobileAccessEnabled(completion: { (enabled) in
                     if enabled {
                         let user: User =  PFUser.current() as! User
                         DataServices.getUserTeams(user: user, completion: { (done, downloaded) in
                             print("ended \(done)")
                         })
-                        PFInspection.fetchInspectionsOnly {
-                            self.load(completion: {
-                                self.clearTextFields()
-                                self.presentManually(controller: InspectionsController.storyboardInstance())
-                                self.indicator.stopAnimating()
-                                sender.isEnabled = true
-                            })
-                        }
+                        
+                        DataServices.shared.reloadReferenceData(completion: { (_) in
+                            self.clearTextFields()
+                            self.presentManually(controller: InspectionsController.storyboardInstance())
+                            self.indicator.stopAnimating()
+                            sender.isEnabled = true
+                        })
                     } else {
                         self.presentAlert(title: "Couldn't log in", message: "Mobile access is disabled")
                         PFUser.logOut()
@@ -91,14 +94,13 @@ final class LoginController: UIViewController{
                     }
                     
                 })
-                PFInspection.fetchInspectionsOnly {
-                    self.load(completion: {
-                        self.clearTextFields()
-                        self.presentManually(controller: InspectionsController.storyboardInstance())
-                        self.indicator.stopAnimating()
-                        sender.isEnabled = true
-                    })
-                }
+                
+                DataServices.shared.reloadReferenceData(completion: { (_) in
+                    self.clearTextFields()
+                    self.presentManually(controller: InspectionsController.storyboardInstance())
+                    self.indicator.stopAnimating()
+                    sender.isEnabled = true
+                })
             }
         } catch{
             self.presentAlert(title: "Couldn't log in", message: (error as? LoginError)?.message)
@@ -114,23 +116,11 @@ final class LoginController: UIViewController{
             clearTextFields()
             
             self.indicator.startAnimating()
-            PFInspection.fetchInspectionsOnly {
-                self.load(completion: {
-                    self.clearTextFields()
-                    self.presentManually(controller: InspectionsController.storyboardInstance())
-                    self.indicator.stopAnimating()
-                })
+            DataServices.shared.reloadReferenceData { (_) in
+                self.clearTextFields()
+                self.present(controller: InspectionsController.storyboardInstance())
+                self.indicator.stopAnimating()
             }
-        }
-    }
-    
-    ///This function caches projects on every login
-    fileprivate func load(completion: @escaping ()->()){
-        DataServices.fetchProjectList() { (error: Error?) in
-            if let error = error {
-                print(error)
-            }
-            completion()
         }
     }
     
