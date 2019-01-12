@@ -304,8 +304,6 @@ class DataServices {
             DataServices.fetchProjectList() { (error: Error?) in
                 completion(error)
             }
-//            PFInspection.fetchInspectionsOnly {
-//            }
         }
     }
 
