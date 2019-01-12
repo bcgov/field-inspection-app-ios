@@ -60,13 +60,13 @@ class MiFormButtonTableViewCell: BaseFormCell {
         }
     }
 
-    @objc func doThisWhenNotify() {
+    @objc func formCallbackAction() {
         return
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        NotificationCenter.default.addObserver(self, selector: #selector(doThisWhenNotify), name: .miFormCallback, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(formCallbackAction), name: .miFormCallback, object: nil)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
