@@ -10,15 +10,7 @@ import MapKit
 
 final class NewObservationController: UIViewController{
     
-    @objc let maximumNumberOfPhotos = 20
-    fileprivate var locationManager = CLLocationManager()
-    @objc var saveAction  : ((Observation)->Void)?
-    @objc var inspection  : Inspection!
-    @objc var observation : Observation!
-    @objc var photos		: [Photo]?
-    @objc var didMakeChange = false
-
-    //MARK: -
+    //MARK: IB Outlets
     @IBOutlet fileprivate var arrow_0: UIImageView!
     @IBOutlet fileprivate var descriptionTextView: UITextView!
     @IBOutlet fileprivate var indicator: UIActivityIndicatorView!
@@ -30,19 +22,32 @@ final class NewObservationController: UIViewController{
     @IBOutlet fileprivate var collectionView: UICollectionView!
     @IBOutlet fileprivate var descriptionButton: UIButton!
 
-    let resultCellReuseIdentifier = "ResultCell"
-    let resultCellXibName = "RecultCollectionViewCell"
-    let mediaCellReuseIdentifier = "MediaOptionCell"
-    let mediaCellXibName = "OptionCollectionViewCell"
-
-    let galleryManager = GalleryManager()
-
+    //MARK: variables
     enum Alerts{
         static let fields = UIAlertController(title: "All Fields Required", message: "Please fill out 'Title', 'Requirement', and 'Description' fields")
     }
     enum Constants{
         static let cellWidth = (UIScreen.width-25)/CGFloat(Constants.itemsPerRow)
         static let itemsPerRow = 4
+    }
+
+    let resultCellReuseIdentifier = "ResultCell"
+    let resultCellXibName = "RecultCollectionViewCell"
+    let mediaCellReuseIdentifier = "MediaOptionCell"
+    let mediaCellXibName = "OptionCollectionViewCell"
+
+    @objc let maximumNumberOfPhotos = 20
+    fileprivate var locationManager = CLLocationManager()
+    @objc var saveAction  : ((Observation)->Void)?
+    @objc var inspection  : Inspection!
+    @objc var observation : Observation!
+    @objc var photos        : [Photo]?
+    @objc var didMakeChange = false
+    
+    let galleryManager = GalleryManager()
+
+    @objc var isReadOnly: Bool{
+        return inspection.isSubmitted == true
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -346,10 +351,6 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: Constants.cellWidth, height: Constants.cellWidth)
-    }
-    
-    @objc var isReadOnly: Bool{
-        return inspection.isSubmitted == true
     }
     
     fileprivate func validate() ->Bool{

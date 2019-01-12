@@ -8,15 +8,21 @@
 import Parse
 final class InspectionFormController: UIViewController{
 
+    //MARK: IB Outlets
     @IBOutlet fileprivate var addButton : UIButton!
 	@IBOutlet fileprivate var indicator : UIActivityIndicatorView!
 	@IBOutlet fileprivate var tableView : UITableView!
 
+    //MARK: variables
     @objc var inspection : Inspection!
     @objc var observations = [Observation]()
 	
     struct Alerts{
         static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be uploaded to the server.\nPlease try again")
+    }
+
+    fileprivate var isReadOnly: Bool{
+        return inspection.isSubmitted == true
     }
 
     //MARK: -
@@ -80,10 +86,6 @@ final class InspectionFormController: UIViewController{
 		navigationItem.leftBarButtonItem?.isEnabled = enabled
 	}
     
-    fileprivate var isReadOnly: Bool{
-        return inspection.isSubmitted == true
-    }
-
 }
 
 //MARK: -

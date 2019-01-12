@@ -191,6 +191,7 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 
 //MARK: -
 extension UploadPhotoController: UITextViewDelegate{
+    
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
 		didMakeChange = true

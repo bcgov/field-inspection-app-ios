@@ -11,7 +11,7 @@ import AVFoundation
 
 class AudioRecorderViewController: UIViewController {
 
-    // Outlets
+    //MARK: IB Outlets
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var container2: UIView!
@@ -30,10 +30,10 @@ class AudioRecorderViewController: UIViewController {
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var sizeLabel: UILabel!
 
-    // Constants
+    //MARK: Constants
     let MAX_FILE_SIZE: Double = 9
     
-    // Variable
+    //MARK: Variable
     var callBack: ((_ close: Bool) -> Void )?
     var updater: CADisplayLink! = nil
     var meterTimer: Timer!

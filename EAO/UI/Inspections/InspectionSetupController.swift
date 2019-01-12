@@ -27,6 +27,13 @@ final class InspectionSetupController: UIViewController{
     @IBOutlet weak var selectTeamButton: UIButton!
     @IBOutlet weak var popUpContainer: UIView!
 
+    //MARK: variables
+    struct Alerts{
+        static let fields = UIAlertController(title: "Incomplete", message: "Please fill out all fields")
+        static let dates = UIAlertController(title: "Dates", message: "Please make sure end date goes after start date")
+        static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be saved,\nPlease try again")
+    }
+    
     @objc var inspection: Inspection?
     
     fileprivate var isNew = false
@@ -35,10 +42,8 @@ final class InspectionSetupController: UIViewController{
     fileprivate var endDate: Date?
     fileprivate var teamID: String = ""
     
-    struct Alerts{
-        static let fields = UIAlertController(title: "Incomplete", message: "Please fill out all fields")
-        static let dates = UIAlertController(title: "Dates", message: "Please make sure end date goes after start date")
-        static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be saved,\nPlease try again")
+    fileprivate var isReadOnly: Bool{
+        return inspection?.isSubmitted == true
     }
 
     //MARK: -
@@ -296,10 +301,6 @@ final class InspectionSetupController: UIViewController{
         return startDate <= endDate
     }
     
-    fileprivate var isReadOnly: Bool{
-        return inspection?.isSubmitted == true
-    }
-
 }
 
 //MARK: -
