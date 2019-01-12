@@ -94,6 +94,7 @@ public class TextView: UITextView{
 
 //MARK: -
 extension TextView: UITextViewDelegate{
+    
 	public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
 		return _delegate?.textShouldBeginEditing?(textView: self) ?? true
 	}

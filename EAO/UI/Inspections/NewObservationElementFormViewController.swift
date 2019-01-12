@@ -437,10 +437,65 @@ class NewObservationElementFormViewController: UIViewController {
         self.activityIndicatorContainer.alpha = 0
         self.view.isUserInteractionEnabled = true
     }
+    
+    func goToCamera() {
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = false
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func gotToGallery() {
+        galleryManager = GalleryManager()
+        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
+        let vc = galleryManager.getVC(mode: .Image, callBack: { done in
+            self.load()
+        })
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func goToVideoGallery() {
+        galleryManager = GalleryManager()
+        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
+        let vc = galleryManager.getVC(mode: .Video, callBack: { done in
+            self.load()
+        })
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func goToThedolite() {
+        let appHookUrl = URL(string: "theodolite://")
+        
+        if UIApplication.shared.canOpenURL(appHookUrl!)
+        {
+            UIApplication.shared.open(appHookUrl!, options:[:]) { (success) in
+                if !success {
+                    
+                }
+            }
+        } else {
+            warn(message: "Theodolite app is not installed")
+        }
+    }
+    
+    func goToRecord() {
+        
+        if inspection.id.isEmpty {
+            return
+        }
+        
+        let recorder = Recorder()
+        let vc = recorder.getVC(inspectionID: inspection.id, observationID: observation.id) { (done) in
+            self.load()
+        }
+        self.present(vc, animated: true, completion: nil)
+    }
 }
 
 //Mark: Collection view
 extension NewObservationElementFormViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func initCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -731,66 +786,10 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
     }
 }
 
-// Media options
-extension NewObservationElementFormViewController {
-    func goToCamera() {
-        imagePicker =  UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        imagePicker.allowsEditing = false
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    func gotToGallery() {
-        galleryManager = GalleryManager()
-        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
-        let vc = galleryManager.getVC(mode: .Image, callBack: { done in
-            self.load()
-        })
-        self.present(vc, animated: true, completion: nil)
-    }
-
-    func goToVideoGallery() {
-        galleryManager = GalleryManager()
-        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
-        let vc = galleryManager.getVC(mode: .Video, callBack: { done in
-            self.load()
-        })
-        self.present(vc, animated: true, completion: nil)
-    }
-    
-    func goToThedolite() {
-        let appHookUrl = URL(string: "theodolite://")
-        
-        if UIApplication.shared.canOpenURL(appHookUrl!)
-        {
-            UIApplication.shared.open(appHookUrl!, options:[:]) { (success) in
-                if !success {
-                    
-                }
-            }
-        } else {
-            warn(message: "Theodolite app is not installed")
-        }
-    }
-
-    func goToRecord() {
-        
-        if inspection.id.isEmpty {
-            return
-        }
-        
-        let recorder = Recorder()
-        let vc = recorder.getVC(inspectionID: inspection.id, observationID: observation.id) { (done) in
-            self.load()
-        }
-        self.present(vc, animated: true, completion: nil)
-    }
-}
-
 //MARK: Collection view
 extension  NewObservationElementFormViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+        
 // Local variable inserted by Swift 4.2 migrator.
 let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
@@ -901,10 +900,6 @@ extension NewObservationElementFormViewController : AVAudioPlayerDelegate{
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopPlayback()
     }
-}
-
-extension NewObservationElementFormViewController{
-
 }
 
 // Helper function inserted by Swift 4.2 migrator.

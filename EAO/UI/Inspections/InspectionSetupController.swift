@@ -317,6 +317,7 @@ extension InspectionSetupController: KeyboardDelegate{
 
 //MARK: -
 extension InspectionSetupController: UITextFieldDelegate{
+    
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		navigationItem.rightBarButtonItem?.isEnabled = true
 		var length = textField.text?.count ?? 0
