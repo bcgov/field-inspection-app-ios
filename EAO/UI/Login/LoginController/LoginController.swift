@@ -31,6 +31,8 @@ final class LoginController: UIViewController{
     @IBOutlet fileprivate var indicator: UIActivityIndicatorView!
     @IBOutlet weak var loginButton: UIButton!
     
+    static let segueShowInspector = "showInspector"
+    
     //MARK: Initialization
     override func viewDidLoad() {
         style()
@@ -81,9 +83,7 @@ final class LoginController: UIViewController{
                         })
                         
                         DataServices.shared.reloadReferenceData(completion: { (_) in
-                            self.clearTextFields()
-                            self.presentManually(controller: InspectionsController.storyboardInstance())
-                            self.indicator.stopAnimating()
+                            self.showInspectionsController()
                             sender.isEnabled = true
                         })
                     } else {
@@ -96,9 +96,7 @@ final class LoginController: UIViewController{
                 })
                 
                 DataServices.shared.reloadReferenceData(completion: { (_) in
-                    self.clearTextFields()
-                    self.presentManually(controller: InspectionsController.storyboardInstance())
-                    self.indicator.stopAnimating()
+                    self.showInspectionsController()
                     sender.isEnabled = true
                 })
             }
@@ -117,9 +115,7 @@ final class LoginController: UIViewController{
             
             self.indicator.startAnimating()
             DataServices.shared.reloadReferenceData { (_) in
-                self.clearTextFields()
-                self.presentManually(controller: InspectionsController.storyboardInstance())
-                self.indicator.stopAnimating()
+                self.showInspectionsController()
             }
         }
     }
@@ -146,6 +142,12 @@ final class LoginController: UIViewController{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
         return true
+    }
+    
+    private func showInspectionsController(){
+        self.clearTextFields()
+        self.indicator.stopAnimating()
+        self.performSegue(withIdentifier: LoginController.segueShowInspector, sender: nil)
     }
     
 }
