@@ -13,9 +13,13 @@ final class InspectionFormController: UIViewController{
 	@IBOutlet fileprivate var indicator : UIActivityIndicatorView!
 	@IBOutlet fileprivate var tableView : UITableView!
 
+    private static let showInspectionFormSegueID = "showInspectionForm"
+    private static let addNewElementSegueID = "AddNewElement"
+    private static let editElementSegueID = "EditElement"
+
     //MARK: variables
-    @objc var inspection : Inspection!
-    @objc var observations = [Observation]()
+    var inspection : Inspection!
+    var observations = [Observation]()
 	
     struct Alerts{
         static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be uploaded to the server.\nPlease try again")
@@ -49,27 +53,29 @@ final class InspectionFormController: UIViewController{
         addButton.layer.shadowRadius = 4
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == InspectionFormController.showInspectionFormSegueID, let destinationVC = segue.destination as? InspectionSetupController {
+            destinationVC.inspection = inspection
+        }
+        
+        if segue.identifier == InspectionFormController.addNewElementSegueID, let destinationVC = segue.destination as? NewObservationElementFormViewController {
+            destinationVC.observation = nil
+            destinationVC.inspection = inspection
+        }
+        
+        if segue.identifier == InspectionFormController.editElementSegueID, let destinationVC = segue.destination as? NewObservationElementFormViewController, let index = tableView.indexPathForSelectedRow?.row, index < observations.count {
+            destinationVC.inspection = inspection
+            destinationVC.observation = observations[index]
+            destinationVC.isReadOnly = isReadOnly
+        }
+    }
+    
 	@IBAction fileprivate func backTapped(_ sender: UIBarButtonItem) {
 		sender.isEnabled = false
 		popViewController()
 	}
 	
-	@IBAction fileprivate func saveTapped(_ sender: UIBarButtonItem) {
-
-        sender.isEnabled = false
-        let inspectionSetupController = InspectionSetupController.storyboardInstance() as! InspectionSetupController
-        inspectionSetupController.inspection = inspection
-        pushViewController(controller: inspectionSetupController)
-        sender.isEnabled = true
-	}
-
-	@IBAction fileprivate func addTapped(_ sender: UIButton) {
-
-        let newObservationManager = NewObservationElementManager()
-        self.present(newObservationManager.getVCFor(inspection: inspection), animated: true, completion: nil)
-	}
-
-
 	fileprivate func load(){
         
         if let observations = DataServices.fetchObservations(for: inspection) {
@@ -103,11 +109,6 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 		let cell = tableView.dequeue(identifier: "InspectionFormCell") as! InspectionFormCell
 		cell.setData(number: "\(indexPath.row+1)", title: observations[indexPath.row].title, time: observations[indexPath.row].createdAt.inspectionFormat(),isReadOnly: isReadOnly)
 		return cell
-	}
-	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let newObservationManager = NewObservationElementManager()
-        self.present(newObservationManager.getEditVCFor(observation: observations[indexPath.row], inspection: inspection, isReadOnly: isReadOnly), animated: true, completion: nil)
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

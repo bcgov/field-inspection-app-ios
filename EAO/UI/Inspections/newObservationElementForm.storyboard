@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mjT-c1-v9X">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--New Observation Element Form View Controller-->
         <scene sceneID="8rJ-3w-IoR">
             <objects>
-                <viewController storyboardIdentifier="newObservationElementForm" id="mjT-c1-v9X" customClass="NewObservationElementFormViewController" customModule="EAO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newObservationElementForm" id="mjT-c1-v9X" customClass="NewObservationElementFormViewController" customModule="Field_Insp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nb9-fH-8jI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,7 +28,7 @@
                                                 <rect key="frame" x="8" y="20" width="359" height="55"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Element" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="anQ-3s-eS7">
-                                                        <rect key="frame" x="125.5" y="17" width="109" height="21.5"/>
+                                                        <rect key="frame" x="125" y="17" width="109" height="21.5"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -48,7 +48,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ic9-vi-KcF">
-                                                        <rect key="frame" x="0.0" y="14" width="45" height="28"/>
+                                                        <rect key="frame" x="0.0" y="13.5" width="45" height="28"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="45" id="aNV-jL-hul"/>
                                                             <constraint firstAttribute="height" constant="28" id="aky-3r-rza"/>
@@ -169,7 +169,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pap-PJ-Th8">
-                                                <rect key="frame" x="158" y="10" width="58" height="35"/>
+                                                <rect key="frame" x="158.5" y="10" width="58" height="35"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <state key="normal" title=" Close ">
@@ -195,7 +195,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8fM-kl-bEC">
-                                        <rect key="frame" x="162" y="308" width="50" height="50"/>
+                                        <rect key="frame" x="162.5" y="308.5" width="50" height="50"/>
                                         <subviews>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8A1-zO-EBQ">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -265,14 +265,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hDY-EL-Q01" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="69.599999999999994" y="-9.4452773613193415"/>
+            <point key="canvasLocation" x="-241" y="33"/>
         </scene>
     </scenes>
     <resources>
         <image name="Video" width="18" height="12"/>
         <image name="camicon" width="20" height="18"/>
         <image name="galleryicon" width="20" height="20"/>
-        <image name="icon_back" width="25" height="25"/>
+        <image name="icon_back" width="1.2000000476837158" height="1.2000000476837158"/>
         <image name="record" width="22" height="19"/>
         <image name="theodoicon" width="20" height="20"/>
     </resources>

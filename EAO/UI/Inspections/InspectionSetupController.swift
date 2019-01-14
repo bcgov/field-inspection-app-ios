@@ -76,18 +76,20 @@ final class InspectionSetupController: UIViewController{
         button.layer.shadowRadius = 4
     }
     
-	//MARK: - IB Actions
-	@IBAction fileprivate func linkProjectTapped(_ sender: UIButton) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-		let projectListController = ProjectListController.storyboardInstance() as! ProjectListController
-		projectListController.result = { (title) in
-			guard let title = title else { return }
-			self.navigationItem.rightBarButtonItem?.isEnabled = true
-			sender.setTitle(title, for: .normal)
-		}
-		pushViewController(controller: projectListController)
-	}
-
+        if segue.identifier == "ProjectListSegue", let destinationVC = segue.destination as? ProjectListController {
+            destinationVC.result = { (title) in
+                guard let title = title else {
+                    return
+                }
+                
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                self.linkProjectButton.setTitle(title, for: .normal)
+            }
+        }
+    }
+    
     @IBAction func selectTeamAction(_ sender: UIButton!) {
         let team = TeamSearch()
         

@@ -15,9 +15,15 @@ Ex: AlertView.present(_:)
 */
 
 public class AlertView: UIViewWithXib{
+    
 	@IBOutlet private var label: UILabel!
+    
 	class public func present(on controller: UIViewController?, with text: String?, delay: Double = 4, offsetY: CGFloat = -20){
-		guard let controller = controller else { return }
+        
+		guard let controller = controller else {
+            return
+        }
+        
 		let alert = AlertView(frame: CGRect.zero)
 		alert.translatesAutoresizingMaskIntoConstraints = false
 		alert.label.text = text
@@ -30,5 +36,7 @@ public class AlertView: UIViewWithXib{
 		}, completion: { (success) in
 			alert.removeFromSuperview()
 		})
+        
 	}
+    
 }

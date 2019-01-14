@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="X6w-e2-jUy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="X6w-e2-jUy">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--newObservationElementForm-->
+        <scene sceneID="hdr-TD-vGN">
+            <objects>
+                <viewControllerPlaceholder storyboardName="newObservationElementForm" id="khI-ho-2Jb" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vD5-8N-BFR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-55" y="697"/>
+        </scene>
         <!--Inspection Form Controller-->
         <scene sceneID="oTy-pN-8gr">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="X6w-e2-jUy" customClass="InspectionFormController" customModule="EAO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="X6w-e2-jUy" customClass="InspectionFormController" customModule="Field_Insp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cp1-x7-d0j"/>
                         <viewControllerLayoutGuide type="bottom" id="Mv8-L4-QA8"/>
@@ -27,7 +33,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="InspectionFormCell" id="tTj-kU-Sqo" customClass="InspectionFormCell" customModule="EAO" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="InspectionFormCell" id="tTj-kU-Sqo" customClass="InspectionFormCell" customModule="Field_Insp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tTj-kU-Sqo" id="PS9-rJ-DXc">
@@ -35,10 +41,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="lHM-OE-7Um">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
                                                     <subviews>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Jc-Xh-rXW">
-                                                            <rect key="frame" x="10" y="18.5" width="42" height="42"/>
+                                                            <rect key="frame" x="10" y="19" width="42" height="42"/>
                                                             <color key="backgroundColor" red="0.0" green="0.36545503800000001" blue="0.64154296879999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="0Jc-Xh-rXW" secondAttribute="height" multiplier="1:1" id="M8k-LW-O1a"/>
@@ -71,7 +77,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UaZ-eh-hI9">
-                                                            <rect key="frame" x="325" y="25" width="30" height="29"/>
+                                                            <rect key="frame" x="325" y="25.5" width="30" height="29"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="UaZ-eh-hI9" secondAttribute="height" multiplier="1:1" constant="1" id="4fv-BP-tv1"/>
                                                                 <constraint firstAttribute="width" constant="30" id="ULp-ZU-4XP"/>
@@ -94,6 +100,7 @@
                                             <outlet property="numberLabel" destination="0Jc-Xh-rXW" id="3P9-gh-IpN"/>
                                             <outlet property="timeLabel" destination="Ci0-cs-9DY" id="3Ox-NA-cco"/>
                                             <outlet property="titleLabel" destination="iwK-c0-DeC" id="OzP-er-rtV"/>
+                                            <segue destination="khI-ho-2Jb" kind="showDetail" identifier="EditElement" id="L2N-fR-HRH"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -111,7 +118,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                 <state key="normal" title="Add New Element"/>
                                 <connections>
-                                    <action selector="addTapped:" destination="X6w-e2-jUy" eventType="touchUpInside" id="ReR-fV-htW"/>
+                                    <segue destination="WVx-0F-Y0g" kind="presentation" identifier="AddNewElement" id="7yy-x6-f29"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -139,13 +146,13 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspection Elements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rCf-2P-92s">
-                                    <rect key="frame" x="-74.5" y="7" width="162" height="20.5"/>
+                                    <rect key="frame" x="-74.5" y="6.5" width="162" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="RvN-tF-cqH">
-                                    <rect key="frame" x="92.5" y="7" width="20" height="20"/>
+                                    <rect key="frame" x="92.5" y="6.5" width="20" height="20"/>
                                     <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </activityIndicatorView>
                             </subviews>
@@ -160,6 +167,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Setup" id="GRS-AH-ipk">
                             <connections>
                                 <action selector="saveTapped:" destination="X6w-e2-jUy" id="GBp-wd-Jx3"/>
+                                <segue destination="mqi-Jh-hR4" kind="show" identifier="showInspectionForm" id="Wpo-f4-SZF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -174,9 +182,25 @@
             </objects>
             <point key="canvasLocation" x="-15.199999999999999" y="174.96251874062969"/>
         </scene>
+        <!--newObservationElementForm-->
+        <scene sceneID="Sfs-Jm-F6V">
+            <objects>
+                <viewControllerPlaceholder storyboardName="newObservationElementForm" id="WVx-0F-Y0g" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DsU-14-Z0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="607" y="632"/>
+        </scene>
+        <!--InspectionSetupController-->
+        <scene sceneID="dw9-iQ-aW2">
+            <objects>
+                <viewControllerPlaceholder storyboardName="InspectionSetupController" id="mqi-Jh-hR4" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AeY-RI-sfG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="629" y="-49"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="icon_back" width="25" height="25"/>
-        <image name="icon_edit" width="67" height="67"/>
+        <image name="icon_back" width="1.2000000476837158" height="1.2000000476837158"/>
+        <image name="icon_edit" width="135" height="135"/>
     </resources>
 </document>
