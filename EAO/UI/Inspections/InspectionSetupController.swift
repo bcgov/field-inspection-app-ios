@@ -34,8 +34,11 @@ final class InspectionSetupController: UIViewController{
         static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be saved,\nPlease try again")
     }
     
-    @objc var inspection: Inspection?
+    var inspection: Inspection?
     
+    private static let showInspectionFormSegueID = "showInspectionForm"
+    private static let showProjectListSegueSegueID = "showProjectList"
+
     fileprivate var isNew = false
     fileprivate var dates = [String: Date]()
     fileprivate var startDate: Date?
@@ -78,16 +81,25 @@ final class InspectionSetupController: UIViewController{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "ProjectListSegue", let destinationVC = segue.destination as? ProjectListController {
+        if segue.identifier == InspectionSetupController.showProjectListSegueSegueID, let destinationVC = segue.destination as? ProjectListController {
             destinationVC.result = { (title) in
                 guard let title = title else {
                     return
                 }
-                
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
                 self.linkProjectButton.setTitle(title, for: .normal)
             }
         }
+
+        if segue.identifier == InspectionSetupController.showInspectionFormSegueID, let destinationVC = segue.destination as? InspectionFormController {
+            destinationVC.inspection = inspection
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.navigationController?.viewControllers.remove(at: 1)
+            }
+            self.setMode()
+        }
+        
     }
     
     @IBAction func selectTeamAction(_ sender: UIButton!) {
@@ -187,12 +199,8 @@ final class InspectionSetupController: UIViewController{
             
             if self.isNew {
                 self.isNew = false
-                let inspectionFormController = InspectionFormController.storyboardInstance() as! InspectionFormController
-                inspectionFormController.inspection = inspection
                 if inspection.id.isEmpty == false {
-                    self.pushViewController(controller: inspectionFormController)
-                    self.navigationController?.viewControllers.remove(at: 1)
-                    self.setMode()
+                    self.performSegue(withIdentifier: InspectionSetupController.showInspectionFormSegueID, sender: nil)
                 }
             }
             

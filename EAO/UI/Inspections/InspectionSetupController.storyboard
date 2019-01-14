@@ -43,7 +43,7 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <segue destination="azm-Ay-EAP" kind="show" identifier="ProjectListSegue" id="nKP-Nc-wRl"/>
+                                                            <segue destination="azm-Ay-EAP" kind="show" identifier="showProjectList" id="nKP-Nc-wRl"/>
                                                         </connections>
                                                     </button>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_think" translatesAutoresizingMaskIntoConstraints="NO" id="JuP-YH-3QQ">
@@ -307,6 +307,7 @@
                         <outlet property="startDateButton" destination="BcM-DL-OSc" id="t7A-08-c3Y"/>
                         <outlet property="subtextTextField" destination="Obn-kq-sf3" id="ZtA-q0-0OG"/>
                         <outlet property="titleTextField" destination="sUw-1U-UU6" id="V87-ad-nKg"/>
+                        <segue destination="QH0-xC-NSu" kind="show" identifier="showInspectionForm" id="X9u-zd-goS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z2b-zW-gJb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -320,6 +321,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hoa-bM-ygf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="696" y="-264"/>
+        </scene>
+        <!--InspectionFormController-->
+        <scene sceneID="WzT-WT-8eX">
+            <objects>
+                <viewControllerPlaceholder storyboardName="InspectionFormController" id="QH0-xC-NSu" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="El8-rJ-Zxz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="735" y="-34"/>
         </scene>
     </scenes>
     <resources>

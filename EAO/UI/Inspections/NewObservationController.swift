@@ -243,27 +243,7 @@ final class NewObservationController: UIViewController{
     }
     
     func goToUploadPhoto() {
-        performSegue(withIdentifier: "goToUploadPhoto", sender: nil)
-//        if photos?.count == maximumNumberOfPhotos{
-//            presentAlert(title: "You've reached maximum number of photos per element", message: nil)
-//            return
-//        }
-//
-//        let uploadPhotoController = UploadPhotoController.storyboardInstance() as! UploadPhotoController
-//        uploadPhotoController.observation = observation
-//        uploadPhotoController.uploadPhotoAction = { (photo) in
-//            if let photo = photo{
-//                self.didMakeChange = true
-//                if self.photos == nil{
-//                    self.photos = []
-//                }
-//                self.photos?.append(photo)
-//            }
-//            self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
-//            self.view.layoutIfNeeded()
-//            self.collectionView.reloadData()
-//        }
-//        pushViewController(controller: uploadPhotoController)
+        performSegue(withIdentifier: NewObservationController.goToUploadPhotoSegueID, sender: nil)
     }
 }
 
