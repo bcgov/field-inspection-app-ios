@@ -56,6 +56,29 @@ final class NewObservationController: UIViewController{
     }
 
     //MARK: -
+    override func viewDidLoad() {
+        setUpCollectionView()
+        addDismissKeyboardOnTapRecognizer(on: scrollView)
+        populate()
+        if observation == nil{
+            observation = Observation()
+        }
+        if isReadOnly{
+            navigationItem.rightBarButtonItem = nil
+            titleTextField.isEnabled = false
+            requirementTextField.isEnabled = false
+            descriptionButton.isEnabled = false
+            arrow_0.isHidden = true
+            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
+            
+        } else{
+            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
+        }
+        view.layoutIfNeeded()
+        GPSLabel.setTitle("GPS: \(observation?.coordinate?.printableString() ?? locationManager.coordinateAsString() ?? "unavailable")", for: .normal)
+    }
+
+    //MARK: -
     @IBAction func addVoiceTapped(_ sender: UIButton) {
         present(controller: UIAlertController(title: "This feature is coming soon", message: nil))
     }
@@ -153,29 +176,6 @@ final class NewObservationController: UIViewController{
         }
         push(controller: uploadPhotoController)
         sender.isEnabled = true
-    }
-
-    //MARK: -
-    override func viewDidLoad() {
-        setUpCollectionView()
-        addDismissKeyboardOnTapRecognizer(on: scrollView)
-        populate()
-        if observation == nil{
-            observation = Observation()
-        }
-        if isReadOnly{
-            navigationItem.rightBarButtonItem = nil
-            titleTextField.isEnabled = false
-            requirementTextField.isEnabled = false
-            descriptionButton.isEnabled = false
-            arrow_0.isHidden = true
-            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
-
-        } else{
-            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
-        }
-        view.layoutIfNeeded()
-        GPSLabel.setTitle("GPS: \(observation?.coordinate?.printableString() ?? locationManager.coordinateAsString() ?? "unavailable")", for: .normal)
     }
 
     //MARK: -
