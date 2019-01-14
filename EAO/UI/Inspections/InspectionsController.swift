@@ -124,13 +124,6 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
 	}
 
-	@IBAction func settingsTapped(_ sender: UIBarButtonItem) {
-
-		sender.isEnabled = false
-		pushViewController(controller: SettingsController.storyboardInstance())
-		sender.isEnabled = true
-	}
-	
 	@IBAction func segmentedControlChangedValue(_ sender: UISegmentedControl) {
 
         if selectedIndex == Sections.Submitted.rawValue {

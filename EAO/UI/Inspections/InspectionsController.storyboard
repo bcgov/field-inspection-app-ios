@@ -243,7 +243,7 @@
                         </view>
                         <barButtonItem key="rightBarButtonItem" image="icon_tab_settings" id="blS-Pk-ile">
                             <connections>
-                                <action selector="settingsTapped:" destination="C9T-wz-vIA" id="vHu-JF-9pV"/>
+                                <segue destination="OlN-4w-eOX" kind="show" id="xV7-4f-KQ3"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -260,6 +260,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr0-d5-zSV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1152.8" y="141.67916041979012"/>
+        </scene>
+        <!--SettingsController-->
+        <scene sceneID="MfI-7H-Yej">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SettingsController" id="OlN-4w-eOX" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hh7-QB-Quo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1754" y="-220"/>
         </scene>
         <!--InspectionFormController-->
         <scene sceneID="Way-o4-Rip">
