@@ -191,7 +191,9 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
 
 //MARK: -
 extension UploadPhotoController: UITextViewDelegate{
+    
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
 		didMakeChange = true
 		var length = textView.text?.count ?? 0
 		length += text.count
@@ -209,7 +211,6 @@ extension UploadPhotoController: UITextViewDelegate{
 extension UploadPhotoController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
         
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         if let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {

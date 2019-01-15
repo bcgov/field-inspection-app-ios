@@ -10,15 +10,7 @@ import MapKit
 
 final class NewObservationController: UIViewController{
     
-    @objc let maximumNumberOfPhotos = 20
-    fileprivate var locationManager = CLLocationManager()
-    @objc var saveAction  : ((Observation)->Void)?
-    @objc var inspection  : Inspection!
-    @objc var observation : Observation!
-    @objc var photos		: [Photo]?
-    @objc var didMakeChange = false
-
-    //MARK: -
+    //MARK: IB Outlets
     @IBOutlet fileprivate var arrow_0: UIImageView!
     @IBOutlet fileprivate var descriptionTextView: UITextView!
     @IBOutlet fileprivate var indicator: UIActivityIndicatorView!
@@ -30,17 +22,60 @@ final class NewObservationController: UIViewController{
     @IBOutlet fileprivate var collectionView: UICollectionView!
     @IBOutlet fileprivate var descriptionButton: UIButton!
 
+    //MARK: variables
+    enum Alerts{
+        static let fields = UIAlertController(title: "All Fields Required", message: "Please fill out 'Title', 'Requirement', and 'Description' fields")
+    }
+    enum Constants{
+        static let cellWidth = (UIScreen.width-25)/CGFloat(Constants.itemsPerRow)
+        static let itemsPerRow = 4
+    }
+
     let resultCellReuseIdentifier = "ResultCell"
     let resultCellXibName = "RecultCollectionViewCell"
     let mediaCellReuseIdentifier = "MediaOptionCell"
     let mediaCellXibName = "OptionCollectionViewCell"
 
+    @objc let maximumNumberOfPhotos = 20
+    fileprivate var locationManager = CLLocationManager()
+    @objc var saveAction  : ((Observation)->Void)?
+    @objc var inspection  : Inspection!
+    @objc var observation : Observation!
+    @objc var photos        : [Photo]?
+    @objc var didMakeChange = false
+    
     let galleryManager = GalleryManager()
+
+    @objc var isReadOnly: Bool{
+        return inspection.isSubmitted == true
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        populate()
         collectionView.reloadData()
+    }
+
+    //MARK: -
+    override func viewDidLoad() {
+        setUpCollectionView()
+        addDismissKeyboardOnTapRecognizer(on: scrollView)
+        populate()
+        if observation == nil{
+            observation = Observation()
+        }
+        if isReadOnly{
+            navigationItem.rightBarButtonItem = nil
+            titleTextField.isEnabled = false
+            requirementTextField.isEnabled = false
+            descriptionButton.isEnabled = false
+            arrow_0.isHidden = true
+            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
+            
+        } else{
+            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
+        }
+        view.layoutIfNeeded()
+        GPSLabel.setTitle("GPS: \(observation?.coordinate?.printableString() ?? locationManager.coordinateAsString() ?? "unavailable")", for: .normal)
     }
 
     //MARK: -
@@ -144,29 +179,6 @@ final class NewObservationController: UIViewController{
     }
 
     //MARK: -
-    override func viewDidLoad() {
-        setUpCollectionView()
-        addDismissKeyboardOnTapRecognizer(on: scrollView)
-        populate()
-        if observation == nil{
-            observation = Observation()
-        }
-        if isReadOnly{
-            navigationItem.rightBarButtonItem = nil
-            titleTextField.isEnabled = false
-            requirementTextField.isEnabled = false
-            descriptionButton.isEnabled = false
-            arrow_0.isHidden = true
-            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
-
-        } else{
-            view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
-        }
-        view.layoutIfNeeded()
-        GPSLabel.setTitle("GPS: \(observation?.coordinate?.printableString() ?? locationManager.coordinateAsString() ?? "unavailable")", for: .normal)
-    }
-
-    //MARK: -
     fileprivate func populate(){
         guard let observation = observation else {
             self.photos = []
@@ -227,17 +239,16 @@ final class NewObservationController: UIViewController{
         height    += CGFloat(numberOfRows-1)*5
         return height
     }
-}
-extension NewObservationController {
+    
     func gotToGallery() {
-//        self.present(galleryManager.getVC(mode: GalleryMode.Image), animated: true, completion: nil)
+        //        self.present(galleryManager.getVC(mode: GalleryMode.Image), animated: true, completion: nil)
     }
     func goToUploadPhoto() {
         if photos?.count == maximumNumberOfPhotos{
             present(controller: UIAlertController(title: "You've reached maximum number of photos per element", message: nil))
             return
         }
-
+        
         let uploadPhotoController = UploadPhotoController.storyboardInstance() as! UploadPhotoController
         uploadPhotoController.observation = observation
         uploadPhotoController.uploadPhotoAction = { (photo) in
@@ -341,30 +352,7 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: Constants.cellWidth, height: Constants.cellWidth)
     }
-}
-
-extension NewObservationController{
-    @objc var isReadOnly: Bool{
-        return inspection.isSubmitted == true
-    }
-}
-
-extension NewObservationController: UITextFieldDelegate{
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        didMakeChange = true
-        var length = textField.text?.count ?? 0
-        length += string.count
-        length -= range.length
-        return length < 500
-    }
-}
-
-extension NewObservationController{
+    
     fileprivate func validate() ->Bool{
         if titleTextField.text?.isEmpty() == true{
             present(controller: Alerts.fields)
@@ -380,22 +368,21 @@ extension NewObservationController{
         }
         return true
     }
+
 }
 
-extension NewObservationController{
-    enum Alerts{
-        static let fields = UIAlertController(title: "All Fields Required", message: "Please fill out 'Title', 'Requirement', and 'Description' fields")
+extension NewObservationController: UITextFieldDelegate{
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        didMakeChange = true
+        var length = textField.text?.count ?? 0
+        length += string.count
+        length -= range.length
+        return length < 500
     }
 }
-
-extension NewObservationController{
-    enum Constants{
-        static let cellWidth = (UIScreen.width-25)/CGFloat(Constants.itemsPerRow)
-        static let itemsPerRow = 4
-    }
-}
-
-
-
-
-

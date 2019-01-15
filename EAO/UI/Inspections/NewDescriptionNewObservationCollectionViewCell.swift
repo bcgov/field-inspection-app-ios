@@ -66,6 +66,7 @@ class NewDescriptionNewObservationCollectionViewCell: BaseCollectionCell {
 }
 
 extension NewDescriptionNewObservationCollectionViewCell: UITextViewDelegate {
+    
     func textViewDidChange(_ textView: UITextView) {
         let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.elementnewDescription = textView.text
@@ -77,6 +78,7 @@ extension NewDescriptionNewObservationCollectionViewCell: UITextViewDelegate {
 }
 
 extension NewDescriptionNewObservationCollectionViewCell: CLLocationManagerDelegate {
+    
     func setUpLocation() {
         // For use when the app is open & in the background
         //        locationManager.requestAlwaysAuthorization()

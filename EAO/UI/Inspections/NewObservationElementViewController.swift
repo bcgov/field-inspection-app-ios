@@ -12,6 +12,7 @@ import Parse
 
 class NewObservationElementViewController: UIViewController {
     
+    //MARK: IB Outlets
     @IBOutlet fileprivate var mediaOptionsCollection: UICollectionView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityIndicatorContainer: UIView!
@@ -23,6 +24,7 @@ class NewObservationElementViewController: UIViewController {
     @IBOutlet weak var popUpContainerContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    //MARK: variables
     var uniqueButtonID = 0
     var imagePicker: UIImagePickerController!
     var inspection: Inspection!
@@ -292,8 +294,8 @@ class NewObservationElementViewController: UIViewController {
 
 // Media Collection view
 extension NewObservationElementViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func setUpCollectionView() {
-        
         self.mediaOptionsCollection.delegate = self
         self.mediaOptionsCollection.dataSource = self
         
@@ -303,7 +305,6 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //        return OPTIONS_COUNT + storedPhotos.count + multiSelectResult.count
         return OPTIONS_COUNT + storedPhotos.count
     }
     
@@ -405,6 +406,7 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
 
 // Tableview
 extension NewObservationElementViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func getTitleCell(indexPath: IndexPath) -> FormTitleTableViewCell {
         return tableView.dequeueReusableCell(forIndexPath: indexPath)
     }

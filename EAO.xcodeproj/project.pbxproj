@@ -28,8 +28,6 @@
 		1152C1F41EDB4ED9005B0E6A /* TextViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1152C1F31EDB4ED9005B0E6A /* TextViewController.storyboard */; };
 		117D3BF71EEF0AC800791D07 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117D3BF61EEF0AC800791D07 /* Constants.swift */; };
 		117D3BFC1EEF5D7A00791D07 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117D3BFB1EEF5D7A00791D07 /* String.swift */; };
-		1186B5201ECA201200681426 /* ObservationElementPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186B51F1ECA201200681426 /* ObservationElementPhotoCell.swift */; };
-		1186B5231ECA20E700681426 /* ObservationElementAddNewPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186B5221ECA20E700681426 /* ObservationElementAddNewPhotoCell.swift */; };
 		1186B5251ECA235900681426 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186B5241ECA235900681426 /* URL.swift */; };
 		1186B5291ECA35AC00681426 /* Essentials.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B5281ECA35AC00681426 /* Essentials.framework */; };
 		1186B52A1ECA35AC00681426 /* Essentials.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B5281ECA35AC00681426 /* Essentials.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -44,8 +42,6 @@
 		11D70EC91E8D9A7F00CBF92C /* InspectionFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EC81E8D9A7F00CBF92C /* InspectionFormController.swift */; };
 		11D70ECC1E8D9A8B00CBF92C /* InspectionFormController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D70ECB1E8D9A8B00CBF92C /* InspectionFormController.storyboard */; };
 		11D70ED51E8DA02000CBF92C /* InspectionFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70ED41E8DA02000CBF92C /* InspectionFormCell.swift */; };
-		11D70ED91E8DA36800CBF92C /* NewObservationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D70ED81E8DA36800CBF92C /* NewObservationController.storyboard */; };
-		11D70EDC1E8DA83D00CBF92C /* NewObservationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EDB1E8DA83D00CBF92C /* NewObservationController.swift */; };
 		291746742073E77F005F70B4 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291746732073E77F005F70B4 /* Team.swift */; };
 		291746772073EAEF005F70B4 /* Team.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 291746762073EAEF005F70B4 /* Team.storyboard */; };
 		291746792073EB06005F70B4 /* TeamSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291746782073EB06005F70B4 /* TeamSearchViewController.swift */; };
@@ -60,7 +56,6 @@
 		2936BEB320BF64A500775F5E /* NewObservationElementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D281FFC140E00562508 /* NewObservationElementViewController.swift */; };
 		2936BEB420BF64A500775F5E /* GalleryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291C4D9E203A599000390523 /* GalleryMode.swift */; };
 		2936BEB520BF64A500775F5E /* NewObservationElementFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5609200E675200FCF230 /* NewObservationElementFormViewController.swift */; };
-		2936BEB620BF64A500775F5E /* ObservationElementAddNewPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186B5221ECA20E700681426 /* ObservationElementAddNewPhotoCell.swift */; };
 		2936BEB720BF64A500775F5E /* BaseFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA664F2003F73100673013 /* BaseFormCell.swift */; };
 		2936BEB820BF64A500775F5E /* NewObservationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA66522003F97500673013 /* NewObservationModel.swift */; };
 		2936BEB920BF64A500775F5E /* MiFormButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295304D52017FF38001E5C7F /* MiFormButtonTableViewCell.swift */; };
@@ -70,7 +65,6 @@
 		2936BEBD20BF64A500775F5E /* BaseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29795F4E200FCA3B00A55B45 /* BaseCollectionCell.swift */; };
 		2936BEBE20BF64A500775F5E /* SearchTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2917467E2073EE63005F70B4 /* SearchTeam.swift */; };
 		2936BEBF20BF64A500775F5E /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110FF0A11E8C25C5000DB1A5 /* UITableView.swift */; };
-		2936BEC020BF64A500775F5E /* NewObservationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EDB1E8DA83D00CBF92C /* NewObservationController.swift */; };
 		2936BEC120BF64A500775F5E /* TeamSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291746782073EB06005F70B4 /* TeamSearchViewController.swift */; };
 		2936BEC220BF64A500775F5E /* TeamSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2917467A2073EC42005F70B4 /* TeamSearchTableViewCell.swift */; };
 		2936BEC420BF64A500775F5E /* MiButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295304EC2017FF53001E5C7F /* MiButtonStyle.swift */; };
@@ -133,7 +127,6 @@
 		2936BF0320BF64A500775F5E /* InspectionSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EB21E8D852800CBF92C /* InspectionSetupController.swift */; };
 		2936BF0520BF64A500775F5E /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110FF09B1E8C25C5000DB1A5 /* UIAlertController.swift */; };
 		2936BF0620BF64A500775F5E /* FormReqirementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA66442003F22600673013 /* FormReqirementTableViewCell.swift */; };
-		2936BF0720BF64A500775F5E /* ObservationElementPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186B51F1ECA201200681426 /* ObservationElementPhotoCell.swift */; };
 		2936BF0820BF64A500775F5E /* TitleNewObservationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF560C200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.swift */; };
 		2936BF0C20BF64A500775F5E /* Essentials.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B5281ECA35AC00681426 /* Essentials.framework */; };
 		2936BF0E20BF64A500775F5E /* ProjectListController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D70EBD1E8D8E0000CBF92C /* ProjectListController.storyboard */; };
@@ -165,7 +158,6 @@
 		2936BF2D20BF64A500775F5E /* MiFormButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295304D12017FF2E001E5C7F /* MiFormButtonTableViewCell.xib */; };
 		2936BF2E20BF64A500775F5E /* newObservationElementForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5607200E670E00FCF230 /* newObservationElementForm.storyboard */; };
 		2936BF2F20BF64A500775F5E /* FormTitleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29AA66352003EB4600673013 /* FormTitleTableViewCell.xib */; };
-		2936BF3020BF64A500775F5E /* NewObservationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D70ED81E8DA36800CBF92C /* NewObservationController.storyboard */; };
 		2936BF3120BF64A500775F5E /* TeamSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2917467B2073EC42005F70B4 /* TeamSearchTableViewCell.xib */; };
 		2936BF3220BF64A500775F5E /* RecultCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29424D4A1FFC14A000562508 /* RecultCollectionViewCell.xib */; };
 		2936BF3320BF64A500775F5E /* MiFormTextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295304D92017FF40001E5C7F /* MiFormTextViewTableViewCell.xib */; };
@@ -1328,7 +1320,6 @@
 				2936BF2E20BF64A500775F5E /* newObservationElementForm.storyboard in Resources */,
 				5675DA9D21936279008409AB /* FontAwesome.otf in Resources */,
 				2936BF2F20BF64A500775F5E /* FormTitleTableViewCell.xib in Resources */,
-				2936BF3020BF64A500775F5E /* NewObservationController.storyboard in Resources */,
 				2936BF3120BF64A500775F5E /* TeamSearchTableViewCell.xib in Resources */,
 				2936BF3220BF64A500775F5E /* RecultCollectionViewCell.xib in Resources */,
 				2936BF3320BF64A500775F5E /* MiFormTextViewTableViewCell.xib in Resources */,
@@ -1379,7 +1370,6 @@
 				295304DC2017FF47001E5C7F /* MiFormButtonTableViewCell.xib in Resources */,
 				29FF5608200E670E00FCF230 /* newObservationElementForm.storyboard in Resources */,
 				29AA66372003EB4600673013 /* FormTitleTableViewCell.xib in Resources */,
-				11D70ED91E8DA36800CBF92C /* NewObservationController.storyboard in Resources */,
 				2917467D2073EC42005F70B4 /* TeamSearchTableViewCell.xib in Resources */,
 				29424D4E1FFC14A000562508 /* RecultCollectionViewCell.xib in Resources */,
 				295304E42017FF47001E5C7F /* MiFormTextViewTableViewCell.xib in Resources */,
@@ -1634,7 +1624,6 @@
 				2936BEB420BF64A500775F5E /* GalleryMode.swift in Sources */,
 				56447C6921966B0F0018A828 /* NetworkManager.swift in Sources */,
 				2936BEB520BF64A500775F5E /* NewObservationElementFormViewController.swift in Sources */,
-				2936BEB620BF64A500775F5E /* ObservationElementAddNewPhotoCell.swift in Sources */,
 				2936BEB720BF64A500775F5E /* BaseFormCell.swift in Sources */,
 				2936BEB820BF64A500775F5E /* NewObservationModel.swift in Sources */,
 				D5A98A6C21E9374B0063BDA4 /* SignupController.swift in Sources */,
@@ -1646,7 +1635,6 @@
 				2936BEBD20BF64A500775F5E /* BaseCollectionCell.swift in Sources */,
 				2936BEBE20BF64A500775F5E /* SearchTeam.swift in Sources */,
 				2936BEBF20BF64A500775F5E /* UITableView.swift in Sources */,
-				2936BEC020BF64A500775F5E /* NewObservationController.swift in Sources */,
 				2936BEC120BF64A500775F5E /* TeamSearchViewController.swift in Sources */,
 				D5F7DE5721E44A7F00C0A859 /* ParseUploadOperation.swift in Sources */,
 				D5B6F73621DF30E9007FF921 /* DataServices+Photos.swift in Sources */,
@@ -1737,7 +1725,6 @@
 				D5F7DE1F21E1C2D800C0A859 /* PFPhoto.swift in Sources */,
 				2936BF0520BF64A500775F5E /* UIAlertController.swift in Sources */,
 				2936BF0620BF64A500775F5E /* FormReqirementTableViewCell.swift in Sources */,
-				2936BF0720BF64A500775F5E /* ObservationElementPhotoCell.swift in Sources */,
 				2936BF0820BF64A500775F5E /* TitleNewObservationCollectionViewCell.swift in Sources */,
 				D5B6F73221DF30D2007FF921 /* Settings.swift in Sources */,
 			);
@@ -1758,7 +1745,6 @@
 				D5F7DE5921E467ED00C0A859 /* AsyncOperation.swift in Sources */,
 				56447C6821966B0E0018A828 /* NetworkManager.swift in Sources */,
 				29FF560A200E675200FCF230 /* NewObservationElementFormViewController.swift in Sources */,
-				1186B5231ECA20E700681426 /* ObservationElementAddNewPhotoCell.swift in Sources */,
 				29AA66502003F73100673013 /* BaseFormCell.swift in Sources */,
 				29AA66532003F97500673013 /* NewObservationModel.swift in Sources */,
 				295304E02017FF47001E5C7F /* MiFormButtonTableViewCell.swift in Sources */,
@@ -1769,7 +1755,6 @@
 				D5A98A6521E937440063BDA4 /* LoginController.swift in Sources */,
 				2917467F2073EE63005F70B4 /* SearchTeam.swift in Sources */,
 				110FF0AA1E8C25C5000DB1A5 /* UITableView.swift in Sources */,
-				11D70EDC1E8DA83D00CBF92C /* NewObservationController.swift in Sources */,
 				291746792073EB06005F70B4 /* TeamSearchViewController.swift in Sources */,
 				2917467C2073EC42005F70B4 /* TeamSearchTableViewCell.swift in Sources */,
 				295304F02017FF59001E5C7F /* MiButtonStyle.swift in Sources */,
@@ -1857,7 +1842,6 @@
 				110FF0A41E8C25C5000DB1A5 /* UIAlertController.swift in Sources */,
 				29AA66462003F22600673013 /* FormReqirementTableViewCell.swift in Sources */,
 				D53B6DE121CB63A000A0F546 /* Extensions.swift in Sources */,
-				1186B5201ECA201200681426 /* ObservationElementPhotoCell.swift in Sources */,
 				29FF560E200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.swift in Sources */,
 				D53B6DDF21CB622E00A0F546 /* InspectionError.swift in Sources */,
 			);

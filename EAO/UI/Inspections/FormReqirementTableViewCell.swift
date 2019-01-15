@@ -37,6 +37,7 @@ class FormReqirementTableViewCell: BaseFormCell {
 }
 
 extension FormReqirementTableViewCell: UITextFieldDelegate {
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let vc = self.parentViewController as? NewObservationElementViewController
         let textString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)

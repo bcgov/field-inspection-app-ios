@@ -17,6 +17,7 @@ final class ProjectListController: UIViewController {
 
     let refreshControl = UIRefreshControl()
 
+    //MARK: variables
     @objc var result : ((_: String?)->Void)?
     
     fileprivate var projects : [String]?

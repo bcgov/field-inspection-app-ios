@@ -71,6 +71,7 @@ class NewDescriptionTableViewCell: BaseFormCell {
 }
 
 extension NewDescriptionTableViewCell: UITextViewDelegate {
+    
     func textViewDidChange(_ textView: UITextView) {
         let vc = self.parentViewController as? NewObservationElementViewController
         vc?.elementnewDescription = textView.text
@@ -82,8 +83,8 @@ extension NewDescriptionTableViewCell: UITextViewDelegate {
 }
 
 extension NewDescriptionTableViewCell: CLLocationManagerDelegate {
+    
     func setUpLocation() {
-
         // For use when the app is open
         locationManager.requestWhenInUseAuthorization()
 
