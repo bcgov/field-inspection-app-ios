@@ -15,6 +15,8 @@ final class ProjectListController: UIViewController {
 	@IBOutlet fileprivate var tableView: UITableView!
 	@IBOutlet fileprivate var searchBar: UISearchBar!
 
+    let refreshControl = UIRefreshControl()
+
     @objc var result : ((_: String?)->Void)?
     
     fileprivate var projects : [String]?
@@ -23,11 +25,19 @@ final class ProjectListController: UIViewController {
     //MARK:-
     override func viewDidLoad() {
         searchBar.returnKeyType = .default
-        load()
+        refreshData()
+        style()
     }
 
+    func style(){
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh")
+        refreshControl.addTarget(self, action: #selector(ProjectListController.refreshData), for: UIControl.Event.valueChanged)
+        tableView.addSubview(refreshControl)
+    }
+    
 	//MARK: IB Actions
 	@IBAction func customTapped(_ sender: UIBarButtonItem) {
+        
 		let alert = UIAlertController(title: "Project name", message: nil, preferredStyle: .alert)
 		alert.addTextField { (textField) in
 			textField.placeholder = "Start Typing..."
@@ -45,6 +55,7 @@ final class ProjectListController: UIViewController {
 	
 	//MARK:-
 	fileprivate func filter(by search: String?) -> [NSMutableAttributedString]?{
+        
 		guard let text = search?.lowercased() else { return nil }
 		let filtered = projects?.filter({ (name) -> Bool in
 			name.lowercased().contains(text)
@@ -52,6 +63,7 @@ final class ProjectListController: UIViewController {
 		let sorted = filtered?.sorted(by: { (left, right) -> Bool in
 			left.map(to: text) > right.map(to: text)
 		})
+        
 		var array = [NSMutableAttributedString]()
 		sorted?.forEach({ (string) in
 			let attributed = NSMutableAttributedString(string: string)
@@ -66,24 +78,21 @@ final class ProjectListController: UIViewController {
 		return array
 	}
 	
-	fileprivate func load(){
+	@objc func refreshData(){
 
         indicator.startAnimating()
         DataServices.fetchProjectList() { [weak self] (error: Error?) in
 
-            /** TODONE: #11
-             reload and save all project to Realm - done
-             load all project from Realm - done
-             show projects in the table - done
-             */
-
+            self?.refreshControl.endRefreshing()
             self?.indicator.stopAnimating()
             
             if let error = error {
-                print(error)
-                let title = "Network Error"
-                let message = "Project list was not refreshed due to an error. Cached projects are displayed"
-                self?.showAlert(withTitle: title, message: message)
+                print("\(error)")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                    let title = "Network Error"
+                    let message = "Project list was not refreshed due to an error. Cached projects are displayed"
+                    self?.showAlert(withTitle: title, message: message)
+                })
             }
 
             self?.projects = DataServices.shared.getProjectsAsStrings()
@@ -94,6 +103,7 @@ final class ProjectListController: UIViewController {
 
 //MARK: -
 extension ProjectListController: UISearchBarDelegate{
+    
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		searchBar.resignFirstResponder()
 	}
@@ -126,6 +136,7 @@ extension ProjectListController: UISearchBarDelegate{
 
 //MARK: -
 extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
+    
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return filtered?.count ?? projects?.count ?? 0
 	}
@@ -144,4 +155,5 @@ extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
 		result?(filtered?[indexPath.row].string ?? projects?[indexPath.row])
 		pop()
 	}
+    
 }
