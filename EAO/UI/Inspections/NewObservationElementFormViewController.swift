@@ -137,6 +137,11 @@ class NewObservationElementFormViewController: UIViewController {
         unlock()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateImageResults()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -181,11 +186,6 @@ class NewObservationElementFormViewController: UIViewController {
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateImageResults()
-    }
-    
     //MARK: ACTIONS
     @IBAction func cancelAction(_ sender: Any) {
         warn(title: "Are you sure?", description: "Your new text changes and new media loaded from the gallery will not be saved", yesButtonTapped: {
