@@ -323,6 +323,10 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
 
     private func uploadTouchedCallback(inspection: Inspection) -> (() -> Void) {
         
+        //TODO:
+        // check if there are any attachments to observation
+        // if there are no attachments - only notes, allow to upload using cell connection only
+        
         return {
             
             if NetworkManager.shared.isReachableOnEthernetOrWiFi == false {
