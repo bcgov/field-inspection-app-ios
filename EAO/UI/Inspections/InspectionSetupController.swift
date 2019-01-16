@@ -159,7 +159,7 @@ final class InspectionSetupController: UIViewController{
             // end date
             if startDate == nil {
                 // warn start date first
-                self.warn(message: "Start date must be selected before end date")
+                self.showWarningAlert(message: "Start date must be selected before end date")
                 self.navigationController?.navigationBar.isTranslucent = false
             } else {
                 // show picker with start date as min date

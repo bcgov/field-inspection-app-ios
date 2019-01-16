@@ -33,7 +33,7 @@ class FormTitleTableViewCell: BaseFormCell {
 extension FormTitleTableViewCell: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         let textString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
         vc?.elementTitle = textString
         return true

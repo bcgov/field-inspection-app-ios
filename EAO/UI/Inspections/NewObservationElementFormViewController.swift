@@ -13,6 +13,27 @@ import RealmSwift
 
 class NewObservationElementFormViewController: UIViewController {
     
+    //MARK: OUTLETS
+    @IBOutlet weak var closePopupButton: UIButton!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var popUpContainer: UIView!
+    @IBOutlet weak var grayScreen: UIView!
+    @IBOutlet weak var mediaContainer: UIView!
+    @IBOutlet weak var pageTitle: UILabel!
+    @IBOutlet weak var navBar: UIView!
+    @IBOutlet weak var activityIndicatorContainer: UIView!
+    @IBOutlet weak var actIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var navBarHeight: NSLayoutConstraint!
+    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var popUpHeight: NSLayoutConstraint!
+    @IBOutlet weak var containerHeight: NSLayoutConstraint!
+    @IBOutlet weak var mediaHeight: NSLayoutConstraint!
+    
+    static let segueShowImageGallery = "showImageGallery"
+    static let segueShowVideoGallery = "showVideoGallery"
+    static let segueShowAudioRecorder = "showAudioRecorder"
+
     //Mark: COMPUTED VARIABLES
     var storedPhotos = [PhotoThumb]() {
         didSet{
@@ -24,7 +45,7 @@ class NewObservationElementFormViewController: UIViewController {
         if elementTitle != "" {
             return true
         } else {
-            warn(message: "Title is required")
+            showWarningAlert(message: "Title is required")
             return false
         }
     }
@@ -91,49 +112,21 @@ class NewObservationElementFormViewController: UIViewController {
     //MARK: CONSTANTS
     var galleryManager = GalleryManager()
     let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
 
-
-    //MARK: OUTLETS
-
-    @IBOutlet weak var closePopupButton: UIButton!
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var popUpContainer: UIView!
-    @IBOutlet weak var grayScreen: UIView!
-    @IBOutlet weak var mediaContainer: UIView!
-    @IBOutlet weak var pageTitle: UILabel!
-    @IBOutlet weak var navBar: UIView!
-    @IBOutlet weak var activityIndicatorContainer: UIView!
-    @IBOutlet weak var actIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var navBarHeight: NSLayoutConstraint!
-    @IBOutlet weak var saveButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
-
-    @IBOutlet weak var popUpHeight: NSLayoutConstraint!
-
-    @IBOutlet weak var containerHeight: NSLayoutConstraint!
-
-    @IBOutlet weak var mediaHeight: NSLayoutConstraint!
     //Mark: View did load
     override func viewDidLoad() {
 
         super.viewDidLoad()
         lockdown()
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.shouldRotate = true
         
         circleContainer(view: activityIndicatorContainer.layer, height: activityIndicatorContainer.frame.height)
-
         initCollectionView()
-
-        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
         setUpObservationObject()
-        roundContainer(view: mediaContainer.layer)
-        styleContainer(view: mediaContainer.layer)
-        if isReadOnly {
-            self.mediaHeight.constant = 0
-            self.mediaContainer.alpha = 0
-        }
-        self.containerHeight.constant = self.view.frame.height - 40
+        setupView()
         unlock()
     }
 
@@ -151,12 +144,13 @@ class NewObservationElementFormViewController: UIViewController {
     // when device rotates, reload collection view to re set the rizes of the cells
     // then hide or show nav bar
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil) { _ in
             self.collectionView.reloadData()
             if UIDevice.current.orientation.isLandscape{
                 print("Landscape")
-                if !self.isIpad() {
+                if self.isIpad() == false {
                     self.navBarHeight.constant = 0
                     self.saveButton.isHidden = true
                     self.cancelButton.isHidden = true
@@ -171,6 +165,37 @@ class NewObservationElementFormViewController: UIViewController {
         }
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.identifier == NewObservationElementFormViewController.segueShowAudioRecorder, let destinationVC = segue.destination as? AudioRecorderViewController {
+            
+            destinationVC.inspectionID = inspection.id
+            destinationVC.observationID = observation.id
+            destinationVC.callBack = { (done) in
+                self.load()
+            }
+        }
+        
+        if segue.identifier == NewObservationElementFormViewController.segueShowImageGallery, let destinationVC = segue.destination as? ChooseImageViewController {
+            
+            destinationVC.setColors(bg: Colors.White, utilBarBG: Colors.Blue, buttonText: Colors.White, loadingBG: Colors.Blue, loadingIndicator: Colors.White)
+            destinationVC.mode = .Image
+            destinationVC.callBack = { done in
+                self.load()
+            }
+        }
+        
+        if segue.identifier == NewObservationElementFormViewController.segueShowVideoGallery, let destinationVC = segue.destination as? ChooseImageViewController {
+            
+            destinationVC.setColors(bg: Colors.White, utilBarBG: Colors.Blue, buttonText: Colors.White, loadingBG: Colors.Blue, loadingIndicator: Colors.White)
+            destinationVC.mode = .Video
+            destinationVC.callBack = { done in
+                self.load()
+            }
+        }
+
+    }
+    
     func isIpad() -> Bool {
         switch UIDevice.current.userInterfaceIdiom {
         case .phone:
@@ -186,9 +211,19 @@ class NewObservationElementFormViewController: UIViewController {
         }
     }
 
+    func setupView(){
+        roundContainer(view: mediaContainer.layer)
+        styleContainer(view: mediaContainer.layer)
+        if isReadOnly {
+            self.mediaHeight.constant = 0
+            self.mediaContainer.alpha = 0
+        }
+        self.containerHeight.constant = self.view.frame.height - 40
+    }
+    
     //MARK: ACTIONS
     @IBAction func cancelAction(_ sender: Any) {
-        warn(title: "Are you sure?", description: "Your new text changes and new media loaded from the gallery will not be saved", yesButtonTapped: {
+        showWarningAlert(title: "Are you sure?", description: "Your new text changes and new media loaded from the gallery will not be saved", yesButtonTapped: {
             self.close()
         }) {
 
@@ -425,6 +460,7 @@ class NewObservationElementFormViewController: UIViewController {
         self.view.isUserInteractionEnabled = true
     }
     
+    //MARK: add new elements actions
     func goToCamera() {
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
@@ -434,21 +470,11 @@ class NewObservationElementFormViewController: UIViewController {
     }
     
     func gotToGallery() {
-        galleryManager = GalleryManager()
-        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
-        let vc = galleryManager.getVC(mode: .Image, callBack: { done in
-            self.load()
-        })
-        self.present(vc, animated: true, completion: nil)
+        performSegue(withIdentifier: NewObservationElementFormViewController.segueShowImageGallery, sender: nil)
     }
     
     func goToVideoGallery() {
-        galleryManager = GalleryManager()
-        galleryManager.setColors(bg_hex: "ffffff", utilBarBG_hex: "4667a2", buttonText_hex: "ffffff", loadingBG_hex: "4667a2", loadingIndicator_hex: "ffffff")
-        let vc = galleryManager.getVC(mode: .Video, callBack: { done in
-            self.load()
-        })
-        self.present(vc, animated: true, completion: nil)
+        performSegue(withIdentifier: NewObservationElementFormViewController.segueShowAudioRecorder, sender: nil)
     }
     
     func goToThedolite() {
@@ -462,21 +488,12 @@ class NewObservationElementFormViewController: UIViewController {
                 }
             }
         } else {
-            warn(message: "Theodolite app is not installed")
+            showWarningAlert(message: "Theodolite app is not installed")
         }
     }
     
     func goToRecord() {
-        
-        if inspection.id.isEmpty {
-            return
-        }
-        
-        let recorder = Recorder()
-        let vc = recorder.getVC(inspectionID: inspection.id, observationID: observation.id) { (done) in
-            self.load()
-        }
-        self.present(vc, animated: true, completion: nil)
+        performSegue(withIdentifier: NewObservationElementFormViewController.segueShowAudioRecorder, sender: nil)
     }
 }
 

@@ -26,7 +26,7 @@ extension UIViewController{
 		}
 	}
     
-    func warn(message: String) {
+    func showWarningAlert(message: String) {
         let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
@@ -37,7 +37,7 @@ extension UIViewController{
         return (num * divisor).rounded() / divisor
     }
     
-    func warn(title: String, description: String, yesButtonTapped:@escaping () -> (), noButtonTapped:@escaping () -> ()) {
+    func showWarningAlert(title: String, description: String, yesButtonTapped:@escaping () -> (), noButtonTapped:@escaping () -> ()) {
         let alert = UIAlertController(title: title, message: description, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             DispatchQueue.main.async {

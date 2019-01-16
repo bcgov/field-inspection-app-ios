@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import Parse
+import RealmSwift
 
 class NewObservationElementViewController: UIViewController {
     
@@ -128,34 +129,40 @@ class NewObservationElementViewController: UIViewController {
         activityIndicatorContainer.backgroundColor = UIColor(hex: "083760")
         activityIndicator.color = UIColor(hex: "ffffff")
     }
-
+    
     @IBAction func savePressed(_ sender: Any) {
-        //TOFIX
-        //        if !isValid {return}
-        //        self.lock()
-        //        if observation.coordinate == nil {
-        //            observation.coordinate = PFGeoPoint(location: locationManager.location)
-        //        }
-        //
-        //        observation.title = elementTitle
-        //        observation.requirement = elementRequirement
-        //        if observation.observationDescription == nil {
-        //            observation.observationDescription = ""
-        //        }
-        //        if elementnewDescription != "" {
-        //            observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
-        //        }
-        //        observation.pinInBackground { (success, error) in
-        //            if success && error == nil {
-        //                if self.observation.pinnedAt == nil {
-        //                    self.observation.pinnedAt = Date()
-        //                }
-        //                self.close()
-        //            } else {
-        //                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
-        //            }
-        //            self.unlock()
-        //        }
+        
+        guard isValid else {
+            return
+        }
+        self.lock()
+        
+        guard let realm = try? Realm() else {
+            print("Unable open realm")
+            self.unlock()
+            return
+        }
+        
+        do {
+            try realm.write {
+                if observation.coordinate == nil {
+                    observation.coordinate = RealmLocation(location: locationManager.location)
+                }
+                observation.title = elementTitle
+                observation.requirement = elementRequirement
+                if observation.observationDescription == nil {
+                    observation.observationDescription = ""
+                }
+                if elementnewDescription != "" {
+                    observation.observationDescription = observation.observationDescription! + separator + elementnewDescription
+                }
+                realm.add(observation, update: true)
+            }
+        } catch let error {
+            print("Realm save exception \(error.localizedDescription)")
+        }
+        
+        self.unlock()
     }
     
     func autofill() {

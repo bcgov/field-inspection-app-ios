@@ -261,11 +261,38 @@
                         <outlet property="popUpContainer" destination="hkZ-GT-jvv" id="hYb-QK-fzG"/>
                         <outlet property="popUpHeight" destination="vkx-HC-S3A" id="UVu-iZ-q6f"/>
                         <outlet property="saveButton" destination="Z2F-aL-bIp" id="drX-wc-hBd"/>
+                        <segue destination="RrB-S1-hxu" kind="show" identifier="showImageGallery" id="XCp-BE-BxT"/>
+                        <segue destination="mqN-kS-uJx" kind="show" identifier="showVideoGallery" id="5Jb-1l-xAj"/>
+                        <segue destination="eOn-cE-YOK" kind="show" identifier="showAudioRecorder" id="Luz-SZ-dn3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hDY-EL-Q01" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-241" y="33"/>
+        </scene>
+        <!--ChooseImage-->
+        <scene sceneID="u4U-Db-FIo">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ChooseImage" id="RrB-S1-hxu" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HXF-5E-enn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="335" y="-96"/>
+        </scene>
+        <!--ChooseImage-->
+        <scene sceneID="5zb-WI-5cD">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ChooseImage" id="mqN-kS-uJx" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uL0-F2-l5f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="434" y="32"/>
+        </scene>
+        <!--AudioRecorder-->
+        <scene sceneID="go4-NH-ICP">
+            <objects>
+                <viewControllerPlaceholder storyboardName="AudioRecorder" id="eOn-cE-YOK" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Mc-mK-AoB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="341" y="148"/>
         </scene>
     </scenes>
     <resources>

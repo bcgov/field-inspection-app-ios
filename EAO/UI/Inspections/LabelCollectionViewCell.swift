@@ -26,14 +26,14 @@ class LabelCollectionViewCell: BaseCollectionCell {
         if location == nil {
             setUpLocation()
         } else {
-            let vc = self.parentViewController as? NewObservationElementViewController
+            let vc = self.parentViewController as? NewObservationElementFormViewController
             vc?.currentCoordinatesString = location!
             label.text = location
         }
     }
 
     func setUpForViewing(location: String) {
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.currentCoordinatesString = location
         label.text = location
     }
@@ -63,7 +63,7 @@ extension LabelCollectionViewCell: CLLocationManagerDelegate {
             let lat: Double = round(num: location.coordinate.latitude, toPlaces: 5)
             let long: Double = round(num: location.coordinate.longitude, toPlaces: 5)
             let stringLoc = "Lat: \(lat), Long: \(long)"
-            let vc = self.parentViewController as? NewObservationElementViewController
+            let vc = self.parentViewController as? NewObservationElementFormViewController
             vc?.currentLocation = location
             vc?.currentCoordinatesString = stringLoc
             self.label.text = stringLoc
