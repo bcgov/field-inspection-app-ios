@@ -22,9 +22,10 @@ class DataServices {
     static let shared = DataServices()
 
     let uploadQueue: OperationQueue = OperationQueue()
+
+    var teams = [Team]()
     
     // MARK: Realm
-
     internal class func setup() {
         
         DataServices.configureRealm()
@@ -266,25 +267,34 @@ class DataServices {
             if done {
                 var results = [Team]()
                 for object: PFObject in downloaded {
-                    results.append(Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!))
+                    let team = Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!)
+                    results.append(team)
                 }
+                DataServices.shared.teams = results
                 return completion(true, results)
             } else {
                 let query = PFQuery(className: "Team")
                 query.fromLocalDatastore()
                 query.findObjectsInBackground { (objects, error) in
                     if objects != nil  {
-                        var r = [Team]()
-                        for object: PFObject in objects! {
-                            r.append(Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!))
+                        var results = [Team]()
+                        for object: PFObject in objects ?? [] {
+                            let team = Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!)
+                            results.append(team)
                         }
-                        completion(true, r)
+                        DataServices.shared.teams = results
+                        completion(true, results)
                     } else {
                         return completion(false, nil)
                     }
                 }
             }
         }
+    }
+    
+    func getTeam(with teamID: String) -> Team? {
+        let team = DataServices.shared.teams.filter({ $0.objectID == teamID }).first
+        return team
     }
     
     /*

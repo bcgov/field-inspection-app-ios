@@ -116,10 +116,12 @@ final class InspectionSetupController: UIViewController{
             
             if done {
                 let _ = team.getVC(teams: teams, callBack: { (done, selected) in
-                    if done {
-                        self.inspection?.teamID = selected?.objectID
-                        self.teamID = (selected?.objectID)!
+                    if let selectedTeamID = selected?.objectID, done {
+                        
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        self.teamID = selectedTeamID
                         self.selectTeamButton.setTitle(selected?.name, for: .normal)
+                        
                         team.remove(from: self.popUpContainer, then: true)
                     } else {
                         team.remove(from: self.popUpContainer, then: true)
@@ -132,6 +134,7 @@ final class InspectionSetupController: UIViewController{
 	
 	//sender: tag 10 is start date button, tag 11 is end date button
 	@IBAction fileprivate func dateTapped(_ sender: UIButton) {
+        
         self.navigationController?.navigationBar.isTranslucent = true
         if sender.tag == 10 {
             // start date
@@ -151,7 +154,6 @@ final class InspectionSetupController: UIViewController{
                     self.endDateButton.setTitle("", for: .normal)
                     self.dates.removeValue(forKey: "end")
                 }
-                print(self.dates)
                 self.navigationController?.navigationBar.isTranslucent = false
             })
 
@@ -246,6 +248,12 @@ final class InspectionSetupController: UIViewController{
 		titleTextField.text = inspection.title
 		subtextTextField.text = inspection.subtext
 		numberTextField.text = inspection.number
+
+        if let teamID = inspection.teamID, let team = DataServices.shared.getTeam(with: teamID) {
+            self.teamID = teamID
+            selectTeamButton.setTitle(team.name, for: .normal)
+        }
+
         dates["start"] = inspection.start
         dates["end"] = inspection.end
 	}
