@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--newObservationElementForm-->
+        <!--NewObservationElementForm-->
         <scene sceneID="hdr-TD-vGN">
             <objects>
-                <viewControllerPlaceholder storyboardName="newObservationElementForm" id="khI-ho-2Jb" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="NewObservationElementForm" id="khI-ho-2Jb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vD5-8N-BFR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-55" y="697"/>
@@ -182,10 +182,10 @@
             </objects>
             <point key="canvasLocation" x="-15.199999999999999" y="174.96251874062969"/>
         </scene>
-        <!--newObservationElementForm-->
+        <!--NewObservationElementForm-->
         <scene sceneID="Sfs-Jm-F6V">
             <objects>
-                <viewControllerPlaceholder storyboardName="newObservationElementForm" id="WVx-0F-Y0g" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="NewObservationElementForm" id="WVx-0F-Y0g" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DsU-14-Z0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="607" y="632"/>
