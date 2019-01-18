@@ -1,5 +1,5 @@
 disabled_rules: # rule identifiers to exclude from running
-  - closing_brace
+  # - closing_brace
   - colon
   - comma
   - conditional_binding_cascade
@@ -40,6 +40,7 @@ disabled_rules: # rule identifiers to exclude from running
   - type_name
   - valid_docs
   - variable_name
+  # - vertical_whitespace
   - void_return
   - unused_closure_parameter
   - unneeded_break_in_switch
@@ -49,3 +50,33 @@ disabled_rules: # rule identifiers to exclude from running
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods
+cyclomatic_complexity:
+  ignores_case_statements: true
+  warning: 20
+file_length:
+  warning: 800
+  error: 1000
+line_length: 
+  warning: 180 
+  error: 350
+  ignores_comments: true
+  ignores_urls: true
+nesting:
+  type_level:
+    warning: 3
+    error: 6
+  statement_level:
+    warning: 5
+    error: 10
+colon: 
+  severity: error
+comma: error
+empty_count: error
+legacy_constant: error
+legacy_constructor: error
+opening_brace: error
+trailing_newline: error
+trailing_semicolon: error
+opening_brace: error
+closing_brace: error
+vertical_whitespace: error
