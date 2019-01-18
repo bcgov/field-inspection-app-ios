@@ -121,7 +121,6 @@
 		2936BEFF20BF64A500775F5E /* AudioRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A029EB2029FECC0085DCE8 /* AudioRecorderViewController.swift */; };
 		2936BF0020BF64A500775F5E /* ChooseImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D3A1FFC146100562508 /* ChooseImageViewController.swift */; };
 		2936BF0120BF64A500775F5E /* miFormImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295304D42017FF38001E5C7F /* miFormImageTableViewCell.swift */; };
-		2936BF0220BF64A500775F5E /* NewObservationElementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D271FFC140E00562508 /* NewObservationElementManager.swift */; };
 		2936BF0320BF64A500775F5E /* InspectionSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EB21E8D852800CBF92C /* InspectionSetupController.swift */; };
 		2936BF0520BF64A500775F5E /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110FF09B1E8C25C5000DB1A5 /* UIAlertController.swift */; };
 		2936BF0620BF64A500775F5E /* FormReqirementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA66442003F22600673013 /* FormReqirementTableViewCell.swift */; };
@@ -254,7 +253,6 @@
 		D53B6DE121CB63A000A0F546 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE021CB63A000A0F546 /* Extensions.swift */; };
 		D53B6DE321CB63C700A0F546 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE221CB63C700A0F546 /* Settings.swift */; };
 		D53B6DE921CB705800A0F546 /* EAOProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE621CB705700A0F546 /* EAOProject.swift */; };
-		D5A1C67721F26DD0000F1330 /* NewObservationElementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D271FFC140E00562508 /* NewObservationElementManager.swift */; };
 		D5A98A5D21E937000063BDA4 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A5B21E937000063BDA4 /* LaunchScreen.swift */; };
 		D5A98A5E21E937000063BDA4 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A5B21E937000063BDA4 /* LaunchScreen.swift */; };
 		D5A98A5F21E937000063BDA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A98A5C21E937000063BDA4 /* LaunchScreen.storyboard */; };
@@ -407,7 +405,6 @@
 		29315819200929FB008E2FF4 /* ImageCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		2931581A200929FB008E2FF4 /* ImageCollectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionTableViewCell.xib; sourceTree = "<group>"; };
 		2936BF3F20BF64A500775F5E /* Field Insp TEST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Field Insp TEST.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		29424D271FFC140E00562508 /* NewObservationElementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewObservationElementManager.swift; sourceTree = "<group>"; };
 		29424D281FFC140E00562508 /* NewObservationElementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewObservationElementViewController.swift; path = UI/Inspections/NewObservationElementViewController.swift; sourceTree = "<group>"; };
 		29424D291FFC140E00562508 /* NewObservationElement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = NewObservationElement.storyboard; path = UI/Inspections/NewObservationElement.storyboard; sourceTree = "<group>"; };
 		29424D391FFC146100562508 /* AssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetManager.swift; sourceTree = "<group>"; };
@@ -915,7 +912,6 @@
 				29FF560B200E9F2C00FCF230 /* Cells */,
 				29FF5607200E670E00FCF230 /* NewObservationElementForm.storyboard */,
 				29FF5609200E675200FCF230 /* NewObservationElementFormViewController.swift */,
-				29424D271FFC140E00562508 /* NewObservationElementManager.swift */,
 			);
 			name = NewObservationElementFormController;
 			sourceTree = "<group>";
@@ -1698,7 +1694,6 @@
 				2936BEFF20BF64A500775F5E /* AudioRecorderViewController.swift in Sources */,
 				2936BF0020BF64A500775F5E /* ChooseImageViewController.swift in Sources */,
 				2936BF0120BF64A500775F5E /* miFormImageTableViewCell.swift in Sources */,
-				2936BF0220BF64A500775F5E /* NewObservationElementManager.swift in Sources */,
 				2936BF0320BF64A500775F5E /* InspectionSetupController.swift in Sources */,
 				D5F7DE1F21E1C2D800C0A859 /* PFPhoto.swift in Sources */,
 				2936BF0520BF64A500775F5E /* UIAlertController.swift in Sources */,
@@ -1755,7 +1750,6 @@
 				1152C1F21EDB4ECF005B0E6A /* TextViewController.swift in Sources */,
 				110FF0A21E8C25C5000DB1A5 /* Date.swift in Sources */,
 				29424D4B1FFC14A000562508 /* OptionCollectionViewCell.swift in Sources */,
-				D5A1C67721F26DD0000F1330 /* NewObservationElementManager.swift in Sources */,
 				295304E22017FF47001E5C7F /* MiFormTextViewTableViewCell.swift in Sources */,
 				D5F7DE3721E1E56E00C0A859 /* PFAudio.swift in Sources */,
 				D5B6F72E21D9ABEC007FF921 /* DataServices+Video.swift in Sources */,
