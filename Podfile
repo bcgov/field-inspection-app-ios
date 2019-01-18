@@ -15,6 +15,7 @@ def shared_pods
   pod 'ObjectMapper'
   pod 'RealmSwift'
   pod 'IQKeyboardManager'
+  pod 'SwiftLint'
 end
 
 target 'Field Insp' do

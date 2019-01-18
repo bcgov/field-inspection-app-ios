@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.8.0)
+  - Alamofire (4.8.1)
   - AlamofireObjectMapper (5.2.0):
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
@@ -8,16 +8,17 @@ PODS:
     - Fabric (~> 1.9.0)
   - Fabric (1.9.0)
   - IQKeyboardManager (6.2.0)
-  - ObjectMapper (3.4.1)
+  - ObjectMapper (3.4.2)
   - Parse (1.17.2):
     - Parse/Core (= 1.17.2)
   - Parse/Core (1.17.2):
     - Bolts/Tasks (~> 1.9)
-  - Realm (3.13.0):
-    - Realm/Headers (= 3.13.0)
-  - Realm/Headers (3.13.0)
-  - RealmSwift (3.13.0):
-    - Realm (= 3.13.0)
+  - Realm (3.13.1):
+    - Realm/Headers (= 3.13.1)
+  - Realm/Headers (3.13.1)
+  - RealmSwift (3.13.1):
+    - Realm (= 3.13.1)
+  - SwiftLint (0.30.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -28,19 +29,35 @@ DEPENDENCIES:
   - ObjectMapper
   - Parse
   - RealmSwift
+  - SwiftLint
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AlamofireObjectMapper
+    - Bolts
+    - Crashlytics
+    - Fabric
+    - IQKeyboardManager
+    - ObjectMapper
+    - Parse
+    - Realm
+    - RealmSwift
+    - SwiftLint
 
 SPEC CHECKSUMS:
-  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AlamofireObjectMapper: 92b6ce2423a9d159e686f6a1d514a009bf903ddc
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
-  ObjectMapper: 5311bd50ca732930959e7ca1a2de43ab823a5ced
+  ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
   Parse: 3b31a3dd1777b07ee7f0caee32fafbff544483a5
-  Realm: 5edd2ee65406aef591a4f9895de5a3440e51b3d8
-  RealmSwift: be5ebc7930e37cd3376b41cec7f21984528aaa16
+  Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
+  RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
+  SwiftLint: 4e37cb5cd33435170dfd09fba089f41fdbf64d53
 
-PODFILE CHECKSUM: e84ea9551a8550d511a18db7c0df6169a2ddda99
+PODFILE CHECKSUM: 39bc9c5120332d2d376b5eb7d87e14e1d01385b2
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
