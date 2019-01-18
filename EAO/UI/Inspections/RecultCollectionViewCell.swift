@@ -13,11 +13,6 @@ class RecultCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
     func setUp(phAsset: PHAsset) {
         AssetManager.sharedInstance.getImageFromAsset(phAsset: phAsset) { (image) in
             self.imageView.image = image

@@ -24,10 +24,6 @@ class GalleryImageCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
     func select() {
         self.isSelectedLabel.isHidden = false
         self.isSelectedView.isHidden = false
