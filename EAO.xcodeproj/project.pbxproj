@@ -56,7 +56,6 @@
 		2936BEB420BF64A500775F5E /* GalleryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291C4D9E203A599000390523 /* GalleryMode.swift */; };
 		2936BEB520BF64A500775F5E /* NewObservationElementFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5609200E675200FCF230 /* NewObservationElementFormViewController.swift */; };
 		2936BEB720BF64A500775F5E /* BaseFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA664F2003F73100673013 /* BaseFormCell.swift */; };
-		2936BEB820BF64A500775F5E /* NewObservationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA66522003F97500673013 /* NewObservationModel.swift */; };
 		2936BEB920BF64A500775F5E /* MiFormButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295304D52017FF38001E5C7F /* MiFormButtonTableViewCell.swift */; };
 		2936BEBA20BF64A500775F5E /* ProjectListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D70EC51E8D90B600CBF92C /* ProjectListCell.swift */; };
 		2936BEBB20BF64A500775F5E /* NewDescriptionNewObservationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294BA6962016FDBD00AFC854 /* NewDescriptionNewObservationCollectionViewCell.swift */; };
@@ -163,7 +162,6 @@
 		2936BF3520BF64A500775F5E /* AudioRecorder.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29A029ED2029FECC0085DCE8 /* AudioRecorder.storyboard */; };
 		2936BF3720BF64A500775F5E /* LabelCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29795F51200FCF3A00A55B45 /* LabelCollectionViewCell.xib */; };
 		2936BF3B20BF64A500775F5E /* Essentials.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B5281ECA35AC00681426 /* Essentials.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		29424D2A1FFC140E00562508 /* NewObservationElementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D271FFC140E00562508 /* NewObservationElementManager.swift */; };
 		29424D401FFC146200562508 /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D391FFC146100562508 /* AssetManager.swift */; };
 		29424D411FFC146200562508 /* ChooseImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D3A1FFC146100562508 /* ChooseImageViewController.swift */; };
 		29424D421FFC146200562508 /* GalleryImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D3B1FFC146100562508 /* GalleryImageCollectionViewCell.swift */; };
@@ -218,7 +216,6 @@
 		29AA664B2003F2FC00673013 /* NewDescriptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29AA66492003F2FC00673013 /* NewDescriptionTableViewCell.xib */; };
 		29AA664E2003F3F900673013 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA664D2003F3F900673013 /* UIView.swift */; };
 		29AA66502003F73100673013 /* BaseFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA664F2003F73100673013 /* BaseFormCell.swift */; };
-		29AA66532003F97500673013 /* NewObservationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA66522003F97500673013 /* NewObservationModel.swift */; };
 		29AA665520040DC800673013 /* UIReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA665420040DC800673013 /* UIReusableView.swift */; };
 		29AA665820042D6300673013 /* GPSLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AA665620042D6300673013 /* GPSLabelTableViewCell.swift */; };
 		29AA665920042D6300673013 /* GPSLabelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29AA665720042D6300673013 /* GPSLabelTableViewCell.xib */; };
@@ -257,6 +254,7 @@
 		D53B6DE121CB63A000A0F546 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE021CB63A000A0F546 /* Extensions.swift */; };
 		D53B6DE321CB63C700A0F546 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE221CB63C700A0F546 /* Settings.swift */; };
 		D53B6DE921CB705800A0F546 /* EAOProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE621CB705700A0F546 /* EAOProject.swift */; };
+		D5A1C67721F26DD0000F1330 /* NewObservationElementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29424D271FFC140E00562508 /* NewObservationElementManager.swift */; };
 		D5A98A5D21E937000063BDA4 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A5B21E937000063BDA4 /* LaunchScreen.swift */; };
 		D5A98A5E21E937000063BDA4 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A5B21E937000063BDA4 /* LaunchScreen.swift */; };
 		D5A98A5F21E937000063BDA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A98A5C21E937000063BDA4 /* LaunchScreen.storyboard */; };
@@ -265,10 +263,6 @@
 		D5A98A6421E937440063BDA4 /* LoginController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A98A6121E937430063BDA4 /* LoginController.storyboard */; };
 		D5A98A6521E937440063BDA4 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A6221E937440063BDA4 /* LoginController.swift */; };
 		D5A98A6621E937440063BDA4 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A6221E937440063BDA4 /* LoginController.swift */; };
-		D5A98A6921E9374B0063BDA4 /* SignupController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A98A6721E9374A0063BDA4 /* SignupController.storyboard */; };
-		D5A98A6A21E9374B0063BDA4 /* SignupController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A98A6721E9374A0063BDA4 /* SignupController.storyboard */; };
-		D5A98A6B21E9374B0063BDA4 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A6821E9374A0063BDA4 /* SignupController.swift */; };
-		D5A98A6C21E9374B0063BDA4 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98A6821E9374A0063BDA4 /* SignupController.swift */; };
 		D5B6F72521D9424D007FF921 /* DataServices+Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */; };
 		D5B6F72821D94277007FF921 /* DataServicesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72721D94277007FF921 /* DataServicesError.swift */; };
 		D5B6F72A21D9AAE5007FF921 /* DataServices+Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F72921D9AAE5007FF921 /* DataServices+Photos.swift */; };
@@ -471,7 +465,6 @@
 		29AA66492003F2FC00673013 /* NewDescriptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewDescriptionTableViewCell.xib; sourceTree = "<group>"; };
 		29AA664D2003F3F900673013 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		29AA664F2003F73100673013 /* BaseFormCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormCell.swift; sourceTree = "<group>"; };
-		29AA66522003F97500673013 /* NewObservationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewObservationModel.swift; sourceTree = "<group>"; };
 		29AA665420040DC800673013 /* UIReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIReusableView.swift; sourceTree = "<group>"; };
 		29AA665620042D6300673013 /* GPSLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSLabelTableViewCell.swift; sourceTree = "<group>"; };
 		29AA665720042D6300673013 /* GPSLabelTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GPSLabelTableViewCell.xib; sourceTree = "<group>"; };
@@ -517,8 +510,6 @@
 		D5A98A5C21E937000063BDA4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D5A98A6121E937430063BDA4 /* LoginController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginController.storyboard; sourceTree = "<group>"; };
 		D5A98A6221E937440063BDA4 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		D5A98A6721E9374A0063BDA4 /* SignupController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SignupController.storyboard; sourceTree = "<group>"; };
-		D5A98A6821E9374A0063BDA4 /* SignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupController.swift; sourceTree = "<group>"; };
 		D5B6F72421D9424D007FF921 /* DataServices+Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataServices+Projects.swift"; sourceTree = "<group>"; };
 		D5B6F72721D94277007FF921 /* DataServicesError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServicesError.swift; sourceTree = "<group>"; };
 		D5B6F72921D9AAE5007FF921 /* DataServices+Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataServices+Photos.swift"; sourceTree = "<group>"; };
@@ -623,7 +614,6 @@
 			isa = PBXGroup;
 			children = (
 				112F74761E97FDF10076926A /* LoginController */,
-				112F74771E97FDF80076926A /* SignupController */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -635,15 +625,6 @@
 				D5A98A6221E937440063BDA4 /* LoginController.swift */,
 			);
 			path = LoginController;
-			sourceTree = "<group>";
-		};
-		112F74771E97FDF80076926A /* SignupController */ = {
-			isa = PBXGroup;
-			children = (
-				D5A98A6721E9374A0063BDA4 /* SignupController.storyboard */,
-				D5A98A6821E9374A0063BDA4 /* SignupController.swift */,
-			);
-			path = SignupController;
 			sourceTree = "<group>";
 		};
 		113B20421EC11BFD00F04811 /* PFExtension */ = {
@@ -910,7 +891,6 @@
 		29AA66512003F95E00673013 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				29AA66522003F97500673013 /* NewObservationModel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1291,7 +1271,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5A98A6A21E9374B0063BDA4 /* SignupController.storyboard in Resources */,
 				2936BF0E20BF64A500775F5E /* ProjectListController.storyboard in Resources */,
 				2936BF0F20BF64A500775F5E /* ChooseImage.storyboard in Resources */,
 				2936BF1120BF64A500775F5E /* UploadPhotoController.storyboard in Resources */,
@@ -1362,7 +1341,6 @@
 				2931581C200929FB008E2FF4 /* ImageCollectionTableViewCell.xib in Resources */,
 				295304E12017FF47001E5C7F /* SimpleFormTableViewCell.xib in Resources */,
 				29424D451FFC146200562508 /* GalleryImageCollectionViewCell.xib in Resources */,
-				D5A98A6921E9374B0063BDA4 /* SignupController.storyboard in Resources */,
 				29FF5613200E9F6E00FCF230 /* RequirementNewObservationCollectionViewCell.xib in Resources */,
 				29AA663D2003EF2200673013 /* OldDescriptionFieldTableViewCell.xib in Resources */,
 				D5F7DE1321E1BCCF00C0A859 /* Parse.plist in Resources */,
@@ -1627,8 +1605,6 @@
 				56447C6921966B0F0018A828 /* NetworkManager.swift in Sources */,
 				2936BEB520BF64A500775F5E /* NewObservationElementFormViewController.swift in Sources */,
 				2936BEB720BF64A500775F5E /* BaseFormCell.swift in Sources */,
-				2936BEB820BF64A500775F5E /* NewObservationModel.swift in Sources */,
-				D5A98A6C21E9374B0063BDA4 /* SignupController.swift in Sources */,
 				2936BEB920BF64A500775F5E /* MiFormButtonTableViewCell.swift in Sources */,
 				D5F7DE3B21E1E5CD00C0A859 /* PhotoThumb.swift in Sources */,
 				2936BEBA20BF64A500775F5E /* ProjectListCell.swift in Sources */,
@@ -1747,7 +1723,6 @@
 				56447C6821966B0E0018A828 /* NetworkManager.swift in Sources */,
 				29FF560A200E675200FCF230 /* NewObservationElementFormViewController.swift in Sources */,
 				29AA66502003F73100673013 /* BaseFormCell.swift in Sources */,
-				29AA66532003F97500673013 /* NewObservationModel.swift in Sources */,
 				295304E02017FF47001E5C7F /* MiFormButtonTableViewCell.swift in Sources */,
 				11D70EC61E8D90B600CBF92C /* ProjectListCell.swift in Sources */,
 				294BA6982016FDBD00AFC854 /* NewDescriptionNewObservationCollectionViewCell.swift in Sources */,
@@ -1780,6 +1755,7 @@
 				1152C1F21EDB4ECF005B0E6A /* TextViewController.swift in Sources */,
 				110FF0A21E8C25C5000DB1A5 /* Date.swift in Sources */,
 				29424D4B1FFC14A000562508 /* OptionCollectionViewCell.swift in Sources */,
+				D5A1C67721F26DD0000F1330 /* NewObservationElementManager.swift in Sources */,
 				295304E22017FF47001E5C7F /* MiFormTextViewTableViewCell.swift in Sources */,
 				D5F7DE3721E1E56E00C0A859 /* PFAudio.swift in Sources */,
 				D5B6F72E21D9ABEC007FF921 /* DataServices+Video.swift in Sources */,
@@ -1837,9 +1813,7 @@
 				29424D411FFC146200562508 /* ChooseImageViewController.swift in Sources */,
 				D5B6F72C21D9AB4A007FF921 /* DataServices+Audio.swift in Sources */,
 				295304DF2017FF47001E5C7F /* miFormImageTableViewCell.swift in Sources */,
-				29424D2A1FFC140E00562508 /* NewObservationElementManager.swift in Sources */,
 				11D70EB31E8D852800CBF92C /* InspectionSetupController.swift in Sources */,
-				D5A98A6B21E9374B0063BDA4 /* SignupController.swift in Sources */,
 				110FF0A41E8C25C5000DB1A5 /* UIAlertController.swift in Sources */,
 				29AA66462003F22600673013 /* FormReqirementTableViewCell.swift in Sources */,
 				D53B6DE121CB63A000A0F546 /* Extensions.swift in Sources */,
