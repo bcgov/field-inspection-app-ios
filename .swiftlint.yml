@@ -1,8 +1,7 @@
 disabled_rules: # rule identifiers to exclude from running
   # - closing_brace
-  - colon
+  # - colon
   - comma
-  - conditional_binding_cascade
   - control_statement
   - custom_rules
   - cyclomatic_complexity
@@ -20,7 +19,7 @@ disabled_rules: # rule identifiers to exclude from running
   - legacy_constant
   - legacy_constructor
   - line_length
-  - mark
+  # - mark
   - missing_docs
   - multiple_closures_with_trailing_closure
   - nesting
@@ -29,7 +28,7 @@ disabled_rules: # rule identifiers to exclude from running
   - return_arrow_whitespace
   - redundant_discardable_let
   - redundant_optional_initialization
-  - redundant_void_return
+  # - redundant_void_return
   - statement_position
   - shorthand_operator
   - todo
@@ -38,10 +37,9 @@ disabled_rules: # rule identifiers to exclude from running
   - trailing_whitespace
   - type_body_length
   - type_name
-  - valid_docs
-  - variable_name
+  - identifier_name
   # - vertical_whitespace
-  - void_return
+  # - void_return
   - unused_closure_parameter
   - unneeded_break_in_switch
   - unused_optional_binding
@@ -50,6 +48,9 @@ disabled_rules: # rule identifiers to exclude from running
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods
+opt_in_rules: # some rules are only opt-in
+  - empty_count
+  - vertical_whitespace_closing_braces
 cyclomatic_complexity:
   ignores_case_statements: true
   warning: 20
@@ -79,4 +80,3 @@ trailing_newline: error
 trailing_semicolon: error
 opening_brace: error
 closing_brace: error
-vertical_whitespace: error
