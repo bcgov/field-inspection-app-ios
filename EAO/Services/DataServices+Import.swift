@@ -59,7 +59,6 @@ extension DataServices {
                 realm.add(inspection, update: true)
                 realm.add(doc, update: true)
             }
-            
         } catch {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
@@ -91,8 +90,7 @@ extension DataServices {
             try realm.write {
                 realm.add(observation, update: true)
             }
-            
-        } catch let error{
+        } catch let error {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
@@ -123,8 +121,7 @@ extension DataServices {
             try realm.write {
                 realm.add(photo, update: true)
             }
-            
-        } catch let error{
+        } catch let error {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
@@ -151,8 +148,7 @@ extension DataServices {
             try realm.write {
                 realm.add(photoThumb, update: true)
             }
-            
-        } catch let error{
+        } catch let error {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
@@ -184,8 +180,7 @@ extension DataServices {
             try realm.write {
                 realm.add(audio, update: true)
             }
-            
-        } catch let error{
+        } catch let error {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
@@ -217,14 +212,12 @@ extension DataServices {
             try realm.write {
                 realm.add(video, update: true)
             }
-            
-        } catch let error{
+        } catch let error {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
         return true
     }
-
     
     func fetchFullInspection(inspection: Inspection, completion: (() -> Void)? = nil) {
         
@@ -280,14 +273,14 @@ extension DataServices {
         
         query.whereKey("observationId", equalTo: observationId)
         query.findObjectsInBackground(block: { (array, error) in
-            for object in array as? [PFPhoto] ?? []{
+            for object in array as? [PFPhoto] ?? [] {
                 guard let remoteId = object.id else {
                     continue
                 }
                 
                 let _ = DataServices.add(photo: object)
                 object.file?.getDataInBackground(block: { (data, error) in
-                    if let data = data{
+                    if let data = data {
                         try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
                     }
                 })
@@ -305,14 +298,14 @@ extension DataServices {
         
         query.whereKey("observationId", equalTo: observationId)
         query.findObjectsInBackground(block: { (array, error) in
-            for object in array as? [PFPhotoThumb] ?? []{
+            for object in array as? [PFPhotoThumb] ?? [] {
                 guard let remoteId = object.id else {
                     continue
                 }
                 
                 let _ = DataServices.add(photoThumb: object)
                 object.file?.getDataInBackground(block: { (data, error) in
-                    if let data = data{
+                    if let data = data {
                         try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
                     }
                 })
@@ -330,14 +323,14 @@ extension DataServices {
         
         query.whereKey("observationId", equalTo: observationId)
         query.findObjectsInBackground(block: { (array, error) in
-            for object in array as? [PFAudio] ?? []{
+            for object in array as? [PFAudio] ?? [] {
                 guard let remoteId = object.id else {
                     continue
                 }
                 
                 let _ = DataServices.add(audio: object)
                 object.file?.getDataInBackground(block: { (data, error) in
-                    if let data = data{
+                    if let data = data {
                         try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
                     }
                 })
@@ -355,14 +348,14 @@ extension DataServices {
         
         query.whereKey("observationId", equalTo: observationId)
         query.findObjectsInBackground(block: { (array, error) in
-            for object in array as? [PFVideo] ?? []{
+            for object in array as? [PFVideo] ?? [] {
                 guard let remoteId = object.id else {
                     continue
                 }
                 
                 let _ = DataServices.add(video: object)
                 object.file?.getDataInBackground(block: { (data, error) in
-                    if let data = data{
+                    if let data = data {
                         try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
                     }
                 })
@@ -383,14 +376,11 @@ extension DataServices {
             try realm.write {
                 realm.delete(inspections)
             }
-
-        } catch let error{
+        } catch let error {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
         return true
     }
-
-    
 }
 

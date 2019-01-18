@@ -8,15 +8,15 @@
 
 import RealmSwift
 
-class Observation: Object{
+class Observation: Object {
     
     // MARK: Properties
-    @objc dynamic var id           : String = UUID().uuidString
-    @objc dynamic var inspectionId : String?
-    @objc dynamic var title        : String?
-    @objc dynamic var requirement  : String?
-    @objc dynamic var coordinate   : RealmLocation?
-    @objc dynamic var pinnedAt     : Date?
+    @objc dynamic var id: String = UUID().uuidString
+    @objc dynamic var inspectionId: String?
+    @objc dynamic var title: String?
+    @objc dynamic var requirement: String?
+    @objc dynamic var coordinate: RealmLocation?
+    @objc dynamic var pinnedAt: Date?
     @objc dynamic var observationDescription: String?
     
     @objc dynamic var createdAt: Date = Date()
@@ -26,7 +26,7 @@ class Observation: Object{
         return "id"
     }
     
-    override var debugDescription: String{
+    override var debugDescription: String {
         
         var parameters = [String: Any?]()
         
@@ -36,7 +36,6 @@ class Observation: Object{
         parameters["observationDescription"] = observationDescription ?? "N/A"
         return "\(self) \(parameters)"
     }
-    
 }
 
 extension Observation: ParseFactory {
@@ -54,5 +53,4 @@ extension Observation: ParseFactory {
 
         return object
     }
-    
 }

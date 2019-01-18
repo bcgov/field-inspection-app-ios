@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum GalleryMode{
+enum GalleryMode {
     case Video
     case Image
 }

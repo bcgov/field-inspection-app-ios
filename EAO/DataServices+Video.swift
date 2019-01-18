@@ -26,14 +26,13 @@ extension DataServices {
             print("\(#function): \(error.localizedDescription)");
             return completion(false, nil)
         }
-
     }
     
     internal class func getVideoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: Video? ) -> Void) {
         
         DataServices.getVideosFor(observationID: observationID) { (success, results) in
             if success == true, (results?.count ?? 0) > 0 {
-                let theOne = results?.filter( { $0.index == index } ).first
+                let theOne = results?.filter({ $0.index == index }).first
                 return completion(false, theOne)
             } else {
                 return completion(false, nil)
@@ -73,12 +72,10 @@ extension DataServices {
                 realm.add(video, update: true)
             }
             return completion(true)
-            
         } catch let error {
             print("Realm save exception \(error.localizedDescription)")
             return completion(false)
         }
-        
     }
     
     internal class func getVideoAt(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: Video? ) -> Void) {
@@ -94,6 +91,4 @@ extension DataServices {
             return completion(false, nil)
         }
     }
-
-    
 }

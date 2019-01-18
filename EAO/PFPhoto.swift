@@ -8,7 +8,7 @@
 import ObjectMapper
 import RealmSwift
 
-class PFPhoto: Object, Mappable{
+class PFPhoto: Object, Mappable {
     
     private struct SerializationKeys {
         static let id = "id"
@@ -21,19 +21,19 @@ class PFPhoto: Object, Mappable{
     }
     
     ///Use this variable for image caching
-    var image : UIImage?{
+    var image: UIImage? {
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return UIImage(contentsOfFile: url.path)
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String = "\(UUID().uuidString).jpeg"
-    @objc dynamic var observationId : String?
+    @objc dynamic var id: String = "\(UUID().uuidString).jpeg"
+    @objc dynamic var observationId: String?
     //    @objc dynamic var file          : PFFile?
-    @objc dynamic var caption       : String?
-    @objc dynamic var timestamp     : Date? = Date()
-    @objc dynamic var coordinate    : RealmLocation?
-    @objc dynamic var index         : Int = 0
+    @objc dynamic var caption: String?
+    @objc dynamic var timestamp: Date? = Date()
+    @objc dynamic var coordinate: RealmLocation?
+    @objc dynamic var index: Int = 0
     
     required convenience init?(map: Map) {
         self.init()
@@ -55,7 +55,7 @@ class PFPhoto: Object, Mappable{
 
 extension PFPhoto {
     
-    @objc static func load(for observationId: String, result: @escaping (_ photos: [PFPhoto]?)->Void){
+    @objc static func load(for observationId: String, result: @escaping (_ photos: [PFPhoto]?)->Void) {
         //            guard let query = PFPhoto.query() else{
         //                result(nil)
         //                return
@@ -67,7 +67,7 @@ extension PFPhoto {
         //            })
     }
     
-    @objc func get() -> Data?{
+    @objc func get() -> Data? {
         //            guard let id = id else{
         //                return nil
         //            }
@@ -75,9 +75,7 @@ extension PFPhoto {
         //            return try? Data(contentsOf: url)
         return nil
     }
-    
 }
-
 
 //final class PFPhoto: PFObject, PFSubclassing{
 //    ///Use this variable for image caching

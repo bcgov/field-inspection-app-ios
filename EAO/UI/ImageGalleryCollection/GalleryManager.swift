@@ -15,12 +15,11 @@ class GalleryManager {
     var multiSelectResult = [PHAsset]()
 
     init() {
-        NotificationCenter.default.addObserver(forName: .selectedImages, object: nil, queue: nil, using:catchSelectedAssets)
+        NotificationCenter.default.addObserver(forName: .selectedImages, object: nil, queue: nil, using: catchSelectedAssets)
     }
 
     // TODO: RENAME TO catchSelectedAssets
-    func catchSelectedAssets(notification:Notification) -> Void {
+    func catchSelectedAssets(notification: Notification) {
         self.multiSelectResult = (notification.userInfo!["name"] as! [PHAsset])
     }
-    
 }

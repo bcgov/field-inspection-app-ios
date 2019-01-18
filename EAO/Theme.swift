@@ -24,7 +24,7 @@ import UIKit
 class Theme {
 
     // Pallet
-    static let governmentDarkBlue =  UIColor(red:0.12, green:0.21, blue:0.42, alpha:1)
-    static let governmentDeepYellow =  UIColor(red:0.96, green:0.66, blue:0.11, alpha:1)
-    static let albumOverlayBlue = UIColor(red:0, green:0.2, blue:0.4, alpha:0.8)
+    static let governmentDarkBlue =  UIColor(red: 0.12, green: 0.21, blue: 0.42, alpha: 1)
+    static let governmentDeepYellow =  UIColor(red: 0.96, green: 0.66, blue: 0.11, alpha: 1)
+    static let albumOverlayBlue = UIColor(red: 0, green: 0.2, blue: 0.4, alpha: 0.8)
 }

@@ -26,7 +26,6 @@ class RequirementNewObservationCollectionViewCell: BaseCollectionCell {
             textField.isUserInteractionEnabled = false
         }
     }
-
 }
 
 extension RequirementNewObservationCollectionViewCell: UITextFieldDelegate {

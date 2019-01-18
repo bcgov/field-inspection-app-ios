@@ -30,7 +30,6 @@ extension DataServices {
             }
 
             return completion(true)
-            
         } catch let error {
             print("Realm or Data save exception \(error.localizedDescription)")
             return completion(false)
@@ -50,19 +49,17 @@ extension DataServices {
             print("\(#function): \(error.localizedDescription)");
             return completion(false, nil)
         }
-        
     }
     
     internal class func getAudioFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ audio: Audio? ) -> Void) {
         
         DataServices.getAudiosFor(observationID: observationID) { (result, photos) in
             if result == true, (photos?.count ?? 0) > 0 {
-                let thePhoto = photos?.filter( { $0.index == index } ).first
+                let thePhoto = photos?.filter({ $0.index == index }).first
                 return completion(false, thePhoto)
             } else {
                 return completion(false, nil)
             }
         }
     }
-
 }

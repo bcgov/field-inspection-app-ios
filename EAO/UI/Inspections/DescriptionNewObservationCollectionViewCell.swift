@@ -29,6 +29,5 @@ class DescriptionNewObservationCollectionViewCell: BaseCollectionCell {
     func setup(text: String) {
         textView.text = text
     }
-
 }
 

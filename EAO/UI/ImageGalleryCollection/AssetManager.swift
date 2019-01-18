@@ -72,7 +72,6 @@ class AssetManager {
                 if sizeMB < self.SIZE_LIMIT {
                     print("include video with size: \(sizeMB)")
                     phCache.append(asset)
-
                 } else {
                     print("Don't include video with size: \(sizeMB)")
                 }
@@ -83,7 +82,7 @@ class AssetManager {
     }
 
     // get thumbnail for video
-    func getThumbnailForVideo(url:NSURL) -> UIImage? {
+    func getThumbnailForVideo(url: NSURL) -> UIImage? {
         let asset = AVAsset(url: url as URL)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true
@@ -96,13 +95,11 @@ class AssetManager {
             let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
             return UIImage(cgImage: imageRef)
         }
-        catch let error as NSError
-        {
+        catch let error as NSError {
             print("Image generation failed with error \(error)")
             return nil
         }
     }
-
 
     func cacheImages() {
         phManager?.startCachingImages(for: getPHAssetImages(), targetSize: getThumbnailSize(), contentMode: .aspectFit, options: getPHImageRequestOptions())
@@ -113,7 +110,7 @@ class AssetManager {
     }
 
     func getImageFromAsset(phAsset: PHAsset, completion: @escaping (_ assetImage: UIImage) -> Void) {
-        AssetManager.sharedInstance.phManager?.requestImage(for: phAsset, targetSize: AssetManager.sharedInstance.getThumbnailSize(), contentMode: .aspectFit, options:  AssetManager.sharedInstance.getPHImageRequestOptions(), resultHandler: { (image, info) in
+        AssetManager.sharedInstance.phManager?.requestImage(for: phAsset, targetSize: AssetManager.sharedInstance.getThumbnailSize(), contentMode: .aspectFit, options: AssetManager.sharedInstance.getPHImageRequestOptions(), resultHandler: { (image, info) in
                 if let image = image {
                     DispatchQueue.main.async {
                         completion(image)
@@ -136,7 +133,7 @@ class AssetManager {
         let requestImageOption = PHImageRequestOptions()
         requestImageOption.deliveryMode = PHImageRequestOptionsDeliveryMode.highQualityFormat
 
-        AssetManager.sharedInstance.phManager?.requestImage(for: phAsset, targetSize: PHImageManagerMaximumSize, contentMode:PHImageContentMode.default, options: requestImageOption) { (image:UIImage?, _) in
+        AssetManager.sharedInstance.phManager?.requestImage(for: phAsset, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.default, options: requestImageOption) { (image: UIImage?, _) in
                 if let image = image {
                     DispatchQueue.main.async {
                         completion(image)

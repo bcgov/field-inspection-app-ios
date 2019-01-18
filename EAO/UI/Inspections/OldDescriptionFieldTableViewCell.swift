@@ -35,5 +35,4 @@ class OldDescriptionFieldTableViewCell: BaseFormCell {
     func hide() {
         height.constant = 0
     }
-    
 }

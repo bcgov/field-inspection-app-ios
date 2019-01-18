@@ -7,26 +7,24 @@
 //
 
 extension UIImage {
-    public enum Quality: CGFloat{
+    public enum Quality: CGFloat {
         case low    = 0.25
         case medium = 0.5
         case high   = 0.75
         case uncompressed = 1
     }
    
-   public func toData(quality: Quality) -> Data{
+   public func toData(quality: Quality) -> Data {
       return UIImageJPEGRepresentation(self, quality.rawValue)!
    }
    
-   
-   
-   public func compress(quality: Quality) -> UIImage{
+   public func compress(quality: Quality) -> UIImage {
       let data = self.toData(quality: quality)
       let image = UIImage(data: data)
       return image!
    }
 	
-   public func scale(width: CGFloat) -> UIImage?{
+   public func scale(width: CGFloat) -> UIImage? {
       let scale = width / self.size.width
       let newHeight = self.size.height * scale
       UIGraphicsBeginImageContext(CGSize(width: width, height: newHeight))
@@ -37,7 +35,7 @@ extension UIImage {
       return newImage
    }
 
-   public func prepareImageForCell(completion: @escaping (_ image: UIImage?) -> Void){
+   public func prepareImageForCell(completion: @escaping (_ image: UIImage?) -> Void) {
       DispatchQueue.global().async {
          let image = self.compress(quality: .medium)
          DispatchQueue.main.async {
@@ -45,7 +43,5 @@ extension UIImage {
          }
       }
    }
-   
 }
-
 

@@ -31,7 +31,6 @@ class MiFormViewController: UIViewController {
     func close(completion: @escaping () -> Void) {
         self.dismiss(animated: true, completion: completion)
     }
-
 }
 
 extension MiFormViewController: UITableViewDelegate, UITableViewDataSource {

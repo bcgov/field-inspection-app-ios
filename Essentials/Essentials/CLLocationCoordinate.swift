@@ -7,8 +7,8 @@
 //
 
 import MapKit
-extension CLLocationCoordinate2D{
-   func toCLLocation()->CLLocation{
+extension CLLocationCoordinate2D {
+   func toCLLocation()->CLLocation {
       return CLLocation(latitude: latitude, longitude: longitude)
    }
 }

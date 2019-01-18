@@ -16,10 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 	@objc var shouldRotate = false
     
-    @objc static var reference: AppDelegate?{
+    @objc static var reference: AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
     }
-    @objc static var root: UIViewController?{
+    @objc static var root: UIViewController? {
         return AppDelegate.reference?.window?.rootViewController
     }
     
@@ -46,8 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		Fabric.with([Crashlytics.self])
 
         if let path = Bundle.main.path(forResource: "Parse", ofType: "plist"), let dict = NSDictionary(contentsOfFile: path) as? [String: String],
-            let appId: String = dict["ParseAppId"], let clientKey: String = dict["ParseClientKey"], let server: String = dict["ParseServer"]
-        {
+            let appId: String = dict["ParseAppId"], let clientKey: String = dict["ParseClientKey"], let server: String = dict["ParseServer"] {
             let configuration = ParseClientConfiguration {
                 $0.applicationId = appId
                 $0.clientKey     = clientKey
@@ -72,12 +71,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func appearanceSetup(){
+    func appearanceSetup() {
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.blue
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self])
     }
 
-    func permissionsSetup(){
+    func permissionsSetup() {
         //Camera
         AVCaptureDevice.requestAccess(for: AVMediaType.video) { _ in
         }
@@ -89,5 +88,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
 }

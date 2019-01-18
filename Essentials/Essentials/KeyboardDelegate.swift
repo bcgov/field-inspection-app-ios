@@ -15,7 +15,7 @@ fileprivate var pointer_5: UInt8 = 5
 
 ///Usage: In ViewDidAppear, call 'addKeyboardObservers', in ViewDidDisappear, call 'removeObservers'.
 @objc
-public protocol KeyboardDelegate{
+public protocol KeyboardDelegate {
 	@objc optional func keyboardDidShow(with height: NSNumber)
 	@objc optional func keyboardWillShow(with height: NSNumber)
 	@objc optional func keyboardDidHide()
@@ -24,9 +24,9 @@ public protocol KeyboardDelegate{
 	@objc optional func keyboardWillChangeFrame(with height: NSNumber)
 }
 
-extension KeyboardDelegate where Self: UIViewController{
+extension KeyboardDelegate where Self: UIViewController {
 	///Call in viewWillAppear
-	public func addKeyboardObservers(){
+	public func addKeyboardObservers() {
 		observer_0 = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: nil) { notification in
 			guard let height = notification.keyboardHeight else { return }
 			let float = Float(height)
@@ -55,7 +55,7 @@ extension KeyboardDelegate where Self: UIViewController{
 		}
 	}
 	///Call in viewWillDisappear
-	public func removeKeyboardObservers(){
+	public func removeKeyboardObservers() {
 		if let observer_0 = observer_0 {
 			NotificationCenter.default.removeObserver(observer_0)
 		}
@@ -83,7 +83,7 @@ extension KeyboardDelegate where Self: UIViewController{
 	}
 }
 
-extension KeyboardDelegate where Self: UIViewController{
+extension KeyboardDelegate where Self: UIViewController {
 	fileprivate var observer_0: NSObjectProtocol? {
 		get {
 			return objc_getAssociatedObject(self, &pointer_0) as? NSObjectProtocol
@@ -127,5 +127,4 @@ extension KeyboardDelegate where Self: UIViewController{
 		}
 	}
 }
-
 

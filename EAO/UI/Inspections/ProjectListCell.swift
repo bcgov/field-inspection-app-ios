@@ -6,11 +6,11 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 
-class ProjectListCell: UITableViewCell{
+class ProjectListCell: UITableViewCell {
     
 	@IBOutlet var titleLabel: UILabel!
 	
-	@objc func setData(title: NSAttributedString?){
+	@objc func setData(title: NSAttributedString?) {
 		self.titleLabel.attributedText = title
 	}
 }

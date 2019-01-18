@@ -7,25 +7,25 @@
 //
 
 @IBDesignable
-public class TextView: UITextView{
-	fileprivate var _delegate: TextViewDelegate?{
+public class TextView: UITextView {
+	fileprivate var _delegate: TextViewDelegate? {
 		return text_delegate as? TextViewDelegate
 	}
-	//MARK: Properties
+	// MARK: Properties
 	fileprivate lazy var counterLabel     = UILabel()
 	fileprivate lazy var placeholderLabel = UILabel()
 	fileprivate lazy var titleLabel       = UILabel()
-	//MARK: IB Outlets
+	// MARK: IB Outlets
 	@IBOutlet public var text_delegate: NSObject?
-	//MARK: IB Designables
-	@IBInspectable public var showCounter : Bool = true
-	@IBInspectable public var scrollLimit : Int = 0
-	@IBInspectable public var placeholder : String?
-	@IBInspectable public var title		  : String?
-	@IBInspectable public var maximum     : Int = 0
-	@IBInspectable public var lines       : Int = 0
+	// MARK: IB Designables
+	@IBInspectable public var showCounter: Bool = true
+	@IBInspectable public var scrollLimit: Int = 0
+	@IBInspectable public var placeholder: String?
+	@IBInspectable public var title: String?
+	@IBInspectable public var maximum: Int = 0
+	@IBInspectable public var lines: Int = 0
 	
-	//MARK: -
+	// MARK: -
 	override public func awakeFromNib() {
 		delegate = self
 		isScrollEnabled = false
@@ -34,15 +34,15 @@ public class TextView: UITextView{
 		setTitleLabel()
 	}
 	
-	//MARK: -
+	// MARK: -
 	public override func prepareForInterfaceBuilder() {
 		setCounterLabel()
 		setPlaceholderLabel()
 	}
 	
-	//MARK: -
-	fileprivate func setPlaceholderLabel(){
-		if let placeholder = placeholder{
+	// MARK: -
+	fileprivate func setPlaceholderLabel() {
+		if let placeholder = placeholder {
 			addSubview(placeholderLabel)
 			let padding = textContainer.lineFragmentPadding
 			placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -54,8 +54,8 @@ public class TextView: UITextView{
 		}
 	}
  
-	fileprivate func setCounterLabel(){
-		if maximum != 0 && showCounter{
+	fileprivate func setCounterLabel() {
+		if maximum != 0 && showCounter {
 			addSubview(counterLabel)
 			counterLabel.translatesAutoresizingMaskIntoConstraints = false
 			counterLabel.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor, constant: 0).isActive = true
@@ -64,14 +64,14 @@ public class TextView: UITextView{
 			counterLabel.text = "\(maximum)"
 			counterLabel.textColor = textColor
 			counterLabel.font = UIFont(name: "Arial Rounded MT Bold", size: 16)
-			if textContainerInset.bottom < 30{
+			if textContainerInset.bottom < 30 {
 				textContainerInset.bottom = 30
 			}
 		}
 	}
 	
-	fileprivate func setTitleLabel(){
-		if let title = title{
+	fileprivate func setTitleLabel() {
+		if let title = title {
 			clipsToBounds = false
 			layer.masksToBounds = false
 			addSubview(titleLabel)
@@ -92,8 +92,8 @@ public class TextView: UITextView{
 	}
 }
 
-//MARK: -
-extension TextView: UITextViewDelegate{
+// MARK: -
+extension TextView: UITextViewDelegate {
     
 	public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
 		return _delegate?.textShouldBeginEditing?(textView: self) ?? true
@@ -121,25 +121,20 @@ extension TextView: UITextViewDelegate{
 		}
 		let length = textView.text.count + text.count - range.length
 		let count = maximum - length
-		if showCounter{
+		if showCounter {
 			counterLabel.text = "\(count)"
 		}
 		let numberOfLines = textView.numberOfLines()
 		if lines > 0 {
 			return numberOfLines < lines
 		}
-		if scrollLimit > 0{
+		if scrollLimit > 0 {
 			textView.isScrollEnabled = (numberOfLines > scrollLimit) ? true : false
 		}
-		if maximum == 0{
-			return _delegate?.text?(textView:self,range: range, replacement: text) ?? true 
+		if maximum == 0 {
+			return _delegate?.text?(textView: self,range: range, replacement: text) ?? true 
 		}
-		return _delegate?.text?(textView:self,range: range, replacement: text) ?? (length < maximum)
+		return _delegate?.text?(textView: self,range: range, replacement: text) ?? (length < maximum)
 	}
 }
-
-
-
-
-
 

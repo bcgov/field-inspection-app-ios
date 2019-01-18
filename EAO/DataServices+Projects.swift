@@ -12,7 +12,7 @@ import AlamofireObjectMapper
 
 // MARK: Network Requests
 // TODO: move to the network manager
-extension DataServices{
+extension DataServices {
     
     class func fetchProjectList(completion: @escaping (_ error: DataServicesError?) -> Void) {
         
@@ -48,7 +48,6 @@ extension DataServices{
             }
         }
     }
-    
 }
 
 extension DataServices {
@@ -59,7 +58,6 @@ extension DataServices {
             let realm = try Realm()
             let projects = realm.objects(EAOProject.self).sorted(byKeyPath: "name", ascending: true)
             return projects
-            
         } catch {
         }
         
@@ -76,5 +74,4 @@ extension DataServices {
         projectStrings = projects.compactMap({ $0.name })
         return projectStrings
     }
-    
 }

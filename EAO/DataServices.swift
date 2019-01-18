@@ -67,7 +67,7 @@ class DataServices {
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = true
             
-            do  {
+            do {
                 try FileManager.default.createDirectory(at: workspaceURL, withIntermediateDirectories: false, attributes: nil)
                 try workspaceURL.setResourceValues(resourceValues)
             } catch {
@@ -98,14 +98,12 @@ class DataServices {
                 inspection.meta = doc
                 realm.add(inspection, update: true)
             }
-            
         } catch {
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
         return true
     }
-
 
     class func add(observation: Observation) -> Bool {
         
@@ -121,7 +119,6 @@ class DataServices {
         
         return true
     }
-
     
     internal func fetchInspections() -> [Inspection] {
         //TODO: #11
@@ -155,7 +152,7 @@ class DataServices {
         return nil
     }
 
-    class func fetch<T>(for id: String) -> T? where T: Object{
+    class func fetch<T>(for id: String) -> T? where T: Object {
         do {
             let realm = try Realm()
             let observation = realm.objects(T.self).filter("id in %@", [id]).first
@@ -221,7 +218,7 @@ class DataServices {
 
         query.getObjectInBackground(withId: id) { (userObj, error) in
             if let obj = userObj,
-                let access: [String: Any] = obj["access"] as? [String : Any],
+                let access: [String: Any] = obj["access"] as? [String: Any],
                 let mobileAccess: Bool = access["mobileAccess"] as? Bool,
                 let isActive: Bool = obj["isActive"] as? Bool {
                 print(access)
@@ -234,7 +231,6 @@ class DataServices {
                 return completion(false)
             }
         }
-        
     }
     
     internal class func getUserTeams(user: User, completion: @escaping (_ success: Bool,_ teams: [PFObject]) -> Void) {
@@ -276,7 +272,7 @@ class DataServices {
                 let query = PFQuery(className: "Team")
                 query.fromLocalDatastore()
                 query.findObjectsInBackground { (objects, error) in
-                    if objects != nil  {
+                    if objects != nil {
                         var results = [Team]()
                         for object: PFObject in objects ?? [] {
                             let team = Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!)
@@ -303,7 +299,7 @@ class DataServices {
      - Projects
      - Remote inspections (?)
      */
-    func reloadReferenceData(completion: @escaping (_ error: Error?)->()){
+    func reloadReferenceData(completion: @escaping (_ error: Error?)->Void) {
         
         guard Reachability.isConnectedToNetwork() else {
             completion(DataServicesError.noNetworkConnectivity)
@@ -316,5 +312,4 @@ class DataServices {
             }
         }
     }
-
 }

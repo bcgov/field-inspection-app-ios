@@ -6,8 +6,7 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 
-final class ObservationElementAddNewPhotoCell: UICollectionViewCell{
+final class ObservationElementAddNewPhotoCell: UICollectionViewCell {
     
 	@IBOutlet var button: UIButton!
-    
 }

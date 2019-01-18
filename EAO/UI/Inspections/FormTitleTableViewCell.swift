@@ -26,7 +26,6 @@ class FormTitleTableViewCell: BaseFormCell {
 
     func setUp(text: String) {
         self.textField.text = text
-
     }
 }
 

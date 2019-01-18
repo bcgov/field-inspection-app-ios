@@ -15,14 +15,14 @@ extension Notification.Name {
 
 class ChooseImageViewController: UIViewController {
 
-    //MARK: IB Outlets
+    // MARK: IB Outlets
     @IBOutlet weak var navBar: UIView!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     @IBOutlet weak var loadingContainer: UIView!
 
-    //MARK: variables
+    // MARK: variables
     var images = [PHAsset]()
     var selectedIndexs = [Int]()
 
@@ -64,7 +64,7 @@ class ChooseImageViewController: UIViewController {
     }
 
     func sendBackImages(images: [PHAsset]) {
-        NotificationCenter.default.post(name: .selectedImages, object: self, userInfo: ["name":images])
+        NotificationCenter.default.post(name: .selectedImages, object: self, userInfo: ["name": images])
         unlock()
         closeVC()
     }
@@ -147,9 +147,9 @@ class ChooseImageViewController: UIViewController {
     }
 
     func styleContainer(view: CALayer) {
-        view.borderColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        view.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         view.shadowOffset = CGSize(width: 0, height: 2)
-        view.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        view.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         view.shadowOpacity = 1
         view.shadowRadius = 3
     }
@@ -191,9 +191,9 @@ extension ChooseImageViewController: UICollectionViewDelegate, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell : GalleryImageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! GalleryImageCollectionViewCell
+        let cell: GalleryImageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! GalleryImageCollectionViewCell
 
-        cell.setUp(selectedIndexes: selectedIndexs, indexPath: indexPath, phAsset: images[indexPath.row], primaryColor:UIColor(hex: "4667a2"), textColor: UIColor.white)
+        cell.setUp(selectedIndexes: selectedIndexs, indexPath: indexPath, phAsset: images[indexPath.row], primaryColor: UIColor(hex: "4667a2"), textColor: UIColor.white)
 
         return cell
     }
@@ -201,7 +201,6 @@ extension ChooseImageViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if selectedIndexs.contains(indexPath.row) {
             selectedIndexs.remove(at: selectedIndexs.index(of: indexPath.row)!)
-
         } else {
             selectedIndexs.append(indexPath.row)
         }

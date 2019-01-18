@@ -6,16 +6,16 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension UIAlertController{
+extension UIAlertController {
 	
-	public func addActions(_ actions: [UIAlertAction]){
+	public func addActions(_ actions: [UIAlertAction]) {
 		for action in actions {
 			addAction(action)
 		}
 	}
 	
 	///Generic alert. contains "Okay" action
-	convenience public init(title: String?, message: String?, handler: (()->Void)?=nil){
+	convenience public init(title: String?, message: String?, handler: (()->Void)?=nil) {
 		self.init(title: title, message: message, preferredStyle: .alert)
 		let okay = UIAlertAction(title: "Okay", style: .cancel, handler: { (_) in
 			handler?()
@@ -23,9 +23,8 @@ extension UIAlertController{
 		self.addAction(okay)
 	}
 	
-	
 	///Generic alert. contains "Yes" and "No" actions
-	convenience public init(title: String?, message: String?, yes: @escaping (()->Void), cancel: (()->Void)?=nil){
+	convenience public init(title: String?, message: String?, yes: @escaping (()->Void), cancel: (()->Void)?=nil) {
 		self.init(title: title, message: message, preferredStyle: .alert)
 		let yes = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
 			yes()

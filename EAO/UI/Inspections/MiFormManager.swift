@@ -16,7 +16,7 @@ class MiFormManager {
     }()
     
     var fields = [SimpleCell]() {
-        didSet{
+        didSet {
             miForm.fields = fields
         }
     }
@@ -32,7 +32,7 @@ class MiFormManager {
         }
     }
     
-    func catchAction(notification:Notification) {
+    func catchAction(notification: Notification) {
         guard let name = notification.userInfo!["name"] else { return }
         let field = fieldNamed(name: name as! String)
         if field.name == name as! String && field.type == .Button {
@@ -40,7 +40,7 @@ class MiFormManager {
         }
     }
     
-    //MARK: - Setters
+    // MARK: - Setters
     
     func addField(name: String, title: String, placeholder: String, expectedValue: String? = nil, isOptional: Bool? = false, type: SimpleCellType, inputType: FormInputType,style: MiTextFieldStyle? = nil, styleInvalid: MiTextFieldStyle? = nil) {
         let field = SimpleCell(name: name, title: title, placeholder: placeholder, type: type, inputType: inputType)
@@ -72,8 +72,7 @@ class MiFormManager {
         fields.append(label)
     }
     
-    
-    //MARK: - Editing fields
+    // MARK: - Editing fields
     func editFieldTitle(named: String, title: String) {
         let i = indexOfField(named: named)
         fields[i].title = title
@@ -92,9 +91,8 @@ class MiFormManager {
         miForm.tableView.reloadData()
     }
     
-    
-    //MARK: - Validation
-    func validateAuto() -> Bool{
+    // MARK: - Validation
+    func validateAuto() -> Bool {
         var valid = true
         let fields = getFormElements()
         var p1: String? = nil
@@ -150,7 +148,7 @@ class MiFormManager {
         return valid
     }
     
-    //MARK: - Getters
+    // MARK: - Getters
     func getFormResults() -> [String: String] {
         var rsp = [String: String]()
         for element in miForm.fields {
@@ -198,8 +196,7 @@ class MiFormManager {
         return commonTextViewStyle
     }
     
-    
-    //MARK: - Displaying form in a container
+    // MARK: - Displaying form in a container
     
     func display(in container: UIView, on viewController: UIViewController) {
         let subs = container.subviews
@@ -226,9 +223,9 @@ class MiFormManager {
         }
     }
     
-    //MARK: - Helper functions
+    // MARK: - Helper functions
     
-    // MARK:: BROKEN
+    // MARK: : BROKEN
     func clear() {
         for field in miForm.fields {
             field.currValue = ""
@@ -236,10 +233,10 @@ class MiFormManager {
         miForm.tableView.reloadData()
     }
     
-    // MARK:: BROKEN
+    // MARK: : BROKEN
     func clear(with style: MiTextFieldStyle) {
         for field in miForm.fields {
-            if field.type == SimpleCellType.TextInput || field.type == SimpleCellType.TextViewInput{
+            if field.type == SimpleCellType.TextInput || field.type == SimpleCellType.TextViewInput {
                 field.textfieldStyle = style
                 field.currValue = ""
             }
@@ -270,8 +267,4 @@ class MiFormManager {
         return x!
     }
 }
-
-
-
-
 

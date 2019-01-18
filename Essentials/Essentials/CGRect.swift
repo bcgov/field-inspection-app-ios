@@ -6,11 +6,10 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension CGRect{
+extension CGRect {
    
-   var area: CGFloat{
+   var area: CGFloat {
       
       return (height*width)
    }
-   
 }

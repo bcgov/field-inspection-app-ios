@@ -6,9 +6,9 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 
-extension UIViewController{
+extension UIViewController {
     
-	@objc func showSuccessImageView(){
+	@objc func showSuccessImageView() {
 		let imageView = UIImageView()
 		imageView.image = #imageLiteral(resourceName: "icon_success")
 		imageView.alpha = 0
@@ -32,12 +32,12 @@ extension UIViewController{
         self.present(alert, animated: true, completion: nil)
     }
     
-    func round(num:Double, toPlaces places:Int) -> Double {
+    func round(num: Double, toPlaces places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (num * divisor).rounded() / divisor
     }
     
-    func showWarningAlert(title: String, description: String, yesButtonTapped:@escaping () -> (), noButtonTapped:@escaping () -> ()) {
+    func showWarningAlert(title: String, description: String, yesButtonTapped:@escaping () -> Void, noButtonTapped:@escaping () -> Void) {
         let alert = UIAlertController(title: title, message: description, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             DispatchQueue.main.async {
@@ -51,6 +51,4 @@ extension UIViewController{
         }))
         present(alert, animated: true, completion: nil)
     }
-
-
 }

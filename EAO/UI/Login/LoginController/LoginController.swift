@@ -9,10 +9,10 @@ import Parse
 import Alamofire
 
 // This enum represents errors that might occur during log in
-enum LoginError: Error{
+enum LoginError: Error {
     case noUsername
     case noPassword
-    var message: String{
+    var message: String {
         switch self {
         case .noUsername:
             return "Please enter registered username"
@@ -22,8 +22,8 @@ enum LoginError: Error{
     }
 }
 
-//MARK: -
-final class LoginController: UIViewController{
+// MARK: -
+final class LoginController: UIViewController {
     
     @IBOutlet fileprivate var usernameField: UITextField!
     @IBOutlet fileprivate var passwordField: UITextField!
@@ -33,7 +33,7 @@ final class LoginController: UIViewController{
     
     static let segueShowInspector = "showInspector"
     
-    //MARK: Initialization
+    // MARK: Initialization
     override func viewDidLoad() {
         style()
         addDismissKeyboardOnTapRecognizer(on: scrollView)
@@ -43,13 +43,13 @@ final class LoginController: UIViewController{
     func style() {
         self.loginButton.layer.cornerRadius = 5
         self.loginButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        self.loginButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        self.loginButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         self.loginButton.layer.shadowOpacity = 0.7
         self.loginButton.layer.shadowRadius = 4
     }
 
     @IBAction fileprivate func loginTapped(_ sender: UIButton) {
-        do{
+        do {
             let credentials = try validateCredentials()
             
             guard Reachability.isConnectedToNetwork() else {
@@ -61,9 +61,9 @@ final class LoginController: UIViewController{
             indicator.startAnimating()
             
             PFUser.logInWithUsername(inBackground: credentials.0, password: credentials.1) { (user, error) in
-                guard let _ = user, error == nil else{
+                guard let _ = user, error == nil else {
                     let code = (error! as NSError).code
-                    switch code{
+                    switch code {
                     case 101:
                         self.presentAlert(title: "Couldn't log in", message: "Entered credentials are not valid")
                     default:
@@ -92,7 +92,6 @@ final class LoginController: UIViewController{
                         self.indicator.stopAnimating()
                         sender.isEnabled = true
                     }
-                    
                 })
                 
                 DataServices.shared.reloadReferenceData(completion: { (_) in
@@ -100,7 +99,7 @@ final class LoginController: UIViewController{
                     sender.isEnabled = true
                 })
             }
-        } catch{
+        } catch {
             self.presentAlert(title: "Couldn't log in", message: (error as? LoginError)?.message)
         }
     }
@@ -109,8 +108,8 @@ final class LoginController: UIViewController{
         presentAlert(title: "Please contact Geoff McDonald to change your user credentials.", message: nil)
     }
     
-    @objc func presentMainScreen(){
-        if PFUser.current() != nil{
+    @objc func presentMainScreen() {
+        if PFUser.current() != nil {
             clearTextFields()
             
             self.indicator.startAnimating()
@@ -120,12 +119,12 @@ final class LoginController: UIViewController{
         }
     }
     
-    fileprivate func clearTextFields(){
+    fileprivate func clearTextFields() {
         self.usernameField.text = ""
         self.passwordField.text = ""
     }
     
-    //MARK: - Validation
+    // MARK: - Validation
     ///Return: (Username, Password)
     func validateCredentials() throws -> (String,String) {
         guard let username = usernameField.text?.trimWhiteSpace(), !username.isEmpty() else {
@@ -138,17 +137,16 @@ final class LoginController: UIViewController{
         return (username, password)
     }
     
-    //MARK: - UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
         return true
     }
     
-    private func showInspectionsController(){
+    private func showInspectionsController() {
         self.clearTextFields()
         self.indicator.stopAnimating()
         self.performSegue(withIdentifier: LoginController.segueShowInspector, sender: nil)
     }
-    
 }
 

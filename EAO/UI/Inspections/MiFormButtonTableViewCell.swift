@@ -25,7 +25,7 @@ class MiFormButtonTableViewCell: BaseFormCell {
     }
 
     var style: MiButtonStyle? {
-        didSet{
+        didSet {
             roundCorners = (style?.roundCorners)!
             buttonTitleColor = (style?.textColor)!
             containerBG = (style?.bgColor)!
@@ -34,7 +34,7 @@ class MiFormButtonTableViewCell: BaseFormCell {
     }
 
     var roundCorners: Bool = false {
-        didSet{
+        didSet {
             if roundCorners {
                 roundContainer(view: button.layer)
                 styleContainer(view: container.layer)
@@ -43,19 +43,19 @@ class MiFormButtonTableViewCell: BaseFormCell {
     }
 
     var buttonTitleColor: UIColor = UIColor.white {
-        didSet{
+        didSet {
             self.button.setTitleColor(buttonTitleColor, for: .normal)
         }
     }
 
     var containerBG: UIColor = UIColor.blue {
-        didSet{
+        didSet {
             self.container.backgroundColor = containerBG
         }
     }
 
     var contentHeight: CGFloat = 40 {
-        didSet{
+        didSet {
             height.constant = contentHeight
         }
     }
@@ -80,6 +80,5 @@ class MiFormButtonTableViewCell: BaseFormCell {
     @IBAction func clicked(_ sender: UIButton) {
         NotificationCenter.default.post(name: .miFormCallback, object: self, userInfo: ["name": self.obj?.name ?? "unknown"])
     }
-
 }
 

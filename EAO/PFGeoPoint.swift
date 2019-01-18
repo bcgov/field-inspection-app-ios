@@ -7,7 +7,7 @@
 //
 
 import Parse
-extension PFGeoPoint{
+extension PFGeoPoint {
 
     @objc func toString( )-> String? {
 		let lat = "\(latitude)".trimBy(numberOfChar: 10)
@@ -21,5 +21,4 @@ extension PFGeoPoint{
         location.longitude = longitude
         return location
     }
-
 }

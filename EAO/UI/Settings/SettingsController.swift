@@ -9,7 +9,7 @@
 import Parse
 final class SettingsController: UITableViewController {
     
-	//MARK: IB Outlets
+	// MARK: IB Outlets
 	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
@@ -27,7 +27,7 @@ final class SettingsController: UITableViewController {
 		indicator.startAnimating()
         
 		PFUser.logOutInBackground { (error) in
-			guard error == nil else{
+			guard error == nil else {
 				sender.isEnabled = true
 				self.navigationController?.view.isUserInteractionEnabled = true
 				self.indicator.stopAnimating()

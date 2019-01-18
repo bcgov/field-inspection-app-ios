@@ -13,7 +13,7 @@ import RealmSwift
 
 class NewObservationElementViewController: UIViewController {
     
-    //MARK: IB Outlets
+    // MARK: IB Outlets
     @IBOutlet fileprivate var mediaOptionsCollection: UICollectionView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityIndicatorContainer: UIView!
@@ -25,14 +25,14 @@ class NewObservationElementViewController: UIViewController {
     @IBOutlet weak var popUpContainerContainer: UIView!
     @IBOutlet weak var tableView: UITableView!
     
-    //MARK: variables
+    // MARK: variables
     var uniqueButtonID = 0
     var imagePicker: UIImagePickerController!
     var inspection: Inspection!
     var observation: Observation!
     var photos: [PFPhoto]?
     var storedPhotos = [PFPhoto]() {
-        didSet{
+        didSet {
             self.mediaOptionsCollection.reloadData()
         }
     }
@@ -174,7 +174,7 @@ class NewObservationElementViewController: UIViewController {
         self.isAutofilled = true
     }
     
-    fileprivate func loadPhotos(){
+    fileprivate func loadPhotos() {
         //TOFIX
         //        guard let query = PFPhoto.query() else {
         //            self.unlock()
@@ -270,7 +270,7 @@ class NewObservationElementViewController: UIViewController {
         //        })
     }
     
-    func storePhotoTaken(image: UIImage, description: String, location: CLLocation){
+    func storePhotoTaken(image: UIImage, description: String, location: CLLocation) {
         //TOFIX
         //        self.lock()
         //        let photo = PFPhoto()
@@ -296,7 +296,6 @@ class NewObservationElementViewController: UIViewController {
         //            self.unlock()
         //        }
     }
-    
 }
 
 // Media Collection view
@@ -317,32 +316,32 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
     
     func getGalleryResultCell(indexPath: IndexPath, index: Int) -> UICollectionViewCell {
         print("\(multiSelectResult.count) \(index)")
-        let cell : RecultCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: resultCellReuseIdentifier, for: indexPath) as! RecultCollectionViewCell
+        let cell: RecultCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: resultCellReuseIdentifier, for: indexPath) as! RecultCollectionViewCell
         cell.setUp(phAsset: multiSelectResult[index])
         return cell
     }
     
     func getSavedImageCell(indexPath: IndexPath, index: Int) -> UICollectionViewCell {
         print("\(storedPhotos.count) \(index)")
-        let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
+        let cell: OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = storedPhotos[index].image
         return cell
     }
     
     func getGalleryOptionCell(indexPath: IndexPath) -> UICollectionViewCell {
-        let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
+        let cell: OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = #imageLiteral(resourceName: "galleryicon")
         return cell
     }
     
     func getThedoliteOptionCell(indexPath: IndexPath) -> UICollectionViewCell {
-        let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
+        let cell: OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = #imageLiteral(resourceName: "cameraicon")
         return cell
     }
     
     func getCameraOptionCell(indexPath: IndexPath) -> UICollectionViewCell {
-        let cell : OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
+        let cell: OptionCollectionViewCell = mediaOptionsCollection.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
         cell.imsgeView.image = #imageLiteral(resourceName: "cameraicon")
         return cell
     }
@@ -398,11 +397,9 @@ extension NewObservationElementViewController: UICollectionViewDelegate, UIColle
     func goToThedolite() {
         let appHookUrl = URL(string: "theodolite://")
         
-        if UIApplication.shared.canOpenURL(appHookUrl!)
-        {
-            UIApplication.shared.open(appHookUrl!, options:[:]) { (success) in
+        if UIApplication.shared.canOpenURL(appHookUrl!) {
+            UIApplication.shared.open(appHookUrl!, options: [:]) { (success) in
                 if !success {
-                    
                 }
             }
         } else {
@@ -497,14 +494,13 @@ extension NewObservationElementViewController: UITableViewDelegate, UITableViewD
         default:
             let cell = getTitleCell(indexPath: indexPath)
             return cell
-            
         }
     }
 }
 
-extension NewObservationElementViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension NewObservationElementViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         // Local variable inserted by Swift 4.2 migrator.
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
@@ -532,7 +528,7 @@ extension NewObservationElementViewController:  UIImagePickerControllerDelegate,
             var comments = ""
             
             if results.isEmpty == false {
-                if let details = results["details"]{
+                if let details = results["details"] {
                     comments = details
                 }
             }

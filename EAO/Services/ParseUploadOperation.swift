@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class InspectionUploadOperation : AsyncOperation {
+class InspectionUploadOperation: AsyncOperation {
     
     typealias CompletionBlock = (Bool) -> Void
     
@@ -34,14 +34,14 @@ class InspectionUploadOperation : AsyncOperation {
 
             var operations = [Operation]()
             let observations: [Observation] = DataServices.fetchArray(for: self.objectId, idFieldName: "inspectionId")
-            for anObservation in observations{
+            for anObservation in observations {
                 let observationUpload = ObservationUploadOperation(observationId: anObservation.id)
                 operations.append(observationUpload)
             }
             DataServices.shared.uploadQueue.addOperations(operations, waitUntilFinished: false)
 
             DataServices.shared.uploadQueue.addOperation({
-                if let inspection: Inspection = DataServices.fetch(for: self.objectId){
+                if let inspection: Inspection = DataServices.fetch(for: self.objectId) {
                     do {
                         let realm = try Realm()
                         try realm.write {
@@ -55,13 +55,11 @@ class InspectionUploadOperation : AsyncOperation {
                 self.completion(true)
                 self.finished()
             })
-
         })
     }
 }
 
-
-class ObservationUploadOperation : AsyncOperation {
+class ObservationUploadOperation: AsyncOperation {
     
     let observationId: String
     
@@ -86,25 +84,25 @@ class ObservationUploadOperation : AsyncOperation {
 
             var operations = [Operation]()
             let photos: [Photo] = DataServices.fetchArray(for: strongSelf.observationId)
-            for objectId in photos{
+            for objectId in photos {
                 let upload = AttachmentUploadOperation<Photo>(objectId: objectId.id)
                 operations.append(upload)
             }
             
             let photoThumbs: [PhotoThumb] = DataServices.fetchArray(for: strongSelf.observationId)
-            for objectId in photoThumbs{
+            for objectId in photoThumbs {
                 let upload = AttachmentUploadOperation<PhotoThumb>(objectId: objectId.id)
                 operations.append(upload)
             }
             
             let audios: [Audio] = DataServices.fetchArray(for: strongSelf.observationId)
-            for objectId in audios{
+            for objectId in audios {
                 let upload = AttachmentUploadOperation<Audio>(objectId: objectId.id)
                 operations.append(upload)
             }
             
             let videos: [Video] = DataServices.fetchArray(for: strongSelf.observationId)
-            for objectId in videos{
+            for objectId in videos {
                 let upload = AttachmentUploadOperation<Video>(objectId: objectId.id)
                 operations.append(upload)
             }

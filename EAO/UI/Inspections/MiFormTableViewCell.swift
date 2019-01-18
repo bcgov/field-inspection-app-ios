@@ -15,25 +15,25 @@ class MiFormTableViewCell: BaseFormCell {
     @IBOutlet weak var height: NSLayoutConstraint!
 
     var obj: SimpleCell? {
-        didSet{
+        didSet {
             self.label.text = obj?.title
         }
     }
 
     var bgColor: UIColor = UIColor.white {
-        didSet{
+        didSet {
             self.container.backgroundColor = bgColor
         }
     }
 
     var fieldHeight: CGFloat = 80 {
-        didSet{
+        didSet {
             height.constant = fieldHeight
         }
     }
 
     var roundCorners: Bool = false {
-        didSet{
+        didSet {
             if roundCorners {
                 roundContainer(view: label.layer)
                 styleContainer(view: container.layer)
@@ -42,7 +42,7 @@ class MiFormTableViewCell: BaseFormCell {
     }
 
     var style: LabelStyle? {
-        didSet{
+        didSet {
             fieldHeight = (style?.height)!
             roundCorners = (style?.roundCorners)!
             bgColor = (style?.bgColor)!
@@ -51,7 +51,7 @@ class MiFormTableViewCell: BaseFormCell {
     }
 
     var labelTextColor: UIColor = UIColor.black {
-        didSet{
+        didSet {
             label.textColor = labelTextColor
         }
     }
@@ -71,5 +71,4 @@ class MiFormTableViewCell: BaseFormCell {
     func setup(obj: SimpleCell) {
         self.obj = obj
     }
-
 }

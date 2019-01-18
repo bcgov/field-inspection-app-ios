@@ -9,14 +9,14 @@
 import Parse
 import RealmSwift
 
-enum PFInspectionError: Error{
+enum PFInspectionError: Error {
     case zeroObservations
     case someObjectsFailed(Int)
     case inspectionIdNotFound
     case fail
     case noConnection
     
-    var message: String{
+    var message: String {
         switch self {
         case .zeroObservations :
             return "There are no observation elements in this inspection"
@@ -32,7 +32,7 @@ enum PFInspectionError: Error{
     }
 }
 
-//MARK: -
+// MARK: -
 final class PFInspection: PFObject, PFSubclassing {
     internal var progress: Float = 0
     internal var isBeingUploaded = false
@@ -56,25 +56,24 @@ final class PFInspection: PFObject, PFSubclassing {
     }
     internal var failed = [PFObject]()
     
-    //MARK: -
+    // MARK: -
     
-    @NSManaged var id : String?
-    @NSManaged var userId : String?
-    @NSManaged var isSubmitted  : NSNumber?
-    @NSManaged var project  : String?
-    @NSManaged var title    : String?
-    @NSManaged var subtitle : String?
-    @NSManaged var subtext  : String?
-    @NSManaged var number    : String?
-    @NSManaged var start    : Date?
-    @NSManaged var end        : Date?
-    @NSManaged var teamID   : String?
+    @NSManaged var id: String?
+    @NSManaged var userId: String?
+    @NSManaged var isSubmitted: NSNumber?
+    @NSManaged var project: String?
+    @NSManaged var title: String?
+    @NSManaged var subtitle: String?
+    @NSManaged var subtext: String?
+    @NSManaged var number: String?
+    @NSManaged var start: Date?
+    @NSManaged var end: Date?
+    @NSManaged var teamID: String?
     @NSManaged var observation: [PFObservation]
     
     static func parseClassName() -> String {
         return "Inspection"
     }
-
 }
 
 extension PFInspection {
@@ -83,7 +82,7 @@ extension PFInspection {
      Sync list of all user's inspections to the local Realm database
      Inspection details are not synced
      */
-    static func fetchInspectionsOnly(completion: @escaping ()->()){
+    static func fetchInspectionsOnly(completion: @escaping ()->Void) {
         
         guard  let query = PFInspection.query(),
             let userID = PFUser.current()?.objectId else {
@@ -107,9 +106,5 @@ extension PFInspection {
             }
         })
     }
-    
 }
-
-
-
 

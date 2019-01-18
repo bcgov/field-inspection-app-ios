@@ -6,7 +6,6 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 
-
 import SystemConfiguration
 
 public class Reachability {
@@ -32,5 +31,4 @@ public class Reachability {
 		let ret = (isReachable && !needsConnection)
 		return ret
 	}
-    
 }

@@ -6,8 +6,8 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension UINavigationController{
-	public var top: UIViewController?{
+extension UINavigationController {
+	public var top: UIViewController? {
 		return topViewController
 	}
 }

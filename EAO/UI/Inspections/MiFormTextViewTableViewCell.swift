@@ -23,7 +23,7 @@ class MiFormTextViewTableViewCell: BaseFormCell {
     }
 
     var style: MiTextFieldStyle? {
-        didSet{
+        didSet {
             fieldHeight = (style?.height)!
             roundCorners = (style?.roundCorners)!
             inputColor = (style?.inputColor)!
@@ -34,13 +34,13 @@ class MiFormTextViewTableViewCell: BaseFormCell {
     }
 
     var fieldHeight: CGFloat = 250 {
-        didSet{
+        didSet {
             self.textViewHeight.constant = fieldHeight
         }
     }
 
     var roundCorners: Bool = false {
-        didSet{
+        didSet {
             if roundCorners {
                 roundContainer(view: textView.layer)
                 styleContainer(view: container.layer)
@@ -49,26 +49,26 @@ class MiFormTextViewTableViewCell: BaseFormCell {
     }
 
     var inputColor: UIColor = UIColor.black {
-        didSet{
+        didSet {
             textView.textColor = inputColor
         }
     }
 
     var inputBG: UIColor = UIColor.white {
-        didSet{
+        didSet {
             textView.backgroundColor = inputBG
             textView.layer.borderColor = inputBG.cgColor
         }
     }
 
     var bgColor: UIColor = UIColor.white {
-        didSet{
+        didSet {
             container.backgroundColor = bgColor
         }
     }
 
     var titleColor: UIColor = UIColor.black {
-        didSet{
+        didSet {
             titleLabel.textColor = titleColor
         }
     }

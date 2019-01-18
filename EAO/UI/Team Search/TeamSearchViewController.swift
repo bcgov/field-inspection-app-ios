@@ -45,7 +45,7 @@ class TeamSearchViewController: UIViewController, UITableViewDelegate, UITableVi
         registerCell(name: "TeamSearchTableViewCell")
     }
     
-    @objc func refreshData(){
+    @objc func refreshData() {
         DataServices.getTeams { [weak self] (done, teams) in
             self?.refreshControl.endRefreshing()
             
@@ -74,5 +74,4 @@ class TeamSearchViewController: UIViewController, UITableViewDelegate, UITableVi
         cell.setup(team: teams[indexPath.row])
         return cell
     }
-
 }

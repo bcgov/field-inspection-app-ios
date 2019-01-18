@@ -27,5 +27,4 @@ class TeamSearchTableViewCell: UITableViewCell {
         let parent = self.parentViewController as! TeamSearchViewController
         parent.selected(team: team!)
     }
-
 }

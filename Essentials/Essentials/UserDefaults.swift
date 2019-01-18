@@ -6,22 +6,20 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension UserDefaults{
+extension UserDefaults {
     
-   struct Launch{
+   struct Launch {
      
-      static var count: Int{
+      static var count: Int {
          return UserDefaults.standard.integer(forKey: "launchCount")
       }
       
       ///Returns count after increment
-      static func increment() -> Int{
-         UserDefaults.standard.set(count+1, forKey:"launchCount")
+      static func increment() -> Int {
+         UserDefaults.standard.set(count+1, forKey: "launchCount")
          UserDefaults.standard.synchronize()
          return count
       }
    }
-    
-    
 }
 

@@ -10,7 +10,7 @@ import RealmSwift
 import Alamofire
 import AlamofireObjectMapper
 
-extension DataServices{
+extension DataServices {
     
     internal class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         
@@ -20,7 +20,7 @@ extension DataServices{
             }
             
             DataServices.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
-                if !success{ return completion (false)}
+                if !success { return completion (false)}
                 
                 return completion(true)
             }
@@ -45,7 +45,6 @@ extension DataServices{
                 realm.add(photo, update: true)
             }
             return completion(true)
-            
         } catch let error {
             print("Realm or Data save exception \(error.localizedDescription)")
             return completion(false)
@@ -73,19 +72,17 @@ extension DataServices{
             }
             
             return completion(true)
-            
         } catch let error {
             print("Realm or Data save exception \(error.localizedDescription)")
             return completion(false)
         }
-        
     }
     
     internal class func getThumbnailFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ photos: PhotoThumb? ) -> Void) {
         
         DataServices.getThumbnailsFor(observationID: observationID) { (result, thumbnails) in
             if result == true, (thumbnails?.count ?? 0) > 0 {
-                let theThumbnail = thumbnails?.filter( { $0.index == index } ).first
+                let theThumbnail = thumbnails?.filter({ $0.index == index }).first
                 return completion(false, theThumbnail)
             } else {
                 return completion(false, nil)
@@ -97,12 +94,11 @@ extension DataServices{
 
         let photos = DataServices.getPhotos(for: observationID)
         if photos.count > 0 {
-            let thePhoto = photos.filter( { $0.index == index } ).first
+            let thePhoto = photos.filter({ $0.index == index }).first
             return completion(false, thePhoto)
         } else {
             return completion(false, nil)
         }
-
     }
     
     internal class func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PhotoThumb]? ) -> Void) {
@@ -144,5 +140,4 @@ extension DataServices{
             return completion(false, nil)
         }
     }
-    
 }

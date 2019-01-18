@@ -129,11 +129,10 @@ extension NewDescriptionNewObservationCollectionViewCell: CLLocationManagerDeleg
         self.parentViewController?.presentAlert(controller: alertController)
     }
 
-    func round(num:Double, toPlaces places:Int) -> Double {
+    func round(num: Double, toPlaces places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (num * divisor).rounded() / divisor
     }
-
 }
 
 // Helper function inserted by Swift 4.2 migrator.

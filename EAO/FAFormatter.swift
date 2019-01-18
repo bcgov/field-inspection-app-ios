@@ -42,7 +42,7 @@ class FAFormatter {
 //        attrs[NSAttributedStringKey.baselineOffset] = Float(offset)
         attrs[NSAttributedString.Key.foregroundColor] = color
 
-        return NSMutableAttributedString(string: "\(character.unicodeCharacter)", attributes:attrs)
+        return NSMutableAttributedString(string: "\(character.unicodeCharacter)", attributes: attrs)
     }
 
     private class func baseAttributes() -> [NSAttributedString.Key: Any] {

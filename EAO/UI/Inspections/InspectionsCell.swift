@@ -15,9 +15,9 @@ enum TransferState {
 final class InspectionCell: UITableViewCell {
     
     @IBOutlet internal var linkedProjectLabel: UILabel!
-    @IBOutlet internal var titleLabel : UILabel!
-    @IBOutlet internal var timeLabel  : UILabel!
-    @IBOutlet private var editButton : UIButton!
+    @IBOutlet internal var titleLabel: UILabel!
+    @IBOutlet internal var timeLabel: UILabel!
+    @IBOutlet private var editButton: UIButton!
     @IBOutlet private var transferButton: UIButton!
     @IBOutlet private var indicator: UIActivityIndicatorView!
     @IBOutlet weak var disclosureIndicator: UIImageView!
@@ -57,7 +57,7 @@ final class InspectionCell: UITableViewCell {
     
     // MARK: States
     
-    func configureCell(with inspection: Inspection){
+    func configureCell(with inspection: Inspection) {
         
         var date = ""
         
@@ -76,14 +76,11 @@ final class InspectionCell: UITableViewCell {
         if inspection.isSubmitted == false {
             enableEdit(canEdit: true)
             configForTransferState(state: .upload)
-            
         } else if inspection.isSubmitted && inspection.isStoredLocally {
             configForTransferState(state: .disabled)
             enableEdit(canEdit: false)
-            
         } else if inspection.isSubmitted && inspection.isStoredLocally == false {
             configForTransferState(state: .download)
-            
         } else {
             configForTransferState(state: .upload)
         }

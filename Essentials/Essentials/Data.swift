@@ -6,12 +6,11 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension Data{
+extension Data {
    
-   func lenght() -> Int{
+   func lenght() -> Int {
       let data = NSData(data: self)
       let lenght = data.length
       return lenght
    }
-   
 }

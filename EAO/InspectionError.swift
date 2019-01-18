@@ -6,14 +6,14 @@
 //  Copyright © 2018 Goverment BC. All rights reserved.
 //
 
-enum InspectionError: Error{
+enum InspectionError: Error {
     case zeroObservations
     case someObjectsFailed(Int)
     case inspectionIdNotFound
     case fail
     case noConnection
     
-    var message: String{
+    var message: String {
         switch self {
         case .zeroObservations :
             return "There are no observation elements in this inspection"

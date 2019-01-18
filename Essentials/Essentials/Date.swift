@@ -6,8 +6,8 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension Date{
-	public func startOf() -> Date?{
+extension Date {
+	public func startOf() -> Date? {
 		return Calendar(identifier: .gregorian).startOfDay(for: self)
 	}
 }
