@@ -154,7 +154,7 @@
 		2936BF2B20BF64A500775F5E /* Team.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 291746762073EAEF005F70B4 /* Team.storyboard */; };
 		2936BF2C20BF64A500775F5E /* MiFormTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295304DA2017FF44001E5C7F /* MiFormTableViewCell.xib */; };
 		2936BF2D20BF64A500775F5E /* MiFormButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295304D12017FF2E001E5C7F /* MiFormButtonTableViewCell.xib */; };
-		2936BF2E20BF64A500775F5E /* newObservationElementForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5607200E670E00FCF230 /* newObservationElementForm.storyboard */; };
+		2936BF2E20BF64A500775F5E /* NewObservationElementForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5607200E670E00FCF230 /* NewObservationElementForm.storyboard */; };
 		2936BF2F20BF64A500775F5E /* FormTitleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29AA66352003EB4600673013 /* FormTitleTableViewCell.xib */; };
 		2936BF3120BF64A500775F5E /* TeamSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2917467B2073EC42005F70B4 /* TeamSearchTableViewCell.xib */; };
 		2936BF3220BF64A500775F5E /* RecultCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29424D4A1FFC14A000562508 /* RecultCollectionViewCell.xib */; };
@@ -224,7 +224,7 @@
 		29AA665920042D6300673013 /* GPSLabelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29AA665720042D6300673013 /* GPSLabelTableViewCell.xib */; };
 		29CEDE1B20BF67AF0019D3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 110FF0AF1E8C2833000DB1A5 /* Assets.xcassets */; };
 		29CEDE1C20BF67BC0019D3C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 110FF0AF1E8C2833000DB1A5 /* Assets.xcassets */; };
-		29FF5608200E670E00FCF230 /* newObservationElementForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5607200E670E00FCF230 /* newObservationElementForm.storyboard */; };
+		29FF5608200E670E00FCF230 /* NewObservationElementForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5607200E670E00FCF230 /* NewObservationElementForm.storyboard */; };
 		29FF560A200E675200FCF230 /* NewObservationElementFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5609200E675200FCF230 /* NewObservationElementFormViewController.swift */; };
 		29FF560E200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF560C200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.swift */; };
 		29FF560F200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF560D200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.xib */; };
@@ -475,7 +475,7 @@
 		29AA665420040DC800673013 /* UIReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIReusableView.swift; sourceTree = "<group>"; };
 		29AA665620042D6300673013 /* GPSLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSLabelTableViewCell.swift; sourceTree = "<group>"; };
 		29AA665720042D6300673013 /* GPSLabelTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GPSLabelTableViewCell.xib; sourceTree = "<group>"; };
-		29FF5607200E670E00FCF230 /* newObservationElementForm.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = newObservationElementForm.storyboard; sourceTree = "<group>"; };
+		29FF5607200E670E00FCF230 /* NewObservationElementForm.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewObservationElementForm.storyboard; sourceTree = "<group>"; };
 		29FF5609200E675200FCF230 /* NewObservationElementFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewObservationElementFormViewController.swift; sourceTree = "<group>"; };
 		29FF560C200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleNewObservationCollectionViewCell.swift; sourceTree = "<group>"; };
 		29FF560D200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleNewObservationCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -933,7 +933,7 @@
 			isa = PBXGroup;
 			children = (
 				29FF560B200E9F2C00FCF230 /* Cells */,
-				29FF5607200E670E00FCF230 /* newObservationElementForm.storyboard */,
+				29FF5607200E670E00FCF230 /* NewObservationElementForm.storyboard */,
 				29FF5609200E675200FCF230 /* NewObservationElementFormViewController.swift */,
 				29424D271FFC140E00562508 /* NewObservationElementManager.swift */,
 			);
@@ -1321,7 +1321,7 @@
 				2936BF2B20BF64A500775F5E /* Team.storyboard in Resources */,
 				2936BF2C20BF64A500775F5E /* MiFormTableViewCell.xib in Resources */,
 				2936BF2D20BF64A500775F5E /* MiFormButtonTableViewCell.xib in Resources */,
-				2936BF2E20BF64A500775F5E /* newObservationElementForm.storyboard in Resources */,
+				2936BF2E20BF64A500775F5E /* NewObservationElementForm.storyboard in Resources */,
 				5675DA9D21936279008409AB /* FontAwesome.otf in Resources */,
 				2936BF2F20BF64A500775F5E /* FormTitleTableViewCell.xib in Resources */,
 				2936BF3120BF64A500775F5E /* TeamSearchTableViewCell.xib in Resources */,
@@ -1371,7 +1371,7 @@
 				291746772073EAEF005F70B4 /* Team.storyboard in Resources */,
 				295304E52017FF47001E5C7F /* MiFormTableViewCell.xib in Resources */,
 				295304DC2017FF47001E5C7F /* MiFormButtonTableViewCell.xib in Resources */,
-				29FF5608200E670E00FCF230 /* newObservationElementForm.storyboard in Resources */,
+				29FF5608200E670E00FCF230 /* NewObservationElementForm.storyboard in Resources */,
 				29AA66372003EB4600673013 /* FormTitleTableViewCell.xib in Resources */,
 				2917467D2073EC42005F70B4 /* TeamSearchTableViewCell.xib in Resources */,
 				29424D4E1FFC14A000562508 /* RecultCollectionViewCell.xib in Resources */,

@@ -12,7 +12,7 @@ import UIKit
 class NewObservationElementManager {
 
     lazy var newObservationElementVC: NewObservationElementFormViewController = {
-        let storyboard = UIStoryboard(name: "newObservationElementForm", bundle: Bundle.main)
+        let storyboard = UIStoryboard(name: "NewObservationElementForm", bundle: Bundle.main)
         return storyboard.instantiateViewController(withIdentifier: "newObservationElementForm") as! NewObservationElementFormViewController
     }()
 
