@@ -6,9 +6,7 @@
 //  Copyright © 2017 Spencer Mandrusiak. All rights reserved.
 //
 
-
-
-open class UIViewWithXib: UIControl{
+open class UIViewWithXib: UIControl {
    
     public var view: UIView!
     
@@ -20,7 +18,6 @@ open class UIViewWithXib: UIControl{
         addSubview(view)
     }
     
-    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         xibSetup()
@@ -30,9 +27,5 @@ open class UIViewWithXib: UIControl{
         super.init(coder: aDecoder)
         xibSetup()
     }
-    
 }
-
-
-
 

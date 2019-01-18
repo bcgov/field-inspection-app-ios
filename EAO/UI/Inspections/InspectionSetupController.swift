@@ -8,18 +8,18 @@
 import Parse
 import RealmSwift
 
-final class InspectionSetupController: UIViewController{
+final class InspectionSetupController: UIViewController {
     
-	//MARK: - IB Outlets
-	@IBOutlet fileprivate var button	 : UIButton!
-	@IBOutlet fileprivate var indicator  : UIActivityIndicatorView!
-	@IBOutlet fileprivate var scrollView : UIScrollView!
-	@IBOutlet fileprivate var linkProjectButton : UIButton!
-	@IBOutlet fileprivate var titleTextField	: UITextField!
-	@IBOutlet fileprivate var subtextTextField  : UITextField!
-	@IBOutlet fileprivate var numberTextField   : UITextField!
-	@IBOutlet fileprivate var startDateButton   : UIButton!
-	@IBOutlet fileprivate var endDateButton     : UIButton!
+	// MARK: - IB Outlets
+	@IBOutlet fileprivate var button: UIButton!
+	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
+	@IBOutlet fileprivate var scrollView: UIScrollView!
+	@IBOutlet fileprivate var linkProjectButton: UIButton!
+	@IBOutlet fileprivate var titleTextField: UITextField!
+	@IBOutlet fileprivate var subtextTextField: UITextField!
+	@IBOutlet fileprivate var numberTextField: UITextField!
+	@IBOutlet fileprivate var startDateButton: UIButton!
+	@IBOutlet fileprivate var endDateButton: UIButton!
 	
 	@IBOutlet fileprivate var arrow_1: UIImageView!
 	@IBOutlet fileprivate var arrow_2: UIImageView!
@@ -27,8 +27,8 @@ final class InspectionSetupController: UIViewController{
     @IBOutlet weak var selectTeamButton: UIButton!
     @IBOutlet weak var popUpContainer: UIView!
 
-    //MARK: variables
-    struct Alerts{
+    // MARK: variables
+    struct Alerts {
         static let fields = UIAlertController(title: "Incomplete", message: "Please fill out all fields")
         static let dates = UIAlertController(title: "Dates", message: "Please make sure end date goes after start date")
         static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be saved,\nPlease try again")
@@ -45,18 +45,18 @@ final class InspectionSetupController: UIViewController{
     fileprivate var endDate: Date?
     fileprivate var teamID: String = ""
     
-    fileprivate var isReadOnly: Bool{
+    fileprivate var isReadOnly: Bool {
         return inspection?.isSubmitted == true
     }
 
-    //MARK: -
+    // MARK: -
     override func viewDidLoad() {
         style()
         addDismissKeyboardOnTapRecognizer(on: scrollView)
-        if inspection == nil{
+        if inspection == nil {
             subtextTextField.text = PFUser.current()?.username
             isNew = true
-        } else{
+        } else {
             button.isHidden = true
         }
         setMode()
@@ -74,7 +74,7 @@ final class InspectionSetupController: UIViewController{
     func style() {
         button.layer.cornerRadius = 5
         button.layer.shadowOffset = CGSize(width: 0, height: 2)
-        button.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         button.layer.shadowOpacity = 0.7
         button.layer.shadowRadius = 4
     }
@@ -99,7 +99,6 @@ final class InspectionSetupController: UIViewController{
             }
             self.setMode()
         }
-        
     }
     
     @IBAction func selectTeamAction(_ sender: UIButton!) {
@@ -156,7 +155,6 @@ final class InspectionSetupController: UIViewController{
                 }
                 self.navigationController?.navigationBar.isTranslucent = false
             })
-
         } else {
             // end date
             if startDate == nil {
@@ -195,7 +193,7 @@ final class InspectionSetupController: UIViewController{
             
             if self.isNew {
                 Notification.post(name: .insertByDate, inspection)
-            } else{
+            } else {
                 Notification.post(name: .reload)
             }
             
@@ -205,16 +203,15 @@ final class InspectionSetupController: UIViewController{
                     self.performSegue(withIdentifier: InspectionSetupController.showInspectionFormSegueID, sender: nil)
                 }
             }
-            
         } else {
             sender.isEnabled = true
             self.presentAlert(title: "ERROR!", message: "Inspection failed to save")
         }
     }
 
-	fileprivate func setMode(){
+	fileprivate func setMode() {
         
-		if isReadOnly{
+		if isReadOnly {
 			linkProjectButton.isEnabled = false
 			titleTextField.isEnabled    = false
 			subtextTextField.isEnabled  = false
@@ -225,18 +222,18 @@ final class InspectionSetupController: UIViewController{
 			arrow_1.isHidden = true
 			arrow_2.isHidden = true
 			arrow_3.isHidden = true 
-		} else if isNew{
+		} else if isNew {
 			//new
 			navigationItem.rightBarButtonItem = nil
-		} else{
+		} else {
 			//modifying
 			navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTapped(_:)))
 			navigationItem.rightBarButtonItem?.isEnabled = false
 		}
 	}
 	
-	//MARK: -
-	@objc func populate(){
+	// MARK: -
+	@objc func populate() {
         
 		guard let inspection = inspection else {
             return
@@ -258,7 +255,7 @@ final class InspectionSetupController: UIViewController{
         dates["end"] = inspection.end
 	}
     
-    @objc func validate() -> Inspection?{
+    @objc func validate() -> Inspection? {
         
         if linkProjectButton.title(for: .normal) == "Link Project" || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil {
             // remove ^
@@ -286,7 +283,6 @@ final class InspectionSetupController: UIViewController{
             
             inspection?.isSubmitted = false
             inspection?.teamID = self.teamID
-            
         } else {
             
             guard let realm = try? Realm() else {
@@ -305,7 +301,6 @@ final class InspectionSetupController: UIViewController{
                     inspection?.isSubmitted = false
                     inspection?.teamID = self.teamID
                 }
-                
             } catch let error {
                 print("Realm save exception \(error.localizedDescription)")
                 return nil
@@ -314,7 +309,7 @@ final class InspectionSetupController: UIViewController{
         return inspection
     }
     
-    @objc func validateDates() -> Bool{
+    @objc func validateDates() -> Bool {
         
         guard let startDate = dates["start"],
             let endDate = dates["end"] else {
@@ -322,11 +317,10 @@ final class InspectionSetupController: UIViewController{
         }
         return startDate <= endDate
     }
-    
 }
 
-//MARK: -
-extension InspectionSetupController: KeyboardDelegate{
+// MARK: -
+extension InspectionSetupController: KeyboardDelegate {
     
 	func keyboardWillShow(with height: NSNumber) {
         scrollView.contentInset.bottom = CGFloat(height.floatValue)
@@ -337,9 +331,8 @@ extension InspectionSetupController: KeyboardDelegate{
 	}
 }
 
-
-//MARK: -
-extension InspectionSetupController: UITextFieldDelegate{
+// MARK: -
+extension InspectionSetupController: UITextFieldDelegate {
     
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		navigationItem.rightBarButtonItem?.isEnabled = true

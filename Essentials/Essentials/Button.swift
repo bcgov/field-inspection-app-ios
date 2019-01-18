@@ -7,7 +7,7 @@
 //
 
 @IBDesignable
-public class Button: UIButton{
+public class Button: UIButton {
 	var accessoryImageView: UIImageView?
 	 
 	@IBInspectable var color: UIColor = UIColor.blue
@@ -30,11 +30,10 @@ public class Button: UIButton{
 	
 	override public func awakeFromNib() {
 		super.awakeFromNib()
-		
 	}
 	
-	public func setAccessoryImageView(){
-		if let image = image{
+	public func setAccessoryImageView() {
+		if let image = image {
 			accessoryImageView = UIImageView()
 			accessoryImageView?.frame.size = CGSize(width: frame.height/2, height: frame.height/2)
 			accessoryImageView?.center.y = frame.height/2
@@ -50,22 +49,10 @@ public class Button: UIButton{
 	
 	override public init(frame: CGRect) {
 		super.init(frame: frame)
-		
 	}
 	
 	required public init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-		
 	}
-	
 }
-
-
-
-
-
-
-
-
-
 

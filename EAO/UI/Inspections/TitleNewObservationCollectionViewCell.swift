@@ -27,7 +27,6 @@ class TitleNewObservationCollectionViewCell: BaseCollectionCell {
             textField.isUserInteractionEnabled = false
         }
     }
-
 }
 
 extension TitleNewObservationCollectionViewCell: UITextFieldDelegate {

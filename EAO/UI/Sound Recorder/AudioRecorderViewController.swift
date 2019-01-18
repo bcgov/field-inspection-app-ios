@@ -11,7 +11,7 @@ import AVFoundation
 
 class AudioRecorderViewController: UIViewController {
 
-    //MARK: IB Outlets
+    // MARK: IB Outlets
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var container2: UIView!
@@ -30,10 +30,10 @@ class AudioRecorderViewController: UIViewController {
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var sizeLabel: UILabel!
 
-    //MARK: Constants
+    // MARK: Constants
     let MAX_FILE_SIZE: Double = 9
     
-    //MARK: Variable
+    // MARK: Variable
     var callBack: ((_ close: Bool) -> Void )?
     var updater: CADisplayLink! = nil
     var meterTimer: Timer!
@@ -41,8 +41,8 @@ class AudioRecorderViewController: UIViewController {
     var audioPlayer: AVAudioPlayer!
     var isAudioRecordingGranted: Bool!
     var isRecording = false {
-        didSet{
-            if isRecording{
+        didSet {
+            if isRecording {
                 self.recordButton.setImage(#imageLiteral(resourceName: "recing"), for: .normal)
             } else {
                 self.recordButton.setImage(#imageLiteral(resourceName: "rec"), for: .normal)
@@ -81,9 +81,9 @@ class AudioRecorderViewController: UIViewController {
 
     func styleContainer(view: CALayer) {
         roundContainer(view: view)
-        view.borderColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        view.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         view.shadowOffset = CGSize(width: 0, height: 2)
-        view.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        view.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         view.shadowOpacity = 1
         view.shadowRadius = 3
     }
@@ -134,7 +134,7 @@ class AudioRecorderViewController: UIViewController {
         if titleField.text != nil {
             title = titleField.text!
         }
-        DataServices.saveAudio(audioURL: getFileUrl(), index: 0, observationID: observationID,inspectionID: inspectionID ,notes: notes, title:title) { (done) in
+        DataServices.saveAudio(audioURL: getFileUrl(), index: 0, observationID: observationID,inspectionID: inspectionID ,notes: notes, title: title) { (done) in
             self.dismiss(animated: true, completion: {
                 return self.callBack!(true)
             })
@@ -199,17 +199,14 @@ class AudioRecorderViewController: UIViewController {
         let max = 1000000 * maxMB
         return Float(size / max)
     }
-    
-
 }
 
-
-extension AudioRecorderViewController: AVAudioRecorderDelegate{
+extension AudioRecorderViewController: AVAudioRecorderDelegate {
     
     func beginRec() {
         if initRecorder() {
             audioRecorder.record()
-            meterTimer = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioMeter(timer:)), userInfo:nil, repeats:true)
+            meterTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateAudioMeter(timer:)), userInfo: nil, repeats: true)
             isRecording = true
         }
     }
@@ -271,7 +268,7 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
                     AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                     AVSampleRateKey: 44100,
                     AVNumberOfChannelsKey: 2,
-                    AVEncoderAudioQualityKey:AVAudioQuality.high.rawValue
+                    AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
                 ]
                 audioRecorder = try AVAudioRecorder(url: getFileUrl(), settings: settings)
                 audioRecorder.delegate = self
@@ -319,7 +316,7 @@ extension AudioRecorderViewController: AVAudioRecorderDelegate{
 }
 
 // Playback
-extension AudioRecorderViewController: AVAudioPlayerDelegate{
+extension AudioRecorderViewController: AVAudioPlayerDelegate {
 
     func playback() {
         if FileManager.default.fileExists(atPath: getFileUrl().path) {
@@ -332,7 +329,6 @@ extension AudioRecorderViewController: AVAudioPlayerDelegate{
         } else {
             // error: could not find audio file
         }
-
     }
 
     func stopPlayback() {
@@ -360,7 +356,6 @@ extension AudioRecorderViewController: AVAudioPlayerDelegate{
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopPlayback()
     }
-
 }
 
 // Helper function inserted by Swift 4.2 migrator.

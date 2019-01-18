@@ -8,13 +8,13 @@
 import Parse
 import MapKit
 
-final class NewObservationController: UIViewController{
+final class NewObservationController: UIViewController {
     
-    //MARK: IB Outlets
+    // MARK: IB Outlets
     @IBOutlet fileprivate var arrow_0: UIImageView!
     @IBOutlet fileprivate var descriptionTextView: UITextView!
     @IBOutlet fileprivate var indicator: UIActivityIndicatorView!
-    @IBOutlet fileprivate var scrollView : UIScrollView!
+    @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var titleTextField: UITextField!
     @IBOutlet fileprivate var requirementTextField: UITextField!
     @IBOutlet fileprivate var GPSLabel: UIButton!
@@ -22,11 +22,11 @@ final class NewObservationController: UIViewController{
     @IBOutlet fileprivate var collectionView: UICollectionView!
     @IBOutlet fileprivate var descriptionButton: UIButton!
 
-    //MARK: variables
-    enum Alerts{
+    // MARK: variables
+    enum Alerts {
         static let fields = UIAlertController(title: "All Fields Required", message: "Please fill out 'Title', 'Requirement', and 'Description' fields")
     }
-    enum Constants{
+    enum Constants {
         static let cellWidth = (UIScreen.width-25)/CGFloat(Constants.itemsPerRow)
         static let itemsPerRow = 4
     }
@@ -42,15 +42,15 @@ final class NewObservationController: UIViewController{
     
     @objc let maximumNumberOfPhotos = 20
     fileprivate var locationManager = CLLocationManager()
-    @objc var saveAction  : ((Observation)->Void)?
-    @objc var inspection  : Inspection!
-    @objc var observation : Observation!
-    @objc var photos        : [Photo]?
+    @objc var saveAction: ((Observation)->Void)?
+    @objc var inspection: Inspection!
+    @objc var observation: Observation!
+    @objc var photos: [Photo]?
     @objc var didMakeChange = false
     
     let galleryManager = GalleryManager()
 
-    @objc var isReadOnly: Bool{
+    @objc var isReadOnly: Bool {
         return inspection.isSubmitted == true
     }
 
@@ -62,7 +62,7 @@ final class NewObservationController: UIViewController{
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         
         if identifier == NewObservationController.addPhotoSegueID || identifier == NewObservationController.goToUploadPhotoSegueID {
-            if photos?.count == maximumNumberOfPhotos{
+            if photos?.count == maximumNumberOfPhotos {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     self.presentAlert(title: "You've reached maximum number of photos per element", message: nil)
                 }
@@ -83,13 +83,13 @@ final class NewObservationController: UIViewController{
             textViewController.title = "Element Description"
             textViewController.result = { (text) in
                 if self.descriptionTextView.text == "Tap to enter description"{
-                    if let text = text, !text.isEmpty(){
+                    if let text = text, !text.isEmpty() {
                         self.descriptionTextView.text = text
                     }
-                } else{
+                } else {
                     if let text = text,!text.isEmpty() {
                         self.descriptionTextView.text = text
-                    } else{
+                    } else {
                         
                         self.descriptionTextView.text = "Tap to enter description"
                     }
@@ -101,9 +101,9 @@ final class NewObservationController: UIViewController{
             
             uploadPhotoController.observation = observation
             uploadPhotoController.uploadPhotoAction = { (photo) in
-                if let photo = photo{
+                if let photo = photo {
                     self.didMakeChange = true
-                    if self.photos == nil{
+                    if self.photos == nil {
                         self.photos = []
                     }
                     self.photos?.append(photo)
@@ -116,16 +116,16 @@ final class NewObservationController: UIViewController{
         
         if segue.identifier == NewObservationController.goToUploadPhotoSegueID, let uploadPhotoController = segue.destination as? UploadPhotoController {
             
-            if photos?.count == maximumNumberOfPhotos{
+            if photos?.count == maximumNumberOfPhotos {
                 presentAlert(title: "You've reached maximum number of photos per element", message: nil)
                 return
             }
             
             uploadPhotoController.observation = observation
             uploadPhotoController.uploadPhotoAction = { (photo) in
-                if let photo = photo{
+                if let photo = photo {
                     self.didMakeChange = true
-                    if self.photos == nil{
+                    if self.photos == nil {
                         self.photos = []
                     }
                     self.photos?.append(photo)
@@ -137,30 +137,29 @@ final class NewObservationController: UIViewController{
         }
     }
     
-    //MARK: -
+    // MARK: -
     override func viewDidLoad() {
         setUpCollectionView()
         addDismissKeyboardOnTapRecognizer(on: scrollView)
         populate()
-        if observation == nil{
+        if observation == nil {
             observation = Observation()
         }
-        if isReadOnly{
+        if isReadOnly {
             navigationItem.rightBarButtonItem = nil
             titleTextField.isEnabled = false
             requirementTextField.isEnabled = false
             descriptionButton.isEnabled = false
             arrow_0.isHidden = true
             view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
-            
-        } else{
+        } else {
             view.addConstraint(NSLayoutConstraint(item: descriptionTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60))
         }
         view.layoutIfNeeded()
         GPSLabel.setTitle("GPS: \(observation?.coordinate?.printableString() ?? locationManager.coordinateAsString() ?? "unavailable")", for: .normal)
     }
 
-    //MARK: -
+    // MARK: -
     @IBAction func addVoiceTapped(_ sender: UIButton) {
         presentAlert(title: "This feature is coming soon", message: nil)
     }
@@ -171,11 +170,11 @@ final class NewObservationController: UIViewController{
 
     @IBAction func backTapped(_ sender: UIBarButtonItem) {
         
-        if isReadOnly{
+        if isReadOnly {
             popViewController()
             return
         }
-        if didMakeChange{
+        if didMakeChange {
             
             let alert = UIAlertController(title: "Would you like to save this observation element?", message: nil, yes: {
                 self.saveTapped(sender)
@@ -183,8 +182,7 @@ final class NewObservationController: UIViewController{
                 self.popViewController()
             })
             presentAlert(controller: alert)
-            
-        } else{
+        } else {
             popViewController()
         }
     }
@@ -201,15 +199,15 @@ final class NewObservationController: UIViewController{
         observation.requirement = requirementTextField.text
         observation.observationDescription = descriptionTextView.text
 
-        if observation.inspectionId == nil{
+        if observation.inspectionId == nil {
             observation.inspectionId = inspection.id
         }
         observation.id = UUID().uuidString
         indicator.stopAnimating()
     }
 
-    //MARK: -
-    fileprivate func populate(){
+    // MARK: -
+    fileprivate func populate() {
         guard let observation = observation else {
             self.photos = []
             self.collectionViewHeightConstraint.constant = Constants.cellWidth
@@ -222,9 +220,9 @@ final class NewObservationController: UIViewController{
         descriptionTextView.text = observation.observationDescription
     }
 
-    fileprivate func getConstraintHeight()->CGFloat{
+    fileprivate func getConstraintHeight()->CGFloat {
         guard let photosCount = photos?.count else { return 0 }
-        if photosCount == 0{
+        if photosCount == 0 {
             return Constants.cellWidth
         }
         var numberOfRows = Double(photosCount+(isReadOnly ? 0 :1))
@@ -246,7 +244,7 @@ final class NewObservationController: UIViewController{
     }
 }
 
-extension NewObservationController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+extension NewObservationController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func setUpCollectionView() {
 
@@ -263,20 +261,20 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
         layout.itemSize = CGSize(width: 100, height: 100)
     }
 
-    private func photoCell(indexPath: IndexPath) -> UICollectionViewCell{
+    private func photoCell(indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(identifier: "PhotoCell", indexPath: indexPath) as! ObservationElementPhotoCell
         cell.setData(image: photos?[indexPath.row].image)
         return cell
     }
 
-    private func addNewtPhotoCell(indexPath: IndexPath) -> UICollectionViewCell{
+    private func addNewtPhotoCell(indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(identifier: "AddNewPhotoCell", indexPath: indexPath) as! ObservationElementAddNewPhotoCell
 
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isReadOnly{
+        if isReadOnly {
             return photos?.count ?? 0
         }
 
@@ -284,18 +282,17 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
             return 2
         } else {
             return photos!.count + 2
-
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if !isReadOnly {
             if indexPath.row > 1 {
-                let cell : RecultCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: resultCellReuseIdentifier, for: indexPath) as! RecultCollectionViewCell
+                let cell: RecultCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: resultCellReuseIdentifier, for: indexPath) as! RecultCollectionViewCell
                 cell.setImage(image: photos![indexPath.row - 2].image!)
                 return cell
             } else if indexPath.row < 2 {
-                let cell : OptionCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
+                let cell: OptionCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as! OptionCollectionViewCell
                 if indexPath.row == 0 {
                     cell.imsgeView.image = #imageLiteral(resourceName: "galleryicon")
                 } else {
@@ -304,10 +301,9 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
                 return cell
             }
         }
-        let cell : RecultCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: resultCellReuseIdentifier, for: indexPath) as! RecultCollectionViewCell
+        let cell: RecultCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: resultCellReuseIdentifier, for: indexPath) as! RecultCollectionViewCell
         cell.setImage(image: photos![indexPath.row].image!)
         return cell
-
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -332,8 +328,8 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
         return CGSize(width: Constants.cellWidth, height: Constants.cellWidth)
     }
     
-    fileprivate func validate() ->Bool{
-        if titleTextField.text?.isEmpty() == true{
+    fileprivate func validate() ->Bool {
+        if titleTextField.text?.isEmpty() == true {
             presentAlert(controller: Alerts.fields)
             return false
         }
@@ -347,10 +343,9 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
         }
         return true
     }
-
 }
 
-extension NewObservationController: UITextFieldDelegate{
+extension NewObservationController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

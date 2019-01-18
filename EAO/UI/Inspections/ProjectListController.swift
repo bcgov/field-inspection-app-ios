@@ -10,32 +10,32 @@ import RealmSwift
 
 final class ProjectListController: UIViewController {
     
-	//MARK: IB Outlets
+	// MARK: IB Outlets
 	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
 	@IBOutlet fileprivate var tableView: UITableView!
 	@IBOutlet fileprivate var searchBar: UISearchBar!
 
-    //MARK: variables
+    // MARK: variables
     let refreshControl = UIRefreshControl()
     @objc var result : ((_: String?)->Void)?
     
-    fileprivate var projects : [String]?
-    fileprivate var filtered : [NSMutableAttributedString]?
+    fileprivate var projects: [String]?
+    fileprivate var filtered: [NSMutableAttributedString]?
     
-    //MARK:-
+    // MARK: -
     override func viewDidLoad() {
         searchBar.returnKeyType = .default
         refreshData()
         style()
     }
 
-    func style(){
+    func style() {
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh")
         refreshControl.addTarget(self, action: #selector(ProjectListController.refreshData), for: UIControl.Event.valueChanged)
         tableView.addSubview(refreshControl)
     }
     
-	//MARK: IB Actions
+	// MARK: IB Actions
 	@IBAction func customTapped(_ sender: UIBarButtonItem) {
         
 		let alert = UIAlertController(title: "Project name", message: nil, preferredStyle: .alert)
@@ -43,7 +43,7 @@ final class ProjectListController: UIViewController {
 			textField.placeholder = "Start Typing..."
 		}
 		let select = UIAlertAction(title: "Select", style: .default) { (_) in
-			if let text = alert.textFields?.first?.text, !text.isEmpty(){
+			if let text = alert.textFields?.first?.text, !text.isEmpty() {
 				self.result?(text)
 				self.popViewController()
 			}
@@ -53,8 +53,8 @@ final class ProjectListController: UIViewController {
 		presentAlert(controller: alert)
 	}
 	
-	//MARK:-
-	fileprivate func filter(by search: String?) -> [NSMutableAttributedString]?{
+	// MARK: -
+	fileprivate func filter(by search: String?) -> [NSMutableAttributedString]? {
         
 		guard let text = search?.lowercased() else { return nil }
 		let filtered = projects?.filter({ (name) -> Bool in
@@ -67,7 +67,7 @@ final class ProjectListController: UIViewController {
 		var array = [NSMutableAttributedString]()
 		sorted?.forEach({ (string) in
 			let attributed = NSMutableAttributedString(string: string)
-			if let range = attributed.string.range(of: text, options: String.CompareOptions.caseInsensitive, range: nil, locale: nil){
+			if let range = attributed.string.range(of: text, options: String.CompareOptions.caseInsensitive, range: nil, locale: nil) {
 				let location = string.distance(from: string.startIndex, to: range.lowerBound)
 				let lenght = string.distance(from: range.lowerBound, to: range.upperBound)
 				let ns_range = NSRange.init(location: location, length: lenght)
@@ -78,7 +78,7 @@ final class ProjectListController: UIViewController {
 		return array
 	}
 	
-	@objc func refreshData(){
+	@objc func refreshData() {
 
         indicator.startAnimating()
         DataServices.fetchProjectList() { [weak self] (error: Error?) in
@@ -101,15 +101,15 @@ final class ProjectListController: UIViewController {
 	}
 }
 
-//MARK: -
-extension ProjectListController: UISearchBarDelegate{
+// MARK: -
+extension ProjectListController: UISearchBarDelegate {
     
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		searchBar.resignFirstResponder()
 	}
 	
 	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-		if projects == nil{
+		if projects == nil {
 			return false
 		}
 		return true
@@ -123,10 +123,10 @@ extension ProjectListController: UISearchBarDelegate{
 	}
 	
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-		if searchText.isEmpty() == true{
+		if searchText.isEmpty() == true {
 			self.filtered?.removeAll()
 			self.filtered = nil
-		} else{
+		} else {
 			self.filtered = self.filter(by: searchBar.text)
 		}
 		self.indicator.stopAnimating()
@@ -134,8 +134,8 @@ extension ProjectListController: UISearchBarDelegate{
 	}
 }
 
-//MARK: -
-extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
+// MARK: -
+extension ProjectListController: UITableViewDelegate, UITableViewDataSource {
     
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return filtered?.count ?? projects?.count ?? 0
@@ -143,9 +143,9 @@ extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeue(identifier: "ProjectListCell") as! ProjectListCell
-		if filtered == nil{
+		if filtered == nil {
 			cell.titleLabel.text = projects?[indexPath.row]
-		} else{
+		} else {
 			cell.titleLabel.attributedText = filtered?[indexPath.row]
 		}
 		return cell
@@ -155,5 +155,4 @@ extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
 		result?(filtered?[indexPath.row].string ?? projects?[indexPath.row])
 		popViewController()
 	}
-    
 }

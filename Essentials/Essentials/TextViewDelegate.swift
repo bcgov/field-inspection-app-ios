@@ -7,7 +7,7 @@
 //
 
 @objc
-public protocol TextViewDelegate{
+public protocol TextViewDelegate {
 	@objc optional func textShouldBeginEditing(textView: TextView) -> Bool
 	@objc optional func textDidFinishEditing(textView: TextView)
 	@objc optional func textDidChange(textView: TextView)

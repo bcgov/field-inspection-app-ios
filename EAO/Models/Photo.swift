@@ -8,31 +8,30 @@
 
 import RealmSwift
 
-class Photo: Object{
+class Photo: Object {
     
     //Use this variable for image caching
-    var image : UIImage?{
+    var image: UIImage? {
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return UIImage(contentsOfFile: url.path)
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String = "\(UUID().uuidString).jpeg"
-    @objc dynamic var observationId : String?
-    @objc dynamic var caption       : String?
-    @objc dynamic var timestamp     : Date? = Date()
-    @objc dynamic var coordinate    : RealmLocation?
-    @objc dynamic var index         : Int = 0
+    @objc dynamic var id: String = "\(UUID().uuidString).jpeg"
+    @objc dynamic var observationId: String?
+    @objc dynamic var caption: String?
+    @objc dynamic var timestamp: Date? = Date()
+    @objc dynamic var coordinate: RealmLocation?
+    @objc dynamic var index: Int = 0
     
     override static func primaryKey() -> String? {
         return "id"
     }
 
-    @objc func get() -> Data?{
+    @objc func get() -> Data? {
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return try? Data(contentsOf: url)
     }
-
 }
 
 extension Photo: ParseFactory {
@@ -53,5 +52,4 @@ extension Photo: ParseFactory {
 
         return object
     }
-    
 }

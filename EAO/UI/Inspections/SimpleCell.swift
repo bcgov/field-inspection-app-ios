@@ -101,7 +101,7 @@ class SimpleCell {
 
         if expectedValue != nil {
             return currValue == expectedValue
-        } else if !isOptional{
+        } else if !isOptional {
            return currValue != ""
         } else {
             return true
@@ -112,14 +112,13 @@ class SimpleCell {
         if regEx == nil {
             return true
         }
-        let pred = NSPredicate(format:"SELF MATCHES[c] %@", regEx!)
+        let pred = NSPredicate(format: "SELF MATCHES[c] %@", regEx!)
         return pred.evaluate(with: currValue)
     }
 
     func reValidate() {
         self.isValid = isValueValid()
     }
-
 }
 
 enum SimpleCellType {
@@ -130,7 +129,7 @@ enum SimpleCellType {
     case Label
 }
 
-enum FormInputType{
+enum FormInputType {
     case Email
     case Password
     case Phone

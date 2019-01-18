@@ -6,13 +6,13 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension Int{
+extension Int {
    
-   static postfix func ++ (value: inout Int){
+   static postfix func ++ (value: inout Int) {
       value += 1
    }
    
-   static prefix func ++ (value: inout Int){
+   static prefix func ++ (value: inout Int) {
       value += 1
    }
 }

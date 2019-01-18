@@ -23,5 +23,4 @@ extension CLLocation {
         let longitude = coordinate.longitude
         return "Lat:\(String(format: "%\(precision)f", latitude)); Long: \(String(format: "%\(precision)f", longitude))"
     }
-
 }

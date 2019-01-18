@@ -6,33 +6,33 @@
 //  Copyright © 2017 FreshWorks. All rights reserved.
 //
 import Parse
-final class InspectionFormController: UIViewController{
+final class InspectionFormController: UIViewController {
 
-    //MARK: IB Outlets
-    @IBOutlet fileprivate var addButton : UIButton!
-	@IBOutlet fileprivate var indicator : UIActivityIndicatorView!
-	@IBOutlet fileprivate var tableView : UITableView!
+    // MARK: IB Outlets
+    @IBOutlet fileprivate var addButton: UIButton!
+	@IBOutlet fileprivate var indicator: UIActivityIndicatorView!
+	@IBOutlet fileprivate var tableView: UITableView!
 
     private static let showInspectionFormSegueID = "showInspectionForm"
     private static let addNewElementSegueID = "AddNewElement"
     private static let editElementSegueID = "EditElement"
 
-    //MARK: variables
-    var inspection : Inspection!
+    // MARK: variables
+    var inspection: Inspection!
     var observations = [Observation]()
 	
-    struct Alerts{
+    struct Alerts {
         static let error = UIAlertController(title: "ERROR!", message: "Inspection failed to be uploaded to the server.\nPlease try again")
     }
 
-    fileprivate var isReadOnly: Bool{
+    fileprivate var isReadOnly: Bool {
         return inspection.isSubmitted == true
     }
 
-    //MARK: -
+    // MARK: -
     override func viewDidLoad() {
         tableView.contentInset.bottom = 120
-        if isReadOnly{
+        if isReadOnly {
             addButton.isHidden = true
             navigationItem.rightBarButtonItem = nil
         }
@@ -48,7 +48,7 @@ final class InspectionFormController: UIViewController{
     func style() {
         addButton.layer.cornerRadius = 5
         addButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        addButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        addButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         addButton.layer.shadowOpacity = 0.7
         addButton.layer.shadowRadius = 4
     }
@@ -76,7 +76,7 @@ final class InspectionFormController: UIViewController{
 		popViewController()
 	}
 	
-	fileprivate func load(){
+	fileprivate func load() {
         
         if let observations = DataServices.fetchObservations(for: inspection) {
             self.observations = observations
@@ -86,16 +86,15 @@ final class InspectionFormController: UIViewController{
         self.tableView.reloadData()
 	}
 	
-	fileprivate func setElements(enabled: Bool){
+	fileprivate func setElements(enabled: Bool) {
 		view.isUserInteractionEnabled = enabled
 		enabled ? indicator.stopAnimating() : indicator.startAnimating()
 		navigationItem.leftBarButtonItem?.isEnabled = enabled
 	}
-    
 }
 
-//MARK: -
-extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
+// MARK: -
+extension InspectionFormController: UITableViewDataSource, UITableViewDelegate {
     
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return observations.count
@@ -114,5 +113,4 @@ extension InspectionFormController: UITableViewDataSource, UITableViewDelegate{
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return 80
 	}
-    
 }

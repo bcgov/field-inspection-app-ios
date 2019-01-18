@@ -8,30 +8,29 @@
 
 import RealmSwift
 
-class PhotoThumb: Object{
+class PhotoThumb: Object {
     
     //Use this variable for image caching
-    var image : UIImage? {
+    var image: UIImage? {
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return UIImage(contentsOfFile: url.path)
     }
     
     // MARK: Properties
-    @objc dynamic var id            : String = "\(UUID().uuidString).jpeg"
-    @objc dynamic var observationId : String?
-    @objc dynamic var index         : Int = 0
+    @objc dynamic var id: String = "\(UUID().uuidString).jpeg"
+    @objc dynamic var observationId: String?
+    @objc dynamic var index: Int = 0
     // original asset type: Video? Photo?
-    @objc dynamic var originalType  : String?
+    @objc dynamic var originalType: String?
     
     override static func primaryKey() -> String? {
         return "id"
     }
 
-    @objc func get() -> Data?{
+    @objc func get() -> Data? {
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return try? Data(contentsOf: url)
     }
-
 }
 
 extension PhotoThumb: ParseFactory {
@@ -48,5 +47,4 @@ extension PhotoThumb: ParseFactory {
         }
         return object
     }
-    
 }

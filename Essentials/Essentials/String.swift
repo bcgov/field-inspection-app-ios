@@ -6,47 +6,46 @@
 //  Copyright © 2016 Vmee. All rights reserved.
 //
 
-
 extension String {
     
-    static public func random() -> String{
+    static public func random() -> String {
         let number = arc4random_uniform(999999999)
         return "\(number)"
     }
     
-    public func isEmpty() -> Bool{
+    public func isEmpty() -> Bool {
         let trimmed = self.trimmingCharacters(in: .whitespacesAndNewlines)
         return trimmed.isEmpty
     }
     
     public func firstComponent() -> String {
-        if let component = self.components(separatedBy: " ").first{
+        if let component = self.components(separatedBy: " ").first {
             return component
         }
         
         return self
     }
     
-    public func trimBy(numberOfChar: Int) -> String{
+    public func trimBy(numberOfChar: Int) -> String {
         return String(self.dropFirst(numberOfChar))
     }
     
-    public func trimWhiteSpace() -> String{
+    public func trimWhiteSpace() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    public func boolean() -> Bool?{
+    public func boolean() -> Bool? {
         return NSString(string: self).boolValue
     }
     
     ///Bigger score indicates better result
-    public func map(to search: String) -> Int{
+    public func map(to search: String) -> Int {
         var scrore = 0
         let search = Array(search.lowercased())
         let str = Array(self.lowercased())
-        for (index, char) in str.enumerated(){
-            if search.count > index{
-                if search[index] == char{
+        for (index, char) in str.enumerated() {
+            if search.count > index {
+                if search[index] == char {
                     scrore += 1
                 }
             }
@@ -100,7 +99,6 @@ extension String {
             let lenght = distance(from: range.lowerBound, to: range.upperBound)
             result.append(NSRange.init(location: location, length: lenght))
             start = range.upperBound
-            
         }
         return result
     }

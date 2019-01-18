@@ -6,7 +6,7 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension UITabBar{
+extension UITabBar {
    override open func sizeThatFits(_ size: CGSize) -> CGSize {
       var sizeThatFits = super.sizeThatFits(size)
       sizeThatFits.height = 45

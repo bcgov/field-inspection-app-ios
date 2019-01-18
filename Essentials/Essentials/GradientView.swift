@@ -9,8 +9,8 @@
 @IBDesignable
 class GradientView: UIView {
    
-    @IBInspectable var startColor : UIColor = UIColor.white
-    @IBInspectable var endColor   : UIColor = UIColor.black
+    @IBInspectable var startColor: UIColor = UIColor.white
+    @IBInspectable var endColor: UIColor = UIColor.black
  
     override func draw(_ rect: CGRect) {
         
@@ -19,13 +19,12 @@ class GradientView: UIView {
         let space  = CGColorSpaceCreateDeviceRGB()
         let colors = [startColor.cgColor, endColor.cgColor] as CFArray
        
-        let locations : [CGFloat] = [0.0, 1.0]
+        let locations: [CGFloat] = [0.0, 1.0]
         
-        if let gradient = CGGradient(colorsSpace: space, colors: colors, locations: locations){
+        if let gradient = CGGradient(colorsSpace: space, colors: colors, locations: locations) {
            
             let end = CGPoint(x: rect.maxX, y: rect.maxY)
             context.drawLinearGradient(gradient, start: CGPoint.zero, end: end, options: .drawsAfterEndLocation)
         }
-   
     }
 }

@@ -26,7 +26,7 @@ class SimpleFormTableViewCell: BaseFormCell {
     }
 
     var style: MiTextFieldStyle? {
-        didSet{
+        didSet {
             fieldHeight = (style?.height)!
             roundCorners = (style?.roundCorners)!
             inputColor = (style?.inputColor)!
@@ -38,13 +38,13 @@ class SimpleFormTableViewCell: BaseFormCell {
     }
 
     var fieldHeight: CGFloat = 100 {
-        didSet{
+        didSet {
             height.constant = fieldHeight
         }
     }
 
     var roundCorners: Bool = false {
-        didSet{
+        didSet {
             if roundCorners {
                 roundContainer(view: inputField.layer)
                 styleContainer(view: container.layer)
@@ -54,32 +54,32 @@ class SimpleFormTableViewCell: BaseFormCell {
     //inputColor: UIColor,fieldBG: UIColor, bgColor: UIColor, height: CGFloat, roundCorners: Bool
 
     var inputColor: UIColor = UIColor.black {
-        didSet{
+        didSet {
             inputField.textColor = inputColor
         }
     }
 
     var inputBG: UIColor = UIColor.white {
-        didSet{
+        didSet {
             inputField.backgroundColor = inputBG
             inputField.layer.borderColor = inputBG.cgColor
         }
     }
 
     var bgColor: UIColor = UIColor.white {
-        didSet{
+        didSet {
             container.backgroundColor = bgColor
         }
     }
 
     var titleColor: UIColor = UIColor.black {
-        didSet{
+        didSet {
             titleLabel.textColor = titleColor
         }
     }
 
     var borderStyle = UITextField.BorderStyle.roundedRect {
-        didSet{
+        didSet {
             inputField.borderStyle = borderStyle
         }
     }
@@ -87,7 +87,6 @@ class SimpleFormTableViewCell: BaseFormCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         inputField.delegate = self
-
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

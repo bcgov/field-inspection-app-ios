@@ -11,5 +11,4 @@ import UIKit
 class OptionCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imsgeView: UIImageView!
-    
 }

@@ -6,10 +6,9 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension UICollectionView{
+extension UICollectionView {
    
-   public func dequeue(identifier: String, indexPath: IndexPath) -> UICollectionViewCell?{
+   public func dequeue(identifier: String, indexPath: IndexPath) -> UICollectionViewCell? {
       return dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
    }
-   
 }

@@ -22,5 +22,4 @@ class RecultCollectionViewCell: UICollectionViewCell {
     func setImage(image: UIImage) {
         self.imageView.image = image
     }
-
 }

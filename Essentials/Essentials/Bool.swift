@@ -6,7 +6,5 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-
-extension Bool{
-    
+extension Bool {
 }

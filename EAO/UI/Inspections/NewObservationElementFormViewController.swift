@@ -13,7 +13,7 @@ import RealmSwift
 
 class NewObservationElementFormViewController: UIViewController {
     
-    //MARK: OUTLETS
+    // MARK: OUTLETS
     @IBOutlet weak var closePopupButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var popUpContainer: UIView!
@@ -34,9 +34,9 @@ class NewObservationElementFormViewController: UIViewController {
     static let segueShowVideoGallery = "showVideoGallery"
     static let segueShowAudioRecorder = "showAudioRecorder"
 
-    //Mark: COMPUTED VARIABLES
+    // MARK: COMPUTED VARIABLES
     var storedPhotos = [PhotoThumb]() {
-        didSet{
+        didSet {
             self.collectionView.reloadData()
         }
     }
@@ -51,7 +51,7 @@ class NewObservationElementFormViewController: UIViewController {
     }
     
     var enabledPopUp: Bool = false {
-        didSet{
+        didSet {
             if enabledPopUp {
                 grayScreen.alpha = 1
             } else {
@@ -61,13 +61,13 @@ class NewObservationElementFormViewController: UIViewController {
     }
 
     var storedAudios = [Audio]() {
-        didSet{
+        didSet {
             self.collectionView.reloadData()
         }
     }
 
     var showingVideoPreview: Bool = false {
-        didSet{
+        didSet {
             if showingVideoPreview {
                 closePopupButton.alpha = 1
             } else {
@@ -84,7 +84,7 @@ class NewObservationElementFormViewController: UIViewController {
         }
     }
 
-    //MARK: VARIABLES
+    // MARK: VARIABLES
     var playingAudio: Bool = false
     var audioPlayer: AVAudioPlayer!
     var videoPlayer: AVPlayer!
@@ -109,12 +109,12 @@ class NewObservationElementFormViewController: UIViewController {
 
     var isReadOnly: Bool = false
 
-    //MARK: CONSTANTS
+    // MARK: CONSTANTS
     var galleryManager = GalleryManager()
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
 
-    //Mark: View did load
+    // MARK: View did load
     override func viewDidLoad() {
 
         super.viewDidLoad()
@@ -148,7 +148,7 @@ class NewObservationElementFormViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil) { _ in
             self.collectionView.reloadData()
-            if UIDevice.current.orientation.isLandscape{
+            if UIDevice.current.orientation.isLandscape {
                 print("Landscape")
                 if self.isIpad() == false {
                     self.navBarHeight.constant = 0
@@ -193,7 +193,6 @@ class NewObservationElementFormViewController: UIViewController {
                 self.load()
             }
         }
-
     }
     
     func isIpad() -> Bool {
@@ -211,7 +210,7 @@ class NewObservationElementFormViewController: UIViewController {
         }
     }
 
-    func setupView(){
+    func setupView() {
         roundContainer(view: mediaContainer.layer)
         styleContainer(view: mediaContainer.layer)
         if isReadOnly {
@@ -221,12 +220,11 @@ class NewObservationElementFormViewController: UIViewController {
         self.containerHeight.constant = self.view.frame.height - 40
     }
     
-    //MARK: ACTIONS
+    // MARK: ACTIONS
     @IBAction func cancelAction(_ sender: Any) {
         showWarningAlert(title: "Are you sure?", description: "Your new text changes and new media loaded from the gallery will not be saved", yesButtonTapped: {
             self.close()
         }) {
-
         }
     }
     
@@ -279,7 +277,7 @@ class NewObservationElementFormViewController: UIViewController {
         enabledPopUp = false
     }
 
-    //MARK: FUNCTIONS
+    // MARK: FUNCTIONS
     func close() {
         self.dismiss(animated: true, completion: nil)
     }
@@ -311,7 +309,6 @@ class NewObservationElementFormViewController: UIViewController {
                     }
                 })
             })
-
         } else {
             // if asset is image:
             AssetManager.sharedInstance.getOriginal(phAsset: asset!) { (img) in
@@ -338,7 +335,7 @@ class NewObservationElementFormViewController: UIViewController {
         }
     }
 
-    func saveObservationAssets(completion: @escaping () -> Void){
+    func saveObservationAssets(completion: @escaping () -> Void) {
         var startingIndex = (storedPhotos.count - 1)
         if startingIndex < 0 {startingIndex = 0}
         let lastIndex = startingIndex + (multiSelectResult.count - 1)
@@ -373,13 +370,11 @@ class NewObservationElementFormViewController: UIViewController {
                 realm.add(observation, update: true)
             }
             self.close()
-
         } catch let error {
             AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
             print("Realm exception \(error.localizedDescription)")
         }
         self.unlock()
-
     }
 
     func setUpObservationObject() {
@@ -433,9 +428,9 @@ class NewObservationElementFormViewController: UIViewController {
     }
 
     func styleContainer(view: CALayer) {
-        view.borderColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        view.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         view.shadowOffset = CGSize(width: 0, height: 2)
-        view.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        view.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         view.shadowOpacity = 1
         view.shadowRadius = 3
     }
@@ -460,7 +455,7 @@ class NewObservationElementFormViewController: UIViewController {
         self.view.isUserInteractionEnabled = true
     }
     
-    //MARK: add new elements actions
+    // MARK: add new elements actions
     func goToCamera() {
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
@@ -480,11 +475,9 @@ class NewObservationElementFormViewController: UIViewController {
     func goToThedolite() {
         let appHookUrl = URL(string: "theodolite://")
         
-        if UIApplication.shared.canOpenURL(appHookUrl!)
-        {
-            UIApplication.shared.open(appHookUrl!, options:[:]) { (success) in
+        if UIApplication.shared.canOpenURL(appHookUrl!) {
+            UIApplication.shared.open(appHookUrl!, options: [:]) { (success) in
                 if !success {
-                    
                 }
             }
         } else {
@@ -497,7 +490,7 @@ class NewObservationElementFormViewController: UIViewController {
     }
 }
 
-//Mark: Collection view
+// MARK: Collection view
 extension NewObservationElementFormViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func initCollectionView() {
@@ -555,7 +548,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         } else {
             return getCellsForEditing(indexPath: indexPath)
         }
-
     }
 
     func getCellsForEditing(indexPath: IndexPath) -> UICollectionViewCell {
@@ -585,7 +577,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
             if index < storedPhotos.count {
                 // stored photo
                 cell.setWithPFThumb(photo: storedPhotos[index], type: .Thumbnail)
-            } else if (index - storedPhotos.count) < multiSelectResult.count{
+            } else if (index - storedPhotos.count) < multiSelectResult.count {
                 // multiselect result
                 cell.setWithAsset(asset: multiSelectResult[index - storedPhotos.count], type: .PHAsset)
             } else if ((index - storedPhotos.count) - multiSelectResult.count < storedAudios.count) {
@@ -621,7 +613,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
             if index < storedPhotos.count {
                 // stored photo
                 cell.setWithPFThumb(photo: storedPhotos[index], type: .Thumbnail)
-            } else if (index - storedPhotos.count) < multiSelectResult.count{
+            } else if (index - storedPhotos.count) < multiSelectResult.count {
                 // multiselect result
                 cell.setWithAsset(asset: multiSelectResult[index - storedPhotos.count], type: .PHAsset)
             } else if ((index - storedPhotos.count) - multiSelectResult.count < storedAudios.count) {
@@ -629,7 +621,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
             }
             return cell
         }
-
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -684,14 +675,12 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
                 }
                 showPreviewOf(index: storedPhotos[i].index)
             }
-
         } else if i - storedPhotos.count < multiSelectResult.count {
             print("multiselect")
         } else if i - storedPhotos.count - multiSelectResult.count < storedAudios.count {
             print("audio")
             playAudioAt(index: i - storedPhotos.count - multiSelectResult.count)
         }
-
     }
 
     func playAudioAt(index: Int) {
@@ -709,7 +698,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         if audio.notes != nil {
             form.addLabel(name: "sounddesc", text: audio.notes! , style: textStyleL)
         }
-        form.addButton(name:"playAudio\(index)", title: "Play",style: buttonStyleBlue) {
+        form.addButton(name: "playAudio\(index)", title: "Play",style: buttonStyleBlue) {
             if !self.playingAudio, let data = audio.get() {
                 print(data.count)
                 self.playAudio(data: data)
@@ -730,7 +719,6 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         self.containerHeight.constant = 380
         self.currForm = form
         form.display(in: self.popUpContainer, on: self)
-
     }
 
     func showPreviewOfVideo(index: Int) {
@@ -772,7 +760,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
                 let locationString = photo?.coordinate?.printableString() ?? ""
 
                 if let image = photo?.image {
-                    form.addImage(image:image)
+                    form.addImage(image: image)
                 }
                 form.addLabel(name: "caption", text: (photo?.caption)!, style: textStyleL)
                 form.addLabel(name: "piclocation", text: locationString, style: textStyleM)
@@ -790,9 +778,9 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
     }
 }
 
-//MARK: Collection view
-extension  NewObservationElementFormViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+// MARK: Collection view
+extension  NewObservationElementFormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         
 // Local variable inserted by Swift 4.2 migrator.
 let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
@@ -838,7 +826,7 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
             }
 
             // TODO:: Store nowDate
-            DataServices.savePhoto(image: image, index: self.storedPhotos.count, location:location, observationID: self.observation.id, description: comments, completion: { (done) in
+            DataServices.savePhoto(image: image, index: self.storedPhotos.count, location: location, observationID: self.observation.id, description: comments, completion: { (done) in
                 if done {
                     self.load()
                     self.enabledPopUp = false
@@ -856,7 +844,7 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
     }
 }
 
-extension NewObservationElementFormViewController : AVAudioPlayerDelegate{
+extension NewObservationElementFormViewController: AVAudioPlayerDelegate {
     // Playback
 
     func playback(url: URL) {
@@ -867,7 +855,6 @@ extension NewObservationElementFormViewController : AVAudioPlayerDelegate{
         } else {
             // error: could not find audio file
         }
-
     }
 
     func stopPlayback() {

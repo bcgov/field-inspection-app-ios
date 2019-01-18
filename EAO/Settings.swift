@@ -6,7 +6,7 @@
 //  Copyright © 2018 Province of British Columbia. All rights reserved.
 //
 
-struct Settings{
+struct Settings {
     
     static let REALM_SCHEMA_NUMBER: UInt64 = 3
     static var shouldRotate = false
@@ -18,11 +18,10 @@ struct Settings{
         
         return formatter
     }
-    
 }
 
 struct Colors {
-    static let Blue = UIColor(hex:"4667a2")
-    static let Red = UIColor(hex:"e03850")
-    static let White = UIColor(hex:"ffffff")
+    static let Blue = UIColor(hex: "4667a2")
+    static let Red = UIColor(hex: "e03850")
+    static let White = UIColor(hex: "ffffff")
 }

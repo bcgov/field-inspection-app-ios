@@ -8,9 +8,9 @@
 
 import  MapKit
 
-extension MKMapView{
-   public func setCurrentRegion(_ location: CLLocation?){
-      guard let coordinate = location?.coordinate else{
+extension MKMapView {
+   public func setCurrentRegion(_ location: CLLocation?) {
+      guard let coordinate = location?.coordinate else {
          return
       }
       
@@ -23,14 +23,13 @@ extension MKMapView{
       setRegion(region, animated: true)
    }
    
-   public func regionWithRange(range: Double) -> MKCoordinateRegion{
+   public func regionWithRange(range: Double) -> MKCoordinateRegion {
       let coordinate = self.userLocation.coordinate
     
       let span = MKCoordinateSpanMake(range, range)
       let region = MKCoordinateRegion(center: coordinate, span: span)
       
       return region
-      
    }
     
     public func coordinate(from: CGPoint) -> CLLocation {

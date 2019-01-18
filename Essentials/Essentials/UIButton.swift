@@ -6,34 +6,28 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension UIButton{
+extension UIButton {
     
-    @IBInspectable var left: CGFloat{
-        get{return 0}
-        set{
+    @IBInspectable var left: CGFloat {
+        get {return 0}
+        set {
             titleEdgeInsets.left = newValue
         }
     }
     
-    @IBInspectable var numberOfLines: Int{
-        get{return 0}
-        set{
+    @IBInspectable var numberOfLines: Int {
+        get {return 0}
+        set {
             self.titleLabel?.numberOfLines = newValue
         }
     }
     
-    
-    @IBInspectable var centralize: Bool{
-        get{return false}
-        set{
-            if newValue{
+    @IBInspectable var centralize: Bool {
+        get {return false}
+        set {
+            if newValue {
                 self.titleLabel?.textAlignment = .center
             }
         }
     }
-    
-    
-    
-    
-    
 }

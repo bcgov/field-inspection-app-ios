@@ -10,15 +10,15 @@
 //	DatePickerController.present(on: self, minimum: Date()) { (date) in
 //		print(date)
 //	}
-final public class DatePickerController: UIViewController{
+final public class DatePickerController: UIViewController {
 	fileprivate var completion: ((_ date: Date?)->Void)?
-	//MARK: -
-	@IBOutlet private var button	 : UIButton!
-	@IBOutlet private var datePicker : UIDatePicker!
-	@IBOutlet private var container	 : UIView!
+	// MARK: -
+	@IBOutlet private var button: UIButton!
+	@IBOutlet private var datePicker: UIDatePicker!
+	@IBOutlet private var container: UIView!
 	@IBOutlet private var wrapper: UIView!
 	@IBOutlet private var bottomConstraint: NSLayoutConstraint!
-	//MARK: -
+	// MARK: -
 	@IBAction func tap(_ sender: UITapGestureRecognizer) {
 		completion?(nil)
 		dismiss()
@@ -30,9 +30,9 @@ final public class DatePickerController: UIViewController{
 		dismiss()
 	}
 
-	//MARK: -
+	// MARK: -
 	///
-	public static func present(on controller: UIViewController, minimum: Date? = nil ,completion: @escaping (_ date: Date?)->Void){
+	public static func present(on controller: UIViewController, minimum: Date? = nil ,completion: @escaping (_ date: Date?)->Void) {
 		let pickerController =  DatePickerController.storyboardInstance() as! DatePickerController
 		pickerController.completion = completion
 		controller.addChildViewController(pickerController)
@@ -45,7 +45,7 @@ final public class DatePickerController: UIViewController{
 		}
 	}
 	
-	private func dismiss(){
+	private func dismiss() {
 		self.bottomConstraint.constant = -360
 		UIView.animate(withDuration: 0.2, animations: {
 			self.view.layoutIfNeeded()
@@ -56,19 +56,4 @@ final public class DatePickerController: UIViewController{
 		}
 	}
 }
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

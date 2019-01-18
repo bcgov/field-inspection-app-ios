@@ -14,7 +14,6 @@ extension UIColor {
    }
    
    convenience public init(hexadecimal: Int) {
-      self.init(red:(hexadecimal >> 16) & 0xff, green:(hexadecimal >> 8) & 0xff, blue:hexadecimal & 0xff)
+      self.init(red: (hexadecimal >> 16) & 0xff, green: (hexadecimal >> 8) & 0xff, blue: hexadecimal & 0xff)
    }
-    
 }

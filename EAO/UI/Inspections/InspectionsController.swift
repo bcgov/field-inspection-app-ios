@@ -35,7 +35,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet private var segmentedControl: UISegmentedControl!
     @IBOutlet private var indicator: UIActivityIndicatorView!
     
-    //MARK: variables
+    // MARK: variables
 	private var isBeingUploaded = false
     private var locationManager: CLLocationManager = {
         // TODO:(jl) This should be moved to where its used and the user advised
@@ -99,7 +99,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         
         addNewInspectionButton.layer.cornerRadius = 5
         addNewInspectionButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        addNewInspectionButton.layer.shadowColor = UIColor(red:0, green:0, blue:0, alpha:0.5).cgColor
+        addNewInspectionButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         addNewInspectionButton.layer.shadowOpacity = 0.7
         addNewInspectionButton.layer.shadowRadius = 4
         
@@ -159,7 +159,6 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             loadInspections(fetchRemote: true)
         }
         refreshControl.endRefreshing()
-
     }
 
     private func loadInspections(fetchRemote: Bool = false) {
@@ -181,7 +180,6 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             self.indicator.stopAnimating()
             self.tableView.reloadData()
         }
-        
 	}
 
 	// Use this method to insert an inspection to the 'In Progress' tab
@@ -190,7 +188,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
 		if let inspection = notification?.object as? Inspection {
             self.inspections.draft.append(inspection);
             self.inspections.draft.sort(by: { (left, right) -> Bool in
-                guard let startL = left.start, let startR = right.start else{
+                guard let startL = left.start, let startR = right.start else {
                     return false
                 }
                 return startL > startR
@@ -249,15 +247,12 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             cell.enableEdit(canEdit: true)
             cell.configForTransferState(state: .upload)
             cell.onTransferTouched = uploadTouchedCallback(inspection: inspection)
-            
         } else if inspection.isSubmitted && inspection.isStoredLocally {
             cell.configForTransferState(state: .disabled)
             cell.enableEdit(canEdit: false)
-            
         } else if inspection.isSubmitted && inspection.isStoredLocally == false {
             cell.configForTransferState(state: .download)
             cell.onTransferTouched = downloadTouchedCallback(inspection: inspection, cell: cell)
-            
         } else {
             cell.configForTransferState(state: .upload)
             cell.enableEdit(canEdit: !inspection.isSubmitted)

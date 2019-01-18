@@ -63,5 +63,4 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return UIImage(data: imageData!)!
     }
-
 }

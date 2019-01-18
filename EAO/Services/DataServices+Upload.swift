@@ -35,5 +35,4 @@ extension DataServices {
         }
         self.uploadQueue.addOperation(inspectionOperation)
     }
-
 }

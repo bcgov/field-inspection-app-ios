@@ -7,24 +7,24 @@
 
 import Parse
 
-final class PFPhoto: PFObject, PFSubclassing{
+final class PFPhoto: PFObject, PFSubclassing {
     ///Use this variable for image caching
-    @objc var image : UIImage?
+    @objc var image: UIImage?
     
-    @NSManaged var id            : String?
-    @NSManaged var observationId : String?
-    @NSManaged var file          : PFFileObject?
-    @NSManaged var caption       : String?
-    @NSManaged var timestamp     : Date?
-    @NSManaged var coordinate    : PFGeoPoint?
+    @NSManaged var id: String?
+    @NSManaged var observationId: String?
+    @NSManaged var file: PFFileObject?
+    @NSManaged var caption: String?
+    @NSManaged var timestamp: Date?
+    @NSManaged var coordinate: PFGeoPoint?
     @NSManaged var index: NSNumber?
     
     static func parseClassName() -> String {
         return "Photo"
     }
     
-    @objc static func load(for observationId: String, result: @escaping (_ photos: [PFPhoto]?)->Void){
-        guard let query = PFPhoto.query() else{
+    @objc static func load(for observationId: String, result: @escaping (_ photos: [PFPhoto]?)->Void) {
+        guard let query = PFPhoto.query() else {
             result(nil)
             return
         }
@@ -35,8 +35,8 @@ final class PFPhoto: PFObject, PFSubclassing{
         })
     }
     
-    @objc func get() -> Data?{
-        guard let id = id else{
+    @objc func get() -> Data? {
+        guard let id = id else {
             return nil
         }
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)

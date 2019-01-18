@@ -6,8 +6,8 @@
 //  Copyright © 2017 Vmee. All rights reserved.
 //
 
-extension FileManager{
-	static public var directory: URL{
+extension FileManager {
+	static public var directory: URL {
 		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		return paths[0]
 	}

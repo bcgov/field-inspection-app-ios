@@ -6,24 +6,20 @@
 //  Copyright © 2016 Vmee. All rights reserved.
 //
 
-
-
 extension UIView {
  
-    public func animateLayoutUsingSpring(duration: Double, dumping: CGFloat, completion: (()->Void)? = nil){
+    public func animateLayoutUsingSpring(duration: Double, dumping: CGFloat, completion: (()->Void)? = nil) {
         
         UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: dumping, initialSpringVelocity: 0.25, options: .curveLinear, animations: {
             
             self.layoutIfNeeded()
-            
         }, completion: { (_) in
             
             completion?()
         })
-        
     }
     
-    public func animateLayout(duration: Double){
+    public func animateLayout(duration: Double) {
         UIView.animate(withDuration: duration) {
             self.layoutIfNeeded()
         }
@@ -41,7 +37,7 @@ extension UIView {
         return instance
     }
     
-    public static func loadFromNibWithName(nibNamed: String, bundle : Bundle? = nil) -> UIView? {
+    public static func loadFromNibWithName(nibNamed: String, bundle: Bundle? = nil) -> UIView? {
         let nib = UINib(nibName: nibNamed, bundle: bundle)
         let instances = nib.instantiate(withOwner: nil, options: nil)
         let instance = instances.first as? UIView
@@ -49,7 +45,7 @@ extension UIView {
         return instance
     }
     
-    public static func loadFromNib(bundle : Bundle? = nil) -> UIView? {
+    public static func loadFromNib(bundle: Bundle? = nil) -> UIView? {
         let nibName = String(describing: self)
         let nib = UINib(nibName: nibName, bundle: bundle)
         let instances = nib.instantiate(withOwner: nil, options: nil)
@@ -59,7 +55,7 @@ extension UIView {
     }
     
 	///makes self a circle
-	public func circle(){
+	public func circle() {
 		layer.cornerRadius = frame.width/2
 	}
 	
@@ -73,22 +69,20 @@ extension UIView {
 		}
 		return nil
 	}
-	
 }
 
-
-extension UIView{
+extension UIView {
 	
-	@IBInspectable public var masksToBounds: Bool{
+	@IBInspectable public var masksToBounds: Bool {
 		get { return layer.masksToBounds }
 		set {
 			layer.masksToBounds = newValue
 		}
 	}
 	
-	@IBInspectable public var shadowColor: UIColor?{
+	@IBInspectable public var shadowColor: UIColor? {
 		get {
-			if let color = layer.shadowColor{
+			if let color = layer.shadowColor {
 				return UIColor(cgColor: color)
 			}
 			return nil
@@ -98,29 +92,28 @@ extension UIView{
 		}
 	}
 	
-	@IBInspectable public var shadowOffsetX: CGFloat{
+	@IBInspectable public var shadowOffsetX: CGFloat {
 		get { return layer.shadowOffset.width }
 		set {
 			layer.shadowOffset.width = newValue
 		}
 	}
 	
-	@IBInspectable public var shadowOffsetY: CGFloat{
+	@IBInspectable public var shadowOffsetY: CGFloat {
 		get { return layer.shadowOffset.height }
 		set {
 			layer.shadowOffset.height = newValue
 		}
 	}
 	
-	
-	@IBInspectable public var shadowOpacity: Float{
+	@IBInspectable public var shadowOpacity: Float {
 		get { return layer.shadowOpacity }
 		set {
 			layer.shadowOpacity = newValue
 		}
 	}
 	
-	@IBInspectable public var shadowRadius: CGFloat{
+	@IBInspectable public var shadowRadius: CGFloat {
 		get { return layer.shadowRadius }
 		set {
 			layer.shadowRadius = newValue
@@ -142,24 +135,10 @@ extension UIView{
 	}
 	
 	@IBInspectable public var borderColor: UIColor? {
-		get { return UIColor(cgColor:layer.borderColor ?? UIColor.clear.cgColor) }
+		get { return UIColor(cgColor: layer.borderColor ?? UIColor.clear.cgColor) }
 		set {
 			layer.borderColor = newValue?.cgColor
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -71,6 +71,5 @@ class EAOProject: Object, Mappable {
         lon <- map[SerializationKeys.lon]
         decisionDate <- map[SerializationKeys.decisionDate]
     }
-    
 }
 

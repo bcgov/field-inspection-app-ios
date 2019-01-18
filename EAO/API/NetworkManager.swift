@@ -24,7 +24,7 @@ import RealmSwift
 
 class NetworkManager {
     
-    enum NetworkError: Error{
+    enum NetworkError: Error {
         case OK
         case NetworkError
         case RequestTimedOut
@@ -39,7 +39,7 @@ class NetworkManager {
     private(set) internal var isReachableOnEthernetOrWiFi: Bool = false
     private(set) internal var isReachable: Bool = false
     private(set) internal var isReachableOnWWAN: Bool = false
-    internal var onReacabilityChanged: ((_ isReachableOnEthernetOrWiFi: Bool) -> ())?
+    internal var onReacabilityChanged: ((_ isReachableOnEthernetOrWiFi: Bool) -> Void)?
     
     internal func start() {
         
@@ -93,7 +93,7 @@ class NetworkManager {
     
     class func processResponse<T>(_ response: Alamofire.DataResponse<T>) -> (T?, Error?) {
         
-        if let error = process(statusCode: response.response?.statusCode){
+        if let error = process(statusCode: response.response?.statusCode) {
             return (nil, error)
         }
         
@@ -103,26 +103,25 @@ class NetworkManager {
             
         case .failure(let error):
             
-            switch (response.response?.statusCode){
+            switch (response.response?.statusCode) {
             case 200?:
-                if response.data?.count == 0{
+                if response.data?.count == 0 {
                     return (nil, nil)
                 }
                 return (nil, error)
             default:
-                if (error as NSError).code == 2{
+                if (error as NSError).code == 2 {
                     return (nil, NetworkError.NetworkError)
                 }
                 
                 return (nil, error)
             }
         }
-        
     }
     
-    class func process(statusCode:Int? = nil) -> Error? {
+    class func process(statusCode: Int? = nil) -> Error? {
         
-        switch (statusCode){
+        switch (statusCode) {
         case NSURLErrorTimedOut?:
             return NetworkError.RequestTimedOut
             
@@ -139,5 +138,4 @@ class NetworkManager {
             return nil
         }
     }
-    
 }

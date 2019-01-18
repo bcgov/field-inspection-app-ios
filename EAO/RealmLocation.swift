@@ -16,15 +16,15 @@ class RealmLocation: Object, Mappable {
         static let longitude = "longitude"
     }
     
-    @objc dynamic var latitude : Double = 0
-    @objc dynamic var longitude : Double = 0
+    @objc dynamic var latitude: Double = 0
+    @objc dynamic var longitude: Double = 0
     
     required convenience init?(map: Map) {
         self.init()
     }
     
     required convenience init?(location: CLLocation?) {
-        if let location = location{
+        if let location = location {
             self.init()
             latitude = location.coordinate.latitude
             longitude = location.coordinate.longitude
@@ -44,11 +44,10 @@ class RealmLocation: Object, Mappable {
         return "Lat:\(String(format: "%\(precision)f", latitude)); Long: \(String(format: "%\(precision)f", longitude))"
     }
     
-    private func round(num:Double, toPlaces places:Int) -> Double {
+    private func round(num: Double, toPlaces places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (num * divisor).rounded() / divisor
     }
-    
 }
 
 extension RealmLocation {
@@ -61,5 +60,4 @@ extension RealmLocation {
 
         return object
     }
-    
 }

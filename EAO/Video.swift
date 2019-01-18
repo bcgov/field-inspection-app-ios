@@ -8,11 +8,11 @@
 
 import RealmSwift
 
-final class Video: Object{
+final class Video: Object {
     
-    @objc dynamic var id            : String = "\(UUID().uuidString).mp4"
-    @objc dynamic var observationId : String?
-    @objc dynamic var inspectionId : String?
+    @objc dynamic var id: String = "\(UUID().uuidString).mp4"
+    @objc dynamic var observationId: String?
+    @objc dynamic var inspectionId: String?
     @objc dynamic var index: Int = 0
     @objc dynamic var notes: String?
     @objc dynamic var title: String?
@@ -23,12 +23,12 @@ final class Video: Object{
         return "id"
     }
     
-    @objc func get() -> Data?{
+    @objc func get() -> Data? {
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return try? Data(contentsOf: url)
     }
     
-    @objc func getURL() -> URL?{
+    @objc func getURL() -> URL? {
         let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return url
     }
@@ -43,7 +43,7 @@ extension Video: ParseFactory {
         object.observationId = self.observationId
         object.inspectionId = self.inspectionId
         object.notes = self.notes
-        if let urlString = self.url{
+        if let urlString = self.url {
             object.url = URL(string: urlString)
         }
         object.coordinate = self.coordinate?.createParseObject()
@@ -55,5 +55,4 @@ extension Video: ParseFactory {
         
         return object
     }
-    
 }
