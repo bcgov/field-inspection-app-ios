@@ -15,9 +15,8 @@ final class ProjectListController: UIViewController {
 	@IBOutlet fileprivate var tableView: UITableView!
 	@IBOutlet fileprivate var searchBar: UISearchBar!
 
-    let refreshControl = UIRefreshControl()
-
     //MARK: variables
+    let refreshControl = UIRefreshControl()
     @objc var result : ((_: String?)->Void)?
     
     fileprivate var projects : [String]?
@@ -46,12 +45,12 @@ final class ProjectListController: UIViewController {
 		let select = UIAlertAction(title: "Select", style: .default) { (_) in
 			if let text = alert.textFields?.first?.text, !text.isEmpty(){
 				self.result?(text)
-				self.pop()
+				self.popViewController()
 			}
 		}
 		let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 		alert.addActions([select,cancel])
-		present(controller: alert)
+		presentAlert(controller: alert)
 	}
 	
 	//MARK:-
@@ -154,7 +153,7 @@ extension ProjectListController: UITableViewDelegate, UITableViewDataSource{
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		result?(filtered?[indexPath.row].string ?? projects?[indexPath.row])
-		pop()
+		popViewController()
 	}
     
 }

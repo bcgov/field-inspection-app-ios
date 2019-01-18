@@ -67,16 +67,17 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
     }
 
 	//MARK: -
-
 	@IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
 		if didMakeChange{
-			present(controller: UIAlertController(title: "Would you like to save data?", message: nil, yes: {
-				self.save(nil)
-			}, cancel: {
-				self.pop()
-			}))
+            let alert = UIAlertController(title: "Would you like to save data?", message: nil, yes: {
+                self.save(nil)
+            }, cancel: {
+                self.popViewController()
+            })
+            
+			presentAlert(controller: alert)
 		} else{
-			pop()
+			popViewController()
 		}
 	}
 
@@ -136,7 +137,7 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
     
     @IBAction fileprivate func photoTapped(_ sender: UIButton) {
         let alert = cameraOptionsController()
-        present(controller: alert)
+        presentAlert(controller: alert)
     }
     
 	func keyboardWillShow(with height: NSNumber) {
@@ -168,7 +169,7 @@ class UploadPhotoController: UIViewController, KeyboardDelegate{
     
     fileprivate func validate()->Bool{
         if imageView.image == nil{
-            present(controller: Alerts.error)
+            presentAlert(controller: Alerts.error)
             return false
         }
         return true
@@ -201,7 +202,7 @@ extension UploadPhotoController: UITextViewDelegate{
 		if length < 5000 {
 			return true
 		} else{
-			present(controller: UIAlertController(title: "Text Limit Exceeded", message: "You've reached maximum number of characters allowed"))
+			presentAlert(title: "Text Limit Exceeded", message: "You've reached maximum number of characters allowed")
 			return false
 		}
 	}

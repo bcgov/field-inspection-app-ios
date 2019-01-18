@@ -43,7 +43,7 @@ final class TextViewController: UIViewController{
     //MARK: IB Actions
     @IBAction fileprivate func doneTapped(_ sender: UIBarButtonItem) {
         result?(textView.text)
-        pop()
+        popViewController()
     }
 
 }
@@ -66,7 +66,7 @@ extension TextViewController: UITextViewDelegate{
 		if length < 5000 {
 			return true  
 		} else{
-			present(controller: UIAlertController(title: "Text Limit Exceeded", message: "You've reached maximum number of characters allowed"))
+			presentAlert(title: "Text Limit Exceeded", message: "You've reached maximum number of characters allowed")
 			return false
 		}
 	}

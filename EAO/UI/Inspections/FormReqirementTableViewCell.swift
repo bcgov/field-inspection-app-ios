@@ -27,7 +27,7 @@ class FormReqirementTableViewCell: BaseFormCell {
     }
 
     @IBAction func updateRequirement(_ sender: Any) {
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.elementRequirement = textField.text!
     }
 
@@ -39,7 +39,7 @@ class FormReqirementTableViewCell: BaseFormCell {
 extension FormReqirementTableViewCell: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         let textString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
         vc?.elementRequirement = textString
         return true

@@ -124,13 +124,6 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
 	}
 
-	@IBAction func settingsTapped(_ sender: UIBarButtonItem) {
-
-		sender.isEnabled = false
-		push(controller: SettingsController.storyboardInstance())
-		sender.isEnabled = true
-	}
-	
 	@IBAction func segmentedControlChangedValue(_ sender: UISegmentedControl) {
 
         if selectedIndex == Sections.Submitted.rawValue {
@@ -291,13 +284,13 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         
         let title = "Upload"
         let message = "Do you want to upload this inspection? You won't be able to edit it later"
-        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Ok", style: .default, handler: completion)
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: completion)
-        ac.addAction(cancel)
-        ac.addAction(ok)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: completion)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: completion)
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
 
-        present(controller: ac)
+        presentAlert(controller: alert)
     }
     
     private func downloadTouchedCallback(inspection: Inspection, cell: InspectionCell) -> (() -> Void) {

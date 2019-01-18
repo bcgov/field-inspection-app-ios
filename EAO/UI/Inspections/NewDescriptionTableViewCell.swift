@@ -48,7 +48,7 @@ class NewDescriptionTableViewCell: BaseFormCell {
         } else {
             textView.text = textView.text + "\n\(currentLocation)\n"
         }
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.elementnewDescription = textView.text
     }
 
@@ -58,7 +58,7 @@ class NewDescriptionTableViewCell: BaseFormCell {
         } else {
             textView.text = textView.text + "\n\(getCurrentDate())\n"
         }
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.elementnewDescription = textView.text
     }
 
@@ -73,11 +73,11 @@ class NewDescriptionTableViewCell: BaseFormCell {
 extension NewDescriptionTableViewCell: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.elementnewDescription = textView.text
     }
     func textViewDidEndEditing(_ textView: UITextView) {
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.elementnewDescription = textView.text
     }
 }
@@ -128,7 +128,7 @@ extension NewDescriptionTableViewCell: CLLocationManagerDelegate {
         }
         alertController.addAction(openAction)
 
-        self.parentViewController?.present(alertController, animated: true, completion: nil)
+        self.parentViewController?.presentAlert(controller: alertController)
     }
 
     func round(num:Double, toPlaces places:Int) -> Double {

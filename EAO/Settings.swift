@@ -24,5 +24,5 @@ struct Settings{
 struct Colors {
     static let Blue = UIColor(hex:"4667a2")
     static let Red = UIColor(hex:"e03850")
-    
+    static let White = UIColor(hex:"ffffff")
 }

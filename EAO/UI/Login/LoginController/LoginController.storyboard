@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="G1Q-iD-kVC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="G1Q-iD-kVC">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Login Controller-->
         <scene sceneID="QXB-cr-Px3">
             <objects>
-                <viewController id="G1Q-iD-kVC" customClass="LoginController" customModule="EAO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="G1Q-iD-kVC" customClass="LoginController" customModule="Field_Insp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Tkh-pR-lbR"/>
                         <viewControllerLayoutGuide type="bottom" id="ZZs-4k-PNK"/>
@@ -108,7 +106,7 @@
                                 </constraints>
                             </scrollView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="YNf-EF-cFQ">
-                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C1L-9y-3T5">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
@@ -159,11 +157,20 @@
                         <outlet property="passwordField" destination="ZQd-v6-hxX" id="wRe-n7-YGH"/>
                         <outlet property="scrollView" destination="0Sm-ix-1LE" id="amu-UI-lDG"/>
                         <outlet property="usernameField" destination="6Jv-om-wKV" id="bMJ-fd-xM9"/>
+                        <segue destination="CAW-R0-F4N" kind="presentation" identifier="showInspector" id="tGY-KW-rpz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="evX-LU-gsd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="212" y="220.83958020989508"/>
+        </scene>
+        <!--InspectionsController-->
+        <scene sceneID="e70-Cn-Pvn">
+            <objects>
+                <viewControllerPlaceholder storyboardName="InspectionsController" id="CAW-R0-F4N" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Ho-HD-40r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1064" y="187"/>
         </scene>
     </scenes>
     <resources>

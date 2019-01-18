@@ -31,6 +31,8 @@ final class LoginController: UIViewController{
     @IBOutlet fileprivate var indicator: UIActivityIndicatorView!
     @IBOutlet weak var loginButton: UIButton!
     
+    static let segueShowInspector = "showInspector"
+    
     //MARK: Initialization
     override func viewDidLoad() {
         style()
@@ -51,7 +53,7 @@ final class LoginController: UIViewController{
             let credentials = try validateCredentials()
             
             guard Reachability.isConnectedToNetwork() else {
-                present(controller: UIAlertController.noInternet)
+                presentAlert(controller: UIAlertController.noInternet)
                 return
             }
             
@@ -63,9 +65,9 @@ final class LoginController: UIViewController{
                     let code = (error! as NSError).code
                     switch code{
                     case 101:
-                        self.present(controller: UIAlertController(title: "Couldn't log in", message: "Entered credentials are not valid"))
+                        self.presentAlert(title: "Couldn't log in", message: "Entered credentials are not valid")
                     default:
-                        self.present(controller: UIAlertController(title: "Couldn't log in", message: "Error code is \(code)"))
+                        self.presentAlert(title: "Couldn't log in", message: "Error code is \(code)")
                     }
                     
                     sender.isEnabled = true
@@ -81,14 +83,11 @@ final class LoginController: UIViewController{
                         })
                         
                         DataServices.shared.reloadReferenceData(completion: { (_) in
-                            self.clearTextFields()
-                            self.present(controller: InspectionsController.storyboardInstance())
-                            self.indicator.stopAnimating()
+                            self.showInspectionsController()
                             sender.isEnabled = true
                         })
-
                     } else {
-                        self.present(controller: UIAlertController(title: "Couldn't log in", message: "Mobile access is disabled"))
+                        self.presentAlert(title: "Couldn't log in", message: "Mobile access is disabled")
                         PFUser.logOut()
                         self.indicator.stopAnimating()
                         sender.isEnabled = true
@@ -97,19 +96,17 @@ final class LoginController: UIViewController{
                 })
                 
                 DataServices.shared.reloadReferenceData(completion: { (_) in
-                    self.clearTextFields()
-                    self.present(controller: InspectionsController.storyboardInstance())
-                    self.indicator.stopAnimating()
+                    self.showInspectionsController()
                     sender.isEnabled = true
                 })
             }
         } catch{
-            self.present(controller: UIAlertController(title: "Couldn't log in", message: (error as? LoginError)?.message))
+            self.presentAlert(title: "Couldn't log in", message: (error as? LoginError)?.message)
         }
     }
     
     @IBAction fileprivate func forgotPasswordTapped(_ sender: UIButton) {
-        present(controller: UIAlertController(title: "Please contact Geoff McDonald to change your user credentials.", message: nil))
+        presentAlert(title: "Please contact Geoff McDonald to change your user credentials.", message: nil)
     }
     
     @objc func presentMainScreen(){
@@ -118,9 +115,7 @@ final class LoginController: UIViewController{
             
             self.indicator.startAnimating()
             DataServices.shared.reloadReferenceData { (_) in
-                self.clearTextFields()
-                self.present(controller: InspectionsController.storyboardInstance())
-                self.indicator.stopAnimating()
+                self.showInspectionsController()
             }
         }
     }
@@ -147,6 +142,12 @@ final class LoginController: UIViewController{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
         return true
+    }
+    
+    private func showInspectionsController(){
+        self.clearTextFields()
+        self.indicator.stopAnimating()
+        self.performSegue(withIdentifier: LoginController.segueShowInspector, sender: nil)
     }
     
 }

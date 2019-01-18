@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Stp-H9-KLN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Stp-H9-KLN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--New Observation Controller-->
         <scene sceneID="cJ2-Zn-mhm">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Stp-H9-KLN" customClass="NewObservationController" customModule="EAO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Stp-H9-KLN" customClass="NewObservationController" customModule="Field_Insp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XcU-CL-IMi"/>
                         <viewControllerLayoutGuide type="bottom" id="2Ge-dm-tAJ"/>
@@ -102,7 +102,7 @@
                                             <inset key="sectionInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCell" id="AK8-d7-7Uf" customClass="ObservationElementPhotoCell" customModule="EAO" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCell" id="AK8-d7-7Uf" customClass="ObservationElementPhotoCell" customModule="Field_Insp" customModuleProvider="target">
                                                 <rect key="frame" x="5" y="0.0" width="94" height="69"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -125,7 +125,7 @@
                                                     <outlet property="imageView" destination="MTF-PY-reI" id="Coa-9A-fOB"/>
                                                 </connections>
                                             </collectionViewCell>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AddNewPhotoCell" id="shr-qK-6Tc" customClass="ObservationElementAddNewPhotoCell" customModule="EAO" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AddNewPhotoCell" id="shr-qK-6Tc" customClass="ObservationElementAddNewPhotoCell" customModule="Field_Insp" customModuleProvider="target">
                                                 <rect key="frame" x="140.5" y="0.0" width="94" height="69"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -138,7 +138,7 @@
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
-                                                                <action selector="addPhotoTapped:" destination="Stp-H9-KLN" eventType="touchUpInside" id="Cpo-R4-p6g"/>
+                                                                <segue destination="dRn-rr-Cc9" kind="show" identifier="addPhoto" id="SJo-WP-kBn"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -160,7 +160,7 @@
                                         </connections>
                                     </collectionView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="qaK-dn-6Pa">
-                                        <rect key="frame" x="20" y="404.5" width="335" height="50"/>
+                                        <rect key="frame" x="20" y="404" width="335" height="50"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wOb-1p-sMc">
                                                 <rect key="frame" x="0.0" y="0.0" width="147.5" height="50"/>
@@ -219,7 +219,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </textView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_think" translatesAutoresizingMaskIntoConstraints="NO" id="SS6-DR-pmY">
-                                        <rect key="frame" x="340" y="193" width="25" height="20"/>
+                                        <rect key="frame" x="340" y="193.5" width="25" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="25" id="Qn6-OY-NW4"/>
                                             <constraint firstAttribute="height" constant="20" id="hvA-fr-B4s"/>
@@ -230,6 +230,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="descriptionTapped:" destination="Stp-H9-KLN" eventType="touchUpInside" id="ADD-Jd-ohN"/>
+                                            <segue destination="kWZ-He-5xw" kind="show" identifier="showDescription" id="sGE-KM-oMP"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -285,13 +286,13 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Element" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IKr-he-Exc">
-                                    <rect key="frame" x="23" y="6" width="105" height="21"/>
+                                    <rect key="frame" x="22.5" y="6" width="105" height="21"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="JfN-gL-wrK">
-                                    <rect key="frame" x="133" y="6.5" width="20" height="20"/>
+                                    <rect key="frame" x="132.5" y="6.5" width="20" height="20"/>
                                     <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </activityIndicatorView>
                             </subviews>
@@ -320,16 +321,41 @@
                         <outlet property="requirementTextField" destination="4ef-Ud-Hoa" id="LDQ-6l-EIf"/>
                         <outlet property="scrollView" destination="lth-sO-X8t" id="fxT-dm-6fD"/>
                         <outlet property="titleTextField" destination="2j7-CQ-2ov" id="WaE-dx-hIt"/>
+                        <segue destination="24o-hR-BMT" kind="show" identifier="goToUploadPhoto" id="3N5-3B-GNp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1lf-oj-KzK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="480.80000000000001" y="-69.715142428785612"/>
         </scene>
+        <!--Storyboard Reference-->
+        <scene sceneID="aLc-pl-T6g">
+            <objects>
+                <viewControllerPlaceholder id="kWZ-He-5xw" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lZU-ng-6qG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1159" y="-204"/>
+        </scene>
+        <!--Storyboard Reference-->
+        <scene sceneID="ivc-fb-w5A">
+            <objects>
+                <viewControllerPlaceholder id="dRn-rr-Cc9" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZvP-Ax-XIC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1214" y="7"/>
+        </scene>
+        <!--Storyboard Reference-->
+        <scene sceneID="jxI-Pf-wI5">
+            <objects>
+                <viewControllerPlaceholder id="24o-hR-BMT" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I0Y-Mx-fzW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1150" y="86"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="icon_add_photo" width="64" height="64"/>
-        <image name="icon_arrow_right_think" width="30" height="30"/>
-        <image name="icon_back" width="25" height="25"/>
+        <image name="icon_add_photo" width="128" height="128"/>
+        <image name="icon_arrow_right_think" width="60" height="60"/>
+        <image name="icon_back" width="1.2000000476837158" height="1.2000000476837158"/>
     </resources>
 </document>

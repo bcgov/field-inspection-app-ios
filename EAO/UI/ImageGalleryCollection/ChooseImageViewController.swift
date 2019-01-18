@@ -34,7 +34,7 @@ class ChooseImageViewController: UIViewController {
     var mode: GalleryMode = GalleryMode.Image
 
     // colors:
-    var bg: UIColor = UIColor(hex: "1598a7")
+    var backgroundColor: UIColor = UIColor(hex: "1598a7")
     var utilBarBG: UIColor = UIColor(hex: "0a3e44")
     var buttonText: UIColor = UIColor(hex: "d7eef1")
     var loadingBG: UIColor = UIColor(hex: "1598a7")
@@ -43,12 +43,14 @@ class ChooseImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         lockdown()
+        
         style()
         loadData()
         setUpCollectionView()
+        styleContainer(view: navBar.layer)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(sent), name: .selectedImages, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        styleContainer(view: navBar.layer)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -128,15 +130,16 @@ class ChooseImageViewController: UIViewController {
     }
 
     func style() {
+        setColors(bg: Colors.White, utilBarBG: Colors.Blue, buttonText: Colors.White, loadingBG: Colors.Blue, loadingIndicator: Colors.White)
         loadingContainer.layer.cornerRadius = loadingContainer.frame.height / 2
-        self.container.backgroundColor = bg
-        self.collectionView.backgroundColor = bg
+        self.container.backgroundColor = backgroundColor
+        self.collectionView.backgroundColor = backgroundColor
         self.loadingContainer.backgroundColor = loadingBG
         self.loading.color = loadingIndicator
     }
 
     func setColors(bg: UIColor, utilBarBG: UIColor, buttonText: UIColor, loadingBG: UIColor, loadingIndicator: UIColor) {
-        self.bg = bg
+        self.backgroundColor = bg
         self.utilBarBG = utilBarBG
         self.buttonText = buttonText
         self.loadingBG = loadingBG

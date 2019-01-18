@@ -126,7 +126,7 @@ extension NewDescriptionNewObservationCollectionViewCell: CLLocationManagerDeleg
         }
         alertController.addAction(openAction)
 
-        self.parentViewController?.present(alertController, animated: true, completion: nil)
+        self.parentViewController?.presentAlert(controller: alertController)
     }
 
     func round(num:Double, toPlaces places:Int) -> Double {

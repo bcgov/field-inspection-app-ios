@@ -36,6 +36,10 @@ final class NewObservationController: UIViewController{
     let mediaCellReuseIdentifier = "MediaOptionCell"
     let mediaCellXibName = "OptionCollectionViewCell"
 
+    private static let showDescriptionSegueID = "showDescription"
+    private static let addPhotoSegueID = "addPhoto"
+    private static let goToUploadPhotoSegueID = "goToUploadPhoto"
+    
     @objc let maximumNumberOfPhotos = 20
     fileprivate var locationManager = CLLocationManager()
     @objc var saveAction  : ((Observation)->Void)?
@@ -55,6 +59,84 @@ final class NewObservationController: UIViewController{
         collectionView.reloadData()
     }
 
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        
+        if identifier == NewObservationController.addPhotoSegueID || identifier == NewObservationController.goToUploadPhotoSegueID {
+            if photos?.count == maximumNumberOfPhotos{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.presentAlert(title: "You've reached maximum number of photos per element", message: nil)
+                }
+                return false
+            }
+        }
+        return true
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == NewObservationController.showDescriptionSegueID, let textViewController = segue.destination as? TextViewController {
+            
+            if self.descriptionTextView.text != "Tap to enter description"{
+                textViewController.initialText = self.descriptionTextView.text
+            }
+            
+            textViewController.title = "Element Description"
+            textViewController.result = { (text) in
+                if self.descriptionTextView.text == "Tap to enter description"{
+                    if let text = text, !text.isEmpty(){
+                        self.descriptionTextView.text = text
+                    }
+                } else{
+                    if let text = text,!text.isEmpty() {
+                        self.descriptionTextView.text = text
+                    } else{
+                        
+                        self.descriptionTextView.text = "Tap to enter description"
+                    }
+                }
+            }
+        }
+        
+        if segue.identifier == NewObservationController.addPhotoSegueID, let uploadPhotoController = segue.destination as? UploadPhotoController {
+            
+            uploadPhotoController.observation = observation
+            uploadPhotoController.uploadPhotoAction = { (photo) in
+                if let photo = photo{
+                    self.didMakeChange = true
+                    if self.photos == nil{
+                        self.photos = []
+                    }
+                    self.photos?.append(photo)
+                }
+                self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
+                self.view.layoutIfNeeded()
+                self.collectionView.reloadData()
+            }
+        }
+        
+        if segue.identifier == NewObservationController.goToUploadPhotoSegueID, let uploadPhotoController = segue.destination as? UploadPhotoController {
+            
+            if photos?.count == maximumNumberOfPhotos{
+                presentAlert(title: "You've reached maximum number of photos per element", message: nil)
+                return
+            }
+            
+            uploadPhotoController.observation = observation
+            uploadPhotoController.uploadPhotoAction = { (photo) in
+                if let photo = photo{
+                    self.didMakeChange = true
+                    if self.photos == nil{
+                        self.photos = []
+                    }
+                    self.photos?.append(photo)
+                }
+                self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
+                self.view.layoutIfNeeded()
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     //MARK: -
     override func viewDidLoad() {
         setUpCollectionView()
@@ -80,102 +162,50 @@ final class NewObservationController: UIViewController{
 
     //MARK: -
     @IBAction func addVoiceTapped(_ sender: UIButton) {
-        present(controller: UIAlertController(title: "This feature is coming soon", message: nil))
+        presentAlert(title: "This feature is coming soon", message: nil)
     }
 
     @IBAction func addVideoTapped(_ sender: UIButton) {
-        present(controller: UIAlertController(title: "This feature is coming soon", message: nil))
+        presentAlert(title: "This feature is coming soon", message: nil)
     }
 
     @IBAction func backTapped(_ sender: UIBarButtonItem) {
+        
         if isReadOnly{
-            pop()
+            popViewController()
             return
         }
         if didMakeChange{
-            present(controller: UIAlertController(title: "Would you like to save this observation element?", message: nil, yes: {
+            
+            let alert = UIAlertController(title: "Would you like to save this observation element?", message: nil, yes: {
                 self.saveTapped(sender)
             }, cancel: {
-                self.pop()
-            }))
+                self.popViewController()
+            })
+            presentAlert(controller: alert)
+            
         } else{
-            pop()
+            popViewController()
         }
     }
 
     @IBAction fileprivate func saveTapped(_ sender: UIBarButtonItem) {
-        if !validate() { return }
+        
+        guard validate() else {
+            return
+        }
+
         indicator.startAnimating()
         saveAction?(self.observation)
         observation.title = titleTextField.text
         observation.requirement = requirementTextField.text
         observation.observationDescription = descriptionTextView.text
-//        if observation.coordinate == nil{
-//            observation.coordinate = PFGeoPoint(location: locationManager.location)
-//        }
+
         if observation.inspectionId == nil{
             observation.inspectionId = inspection.id
         }
         observation.id = UUID().uuidString
-//        observation.pinInBackground { (success, error) in
-//            if success && error == nil{
-//                if self.observation.pinnedAt == nil{
-//                    self.observation.pinnedAt = Date()
-//                }
-//                _ = self.navigationController?.popViewController(animated: true)
-//            } else{
-//                AlertView.present(on: self, with: "Error occured while saving inspection to local storage")
-//            }
-//            self.indicator.stopAnimating()
-//        }
-    }
-
-    @IBAction func descriptionTapped(_ sender: UIButton) {
-        let textViewController = TextViewController.storyboardInstance() as! TextViewController
-        if self.descriptionTextView.text != "Tap to enter description"{
-            textViewController.initialText = self.descriptionTextView.text
-        }
-        textViewController.title = "Element Description"
-        textViewController.result = { (text) in
-            if self.descriptionTextView.text == "Tap to enter description"{
-                if let text = text, !text.isEmpty(){
-
-                    self.descriptionTextView.text = text
-                }
-            } else{
-                if let text = text,!text.isEmpty() {
-                    self.descriptionTextView.text = text
-                } else{
-
-                    self.descriptionTextView.text = "Tap to enter description"
-                }
-            }
-        }
-        push(controller: textViewController)
-    }
-
-    @IBAction fileprivate func addPhotoTapped(_ sender: UIButton) {
-        if photos?.count == maximumNumberOfPhotos{
-            present(controller: UIAlertController(title: "You've reached maximum number of photos per element", message: nil))
-            return
-        }
-        sender.isEnabled = false
-        let uploadPhotoController = UploadPhotoController.storyboardInstance() as! UploadPhotoController
-        uploadPhotoController.observation = observation
-        uploadPhotoController.uploadPhotoAction = { (photo) in
-            if let photo = photo{
-                self.didMakeChange = true
-                if self.photos == nil{
-                    self.photos = []
-                }
-                self.photos?.append(photo)
-            }
-            self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
-            self.view.layoutIfNeeded()
-            self.collectionView.reloadData()
-        }
-        push(controller: uploadPhotoController)
-        sender.isEnabled = true
+        indicator.stopAnimating()
     }
 
     //MARK: -
@@ -190,40 +220,6 @@ final class NewObservationController: UIViewController{
         titleTextField.text = observation.title
         requirementTextField.text = observation.requirement
         descriptionTextView.text = observation.observationDescription
-        loadPhotos()
-    }
-
-    fileprivate func loadPhotos() {
-
-//        guard let query = PFPhoto.query() else{
-//            indicator.stopAnimating()
-//            return
-//        }
-//        query.fromLocalDatastore()
-//        query.whereKey("observationId", equalTo: observation.id!)
-//        query.findObjectsInBackground(block: { (photos, error) in
-//            guard let photos = photos as? [PFPhoto], error == nil else {
-//                self.indicator.stopAnimating()
-//                AlertView.present(on: self, with: "Couldn't retrieve observation photos")
-//                return
-//            }
-//            if self.photos == nil{
-//                self.photos = []
-//            }
-//
-//            for photo in photos{
-//                print("file = \(photo.file!)")
-//                if let id = photo.id{
-//                    let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
-//                    photo.image = UIImage(contentsOfFile: url.path)
-//                    self.photos?.append(photo)
-//                }
-//            }
-//            self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
-//            self.view.layoutIfNeeded()
-//            self.collectionView.reloadData()
-//            self.indicator.stopAnimating()
-//        })
     }
 
     fileprivate func getConstraintHeight()->CGFloat{
@@ -241,29 +237,12 @@ final class NewObservationController: UIViewController{
     }
     
     func gotToGallery() {
+        // TOFIX:
         //        self.present(galleryManager.getVC(mode: GalleryMode.Image), animated: true, completion: nil)
     }
+    
     func goToUploadPhoto() {
-        if photos?.count == maximumNumberOfPhotos{
-            present(controller: UIAlertController(title: "You've reached maximum number of photos per element", message: nil))
-            return
-        }
-        
-        let uploadPhotoController = UploadPhotoController.storyboardInstance() as! UploadPhotoController
-        uploadPhotoController.observation = observation
-        uploadPhotoController.uploadPhotoAction = { (photo) in
-            if let photo = photo{
-                self.didMakeChange = true
-                if self.photos == nil{
-                    self.photos = []
-                }
-                self.photos?.append(photo)
-            }
-            self.collectionViewHeightConstraint.constant = self.getConstraintHeight()
-            self.view.layoutIfNeeded()
-            self.collectionView.reloadData()
-        }
-        push(controller: uploadPhotoController)
+        performSegue(withIdentifier: NewObservationController.goToUploadPhotoSegueID, sender: nil)
     }
 }
 
@@ -345,7 +324,7 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
             uploadPhotoController.isReadOnly = inspection.isSubmitted
             uploadPhotoController.observation = observation
             uploadPhotoController.photo = photos?[indexPath.row]
-            push(controller: uploadPhotoController)
+            pushViewController(controller: uploadPhotoController)
         }
     }
 
@@ -355,15 +334,15 @@ extension NewObservationController: UICollectionViewDelegate, UICollectionViewDa
     
     fileprivate func validate() ->Bool{
         if titleTextField.text?.isEmpty() == true{
-            present(controller: Alerts.fields)
+            presentAlert(controller: Alerts.fields)
             return false
         }
         if requirementTextField.text?.isEmpty() == true {
-            present(controller: Alerts.fields)
+            presentAlert(controller: Alerts.fields)
             return false
         }
         if descriptionTextView.text == "Tap to enter description"{
-            present(controller: Alerts.fields)
+            presentAlert(controller: Alerts.fields)
             return false
         }
         return true

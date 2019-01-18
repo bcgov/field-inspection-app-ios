@@ -18,7 +18,7 @@ final class SettingsController: UITableViewController {
 	@IBAction fileprivate func logoutTapped(_ sender: UIButton) {
         
         guard Reachability.isConnectedToNetwork() else {
-            self.present(controller: UIAlertController.noInternet)
+            self.self.presentAlert(controller: UIAlertController.noInternet)
             return
         }
         
@@ -31,7 +31,7 @@ final class SettingsController: UITableViewController {
 				sender.isEnabled = true
 				self.navigationController?.view.isUserInteractionEnabled = true
 				self.indicator.stopAnimating()
-				self.present(controller: UIAlertController(title: "Couldn't log out", message: "Error code is \((error as NSError? )?.code ?? 0)"))
+				self.presentAlert(title: "Couldn't log out", message: "Error code is \((error as NSError? )?.code ?? 0)")
 				return
 			}
 			self.dismiss(animated: true, completion: nil)

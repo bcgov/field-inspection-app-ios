@@ -28,7 +28,7 @@ class GPSLabelTableViewCell: BaseFormCell {
     }
 
     func setUpForViewing(location: String) {
-        let vc = self.parentViewController as? NewObservationElementViewController
+        let vc = self.parentViewController as? NewObservationElementFormViewController
         vc?.currentCoordinatesString = location
         label.text = location
     }
@@ -58,7 +58,7 @@ extension GPSLabelTableViewCell: CLLocationManagerDelegate {
             let lat: Double = round(num: location.coordinate.latitude, toPlaces: 5)
             let long: Double = round(num: location.coordinate.longitude, toPlaces: 5)
             let stringLoc = "Lat: \(lat), Long: \(long)"
-            let vc = self.parentViewController as? NewObservationElementViewController
+            let vc = self.parentViewController as? NewObservationElementFormViewController
             vc?.currentLocation = location
             vc?.currentCoordinatesString = stringLoc
             self.label.text = stringLoc
@@ -88,7 +88,7 @@ extension GPSLabelTableViewCell: CLLocationManagerDelegate {
         }
         alertController.addAction(openAction)
 
-        self.parentViewController?.present(alertController, animated: true, completion: nil)
+        self.parentViewController?.presentAlert(controller: alertController)
     }
 
     func round(num:Double, toPlaces places:Int) -> Double {
