@@ -39,15 +39,14 @@ extension Photo: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFPhoto()
-        // Do not set the `id` property.
-//        object.observationId = self.observationId
+        // Do not set the properties: `id`, `observationId`.
         object.caption = self.caption
         object.timestamp = self.timestamp
         object.coordinate = self.coordinate?.createParseObject()
         object.index = NSNumber(value: self.index)
         
         if let fileData = self.get() {
-            object.file = PFFileObject(data: fileData)
+            object.photo = PFFileObject(data: fileData)
         }
 
         return object

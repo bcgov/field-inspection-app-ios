@@ -38,8 +38,7 @@ extension PhotoThumb: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFPhotoThumb()
-        // Do not set the `id` property.
-//        object.observationId = self.observationId
+        // Do not set the properties: `id`, `observationId`, `inspectionId`.
         object.index = NSNumber(value: self.index)
         
         if let fileData = self.get() {

@@ -279,7 +279,7 @@ extension DataServices {
                 }
                 
                 let _ = DataServices.add(photo: object)
-                object.file?.getDataInBackground(block: { (data, error) in
+                object.photo?.getDataInBackground(block: { (data, error) in
                     if let data = data {
                         try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
                     }
