@@ -61,6 +61,7 @@ final class PFInspection: PFObject, PFSubclassing {
     @NSManaged var id: String?
     @NSManaged var userId: String?
     @NSManaged var isSubmitted: NSNumber?
+    @NSManaged var isActive: NSNumber?
     @NSManaged var project: String?
     @NSManaged var title: String?
     @NSManaged var subtitle: String?

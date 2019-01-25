@@ -71,19 +71,18 @@ extension Inspection: ParseFactory {
     
     func createParseObject() -> PFObject {
         
-        let pfInspection = PFInspection()
-        pfInspection.id = self.id
-        pfInspection.userId = self.userId
-        pfInspection.project = self.project
-        pfInspection.title = self.title
-        pfInspection.subtitle = self.subtitle
-        pfInspection.subtitle = self.subtitle
-        pfInspection.subtext = self.subtext
-        pfInspection.number = self.number
-        pfInspection.start = self.start
-        pfInspection.end = self.end
-        pfInspection.teamID = self.teamID
+        let object = PFInspection()
+        // Do not set the `id` property.
+        object.userId = self.userId
+        object.project = self.project
+        object.title = self.title
+        object.subtitle = self.subtitle
+        object.subtext = self.subtext
+        object.number = self.number
+        object.start = self.start
+        object.end = self.end
+        object.teamID = self.teamID
 
-        return pfInspection
+        return object
     }
 }

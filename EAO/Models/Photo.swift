@@ -39,8 +39,8 @@ extension Photo: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFPhoto()
-        object.id = self.id
-        object.observationId = self.observationId
+        // Do not set the `id` property.
+//        object.observationId = self.observationId
         object.caption = self.caption
         object.timestamp = self.timestamp
         object.coordinate = self.coordinate?.createParseObject()

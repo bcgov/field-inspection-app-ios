@@ -29,7 +29,8 @@ class InspectionUploadOperation: AsyncOperation {
         }
 
         let pfInspection = inspection.createParseObject()
-        
+        pfInspection["isActive"] = true     // Must be set else it wont show up in the Web UI.
+
         pfInspection.saveInBackground(block: { (status, error) in
 
             var operations = [Operation]()
