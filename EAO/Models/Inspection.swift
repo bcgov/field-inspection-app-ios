@@ -72,7 +72,7 @@ extension Inspection: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFInspection()
-        // Do not set the `id` property.
+        // Do not set the properties: `id`, `teamID`.
         object.userId = self.userId
         object.project = self.project
         object.title = self.title
@@ -81,7 +81,6 @@ extension Inspection: ParseFactory {
         object.number = self.number
         object.start = self.start
         object.end = self.end
-        object.teamID = self.teamID
 
         return object
     }
