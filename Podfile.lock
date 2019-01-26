@@ -31,20 +31,6 @@ DEPENDENCIES:
   - RealmSwift
   - SwiftLint
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - Alamofire
-    - AlamofireObjectMapper
-    - Bolts
-    - Crashlytics
-    - Fabric
-    - IQKeyboardManager
-    - ObjectMapper
-    - Parse
-    - Realm
-    - RealmSwift
-    - SwiftLint
-
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AlamofireObjectMapper: 92b6ce2423a9d159e686f6a1d514a009bf903ddc
@@ -60,4 +46,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 39bc9c5120332d2d376b5eb7d87e14e1d01385b2
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.4.0

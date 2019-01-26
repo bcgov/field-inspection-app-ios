@@ -149,14 +149,12 @@ class NewObservationElementFormViewController: UIViewController {
         coordinator.animate(alongsideTransition: nil) { _ in
             self.collectionView.reloadData()
             if UIDevice.current.orientation.isLandscape {
-                print("Landscape")
                 if self.isIpad() == false {
                     self.navBarHeight.constant = 0
                     self.saveButton.isHidden = true
                     self.cancelButton.isHidden = true
                 }
             } else {
-                print("Portrait")
                 self.navBarHeight.constant = 75
                 self.saveButton.isHidden = false
                 self.cancelButton.isHidden = false
@@ -216,15 +214,22 @@ class NewObservationElementFormViewController: UIViewController {
         if isReadOnly {
             self.mediaHeight.constant = 0
             self.mediaContainer.alpha = 0
+            saveButton.isHidden = true
         }
         self.containerHeight.constant = self.view.frame.height - 40
     }
     
     // MARK: ACTIONS
     @IBAction func cancelAction(_ sender: Any) {
-        showWarningAlert(title: "Are you sure?", description: "Your new text changes and new media loaded from the gallery will not be saved", yesButtonTapped: {
+        if isReadOnly {
             self.close()
-        }) {
+        } else {
+            let title = "Are you sure?"
+            let description = "Your new text changes and new media loaded from the gallery will not be saved"
+            showWarningAlert(title: title, description: description, yesButtonTapped: {
+                self.close()
+            }) {
+            }
         }
     }
     
