@@ -12,7 +12,7 @@ class PhotoThumb: Object {
     
     //Use this variable for image caching
     var image: UIImage? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return UIImage(contentsOfFile: url.path)
     }
     
@@ -28,7 +28,7 @@ class PhotoThumb: Object {
     }
 
     @objc func get() -> Data? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return try? Data(contentsOf: url)
     }
 }

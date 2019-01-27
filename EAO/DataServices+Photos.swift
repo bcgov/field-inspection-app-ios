@@ -12,22 +12,17 @@ import AlamofireObjectMapper
 
 extension DataServices {
     
-    internal class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+    /**
+     Create Photo and PhotoThumb, don't save them to Realm yet,
+     */
+    class func preparePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> (PhotoThumb, Photo)? {
         
-        DataServices.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description) { (result) in
-            guard result else {
-                return completion (false)
-            }
-            
-            DataServices.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) { (success) in
-                if !success { return completion (false)}
-                
-                return completion(true)
-            }
+        guard let dataPhoto: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+            return nil
         }
-    }
-    
-    internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+        guard let dataThumb: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+            return nil
+        }
         
         let photo = Photo()
         photo.caption = description
@@ -35,8 +30,43 @@ extension DataServices {
         photo.index = index
         photo.coordinate = RealmLocation(location: location)
         
-        let data = image.toData(quality: .uncompressed)
-        print("full size of \(index) is \(data.count)")
+        let photoThumb = PhotoThumb()
+        photoThumb.observationId = observationID
+        photoThumb.originalType = "photo"
+        photoThumb.index = index
+
+        do {
+            try dataPhoto.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: false))
+            try dataThumb.write(to: FileManager.directory.appendingPathComponent(photoThumb.id, isDirectory: false))
+        } catch let error {
+            print("\(#function) \(error)")
+            return nil
+        }
+        
+        return (photoThumb, photo)
+    }
+    
+    class func savePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> Bool {
+        
+        if let _ = DataServices.saveThumbnail(image: image, index: index, originalType: "photo", observationID: observationID, description: description),
+            let _ = DataServices.saveFull(image: image, index: index, location: location, observationID: observationID, description: description) {
+            return true
+        }
+        return false
+    }
+    
+    internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> String? {
+        
+        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+            return nil
+        }
+        print("Image full size of \(index) is \(data.count)")
+
+        let photo = Photo()
+        photo.caption = description
+        photo.observationId = observationID
+        photo.index = index
+        photo.coordinate = RealmLocation(location: location)
         
         do {
             let realm = try Realm()
@@ -44,17 +74,17 @@ extension DataServices {
             try realm.write {
                 realm.add(photo, update: true)
             }
-            return completion(true)
+            return photo.id
         } catch let error {
             print("Realm or Data save exception \(error.localizedDescription)")
-            return completion(false)
+            return nil
         }
     }
     
-    internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
+    internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?) -> String? {
         
         guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
-            return completion(false)
+            return nil
         }
         print("thumb size of \(index) is \(data.count)")
         
@@ -70,11 +100,10 @@ extension DataServices {
             try realm.write {
                 realm.add(photo, update: true)
             }
-            
-            return completion(true)
+            return photo.id
         } catch let error {
             print("Realm or Data save exception \(error.localizedDescription)")
-            return completion(false)
+            return nil
         }
     }
     

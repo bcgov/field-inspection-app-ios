@@ -69,7 +69,8 @@ class ChooseImageViewController: UIViewController {
         closeVC()
     }
 
-    @objc func sent() {}
+    @objc func sent() {
+    }
 
     @objc func appWillEnterForeground() {
         if self.images.count != AssetManager.sharedInstance.getPHAssetImages().count {

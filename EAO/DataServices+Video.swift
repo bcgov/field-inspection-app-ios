@@ -42,18 +42,14 @@ extension DataServices {
 
     internal class func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
         
-        DataServices.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) { (result) in
-            
-            guard result else {
-                return completion (false)
-            }
+        if let _ = DataServices.saveThumbnail(image: thumbnail, index: index, originalType: "video", observationID: observationID, description: description) {
             
             // then save video
             let video = Video()
             video.observationId = observationID
             video.index = index
             video.notes = description
-            let exportURL: URL = FileManager.directory.appendingPathComponent(video.id, isDirectory: true)
+            let exportURL: URL = FileManager.directory.appendingPathComponent(video.id, isDirectory: false)
             let exporter = AVAssetExportSession(asset: avAsset, presetName: AVAssetExportPresetHighestQuality)
             exporter?.outputFileType = AVFileType.mov
             exporter?.outputURL = exportURL
