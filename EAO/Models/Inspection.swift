@@ -81,6 +81,7 @@ extension Inspection: ParseFactory {
         object.number = self.number
         object.start = self.start
         object.end = self.end
+        object.team = PFTeam(withoutDataWithObjectId: "En8opj65uJ")
 
         return object
     }

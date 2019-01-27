@@ -18,7 +18,8 @@ final class PFPhoto: PFObject, PFSubclassing {
     @NSManaged var timestamp: Date?
     @NSManaged var coordinate: PFGeoPoint?
     @NSManaged var index: NSNumber?
-    
+    @NSManaged var observation: PFObservation?
+
     static func parseClassName() -> String {
         return "Photo"
     }

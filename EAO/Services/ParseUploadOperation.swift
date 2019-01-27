@@ -28,15 +28,19 @@ class InspectionUploadOperation: AsyncOperation {
             return
         }
 
-        let pfInspection = inspection.createParseObject()
-        pfInspection["isActive"] = true     // Must be set else it wont show up in the Web UI.
-
+        guard let pfInspection = inspection.createParseObject() as? PFInspection else {
+            self.finished()
+            return
+        }
+        
+        pfInspection.isActive = NSNumber(value: true)     // Must be set else it wont show up in the Web UI.
+        pfInspection.team = PFTeam(withoutDataWithObjectId: "En8opj65uJ")
         pfInspection.saveInBackground(block: { (status, error) in
 
             var operations = [Operation]()
             let observations: [Observation] = DataServices.fetchArray(for: self.objectId, idFieldName: "inspectionId")
             for anObservation in observations {
-                let observationUpload = ObservationUploadOperation(observationId: anObservation.id)
+                let observationUpload = ObservationUploadOperation(observationId: anObservation.id, pfInspection: pfInspection)
                 operations.append(observationUpload)
             }
             DataServices.shared.uploadQueue.addOperations(operations, waitUntilFinished: false)
@@ -63,9 +67,11 @@ class InspectionUploadOperation: AsyncOperation {
 class ObservationUploadOperation: AsyncOperation {
     
     let observationId: String
-    
-    init(observationId: String) {
+    let pfInspection: PFInspection
+
+    init(observationId: String, pfInspection: PFInspection) {
         self.observationId = observationId
+        self.pfInspection = pfInspection
     }
     
     override func execute() {
@@ -77,6 +83,8 @@ class ObservationUploadOperation: AsyncOperation {
 
         print("+++++\(self) starting \(observationId)")
         let parseObject = observation.createParseObject()
+        (parseObject as? PFObservation)?.inspection = pfInspection
+        
         parseObject.saveInBackground { [weak self] (_, _) in
             guard let strongSelf = self else {
                 self?.finished()
@@ -86,25 +94,25 @@ class ObservationUploadOperation: AsyncOperation {
             var operations = [Operation]()
             let photos: [Photo] = DataServices.fetchArray(for: strongSelf.observationId)
             for objectId in photos {
-                let upload = AttachmentUploadOperation<Photo>(objectId: objectId.id)
+                let upload = AttachmentUploadOperation<Photo>(objectId: objectId.id, pfObservation: parseObject)
                 operations.append(upload)
             }
             
             let photoThumbs: [PhotoThumb] = DataServices.fetchArray(for: strongSelf.observationId)
             for objectId in photoThumbs {
-                let upload = AttachmentUploadOperation<PhotoThumb>(objectId: objectId.id)
+                let upload = AttachmentUploadOperation<PhotoThumb>(objectId: objectId.id, pfObservation: parseObject)
                 operations.append(upload)
             }
             
             let audios: [Audio] = DataServices.fetchArray(for: strongSelf.observationId)
             for objectId in audios {
-                let upload = AttachmentUploadOperation<Audio>(objectId: objectId.id)
+                let upload = AttachmentUploadOperation<Audio>(objectId: objectId.id, pfObservation: parseObject)
                 operations.append(upload)
             }
             
             let videos: [Video] = DataServices.fetchArray(for: strongSelf.observationId)
             for objectId in videos {
-                let upload = AttachmentUploadOperation<Video>(objectId: objectId.id)
+                let upload = AttachmentUploadOperation<Video>(objectId: objectId.id, pfObservation: parseObject)
                 operations.append(upload)
             }
 
@@ -118,9 +126,11 @@ class ObservationUploadOperation: AsyncOperation {
 class AttachmentUploadOperation<T>: AsyncOperation where T: ParseFactory, T: Object {
 
     let objectId: String
-    
-    init(objectId: String) {
+    let pfObservation: PFObject
+
+    init(objectId: String, pfObservation: PFObject) {
         self.objectId = objectId
+        self.pfObservation = pfObservation
     }
     
     override func execute() {
@@ -132,6 +142,8 @@ class AttachmentUploadOperation<T>: AsyncOperation where T: ParseFactory, T: Obj
         
         print("+++++\(self) starting \(objectId)")
         let parseObject = realmObject.createParseObject()
+        parseObject["observation"] = pfObservation
+        
         parseObject.saveInBackground { [weak self] (_, _) in
             guard let strongSelf = self else {
                 self?.finished()

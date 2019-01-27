@@ -16,7 +16,8 @@ final class PFObservation: PFObject, PFSubclassing {
     @NSManaged var coordinate: PFGeoPoint?
     @NSManaged var pinnedAt: Date?
     @NSManaged var observationDescription: String?
-    
+    @NSManaged var inspection: PFInspection?
+
     static func parseClassName() -> String {
         return "Observation"
     }

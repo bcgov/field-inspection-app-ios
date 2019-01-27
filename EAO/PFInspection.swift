@@ -71,7 +71,8 @@ final class PFInspection: PFObject, PFSubclassing {
     @NSManaged var end: Date?
     @NSManaged var teamID: String?
     @NSManaged var observation: [PFObservation]
-    
+    @NSManaged var team: PFTeam?
+
     static func parseClassName() -> String {
         return "Inspection"
     }
