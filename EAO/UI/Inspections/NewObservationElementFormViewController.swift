@@ -515,7 +515,7 @@ class NewObservationElementFormViewController: UIViewController {
     }
     
     func goToVideoGallery() {
-        performSegue(withIdentifier: NewObservationElementFormViewController.segueShowAudioRecorder, sender: nil)
+        performSegue(withIdentifier: NewObservationElementFormViewController.segueShowVideoGallery, sender: nil)
     }
     
     func goToThedolite() {
