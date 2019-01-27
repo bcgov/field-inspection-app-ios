@@ -716,10 +716,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
             }
             
             if current.originalType == "photo" {
-                for item in storedPhotos {
-                    print(item)
-                }
-                showPreviewOf(index: storedPhotos[i].index)
+                showPhotoPreview(for: storedPhotos[i].index)
             }
         } else if i - storedPhotos.count < multiSelectResult.count {
             print("\(#function) multiselect")
@@ -789,7 +786,7 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         }
     }
     
-    func showPreviewOf(index: Int) {
+    func showPhotoPreview(for index: Int) {
         
         let form = MiFormManager()
         let style = MiButtonStyle(textColor: .white, bgColor: Colors.Blue, height: 50, roundCorners: true)
@@ -797,28 +794,27 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         let textStyleS = LabelStyle(height: 50, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
         let textStyleM = LabelStyle(height: 80, roundCorners: true, bgColor: UIColor.white, labelTextColor: Colors.Blue)
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        DataServices.getPhotoFor(observationID: observation.id, at: index) { (found, photo) in
+        if let photo = DataServices.getPhoto(for: observation.id, at: index) {
+            let locationString = photo.coordinate?.printableString() ?? ""
             
-            if found {
-                let locationString = photo?.coordinate?.printableString() ?? ""
-                
-                if let image = photo?.image {
-                    form.addImage(image: image)
-                }
-                form.addLabel(name: "caption", text: (photo?.caption)!, style: textStyleL)
-                form.addLabel(name: "piclocation", text: locationString, style: textStyleM)
-                form.addLabel(name: "date:", text: formatter.string(from: (photo?.timestamp)!), style: textStyleS)
-                form.addButton(name: "closeprev\(index)", title: "close", style: style, completion: {
-                    self.enabledPopUp = false
-                    form.remove(from: self.popUpContainer)
-                })
-                self.enabledPopUp = true
-                self.containerHeight.constant = self.view.frame.height - 40
-                self.currForm = form
-                form.display(in: self.popUpContainer, on: self)
+            if let image = photo.image {
+                form.addImage(image: image)
             }
+            if let caption = photo.caption, caption.count > 0 {
+                form.addLabel(name: "caption", text: caption, style: textStyleL)
+            }
+            form.addLabel(name: "piclocation", text: locationString, style: textStyleM)
+            if let timestamp = photo.timestamp {
+                form.addLabel(name: "date:", text: Settings.formatter.string(from: timestamp), style: textStyleS)
+            }
+            form.addButton(name: "closeprev\(index)", title: "close", style: style, completion: {
+                self.enabledPopUp = false
+                form.remove(from: self.popUpContainer)
+            })
+            self.enabledPopUp = true
+            self.containerHeight.constant = self.view.frame.height - 40
+            self.currForm = form
+            form.display(in: self.popUpContainer, on: self)
         }
     }
 }

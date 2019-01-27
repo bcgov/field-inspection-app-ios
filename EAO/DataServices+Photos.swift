@@ -119,15 +119,14 @@ extension DataServices {
         }
     }
     
-    internal class func getPhotoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ photos: Photo? ) -> Void) {
+    internal class func getPhoto(for observationID: String, at index: Int) -> Photo? {
 
         let photos = DataServices.getPhotos(for: observationID)
         if photos.count > 0 {
-            let thePhoto = photos.filter({ $0.index == index }).first
-            return completion(false, thePhoto)
-        } else {
-            return completion(false, nil)
+            let photo = photos.filter({ $0.index == index }).first
+            return photo
         }
+        return nil
     }
     
     internal class func getThumbnailsFor(observationID: String, completion: @escaping (_ success: Bool, _ photos: [PhotoThumb]? ) -> Void) {
