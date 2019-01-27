@@ -13,7 +13,7 @@ import AVFoundation
 
 extension DataServices {
 
-    internal class func getVideosFor(observationID: String, completion: @escaping (_ success: Bool, _ videos: [Video]? ) -> Void) {
+    internal class func getVideos(for observationID: String) -> [Video]? {
         
         do {
             let realm = try Realm()
@@ -21,23 +21,18 @@ extension DataServices {
             let resultsArray = Array(results)
             
             print("\(#function): count = \(results.count)");
-            return completion(true, resultsArray)
+            return resultsArray
         } catch let error {
             print("\(#function): \(error.localizedDescription)");
-            return completion(false, nil)
         }
+        return nil
     }
     
-    internal class func getVideoFor(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: Video? ) -> Void) {
+    internal class func getVideo(for observationID: String, at index: Int) -> Video? {
         
-        DataServices.getVideosFor(observationID: observationID) { (success, results) in
-            if success == true, (results?.count ?? 0) > 0 {
-                let theOne = results?.filter({ $0.index == index }).first
-                return completion(false, theOne)
-            } else {
-                return completion(false, nil)
-            }
-        }
+        let videos = DataServices.getVideos(for: observationID)
+        let video = videos?.filter({ $0.index == index }).first
+        return video
     }
 
     internal class func saveVideo(avAsset: AVAsset, thumbnail: UIImage,index: Int, observationID: String, description: String?, completion: @escaping (_ created: Bool) -> Void) {
@@ -55,12 +50,12 @@ extension DataServices {
             exporter?.outputURL = exportURL
             
             exporter?.exportAsynchronously(completionHandler: {
-                DataServices.savePFVideo(video: video, completion: completion)
+                DataServices.saveVideo(video: video, completion: completion)
             })
         }
     }
     
-    internal class func savePFVideo(video: Video, completion: @escaping (_ created: Bool) -> Void) {
+    internal class func saveVideo(video: Video, completion: @escaping (_ created: Bool) -> Void) {
         
         do {
             let realm = try Realm()
@@ -74,17 +69,4 @@ extension DataServices {
         }
     }
     
-    internal class func getVideoAt(observationID: String, at index: Int, completion: @escaping (_ success: Bool, _ video: Video? ) -> Void) {
-        getVideosFor(observationID: observationID) { (found, videos) in
-            
-            if found {
-                if (videos?.count)! >= index {
-                    return completion(true,  videos?[index])
-                } else {
-                    return completion(false, nil)
-                }
-            }
-            return completion(false, nil)
-        }
-    }
 }

@@ -290,39 +290,49 @@ class NewObservationElementFormViewController: UIViewController {
     }
     
     func saveAssets(assets: [PHAsset], currIndex: Int,  lastIndex: Int, completion: @escaping () -> Void) {
+        
         if currIndex > lastIndex {
             return completion()
         }
-        var selectedAssets = assets
-        let asset = selectedAssets.first
         
-        if asset?.mediaType == .video {
+        var selectedAssets = assets
+        guard let asset = selectedAssets.first else {
+            return completion()
+        }
+        let observationID = self.observation.id
+        
+        if asset.mediaType == .video {
             // if asset is video...
-            AssetManager.sharedInstance.getVideoFromAsset(phAsset: asset!, completion: { (avAsset) in
+            AssetManager.sharedInstance.getVideoFromAsset(phAsset: asset, completion: { (avAsset) in
                 // get url of asset, needed to generate thumbnail
-                asset?.getURL(completionHandler: { (videoURL) in
-                    if videoURL != nil {
-                        let thumbnail = AssetManager.sharedInstance.getThumbnailForVideo(url: videoURL! as NSURL)
-                        DataServices.saveVideo(avAsset: avAsset, thumbnail: thumbnail!, index: currIndex, observationID: self.observation.id, description: "**Video Loaded From Gallery**", completion: { (success) in
-                            if success {
-                                selectedAssets.removeFirst()
-                                self.saveAssets(assets: selectedAssets, currIndex: (currIndex + 1), lastIndex: lastIndex, completion: completion)
-                            } else {
-                                return completion()
-                            }
-                        })
-                    } else {
+                asset.getURL(completionHandler: { (videoURL) in
+                    guard   let videoURL = videoURL,
+                            let thumbnail = AssetManager.sharedInstance.getThumbnailForVideo(url: videoURL as NSURL) else {
                         return completion()
                     }
+                    
+                    DataServices.saveVideo(avAsset: avAsset, thumbnail: thumbnail, index: currIndex, observationID: observationID, description: "**Video Loaded From Gallery**", completion: { (success) in
+                        if success {
+                            selectedAssets.removeFirst()
+                            DispatchQueue.main.async {
+                                self.saveAssets(assets: selectedAssets, currIndex: (currIndex + 1), lastIndex: lastIndex, completion: completion)
+                            }
+                        } else {
+                            return completion()
+                        }
+                    })
+                    
                 })
             })
         } else {
             // if asset is image:
-            AssetManager.sharedInstance.getOriginal(phAsset: asset!) { (img) in
-                if DataServices.savePhoto(image: img, index: currIndex, location: asset?.location, observationID: self.observation.id, description: "**PHOTO LOADED FROM GALLERY**") {
+            AssetManager.sharedInstance.getOriginal(phAsset: asset) { (img) in
+                if DataServices.savePhoto(image: img, index: currIndex, location: asset.location, observationID: observationID, description: "**PHOTO LOADED FROM GALLERY**") {
                     // successful? Remove last asset from array and call saveAssets recursively
                     selectedAssets.removeFirst()
-                    self.saveAssets(assets: selectedAssets, currIndex: (currIndex + 1), lastIndex: lastIndex, completion: completion)
+                    DispatchQueue.main.async {
+                        self.saveAssets(assets: selectedAssets, currIndex: (currIndex + 1), lastIndex: lastIndex, completion: completion)
+                    }
                 } else {
                     print("could not find image")
                     return completion()
@@ -766,23 +776,24 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
     func showPreviewOfVideo(index: Int) {
         
         self.containerHeight.constant = self.view.frame.height - 200
-        DataServices.getVideoFor(observationID: observation.id, at: index) { (found, pfVideo) in
-            if found {
-                guard let assetURL = pfVideo?.getURL() else {return}
-                let avasset = AVAsset(url: assetURL)
-                let x = AVPlayerItem(asset: avasset)
-                self.videoPlayer = AVPlayer(playerItem: x)
-                let playerLayer = AVPlayerLayer(player: self.videoPlayer)
-                self.grayScreen.alpha = 1
-                self.popUpContainer.alpha = 1
-                self.containerHeight.constant = self.view.frame.height - 200
-                playerLayer.frame = self.popUpContainer.bounds
-                playerLayer.backgroundColor = UIColor.white.cgColor
-                self.showingVideoPreview = true
-                self.popUpContainer.layer.addSublayer(playerLayer)
-                
-                self.videoPlayer.play()
+        
+        if let video = DataServices.getVideo(for: observation.id, at: index) {
+            guard let assetURL = video.getURL() else {
+                return
             }
+            let avasset = AVAsset(url: assetURL)
+            let x = AVPlayerItem(asset: avasset)
+            self.videoPlayer = AVPlayer(playerItem: x)
+            let playerLayer = AVPlayerLayer(player: self.videoPlayer)
+            self.grayScreen.alpha = 1
+            self.popUpContainer.alpha = 1
+            self.containerHeight.constant = self.view.frame.height - 200
+            playerLayer.frame = self.popUpContainer.bounds
+            playerLayer.backgroundColor = UIColor.white.cgColor
+            self.showingVideoPreview = true
+            self.popUpContainer.layer.addSublayer(playerLayer)
+            
+            self.videoPlayer.play()
         }
     }
     
