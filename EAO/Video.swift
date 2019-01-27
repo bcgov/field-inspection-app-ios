@@ -24,12 +24,12 @@ final class Video: Object {
     }
     
     @objc func get() -> Data? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return try? Data(contentsOf: url)
     }
     
     @objc func getURL() -> URL? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return url
     }
 }
