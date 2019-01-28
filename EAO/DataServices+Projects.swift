@@ -14,7 +14,9 @@ import AlamofireObjectMapper
 // TODO: move to the network manager
 extension DataServices {
     
-    class func fetchProjectList(completion: @escaping (_ error: DataServicesError?) -> Void) {
+    typealias FetchProjectListCompleted = (_ error: DataServicesError?) -> Void
+
+    class func fetchProjectList(completion: FetchProjectListCompleted? = nil) {
         
         let sessionManager = Alamofire.SessionManager.default
         sessionManager.request(Constants.API.projectListURI).responseArray { (response: DataResponse<[EAOProject]>) in
@@ -24,7 +26,7 @@ extension DataServices {
             if let error = error {
                 print(error)
                 DispatchQueue.main.async {
-                    completion(DataServicesError.internalError(message: error.localizedDescription))
+                    completion?(DataServicesError.internalError(message: error.localizedDescription))
                 }
                 return
             }
@@ -38,11 +40,11 @@ extension DataServices {
                             realm.add(responseObject, update: true)
                         }
                     }
-                    completion(nil)
+                    completion?(nil)
                 } catch let error as NSError {
                     print(error)
                     DispatchQueue.main.async {
-                        completion(DataServicesError.requestFailed(error: error))
+                        completion?(DataServicesError.requestFailed(error: error))
                     }
                 }
             }
