@@ -38,7 +38,7 @@ extension Video: ParseFactory {
     
     func createParseObject() -> PFObject {
         
-        let object = PFAudio()
+        let object = PFVideo()
         // Do not set the properties: `id`, `observationId`, `inspectionId`.
         object.notes = self.notes
         if let urlString = self.url {
