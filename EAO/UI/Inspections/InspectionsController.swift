@@ -205,7 +205,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
 	}
 	
 	// Use this method to put an inspection from 'In Progress' to 'Submitted'
-	public func moveToSubmitted(inspection: Inspection?) {
+	private func moveToSubmitted(inspection: Inspection?) {
 
         guard let inspection = inspection, let idx = inspections.draft.index(of: inspection)  else {
             return
@@ -352,6 +352,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             self.isBeingUploaded = false
             self.indicator.alpha = 0
             self.loadInspections()
+            self.moveToSubmitted(inspection: inspection)
         }
     }
 

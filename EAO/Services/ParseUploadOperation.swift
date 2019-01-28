@@ -23,7 +23,7 @@ class InspectionUploadOperation: AsyncOperation {
     
     override func execute() {
         
-        guard let inspection: Inspection = DataServices.fetch(for: objectId) else {
+        guard let inspection: Inspection = DataServices.fetch(for: objectId), let teamID = inspection.teamID else {
             self.finished()
             return
         }
@@ -34,7 +34,7 @@ class InspectionUploadOperation: AsyncOperation {
         }
         
         pfInspection.isActive = NSNumber(value: true)     // Must be set else it wont show up in the Web UI.
-        pfInspection.team = PFTeam(withoutDataWithObjectId: "En8opj65uJ")
+        pfInspection.team = PFTeam(withoutDataWithObjectId: teamID)
         pfInspection.saveInBackground(block: { (status, error) in
 
             var operations = [Operation]()
