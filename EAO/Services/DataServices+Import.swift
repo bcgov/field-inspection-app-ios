@@ -401,13 +401,12 @@ extension DataServices {
         
         do {
             let realm = try Realm()
-            let inspections = realm.objects(Inspection.self)
-            let metas = realm.objects(InspectionMeta.self)
-            
+            let inspections = realm.objects(Inspection.self).filter("isSubmitted = %@", true)
             try realm.write {
-                realm.deleteAll()
+                realm.delete(inspections)
             }
-        } catch let error {
+            
+        } catch let error{
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }
