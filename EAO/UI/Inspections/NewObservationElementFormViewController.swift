@@ -230,6 +230,7 @@ class NewObservationElementFormViewController: UIViewController {
             let description = "Your new text changes and new media loaded from the gallery will not be saved"
             showWarningAlert(title: title, description: description, yesButtonTapped: {
                 self.deleteNewPhotoAssets()
+                self.close()
             }) {
             }
         }
