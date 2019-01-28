@@ -165,12 +165,12 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
 
 		indicator.startAnimating()
         
-        if fetchRemote == true {
-            PFInspection.fetchInspectionsOnly {
-                self.indicator.stopAnimating()
-                self.loadInspections(fetchRemote: false)
-            }
-        } else {
+//        if fetchRemote == true {
+//            PFInspection.fetchInspectionsOnly {
+//                self.indicator.stopAnimating()
+//                self.loadInspections(fetchRemote: false)
+//            }
+//        } else {
             let results = DataServices.shared.fetchInspections()
             self.inspections.draft = results.filter { $0.isSubmitted == false }
             self.inspections.submitted = results.filter { $0.isSubmitted == true }
@@ -179,7 +179,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             
             self.indicator.stopAnimating()
             self.tableView.reloadData()
-        }
+//        }
 	}
 
 	// Use this method to insert an inspection to the 'In Progress' tab
