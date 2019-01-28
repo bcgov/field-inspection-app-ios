@@ -36,29 +36,11 @@ enum PFInspectionError: Error {
 final class PFInspection: PFObject, PFSubclassing {
     internal var progress: Float = 0
     internal var isBeingUploaded = false
-    internal var isStoredLocally: Bool {
-        get {
-            guard let id = self.id, let realm = try? Realm(), let inspection = realm.objects(InspectionMeta.self).filter("localId == %@", id).first else {
-                return false
-            }
-            
-            return inspection.isStoredLocally
-        }
-        set (value) {
-            guard let id = self.id, let realm = try? Realm(), let inspection = realm.objects(InspectionMeta.self).filter("localId == %@", id).first else {
-                return
-            }
-            
-            try? realm.write {
-                inspection.isStoredLocally = value
-            }
-        }
-    }
+
     internal var failed = [PFObject]()
     
     // MARK: -
-    
-    @NSManaged var id: String?
+    @NSManaged var localId: String?
     @NSManaged var userId: String?
     @NSManaged var isSubmitted: NSNumber?
     @NSManaged var isActive: NSNumber?

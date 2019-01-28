@@ -31,9 +31,17 @@ extension DataServices {
         }
         
         do {
-            
+            let realm = try Realm()
+
+            //don't add existing local inspections
+            if let localId = pfInspection["localId"] {
+                let inspection = realm.objects(Inspection.self).filter("id in %@", [localId]).first
+                if inspection != nil {
+                    return false
+                }
+            }
+
             let inspection = Inspection()
-            
             inspection.id = pfInspection.objectId ?? UUID().uuidString
             inspection.userId = userID
             inspection.isSubmitted = true
@@ -54,7 +62,6 @@ extension DataServices {
             
             inspection.meta = doc
             
-            let realm = try Realm()
             try realm.write {
                 realm.add(inspection, update: true)
                 realm.add(doc, update: true)

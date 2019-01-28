@@ -73,7 +73,8 @@ extension Inspection: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFInspection()
-        // Do not set the properties: `id`, `teamID`.
+        // save local inspection ID
+        object["localId"] = self.id
         object.userId = self.userId
         object.project = self.project
         object.title = self.title
@@ -82,7 +83,6 @@ extension Inspection: ParseFactory {
         object.number = self.number
         object.start = self.start
         object.end = self.end
-        object.team = PFTeam(withoutDataWithObjectId: "En8opj65uJ")
 
         return object
     }
