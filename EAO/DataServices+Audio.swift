@@ -17,7 +17,6 @@ extension DataServices {
         let audio = Audio()
         audio.observationId = observationID
         audio.index = index
-        audio.inspectionId = inspectionID
         audio.notes = notes
         audio.title = title
         let data = NSData(contentsOf: audioURL)

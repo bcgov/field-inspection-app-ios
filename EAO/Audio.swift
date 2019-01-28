@@ -12,7 +12,6 @@ final class Audio: Object {
     
     @objc dynamic var id: String = "\(UUID().uuidString).mp4a"
     @objc dynamic var observationId: String?
-    @objc dynamic var inspectionId: String?
     @objc dynamic var index: Int = 0
     @objc dynamic var notes: String?
     @objc dynamic var title: String?

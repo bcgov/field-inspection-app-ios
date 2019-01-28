@@ -41,6 +41,7 @@ class Inspection: Object {
     // MARK: Properties
     @objc dynamic var id: String = UUID().uuidString
     @objc dynamic var userId: String?
+    @objc dynamic var objectId: String?
     @objc dynamic var isSubmitted: Bool = false
     @objc dynamic var project: String?
     @objc dynamic var title: String?

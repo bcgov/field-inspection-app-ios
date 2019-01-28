@@ -98,7 +98,7 @@ extension PFInspection {
         query.findObjectsInBackground(block: { (inspections, error) in
             
             for inspection in inspections as? [PFInspection] ?? [] {
-                guard let _ = inspection.id else {
+                guard let _ = inspection.objectId else {
                     continue
                 }
                 let _ = DataServices.add(inspection: inspection)

@@ -712,14 +712,19 @@ extension NewObservationElementFormViewController: UICollectionViewDelegate, UIC
         
         let indexRow = indexPath.row
         let statics = STATIC_CELLS_COUNT - 1
-        if indexRow < statics {return}
         let i = indexRow - STATIC_CELLS_COUNT
-        if i < 0 {return}
+        guard indexRow >= statics else {
+            return
+        }
+        guard i >= 0 else {
+            return
+        }
         if i < storedPhotos.count {
             
             let current = storedPhotos[i]
-            
-            if current.originalType == nil {return}
+            if current.originalType == nil {
+                return
+            }
             
             if current.originalType == "video" {
                 showPreviewOfVideo(index: storedPhotos[i].index)
