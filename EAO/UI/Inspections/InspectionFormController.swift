@@ -62,6 +62,7 @@ final class InspectionFormController: UIViewController {
         if segue.identifier == InspectionFormController.addNewElementSegueID, let destinationVC = segue.destination as? NewObservationElementFormViewController {
             destinationVC.observation = nil
             destinationVC.inspection = inspection
+            destinationVC.isReadOnly = isReadOnly
         }
         
         if segue.identifier == InspectionFormController.editElementSegueID, let destinationVC = segue.destination as? NewObservationElementFormViewController, let index = tableView.indexPathForSelectedRow?.row, index < observations.count {
