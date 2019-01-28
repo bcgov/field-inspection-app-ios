@@ -12,7 +12,6 @@ final class Video: Object {
     
     @objc dynamic var id: String = "\(UUID().uuidString).mp4"
     @objc dynamic var observationId: String?
-    @objc dynamic var inspectionId: String?
     @objc dynamic var index: Int = 0
     @objc dynamic var notes: String?
     @objc dynamic var title: String?
@@ -24,12 +23,12 @@ final class Video: Object {
     }
     
     @objc func get() -> Data? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return try? Data(contentsOf: url)
     }
     
     @objc func getURL() -> URL? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return url
     }
 }
@@ -38,10 +37,8 @@ extension Video: ParseFactory {
     
     func createParseObject() -> PFObject {
         
-        let object = PFAudio()
-        object.id = self.id
-        object.observationId = self.observationId
-        object.inspectionId = self.inspectionId
+        let object = PFVideo()
+        // Do not set the properties: `id`, `observationId`, `inspectionId`.
         object.notes = self.notes
         if let urlString = self.url {
             object.url = URL(string: urlString)

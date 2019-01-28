@@ -41,6 +41,7 @@ class Inspection: Object {
     // MARK: Properties
     @objc dynamic var id: String = UUID().uuidString
     @objc dynamic var userId: String?
+    @objc dynamic var objectId: String?
     @objc dynamic var isSubmitted: Bool = false
     @objc dynamic var project: String?
     @objc dynamic var title: String?
@@ -71,19 +72,18 @@ extension Inspection: ParseFactory {
     
     func createParseObject() -> PFObject {
         
-        let pfInspection = PFInspection()
-        pfInspection.id = self.id
-        pfInspection.userId = self.userId
-        pfInspection.project = self.project
-        pfInspection.title = self.title
-        pfInspection.subtitle = self.subtitle
-        pfInspection.subtitle = self.subtitle
-        pfInspection.subtext = self.subtext
-        pfInspection.number = self.number
-        pfInspection.start = self.start
-        pfInspection.end = self.end
-        pfInspection.teamID = self.teamID
+        let object = PFInspection()
+        // save local inspection ID
+        object["localId"] = self.id
+        object.userId = self.userId
+        object.project = self.project
+        object.title = self.title
+        object.subtitle = self.subtitle
+        object.subtext = self.subtext
+        object.number = self.number
+        object.start = self.start
+        object.end = self.end
 
-        return pfInspection
+        return object
     }
 }

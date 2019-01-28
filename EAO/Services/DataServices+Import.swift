@@ -31,10 +31,18 @@ extension DataServices {
         }
         
         do {
-            
+            let realm = try Realm()
+
+            //don't add existing local inspections
+            if let localId = pfInspection["localId"] {
+                let inspection = realm.objects(Inspection.self).filter("id in %@", [localId]).first
+                if inspection != nil {
+                    return false
+                }
+            }
+
             let inspection = Inspection()
-            
-            inspection.id = pfInspection.id ?? UUID().uuidString
+            inspection.id = pfInspection.objectId ?? UUID().uuidString
             inspection.userId = userID
             inspection.isSubmitted = true
             
@@ -54,7 +62,6 @@ extension DataServices {
             
             inspection.meta = doc
             
-            let realm = try Realm()
             try realm.write {
                 realm.add(inspection, update: true)
                 realm.add(doc, update: true)
@@ -74,12 +81,12 @@ extension DataServices {
      
      - Returns: true or false. False if there are any issues adding an object
      */
-    class func add(observation pfobservation: PFObservation) -> Bool {
+    class func add(observation pfobservation: PFObservation, inspectionId: String) -> Bool {
         
         do {
             let observation = Observation()
-            observation.id = pfobservation.id ?? UUID().uuidString
-            observation.inspectionId = pfobservation.inspectionId
+            observation.id = pfobservation.objectId ?? UUID().uuidString
+            observation.inspectionId = inspectionId
             observation.title = pfobservation.title
             observation.requirement = pfobservation.requirement
             observation.coordinate = pfobservation.coordinate?.toRealmCoordinate()
@@ -105,13 +112,17 @@ extension DataServices {
      
      - Returns: true or false. False if there are any issues adding an object
      */
-    class func add(photo pfPhoto: PFPhoto) -> Bool {
+    class func add(photo pfPhoto: PFPhoto, observationId: String) -> Bool {
 
+        guard let objectId = pfPhoto.objectId else {
+            return false
+        }
+        
         do {
             let photo = Photo()
             
-            photo.id = pfPhoto.id ?? "\(UUID().uuidString).jpeg"
-            photo.observationId = pfPhoto.observationId
+            photo.id = "\(objectId).jpeg"
+            photo.observationId = observationId
             photo.caption = pfPhoto.caption
             photo.timestamp = pfPhoto.timestamp
             photo.coordinate = pfPhoto.coordinate?.toRealmCoordinate()
@@ -136,11 +147,16 @@ extension DataServices {
      
      - Returns: true or false. False if there are any issues adding an object
      */
-    class func add(photoThumb pfPhotoThumb: PFPhotoThumb) -> Bool {
+    class func add(photoThumb pfPhotoThumb: PFPhotoThumb, observationId: String) -> Bool {
+        
+        guard let objectId = pfPhotoThumb.objectId else {
+            return false
+        }
+
         do {
             let photoThumb = PhotoThumb()
-            photoThumb.id = pfPhotoThumb.id ?? "\(UUID().uuidString).jpeg"
-            photoThumb.observationId = pfPhotoThumb.observationId
+            photoThumb.id = "\(objectId).jpeg"
+            photoThumb.observationId = observationId
             photoThumb.index = pfPhotoThumb.index?.intValue ?? 0
             photoThumb.originalType = pfPhotoThumb.originalType
             
@@ -163,13 +179,17 @@ extension DataServices {
      
      - Returns: true or false. False if there are any issues adding an object
      */
-    class func add(audio pfAudio: PFAudio) -> Bool {
+    class func add(audio pfAudio: PFAudio, observationId: String) -> Bool {
+        
+        guard let objectId = pfAudio.objectId else {
+            return false
+        }
+
         do {
             let audio = Audio()
             
-            audio.id = pfAudio.id ?? "\(UUID().uuidString).mp4a"
-            audio.observationId = pfAudio.observationId
-            audio.inspectionId = pfAudio.inspectionId
+            audio.id = "\(objectId).mp4a"
+            audio.observationId = observationId
             audio.index = pfAudio.index?.intValue ?? 0
             audio.notes = pfAudio.notes
             audio.title = pfAudio.title
@@ -195,13 +215,17 @@ extension DataServices {
      
      - Returns: true or false. False if there are any issues adding an object
      */
-    class func add(video pfVideo: PFVideo) -> Bool {
+    class func add(video pfVideo: PFVideo, observationId: String) -> Bool {
+        
+        guard let objectId = pfVideo.objectId else {
+            return false
+        }
+
         do {
             let video = Video()
             
-            video.id = pfVideo.id ?? "\(UUID().uuidString).mp4"
-            video.observationId = pfVideo.observationId
-            video.inspectionId = pfVideo.inspectionId
+            video.id = "\(objectId).mp4"
+            video.observationId = observationId
             video.index = pfVideo.index?.intValue ?? 0
             video.notes = pfVideo.notes
             video.title = pfVideo.title
@@ -237,7 +261,8 @@ extension DataServices {
             return
         }
         
-        observationQuery.whereKey("inspectionId", equalTo: inspectionId)
+        let inspection = PFInspection(withoutDataWithObjectId: inspectionId)
+        observationQuery.whereKey("inspection", equalTo: inspection)
         observationQuery.findObjectsInBackground(block: { (observations, error) in
             
             guard let observations = observations as? [PFObservation], observations.count > 0 else {
@@ -246,11 +271,11 @@ extension DataServices {
             }
             
             for observation in observations {
-                guard let observationId = observation.id else {
+                guard let observationId = observation.objectId else {
                     continue
                 }
                 
-                let _ = DataServices.add(observation: observation)
+                let _ = DataServices.add(observation: observation, inspectionId: inspectionId)
                 self.fetchPhotos(for: observationId, completion: { (result) in
                     self.fetchPhotoThumbs(for: observationId, completion: { (result) in
                         self.fetchAudios(for: observationId, completion: { (result) in
@@ -271,17 +296,18 @@ extension DataServices {
             return
         }
         
-        query.whereKey("observationId", equalTo: observationId)
+        let observation = PFObservation(withoutDataWithObjectId: observationId)
+        query.whereKey("observation", equalTo: observation)
         query.findObjectsInBackground(block: { (array, error) in
             for object in array as? [PFPhoto] ?? [] {
-                guard let remoteId = object.id else {
+                guard let remoteId = object.objectId else {
                     continue
                 }
                 
-                let _ = DataServices.add(photo: object)
-                object.file?.getDataInBackground(block: { (data, error) in
+                let _ = DataServices.add(photo: object, observationId: observationId)
+                object.photo?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).jpeg", isDirectory: false))
                     }
                 })
             }
@@ -296,17 +322,18 @@ extension DataServices {
             return
         }
         
-        query.whereKey("observationId", equalTo: observationId)
+        let observation = PFObservation(withoutDataWithObjectId: observationId)
+        query.whereKey("observation", equalTo: observation)
         query.findObjectsInBackground(block: { (array, error) in
             for object in array as? [PFPhotoThumb] ?? [] {
-                guard let remoteId = object.id else {
+                guard let remoteId = object.objectId else {
                     continue
                 }
                 
-                let _ = DataServices.add(photoThumb: object)
+                let _ = DataServices.add(photoThumb: object, observationId: observationId)
                 object.file?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).jpeg", isDirectory: false))
                     }
                 })
             }
@@ -321,17 +348,18 @@ extension DataServices {
             return
         }
         
-        query.whereKey("observationId", equalTo: observationId)
+        let observation = PFObservation(withoutDataWithObjectId: observationId)
+        query.whereKey("observation", equalTo: observation)
         query.findObjectsInBackground(block: { (array, error) in
             for object in array as? [PFAudio] ?? [] {
-                guard let remoteId = object.id else {
+                guard let remoteId = object.objectId else {
                     continue
                 }
                 
-                let _ = DataServices.add(audio: object)
+                let _ = DataServices.add(audio: object, observationId: observationId)
                 object.file?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).mp4a", isDirectory: false))
                     }
                 })
             }
@@ -346,17 +374,18 @@ extension DataServices {
             return
         }
         
-        query.whereKey("observationId", equalTo: observationId)
+        let observation = PFObservation(withoutDataWithObjectId: observationId)
+        query.whereKey("observation", equalTo: observation)
         query.findObjectsInBackground(block: { (array, error) in
             for object in array as? [PFVideo] ?? [] {
-                guard let remoteId = object.id else {
+                guard let remoteId = object.objectId else {
                     continue
                 }
                 
-                let _ = DataServices.add(video: object)
+                let _ = DataServices.add(video: object, observationId: observationId)
                 object.file?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent(remoteId, isDirectory: true))
+                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).mp4", isDirectory: false))
                     }
                 })
             }
@@ -376,7 +405,8 @@ extension DataServices {
             try realm.write {
                 realm.delete(inspections)
             }
-        } catch let error {
+            
+        } catch let error{
             print("\(#function) Realm error: \(error.localizedDescription)")
             return false
         }

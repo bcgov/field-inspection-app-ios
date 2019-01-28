@@ -36,31 +36,14 @@ enum PFInspectionError: Error {
 final class PFInspection: PFObject, PFSubclassing {
     internal var progress: Float = 0
     internal var isBeingUploaded = false
-    internal var isStoredLocally: Bool {
-        get {
-            guard let id = self.id, let realm = try? Realm(), let inspection = realm.objects(InspectionMeta.self).filter("localId == %@", id).first else {
-                return false
-            }
-            
-            return inspection.isStoredLocally
-        }
-        set (value) {
-            guard let id = self.id, let realm = try? Realm(), let inspection = realm.objects(InspectionMeta.self).filter("localId == %@", id).first else {
-                return
-            }
-            
-            try? realm.write {
-                inspection.isStoredLocally = value
-            }
-        }
-    }
+
     internal var failed = [PFObject]()
     
     // MARK: -
-    
-    @NSManaged var id: String?
+    @NSManaged var localId: String?
     @NSManaged var userId: String?
     @NSManaged var isSubmitted: NSNumber?
+    @NSManaged var isActive: NSNumber?
     @NSManaged var project: String?
     @NSManaged var title: String?
     @NSManaged var subtitle: String?
@@ -70,7 +53,8 @@ final class PFInspection: PFObject, PFSubclassing {
     @NSManaged var end: Date?
     @NSManaged var teamID: String?
     @NSManaged var observation: [PFObservation]
-    
+    @NSManaged var team: PFTeam?
+
     static func parseClassName() -> String {
         return "Inspection"
     }
@@ -96,7 +80,7 @@ extension PFInspection {
         query.findObjectsInBackground(block: { (inspections, error) in
             
             for inspection in inspections as? [PFInspection] ?? [] {
-                guard let _ = inspection.id else {
+                guard let _ = inspection.objectId else {
                     continue
                 }
                 let _ = DataServices.add(inspection: inspection)

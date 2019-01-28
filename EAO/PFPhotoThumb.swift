@@ -13,9 +13,10 @@ final class PFPhotoThumb: PFObject, PFSubclassing {
     @NSManaged var id: String?
     @NSManaged var observationId: String?
     @NSManaged var index: NSNumber?
-    // original asset type: Video? Photo?
+    // original asset type: "Video" "Photo"
     @NSManaged var originalType: String?
     @NSManaged var file: PFFileObject?
+    @NSManaged var observation: PFObservation?
 
     static func parseClassName() -> String {
         return "PhotoThumb"

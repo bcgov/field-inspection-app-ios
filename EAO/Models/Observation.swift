@@ -43,8 +43,7 @@ extension Observation: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFObservation()
-        object.id = self.id
-        object.inspectionId = self.inspectionId
+        // Do not set the properties: `id`, `observationId`, `inspectionId`.
         object.title = self.title
         object.requirement = self.requirement
         object.coordinate = self.coordinate?.createParseObject()

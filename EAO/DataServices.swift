@@ -233,13 +233,16 @@ class DataServices {
         }
     }
     
-    internal class func getUserTeams(user: User, completion: @escaping (_ success: Bool,_ teams: [PFObject]) -> Void) {
+    internal class func getUserTeams(user: User, completion: @escaping (_ success: Bool,_ teams: [PFTeam]) -> Void) {
         
-        let query = PFQuery(className: "Team")
-        var downloadedTeams = [PFObject]()
+        guard let query = PFTeam.query() else {
+            return completion(false, [])
+        }
+
+        var downloadedTeams = [PFTeam]()
         query.whereKey("users", equalTo: user)
         query.findObjectsInBackground { (teams, error) in
-            if let foundTeams: [PFObject] = teams {
+            if let foundTeams: [PFTeam] = teams as? [PFTeam] {
                 for team in foundTeams {
                     downloadedTeams.append(team)
                     team.pinInBackground()
@@ -262,27 +265,36 @@ class DataServices {
         self.getUserTeams(user: user) { (done, downloaded)  in
             if done {
                 var results = [Team]()
-                for object: PFObject in downloaded {
-                    let team = Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!)
-                    results.append(team)
+                for object in downloaded {
+                    if let objectId = object.objectId,
+                        let name = object.name, let isActive = object.isActive?.boolValue{
+                        let team = Team(objectID: objectId, name: name, isActive: isActive)
+                        results.append(team)
+                    }
                 }
                 DataServices.shared.teams = results
                 return completion(true, results)
             } else {
-                let query = PFQuery(className: "Team")
+                guard let query = PFTeam.query() else {
+                    return completion(false, [])
+                }
                 query.fromLocalDatastore()
                 query.findObjectsInBackground { (objects, error) in
-                    if objects != nil {
-                        var results = [Team]()
-                        for object: PFObject in objects ?? [] {
-                            let team = Team(objectID: object.objectId!, name: (object["name"] as? String)!, isActive: (object["isActive"] as? Bool)!)
-                            results.append(team)
-                        }
-                        DataServices.shared.teams = results
-                        completion(true, results)
-                    } else {
+
+                    guard objects != nil else {
                         return completion(false, nil)
                     }
+                    
+                    var results = [Team]()
+                    for object in downloaded {
+                        if let objectId = object.objectId,
+                            let name = object.name, let isActive = object.isActive?.boolValue{
+                            let team = Team(objectID: objectId, name: name, isActive: isActive)
+                            results.append(team)
+                        }
+                    }
+                    DataServices.shared.teams = results
+                    return completion(true, results)
                 }
             }
         }

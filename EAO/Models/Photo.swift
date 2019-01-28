@@ -12,7 +12,7 @@ class Photo: Object {
     
     //Use this variable for image caching
     var image: UIImage? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return UIImage(contentsOfFile: url.path)
     }
     
@@ -29,7 +29,7 @@ class Photo: Object {
     }
 
     @objc func get() -> Data? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return try? Data(contentsOf: url)
     }
 }
@@ -39,15 +39,14 @@ extension Photo: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFPhoto()
-        object.id = self.id
-        object.observationId = self.observationId
+        // Do not set the properties: `id`, `observationId`.
         object.caption = self.caption
         object.timestamp = self.timestamp
         object.coordinate = self.coordinate?.createParseObject()
         object.index = NSNumber(value: self.index)
         
         if let fileData = self.get() {
-            object.file = PFFileObject(data: fileData)
+            object.photo = PFFileObject(data: fileData)
         }
 
         return object

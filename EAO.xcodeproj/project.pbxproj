@@ -247,6 +247,8 @@
 		95CF462D7588D8B3207A134B /* Pods_EAOUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7264A000F4E6ED7FD7102F7 /* Pods_EAOUITests.framework */; };
 		9688D51C1E69DA4300C49CD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688D51B1E69DA4300C49CD7 /* AppDelegate.swift */; };
 		CFA9994DB092C61D27ED1854 /* Pods_Field_Insp_TEST.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A66651935004DE845E747AF /* Pods_Field_Insp_TEST.framework */; };
+		D52C30C321FE468E00EDAC38 /* PFTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C30C221FE468E00EDAC38 /* PFTeam.swift */; };
+		D52C30C521FE489100EDAC38 /* PFTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C30C221FE468E00EDAC38 /* PFTeam.swift */; };
 		D5391DBB21E7125F00FC4055 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = D5391DBA21E7125F00FC4055 /* Podfile */; };
 		D53B6DDC21CB61D000A0F546 /* RealmLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DDB21CB61CF00A0F546 /* RealmLocation.swift */; };
 		D53B6DDF21CB622E00A0F546 /* InspectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DDE21CB622E00A0F546 /* InspectionError.swift */; };
@@ -495,6 +497,7 @@
 		B7264A000F4E6ED7FD7102F7 /* Pods_EAOUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EAOUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCCC9EF18BF5162D2E6C2AA3 /* Pods-EAO.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAO.release.xcconfig"; path = "Pods/Target Support Files/Pods-EAO/Pods-EAO.release.xcconfig"; sourceTree = "<group>"; };
 		CF2A00FA0155E41D4235A3F6 /* Pods-EAOTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EAOTests/Pods-EAOTests.release.xcconfig"; sourceTree = "<group>"; };
+		D52C30C221FE468E00EDAC38 /* PFTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFTeam.swift; sourceTree = "<group>"; };
 		D5391DB721E7123800FC4055 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = EAO/README.md; sourceTree = "<group>"; };
 		D5391DB921E7124700FC4055 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		D5391DBA21E7125F00FC4055 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
@@ -661,6 +664,7 @@
 				D5F7DE3C21E1E60E00C0A859 /* PFPhotoThumb.swift */,
 				D5F7DE3621E1E56D00C0A859 /* PFAudio.swift */,
 				D5F7DE3321E1E51F00C0A859 /* PFVideo.swift */,
+				D52C30C221FE468E00EDAC38 /* PFTeam.swift */,
 				D53B6DDB21CB61CF00A0F546 /* RealmLocation.swift */,
 				29A4FFA5207358DD0036549D /* User.swift */,
 				291746732073E77F005F70B4 /* Team.swift */,
@@ -1209,6 +1213,7 @@
 						TestTargetID = 9688D5171E69DA4300C49CD7;
 					};
 					2936BEAE20BF64A500775F5E = {
+						DevelopmentTeam = SKJCUF8GFH;
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
@@ -1595,6 +1600,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D52C30C521FE489100EDAC38 /* PFTeam.swift in Sources */,
 				2936BEB120BF64A500775F5E /* UIApplication.swift in Sources */,
 				2936BEB220BF64A500775F5E /* NewDescriptionTableViewCell.swift in Sources */,
 				2936BEB420BF64A500775F5E /* GalleryMode.swift in Sources */,
@@ -1730,6 +1736,7 @@
 				2917467C2073EC42005F70B4 /* TeamSearchTableViewCell.swift in Sources */,
 				295304F02017FF59001E5C7F /* MiButtonStyle.swift in Sources */,
 				29A029EF2029FECC0085DCE8 /* Recorder.swift in Sources */,
+				D52C30C321FE468E00EDAC38 /* PFTeam.swift in Sources */,
 				29424D441FFC146200562508 /* HexColor.swift in Sources */,
 				119A0B841EE785300077D9B5 /* Reachability.swift in Sources */,
 				5675DA9521935C00008409AB /* Theme.swift in Sources */,
@@ -1874,7 +1881,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SKJCUF8GFH;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1897,7 +1904,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SKJCUF8GFH;
 				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ca.bc.gov.pathfinder.mobile.FieldInspection-Test";

@@ -12,7 +12,7 @@ class PhotoThumb: Object {
     
     //Use this variable for image caching
     var image: UIImage? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return UIImage(contentsOfFile: url.path)
     }
     
@@ -28,7 +28,7 @@ class PhotoThumb: Object {
     }
 
     @objc func get() -> Data? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
         return try? Data(contentsOf: url)
     }
 }
@@ -38,9 +38,9 @@ extension PhotoThumb: ParseFactory {
     func createParseObject() -> PFObject {
         
         let object = PFPhotoThumb()
-        object.id = self.id
-        object.observationId = self.observationId
+        // Do not set the properties: `id`, `observationId`, `inspectionId`.
         object.index = NSNumber(value: self.index)
+        object.originalType = originalType
         
         if let fileData = self.get() {
             object.file = PFFileObject(data: fileData)

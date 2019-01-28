@@ -19,7 +19,8 @@ final class PFVideo: PFObject, PFSubclassing {
     @NSManaged var title: String?
     @NSManaged var url: URL?
     @NSManaged var file: PFFileObject?
-    
+    @NSManaged var observation: PFObservation?
+
     static func parseClassName() -> String {
         return "Video"
     }
