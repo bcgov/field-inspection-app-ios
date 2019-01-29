@@ -18,7 +18,7 @@ PODS:
   - Realm/Headers (3.13.1)
   - RealmSwift (3.13.1):
     - Realm (= 3.13.1)
-  - SwiftLint (0.30.0)
+  - SwiftLint (0.30.1)
 
 DEPENDENCIES:
   - Alamofire
@@ -56,7 +56,7 @@ SPEC CHECKSUMS:
   Parse: 3b31a3dd1777b07ee7f0caee32fafbff544483a5
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
-  SwiftLint: 4e37cb5cd33435170dfd09fba089f41fdbf64d53
+  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
 PODFILE CHECKSUM: 39bc9c5120332d2d376b5eb7d87e14e1d01385b2
 
