@@ -18,10 +18,9 @@ class DataServices {
     
     static let shared = DataServices()
     static let realmFileName = "default.realm"
-    static let documentsURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
     static let realmPath: URL = {
         // no backups, put it in the .cachesDirectory
-        var workspaceURL = URL(fileURLWithPath: DataServices.documentsURL.path, isDirectory: true)
+        var workspaceURL = URL(fileURLWithPath: FileManager.workDirectory.path, isDirectory: true)
         return URL(fileURLWithPath: realmFileName, isDirectory: false, relativeTo: workspaceURL)
     }()
     
@@ -185,8 +184,71 @@ class DataServices {
         return nil
     }
     
-    internal class func deleteLocalObservations(forInspection inspection: Inspection, completion: (() -> Void)? = nil) {
-        //TODO - delete local observation
+    internal class func remove(localInspection inspection: Inspection, completion: (() -> Void)? = nil) {
+        
+        guard let realm = try? Realm() else {
+            return
+        }
+        
+        do {
+            let observations = realm.objects(Observation.self).filter("inspectionId in %@", [inspection.id])
+
+            for observation in observations {
+                observation.removeLocalAssets()
+
+                let photoThumbs = realm.objects(PhotoThumb.self).filter("observationId in %@", [observation.id])
+                let photos = realm.objects(Photo.self).filter("observationId in %@", [observation.id])
+                for photo in photos {
+                    try realm.write {
+                        if let coord = photo.coordinate {
+                            realm.delete(coord)
+                        }
+                    }
+                }
+
+                let audios = realm.objects(Audio.self).filter("observationId in %@", [observation.id])
+                for audio in audios {
+                    try realm.write {
+                        if let coord = audio.coordinate {
+                            realm.delete(coord)
+                        }
+                    }
+                }
+
+                let videos = realm.objects(Video.self).filter("observationId in %@", [observation.id])
+                for video in videos {
+                    try realm.write {
+                        if let coord = video.coordinate {
+                            realm.delete(coord)
+                        }
+                    }
+                }
+                
+                try realm.write {
+                    if let ocoord = observation.coordinate {
+                        realm.delete(ocoord)
+                    }
+                    realm.delete(photoThumbs)
+                    realm.delete(photos)
+                    realm.delete(audios)
+                    realm.delete(videos)
+                }
+            }
+            
+            try realm.write {
+                realm.delete(observations)
+
+                if let meta = inspection.meta {
+                    realm.delete(meta)
+                }
+                
+                realm.delete(inspection)
+            }
+            
+            completion?()
+        } catch let error {
+            print("\(#function) Remove error: \(error.localizedDescription)")
+        }
     }
     
     internal class func isUserMobileAccessEnabled(completion: @escaping (_ success: Bool) -> Void) {

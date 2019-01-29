@@ -416,8 +416,12 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
         }
 
 		let action = UITableViewRowAction(style: .destructive, title: "Remove") { (action, indexPath) in
-            DataServices.deleteLocalObservations(forInspection: inspection) {
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            DataServices.remove(localInspection: inspection) {
+                
+                self.data.remove(at: indexPath.row)
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.endUpdates()
             }
 		}
 

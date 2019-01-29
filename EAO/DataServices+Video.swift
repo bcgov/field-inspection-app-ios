@@ -44,7 +44,7 @@ extension DataServices {
             video.observationId = observationID
             video.index = index
             video.notes = description
-            let exportURL: URL = FileManager.directory.appendingPathComponent(video.id, isDirectory: false)
+            let exportURL: URL = FileManager.workDirectory.appendingPathComponent(video.id, isDirectory: false)
             let exporter = AVAssetExportSession(asset: avAsset, presetName: AVAssetExportPresetHighestQuality)
             exporter?.outputFileType = AVFileType.mov
             exporter?.outputURL = exportURL

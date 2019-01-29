@@ -7,8 +7,10 @@
 //
 
 extension FileManager {
-	static public var directory: URL {
-		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-		return paths[0]
-	}
+
+    static public var workDirectory: URL {
+
+        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    }
 }
+

@@ -36,6 +36,33 @@ class Observation: Object {
         parameters["observationDescription"] = observationDescription ?? "N/A"
         return "\(self) \(parameters)"
     }
+    
+    internal func removeLocalAssets() {
+
+        guard let realm = try? Realm() else {
+            return
+        }
+
+        let photoThumbs = realm.objects(PhotoThumb.self).filter("observationId in %@", [id])
+        for photoThumb in photoThumbs {
+            photoThumb.remove()
+        }
+    
+        let photos = realm.objects(Photo.self).filter("observationId in %@", [id])
+        for photo in photos {
+            photo.remove()
+        }
+        
+        let audios = realm.objects(Audio.self).filter("observationId in %@", [id])
+        for audio in audios {
+            audio.remove()
+        }
+        
+        let videos = realm.objects(Video.self).filter("observationId in %@", [id])
+        for video in videos {
+            video.remove()
+        }
+    }
 }
 
 extension Observation: ParseFactory {

@@ -23,13 +23,25 @@ final class Audio: Object {
     }
 
     @objc func get() -> Data? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
+        let url = URL(fileURLWithPath: FileManager.workDirectory.path).appendingPathComponent(id, isDirectory: false)
         return try? Data(contentsOf: url)
     }
     
     @objc func getURL() -> URL? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
+        let url = URL(fileURLWithPath: FileManager.workDirectory.path).appendingPathComponent(id, isDirectory: false)
         return url
+    }
+    
+    internal func remove() -> Void {
+        
+        do {
+            let url = URL(fileURLWithPath: FileManager.workDirectory.path).appendingPathComponent(id, isDirectory: false)
+            if FileManager.default.fileExists(atPath: url.path) {
+                try FileManager.default.removeItem(at: url)
+            }
+        } catch let error {
+            print("\(#function) Remove audio error: \(error.localizedDescription)")
+        }
     }
 }
 

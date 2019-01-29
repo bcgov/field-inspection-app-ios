@@ -36,8 +36,8 @@ extension DataServices {
         photoThumb.index = index
 
         do {
-            try dataPhoto.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: false))
-            try dataThumb.write(to: FileManager.directory.appendingPathComponent(photoThumb.id, isDirectory: false))
+            try dataPhoto.write(to: FileManager.workDirectory.appendingPathComponent(photo.id, isDirectory: false))
+            try dataThumb.write(to: FileManager.workDirectory.appendingPathComponent(photoThumb.id, isDirectory: false))
         } catch let error {
             print("\(#function) \(error)")
             return nil
@@ -70,7 +70,7 @@ extension DataServices {
         
         do {
             let realm = try Realm()
-            try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
+            try data.write(to: FileManager.workDirectory.appendingPathComponent(photo.id, isDirectory: true))
             try realm.write {
                 realm.add(photo, update: true)
             }
@@ -95,7 +95,7 @@ extension DataServices {
         
         do {
             let realm = try Realm()
-            try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
+            try data.write(to: FileManager.workDirectory.appendingPathComponent(photo.id, isDirectory: true))
             
             try realm.write {
                 realm.add(photo, update: true)
