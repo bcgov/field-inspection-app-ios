@@ -13,6 +13,8 @@ struct Constants {
     struct API {
         static let projectListURI = "https://projects.eao.gov.bc.ca/api/projects/published"
     }
+    
+    static let jpegCompression: CGFloat = 0.8
 }
 
 extension Notification.Name {

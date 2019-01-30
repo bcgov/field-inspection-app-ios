@@ -17,10 +17,10 @@ extension DataServices {
      */
     class func preparePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> (PhotoThumb, Photo)? {
         
-        guard let dataPhoto: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let dataPhoto: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
-        guard let dataThumb: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let dataThumb: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
         
@@ -57,7 +57,7 @@ extension DataServices {
     
     internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> String? {
         
-        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
         print("Image full size of \(index) is \(data.count)")
@@ -83,7 +83,7 @@ extension DataServices {
     
     internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?) -> String? {
         
-        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
         print("thumb size of \(index) is \(data.count)")
