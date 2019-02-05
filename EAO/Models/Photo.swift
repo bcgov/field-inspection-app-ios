@@ -12,10 +12,9 @@ class Photo: Object {
     
     //Use this variable for image caching
     var image: UIImage? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
+        let url = URL(fileURLWithPath: FileManager.workDirectory.path).appendingPathComponent(id, isDirectory: false)
         return UIImage(contentsOfFile: url.path)
     }
-    
     // MARK: Properties
     @objc dynamic var id: String = "\(UUID().uuidString).jpeg"
     @objc dynamic var observationId: String?
@@ -29,8 +28,20 @@ class Photo: Object {
     }
 
     @objc func get() -> Data? {
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: false)
+        let url = URL(fileURLWithPath: FileManager.workDirectory.path).appendingPathComponent(id, isDirectory: false)
         return try? Data(contentsOf: url)
+    }
+    
+    internal func remove() -> Void {
+        
+        do {
+            let url = URL(fileURLWithPath: FileManager.workDirectory.path).appendingPathComponent(id, isDirectory: false)
+            if FileManager.default.fileExists(atPath: url.path) {
+                try FileManager.default.removeItem(at: url)
+            }
+        } catch let error {
+            print("\(#function) Remove photo error: \(error.localizedDescription)")
+        }
     }
 }
 

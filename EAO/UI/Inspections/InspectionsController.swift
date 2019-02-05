@@ -165,12 +165,12 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
 
 		indicator.startAnimating()
         
-        if fetchRemote == true {
-            PFInspection.fetchInspectionsOnly {
-                self.indicator.stopAnimating()
-                self.loadInspections(fetchRemote: false)
-            }
-        } else {
+//        if fetchRemote == true {
+//            PFInspection.fetchInspectionsOnly {
+//                self.indicator.stopAnimating()
+//                self.loadInspections(fetchRemote: false)
+//            }
+//        } else {
             let results = DataServices.shared.fetchInspections()
             self.inspections.draft = results.filter { $0.isSubmitted == false }
             self.inspections.submitted = results.filter { $0.isSubmitted == true }
@@ -179,7 +179,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             
             self.indicator.stopAnimating()
             self.tableView.reloadData()
-        }
+//        }
 	}
 
 	// Use this method to insert an inspection to the 'In Progress' tab
@@ -416,8 +416,12 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
         }
 
 		let action = UITableViewRowAction(style: .destructive, title: "Remove") { (action, indexPath) in
-            DataServices.deleteLocalObservations(forInspection: inspection) {
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            DataServices.remove(localInspection: inspection) {
+                
+                self.data.remove(at: indexPath.row)
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.endUpdates()
             }
 		}
 

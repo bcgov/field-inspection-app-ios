@@ -41,7 +41,7 @@ final class PFVideo: PFObject, PFSubclassing {
         guard let id = id else {
             return nil
         }
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.workDirectory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return try? Data(contentsOf: url)
     }
     
@@ -49,7 +49,7 @@ final class PFVideo: PFObject, PFSubclassing {
         guard let id = id else {
             return nil
         }
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.workDirectory.absoluteString).appendingPathComponent(id, isDirectory: true)
         return url
     }
 }

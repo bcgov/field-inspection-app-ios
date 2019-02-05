@@ -37,7 +37,12 @@ final class LoginController: UIViewController {
     override func viewDidLoad() {
         style()
         addDismissKeyboardOnTapRecognizer(on: scrollView)
-        perform(#selector(presentMainScreen), with: nil, afterDelay: 0)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        presentMainScreen()
     }
     
     func style() {
@@ -109,14 +114,15 @@ final class LoginController: UIViewController {
     }
     
     @objc func presentMainScreen() {
-        if PFUser.current() != nil {
-            clearTextFields()
-            
-            self.indicator.startAnimating()
-            DataServices.shared.reloadReferenceData { (_) in
-                self.showInspectionsController()
-            }
+        
+        guard let _ = PFUser.current() else {
+            return
         }
+        
+        indicator.startAnimating()
+        DataServices.shared.reloadReferenceData { (_) in }
+        
+        showInspectionsController()
     }
     
     fileprivate func clearTextFields() {

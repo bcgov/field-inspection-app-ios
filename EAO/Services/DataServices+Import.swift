@@ -307,7 +307,7 @@ extension DataServices {
                 let _ = DataServices.add(photo: object, observationId: observationId)
                 object.photo?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).jpeg", isDirectory: false))
+                        try? data.write(to: FileManager.workDirectory.appendingPathComponent("\(remoteId).jpeg", isDirectory: false))
                     }
                 })
             }
@@ -333,7 +333,7 @@ extension DataServices {
                 let _ = DataServices.add(photoThumb: object, observationId: observationId)
                 object.file?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).jpeg", isDirectory: false))
+                        try? data.write(to: FileManager.workDirectory.appendingPathComponent("\(remoteId).jpeg", isDirectory: false))
                     }
                 })
             }
@@ -359,7 +359,7 @@ extension DataServices {
                 let _ = DataServices.add(audio: object, observationId: observationId)
                 object.file?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).mp4a", isDirectory: false))
+                        try? data.write(to: FileManager.workDirectory.appendingPathComponent("\(remoteId).mp4a", isDirectory: false))
                     }
                 })
             }
@@ -385,7 +385,7 @@ extension DataServices {
                 let _ = DataServices.add(video: object, observationId: observationId)
                 object.file?.getDataInBackground(block: { (data, error) in
                     if let data = data {
-                        try? data.write(to: FileManager.directory.appendingPathComponent("\(remoteId).mp4", isDirectory: false))
+                        try? data.write(to: FileManager.workDirectory.appendingPathComponent("\(remoteId).mp4", isDirectory: false))
                     }
                 })
             }

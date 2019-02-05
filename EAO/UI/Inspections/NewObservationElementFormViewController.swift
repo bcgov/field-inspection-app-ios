@@ -436,8 +436,8 @@ class NewObservationElementFormViewController: UIViewController {
     private func deleteNewPhotoAssets(){
         
         for (thumb, photo) in newPhotos {
-            let thumbPath = FileManager.directory.appendingPathComponent(thumb.id, isDirectory: false)
-            let photoPath = FileManager.directory.appendingPathComponent(photo.id, isDirectory: false)
+            let thumbPath = FileManager.workDirectory.appendingPathComponent(thumb.id, isDirectory: false)
+            let photoPath = FileManager.workDirectory.appendingPathComponent(photo.id, isDirectory: false)
             do {
                 try FileManager.default.removeItem(at: thumbPath)
                 try FileManager.default.removeItem(at: photoPath)

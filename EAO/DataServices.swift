@@ -16,10 +16,15 @@ import AlamofireObjectMapper
 
 class DataServices {
     
-    static let realmFileName = "default.realm"
-    static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-
     static let shared = DataServices()
+    static let realmFileName = "default.realm"
+    static let realmPath: URL = {
+        // no backups, put it in the .cachesDirectory
+        var workspaceURL = URL(fileURLWithPath: FileManager.workDirectory.path, isDirectory: true)
+        return URL(fileURLWithPath: realmFileName, isDirectory: false, relativeTo: workspaceURL)
+    }()
+    
+    
 
     let uploadQueue: OperationQueue = OperationQueue()
 
@@ -33,7 +38,7 @@ class DataServices {
     
     private class func configureRealm() {
         
-        let config = Realm.Configuration(fileURL: DataServices.realmPath(),
+        let config = Realm.Configuration(fileURL: DataServices.realmPath,
                                          schemaVersion: Settings.REALM_SCHEMA_NUMBER,
                                          migrationBlock: { migration, oldSchemaVersion in
                                             // check oldSchemaVersion here, if we're newer call
@@ -51,31 +56,8 @@ class DataServices {
                                             let oneHundredMB = 10 * 1024 * 1024
                                             return (totalBytes > oneHundredMB) && (Double(usedBytes) / Double(totalBytes)) < 0.5
         })
-        
+
         Realm.Configuration.defaultConfiguration = config
-    }
-    
-    // Allow customization of the Realm; this will let us keep it in a location that is not
-    // backed up if needed.
-    private class func realmPath() -> URL {
-        
-        var workspaceURL = URL(fileURLWithPath: DataServices.documentsURL.path, isDirectory: true).appendingPathComponent("db")
-        var directory: ObjCBool = ObjCBool(false)
-        
-        if !FileManager.default.fileExists(atPath: workspaceURL.path, isDirectory: &directory) {
-            // no backups
-            var resourceValues = URLResourceValues()
-            resourceValues.isExcludedFromBackup = true
-            
-            do {
-                try FileManager.default.createDirectory(at: workspaceURL, withIntermediateDirectories: false, attributes: nil)
-                try workspaceURL.setResourceValues(resourceValues)
-            } catch {
-                fatalError("Unable to create a location to store the database")
-            }
-        }
-        
-        return URL(fileURLWithPath: realmFileName, isDirectory: false, relativeTo: workspaceURL)
     }
 
     class func add(inspection: Inspection, isStoredLocally: Bool = false) -> Bool {
@@ -202,8 +184,79 @@ class DataServices {
         return nil
     }
     
-    internal class func deleteLocalObservations(forInspection inspection: Inspection, completion: (() -> Void)? = nil) {
-        //TODO - delete local observation
+    internal class func remove(localInspection inspection: Inspection, completion: (() -> Void)? = nil) {
+        
+        let inspectionId = inspection.id;
+
+        DispatchQueue.global().async {
+            guard let realm = try? Realm() else {
+                return
+            }
+            
+            do {
+                let myInspection = realm.objects(Inspection.self).filter("id = %@", inspectionId).first!
+                let observations = realm.objects(Observation.self).filter("inspectionId in %@", [myInspection.id])
+                
+                for observation in observations {
+                    observation.removeLocalAssets()
+                    
+                    let photoThumbs = realm.objects(PhotoThumb.self).filter("observationId in %@", [observation.id])
+                    let photos = realm.objects(Photo.self).filter("observationId in %@", [observation.id])
+                    for photo in photos {
+                        try realm.write {
+                            if let coord = photo.coordinate {
+                                realm.delete(coord)
+                            }
+                        }
+                    }
+                    
+                    let audios = realm.objects(Audio.self).filter("observationId in %@", [observation.id])
+                    for audio in audios {
+                        try realm.write {
+                            if let coord = audio.coordinate {
+                                realm.delete(coord)
+                            }
+                        }
+                    }
+                    
+                    let videos = realm.objects(Video.self).filter("observationId in %@", [observation.id])
+                    for video in videos {
+                        try realm.write {
+                            if let coord = video.coordinate {
+                                realm.delete(coord)
+                            }
+                        }
+                    }
+                    
+                    try realm.write {
+                        if let ocoord = observation.coordinate {
+                            realm.delete(ocoord)
+                        }
+                        realm.delete(photoThumbs)
+                        realm.delete(photos)
+                        realm.delete(audios)
+                        realm.delete(videos)
+                    }
+                }
+                
+                try realm.write {
+                    realm.delete(observations)
+                    
+                    if let meta = myInspection.meta {
+                        realm.delete(meta)
+                    }
+                    
+                    realm.delete(myInspection)
+                }
+                
+                DispatchQueue.main.async {
+                    completion?()
+                }
+                
+            } catch let error {
+                print("\(#function) Remove error: \(error.localizedDescription)")
+            }
+        }
     }
     
     internal class func isUserMobileAccessEnabled(completion: @escaping (_ success: Bool) -> Void) {

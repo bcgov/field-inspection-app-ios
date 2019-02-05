@@ -8,7 +8,7 @@
 
 extension URL {
 	public init(photoId: String) {
-		self.init(fileURLWithPath: FileManager.directory.absoluteString)
+		self.init(fileURLWithPath: FileManager.workDirectory.absoluteString)
 		appendPathComponent(photoId)
 		//(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(id, isDirectory: true)
 	}

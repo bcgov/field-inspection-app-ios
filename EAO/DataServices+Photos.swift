@@ -17,10 +17,10 @@ extension DataServices {
      */
     class func preparePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> (PhotoThumb, Photo)? {
         
-        guard let dataPhoto: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let dataPhoto: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
-        guard let dataThumb: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let dataThumb: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
         
@@ -36,8 +36,8 @@ extension DataServices {
         photoThumb.index = index
 
         do {
-            try dataPhoto.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: false))
-            try dataThumb.write(to: FileManager.directory.appendingPathComponent(photoThumb.id, isDirectory: false))
+            try dataPhoto.write(to: FileManager.workDirectory.appendingPathComponent(photo.id, isDirectory: false))
+            try dataThumb.write(to: FileManager.workDirectory.appendingPathComponent(photoThumb.id, isDirectory: false))
         } catch let error {
             print("\(#function) \(error)")
             return nil
@@ -57,7 +57,7 @@ extension DataServices {
     
     internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> String? {
         
-        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
         print("Image full size of \(index) is \(data.count)")
@@ -70,7 +70,7 @@ extension DataServices {
         
         do {
             let realm = try Realm()
-            try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
+            try data.write(to: FileManager.workDirectory.appendingPathComponent(photo.id, isDirectory: true))
             try realm.write {
                 realm.add(photo, update: true)
             }
@@ -83,7 +83,7 @@ extension DataServices {
     
     internal class func saveThumbnail(image: UIImage, index: Int, originalType: String, observationID: String, description: String?) -> String? {
         
-        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: 0) else {
+        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
         print("thumb size of \(index) is \(data.count)")
@@ -95,7 +95,7 @@ extension DataServices {
         
         do {
             let realm = try Realm()
-            try data.write(to: FileManager.directory.appendingPathComponent(photo.id, isDirectory: true))
+            try data.write(to: FileManager.workDirectory.appendingPathComponent(photo.id, isDirectory: true))
             
             try realm.write {
                 realm.add(photo, update: true)

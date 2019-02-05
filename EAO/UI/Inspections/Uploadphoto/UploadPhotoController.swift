@@ -103,7 +103,7 @@ class UploadPhotoController: UIViewController, KeyboardDelegate {
 		uploadLabel.alpha = 0
 		indicator.startAnimating()
 
-        let url = URL(fileURLWithPath: FileManager.directory.absoluteString).appendingPathComponent(photo.id, isDirectory: true)
+        let url = URL(fileURLWithPath: FileManager.workDirectory.absoluteString).appendingPathComponent(photo.id, isDirectory: true)
         imageView.image = UIImage(contentsOfFile: url.path)
         
 		captionTextView.text = photo.caption
