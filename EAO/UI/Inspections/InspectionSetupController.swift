@@ -263,6 +263,11 @@ final class InspectionSetupController: UIViewController {
             return nil
         }
         
+        if self.teamID == "" {
+            presentAlert(controller: Alerts.fields)
+            return nil
+        }
+
         if validateDates() == false {
             presentAlert(controller: Alerts.dates)
             return nil
