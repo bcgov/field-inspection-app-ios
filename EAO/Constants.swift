@@ -15,6 +15,7 @@ struct Constants {
     }
     
     static let jpegCompression: CGFloat = 0.8
+    static let jpegNoCompression: CGFloat = 1.0
 }
 
 extension Notification.Name {

@@ -17,7 +17,7 @@ extension DataServices {
      */
     class func preparePhoto(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> (PhotoThumb, Photo)? {
         
-        guard let dataPhoto: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
+        guard let dataPhoto: Data = image.jpegData(compressionQuality: Constants.jpegNoCompression) else {
             return nil
         }
         guard let dataThumb: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
