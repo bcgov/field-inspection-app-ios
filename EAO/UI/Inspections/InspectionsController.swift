@@ -28,7 +28,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         case Draft = 0
         case Submitted
     }
-
+    
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var addNewInspectionButton: UIButton!
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
@@ -36,7 +36,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet private var indicator: UIActivityIndicatorView!
     
     // MARK: variables
-	private var isBeingUploaded = false
+    private var isBeingUploaded = false
     private var locationManager: CLLocationManager = {
         // TODO:(jl) This should be moved to where its used and the user advised
         // why we're going to as for it.
@@ -64,9 +64,9 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     internal static var reference: InspectionsController? {
         return (AppDelegate.root?.presentedViewController as? UINavigationController)?.viewControllers.first as? InspectionsController
     }
-
+    
     internal var inspections = (draft: [Inspection](), submitted: [Inspection]())
-
+    
     // MARK: -
     private var selectedIndex: Int {
         return segmentedControl.selectedSegmentIndex
@@ -74,7 +74,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: -
     override func viewDidLoad() {
-
+        
         super.viewDidLoad()
         
         commonInit()
@@ -87,14 +87,14 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        
         if segue.identifier == InspectionsController.inspectionFormControllerSegueID {
             let inspeciton = data[selectedInspectionIndexPath!.row]
             let dvc = segue.destination as! InspectionFormController
             dvc.inspection = inspeciton
         }
     }
-
+    
     private func commonInit() {
         
         addNewInspectionButton.layer.cornerRadius = 5
@@ -105,27 +105,27 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         
         tableView.contentInset.bottom = 10
     }
-
-	// MARK: - IB Actions
-	@IBAction func addInspectionTapped(_ sender: UIButton) {
-
-		sender.isEnabled = false
-		performSegue(withIdentifier: InspectionsController.inspectionSetupControllerSegueID, sender: nil)
-		sender.isEnabled = true
-	}
-
-	@IBAction func editTapped(_ sender: UIButton, forEvent event: UIEvent) {
-
-		guard let indexPath = tableView.indexPath(for: event) else {
-			return
-		}
-
+    
+    // MARK: - IB Actions
+    @IBAction func addInspectionTapped(_ sender: UIButton) {
+        
+        sender.isEnabled = false
+        performSegue(withIdentifier: InspectionsController.inspectionSetupControllerSegueID, sender: nil)
+        sender.isEnabled = true
+    }
+    
+    @IBAction func editTapped(_ sender: UIButton, forEvent event: UIEvent) {
+        
+        guard let indexPath = tableView.indexPath(for: event) else {
+            return
+        }
+        
         selectedInspectionIndexPath = indexPath
         performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
-	}
-
-	@IBAction func segmentedControlChangedValue(_ sender: UISegmentedControl) {
-
+    }
+    
+    @IBAction func segmentedControlChangedValue(_ sender: UISegmentedControl) {
+        
         if selectedIndex == Sections.Submitted.rawValue {
             tableView.addSubview(refreshControl)
         } else {
@@ -133,14 +133,14 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         }
         
         updateDataForSelectedIndex();
-
-		addNewInspectionButton.isHidden = selectedIndex == 0 ? false : true
-		tableViewBottomConstraint.constant = selectedIndex == 0 ? 10 : -60
-
-		tableView.reloadData()
-	}
-
-	// MARK: -
+        
+        addNewInspectionButton.isHidden = selectedIndex == 0 ? false : true
+        tableViewBottomConstraint.constant = selectedIndex == 0 ? 10 : -60
+        
+        tableView.reloadData()
+    }
+    
+    // MARK: -
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         
         if selectedIndex == Sections.Submitted.rawValue {
@@ -160,32 +160,32 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         }
         refreshControl.endRefreshing()
     }
-
+    
     private func loadInspections(fetchRemote: Bool = false) {
-
-		indicator.startAnimating()
         
-//        if fetchRemote == true {
-//            PFInspection.fetchInspectionsOnly {
-//                self.indicator.stopAnimating()
-//                self.loadInspections(fetchRemote: false)
-//            }
-//        } else {
-            let results = DataServices.shared.fetchInspections()
-            self.inspections.draft = results.filter { $0.isSubmitted == false }
-            self.inspections.submitted = results.filter { $0.isSubmitted == true }
-            self.sort()
-            self.updateDataForSelectedIndex()
-            
-            self.indicator.stopAnimating()
-            self.tableView.reloadData()
-//        }
-	}
-
-	// Use this method to insert an inspection to the 'In Progress' tab
+        indicator.startAnimating()
+        
+        //        if fetchRemote == true {
+        //            PFInspection.fetchInspectionsOnly {
+        //                self.indicator.stopAnimating()
+        //                self.loadInspections(fetchRemote: false)
+        //            }
+        //        } else {
+        let results = DataServices.shared.fetchInspections()
+        self.inspections.draft = results.filter { $0.isSubmitted == false }
+        self.inspections.submitted = results.filter { $0.isSubmitted == true }
+        self.sort()
+        self.updateDataForSelectedIndex()
+        
+        self.indicator.stopAnimating()
+        self.tableView.reloadData()
+        //        }
+    }
+    
+    // Use this method to insert an inspection to the 'In Progress' tab
     @objc dynamic public func insertByDate(_ notification: Notification?) {
-
-		if let inspection = notification?.object as? Inspection {
+        
+        if let inspection = notification?.object as? Inspection {
             self.inspections.draft.append(inspection);
             self.inspections.draft.sort(by: { (left, right) -> Bool in
                 guard let startL = left.start, let startR = right.start else {
@@ -193,20 +193,20 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
                 }
                 return startL > startR
             })
-
+            
             updateDataForSelectedIndex()
-			self.tableView.reloadData()
-		}
-	}
-
+            self.tableView.reloadData()
+        }
+    }
+    
     @objc dynamic private func reload() {
-
+        
         loadInspections()
-	}
-	
-	// Use this method to put an inspection from 'In Progress' to 'Submitted'
-	private func moveToSubmitted(inspection: Inspection?) {
-
+    }
+    
+    // Use this method to put an inspection from 'In Progress' to 'Submitted'
+    private func moveToSubmitted(inspection: Inspection?) {
+        
         guard let inspection = inspection, let idx = inspections.draft.index(of: inspection)  else {
             return
         }
@@ -217,7 +217,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         sort()
         updateDataForSelectedIndex()
         tableView.reloadData()
-	}
+    }
     
     private func updateDataForSelectedIndex() {
         
@@ -235,9 +235,9 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             self.data = []
         }
     }
-
+    
     private func configureCell(cell: InspectionCell, atIndexPath indexPath: IndexPath) {
-
+        
         let inspection = data[indexPath.row]
         print("[inspection] \(inspection.debugDescription)")
         
@@ -284,7 +284,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: completion)
         alert.addAction(okAction)
         alert.addAction(cancelAction)
-
+        
         presentAlert(controller: alert)
     }
     
@@ -309,7 +309,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-
+    
     private func uploadTouchedCallback(inspection: Inspection) -> (() -> Void) {
         
         //TODO:
@@ -325,7 +325,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
                 self.showAlert(withTitle: title, message: message)
                 return
             }
-
+            
             if self.checkUploadStatus(inspection: inspection) {
                 self.confirmUploadWithUser(completion: { (action: UIAlertAction) in
                     if action.style == .cancel {
@@ -340,7 +340,7 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
     }
     
     private func upload(inspection: Inspection) {
-
+        
         self.indicator.alpha = 1
         self.indicator.startAnimating()
         self.navigationController?.view.isUserInteractionEnabled = false
@@ -355,10 +355,10 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
             self.moveToSubmitted(inspection: inspection)
         }
     }
-
+    
     // MARK: Helpers
     private func sort() {
-
+        
         inspections.draft.sort(by: { (left, right) -> Bool in
             guard let startL = left.start, let startR = right.start else {
                 return false
@@ -377,45 +377,46 @@ final class InspectionsController: UIViewController, CLLocationManagerDelegate {
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
-
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeue(identifier: "InspectionCell") as! InspectionCell
-
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeue(identifier: "InspectionCell") as! InspectionCell
+        
         configureCell(cell: cell, atIndexPath: indexPath)
-
-		return cell
-	}
-	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let inspeciton = data[indexPath.row]
         if !inspeciton.isStoredLocally {
             return
         }
-
+        
         selectedInspectionIndexPath = indexPath
         performSegue(withIdentifier: InspectionsController.inspectionFormControllerSegueID, sender: nil)
-	}
-	
-	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		if selectedIndex == 1 {
-			return true
-		}
-		return false
-	}
-	
-	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if selectedIndex == 1 {
+            return true
+        }
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
         let inspection = self.data[indexPath.row]
         if inspection.isStoredLocally == false {
             return []
         }
-
-		let action = UITableViewRowAction(style: .destructive, title: "Remove") { (action, indexPath) in
+        self.presentAlert(title: "Resource Persistence", message: "Warning, photos will remain on the local storage of this device. ")
+        
+        let action = UITableViewRowAction(style: .destructive, title: "Remove") { (action, indexPath) in
             DataServices.remove(localInspection: inspection) {
                 
                 self.data.remove(at: indexPath.row)
@@ -423,8 +424,8 @@ extension InspectionsController: UITableViewDelegate, UITableViewDataSource {
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
                 self.tableView.endUpdates()
             }
-		}
-
-		return [action]
-	}
+        }
+        
+        return [action]
+    }
 }
