@@ -479,6 +479,7 @@
 		2EF38A7FAAD5F484B9070707 /* Pods-Field Insp TEST.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Field Insp TEST.release.xcconfig"; path = "Pods/Target Support Files/Pods-Field Insp TEST/Pods-Field Insp TEST.release.xcconfig"; sourceTree = "<group>"; };
 		35A0BFAA52096CAB054AF015 /* Pods-EAOTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOTests/Pods-EAOTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3EFCB32E4A23AD52FBFE6B3C /* Pods-Field Insp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Field Insp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Field Insp/Pods-Field Insp.debug.xcconfig"; sourceTree = "<group>"; };
+		560ACFCD2236F0C80034081D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		56447C61219635D90018A828 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		56447C65219664ED0018A828 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5675DA9221927196008409AB /* FAFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAFormatter.swift; sourceTree = "<group>"; };
@@ -498,7 +499,6 @@
 		CCCC9EF18BF5162D2E6C2AA3 /* Pods-EAO.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAO.release.xcconfig"; path = "Pods/Target Support Files/Pods-EAO/Pods-EAO.release.xcconfig"; sourceTree = "<group>"; };
 		CF2A00FA0155E41D4235A3F6 /* Pods-EAOTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EAOTests/Pods-EAOTests.release.xcconfig"; sourceTree = "<group>"; };
 		D52C30C221FE468E00EDAC38 /* PFTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFTeam.swift; sourceTree = "<group>"; };
-		D5391DB721E7123800FC4055 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = EAO/README.md; sourceTree = "<group>"; };
 		D5391DB921E7124700FC4055 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		D5391DBA21E7125F00FC4055 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		D53B6DDB21CB61CF00A0F546 /* RealmLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmLocation.swift; sourceTree = "<group>"; };
@@ -1001,8 +1001,8 @@
 		9688D50F1E69DA4300C49CD7 = {
 			isa = PBXGroup;
 			children = (
+				560ACFCD2236F0C80034081D /* README.md */,
 				D5391DB921E7124700FC4055 /* CHANGELOG.md */,
-				D5391DB721E7123800FC4055 /* README.md */,
 				299971B02077FAA5006252B9 /* Essentials.xcodeproj */,
 				9688D51A1E69DA4300C49CD7 /* EAO */,
 				1186B5391ECB699D00681426 /* EAOUITests */,
@@ -1140,7 +1140,6 @@
 				1186B5351ECB699D00681426 /* Frameworks */,
 				1186B5361ECB699D00681426 /* Resources */,
 				2A623D30E7396E5FE9C278B0 /* [CP] Embed Pods Frameworks */,
-				476304337120393E4BBF4FFE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1163,7 +1162,6 @@
 				2936BF3820BF64A500775F5E /* [CP] Embed Pods Frameworks */,
 				2936BF3920BF64A500775F5E /* ShellScript */,
 				2936BF3A20BF64A500775F5E /* Embed Frameworks */,
-				3D6DEB2E1D0CB340E118DEFB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1185,7 +1183,6 @@
 				E23EB65DCCD5C906002871A9 /* [CP] Embed Pods Frameworks */,
 				11134A641E984B1C00D06FF0 /* ShellScript */,
 				1186B52B1ECA35AC00681426 /* Embed Frameworks */,
-				FC82FC060DCB07DEF33E729B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1213,7 +1210,7 @@
 						TestTargetID = 9688D5171E69DA4300C49CD7;
 					};
 					2936BEAE20BF64A500775F5E = {
-						DevelopmentTeam = SKJCUF8GFH;
+						DevelopmentTeam = KH9MTRSDAZ;
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
@@ -1472,36 +1469,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3D6DEB2E1D0CB340E118DEFB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Field Insp TEST/Pods-Field Insp TEST-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		476304337120393E4BBF4FFE /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EAOUITests/Pods-EAOUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		89D032AA60EE8AE24CA3CFAF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1568,21 +1535,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Field Insp/Pods-Field Insp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FC82FC060DCB07DEF33E729B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Field Insp/Pods-Field Insp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1881,7 +1833,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SKJCUF8GFH;
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1904,7 +1856,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SKJCUF8GFH;
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
 				INFOPLIST_FILE = "Info-Test.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ca.bc.gov.pathfinder.mobile.FieldInspection-Test";

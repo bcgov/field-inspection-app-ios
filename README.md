@@ -9,56 +9,109 @@ Xcode
 
 ## Setup
 
-
-### Apple dev account
-
-Create an apple dev account with your itunes credentials at https://developer.apple.com/account/#/welcome.
-
-Make a provisional profile such that you can deploy to other devices.
-
 ### Development
 
-Navigate to the project folder, open EAO.xcworkspace with Xcode.
+Install the Cocoapods dependency management system:
 
-We want to sign in with our own account
-
-Xcode, preferences, accounts, appleid
-your.itunes.account@gov.bc.ca
-
-In Xcode click on the EAO folder, the EAO settings, check automatically manage signing
-Change to my personal team
-Change bundle idenfier to anything other than what's there, for example
-eao.apps.gov.bc.ca
-
-Then do the same for the test build.
-
-Obtain parse-config files from this repo maintainer and extract the contents to the EAO/EAO/Resources/Test folder and the EAO/EAO/Resources/Prod folder.
-
-On your developer Mac, cd into your project root directory via the terminal and run the following commands to set up your environment:
-
+```console
+sudo gem install cocoapods
 ```
 
-sudo gem install cocoapods
+Use Cocoapods to install the project dependencies:
+
+```console
 sudo gem update
 pod install
-
 ```
 
-## Deploy the app onto a phone
+## Distribution
 
-Connect the device you want to push onto, up at the very top, change the emulated devices to your actual phone (scroll to the top of the list of devices).
+The app is distributed via the AirWatch Enterprise App Store; this is a private internal app store available to all BC Government mobile devices.
 
-Select the build you wish to deploy to your phone (test or prod).  Use Test if you're not sure.
+Each Ministry has delegate personnel who have the permissions to create, update and deploy apps to AirWatch. If you don't know who the delegate is please contact the MDSM (device management team).
 
-Hit the play button top left.  The app will appear on your phone.
+In order to distribute via AirWatch the app must be signed with the BC Government Enterprise Certificate. The following steps will guide you through the build, signing, and deployment of your application.
 
-To log in you will require a user from the parse server.
+__Build__
 
-On the phone, you may need to give permissions to the app prior to running it.  Try to run the app, if it gives an error about permissions, go grant permissions via
+Create an `Archive` built in Xcode. When done the `Organizer` appears right-click on the newly minted build and select `Show in Finder`. A new finder window will open; Option + Drag the `xcarchive` to your desktop.
 
-Settings, General, Device Management.
+__Options__
 
+In this project there is an `options.plist` file; this contains the enterprise options you normally select when, in the Organizer, you choose to to do an enterprise distribution.
 
-## Release the app
+Copy the `options.plist` to your desktop.
 
-For your changes to be deployed out to users automatically, get your application updated in BC Gov AirWatch.
+__Packaging__
+
+Create a folder on your desktop with a name similar to `eao-field-build-142`; the name itself is not important but is descriptive enough to debug if needed.
+
+Copy both the `xcarchive` and `options.plist` into the newly created folder and compress / zip the folder. You should now have an archive called something like `eao-field-build-142.zip` on your desktop.
+
+__Signing__
+
+To sign your application with the BC Government certificate navigate to the Mobile Signing Tool from the BC Government's [DevHub](https://developer.gov.bc.ca/?q=mobile). Follow the instructions provided on the Mobile Signing Tool website.
+
+Before yo can use the tool you must:
+1. Get a BC Gov IDIR account;
+2. Contact the Mobile Signing Tool admin(s) and have your IDIR granted permission to use the tool.
+
+__Deploy__
+
+The final step is to take the signed `IPA` provided by the Mobile Signing Tool and give it to your Ministry delegate to upload to AirWatch. If you don't know how this process works contact the MDMS team (the people who provision mobile devices and operate AirWatch) to find out who this person is.
+
+## Project Status / Goals / Roadmap
+
+This project is **active**.
+
+Progress to date, known issues, or new features will be documented on our publicly available Trello board [here](https://trello.com/b/HGJpxQdS/mobile-pathfinder).
+
+## Getting Help or Reporting an Issue
+
+This is an internal app intended for s specific team to use. If you're using this app please contact the internal representative for assistance.
+
+## How to Contribute
+
+_If you are including a Code of Conduct, make sure that you have a [CODE_OF_CONDUCT.md](SAMPLE-CODE_OF_CONDUCT.md) file, and include the following text in here in the README:_
+"Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms."
+
+## License
+
+Detailed guidance around licenses is available
+[here](/BC-Open-Source-Development-Employee-Guide/Licenses.md)
+
+Attach the appropriate LICENSE file directly into your repository before you do anything else!
+
+The default license For code repositories is: Apache 2.0
+
+Here is the boiler-plate you should put into the comments header of every source code file as well as the bottom of your README.md:
+
+    Copyright 2019 Province of British Columbia
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+For repos that are made up of docs, wikis and non-code stuff it's Creative Commons Attribution 4.0 International, and should look like this at the bottom of your README.md:
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">YOUR REPO NAME HERE</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">the Province of Britich Columbia</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+and the code for the cc 4.0 footer looks like this:
+
+    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence"
+    style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span
+    xmlns:dct="http://purl.org/dc/terms/" property="dct:title">YOUR REPO NAME HERE</span> by <span
+    xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">the Province of Britich Columbia
+    </span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+    Creative Commons Attribution 4.0 International License</a>.
+
+[export-xcarchive]: https://github.com/bcdevops/mobile-cicd-api/raw/develop/doc/images/export-xcarchive.gif 'Prepare & Export xcarchive'
+
