@@ -57,7 +57,7 @@ extension DataServices {
     
     internal class func saveFull(image: UIImage, index: Int, location: CLLocation?, observationID: String, description: String?) -> String? {
         
-        guard let data: Data = UIImage.resizeImage(image: image).jpegData(compressionQuality: Constants.jpegCompression) else {
+        guard let data: Data = image.jpegData(compressionQuality: Constants.jpegCompression) else {
             return nil
         }
         print("Image full size of \(index) is \(data.count)")
