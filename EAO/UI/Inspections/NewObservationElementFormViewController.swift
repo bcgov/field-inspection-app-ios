@@ -871,6 +871,12 @@ extension  NewObservationElementFormViewController: UIImagePickerControllerDeleg
         let long = round(num: location.coordinate.longitude, toPlaces: 5)
         let locationString = "lat: \(String(lat))\nLon: \(String(long))"
         
+        // Add cancel button.
+        form.addButton(name: "Cancel", title: "Cancel", style: commonButtonStyle, completion: {
+            self.enabledPopUp = false
+            form.remove(from: self.popUpContainer)
+        })
+        
         form.addImage(image: image)
         form.addField(name: "details", title: "Caption", placeholder: "", type: .TextViewInput, inputType: .Text, style: commonFieldStyle)
         form.addLabel(name: "gpsstamp", text: locationString, style: textStyleM)
