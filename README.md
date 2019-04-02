@@ -39,6 +39,23 @@ Create an `Archive` built in Xcode. When done the `Organizer` appears right-clic
 __Options__
 
 In this project there is an `options.plist` file; this contains the enterprise options you normally select when, in the Organizer, you choose to to do an enterprise distribution.
+There is a `Parse.plist` file which also must be configured to point to the specific parse server that you wish this particular build to point to (located at ./parse-config/prod/Parse.plist).  eg: 
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ParseAppId</key>
+	<string>xxxxxxx</string>
+	<key>ParseClientKey</key>
+	<string>xxxxxx</string>
+	<key>ParseServer</key>
+	<string>https://projects.eao.gov.bc.ca/parse</string>
+</dict>
+</plist>
+```
+Also make sure that the Copy Bundle Resources step in the Build Phases points to this particular Parse.plist file.
 
 Copy the `options.plist` to your desktop.
 
@@ -55,6 +72,9 @@ To sign your application with the BC Government certificate navigate to the Mobi
 Before yo can use the tool you must:
 1. Get a BC Gov IDIR account;
 2. Contact the Mobile Signing Tool admin(s) and have your IDIR granted permission to use the tool.
+3. Your apple ID must be registered with the enterprise team @ BCGov
+4. You must select the enterprise team: "Govt. of The PRonvice of BC - Ministry of Labour & Citizen's Services & Open Govt"
+5. Make sure your build version has been increased since the last time you submitted a build.
 
 __Deploy__
 
@@ -108,7 +128,7 @@ and the code for the cc 4.0 footer looks like this:
 
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence"
     style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span
-    xmlns:dct="http://purl.org/dc/terms/" property="dct:title">YOUR REPO NAME HERE</span> by <span
+    xmlns:dct="http://purl.org/dc/terms/" property="dct:title">field-inspection-app-ios</span> by <span
     xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">the Province of Britich Columbia
     </span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
     Creative Commons Attribution 4.0 International License</a>.
