@@ -229,6 +229,7 @@
 		29FF5616200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5614200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.swift */; };
 		29FF5617200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF5615200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib */; };
 		29FF561A200EC29100FCF230 /* DataServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FF5619200EC29100FCF230 /* DataServices.swift */; };
+		4D023750223C56B30062B509 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4D02374F223C56B20062B509 /* Parse.plist */; };
 		56447C62219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
 		56447C63219635D90018A828 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C61219635D90018A828 /* UIViewControllerExtensions.swift */; };
 		56447C6821966B0E0018A828 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56447C65219664ED0018A828 /* NetworkManager.swift */; };
@@ -277,7 +278,6 @@
 		D5B6F73921DF30F6007FF921 /* EAOProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DE621CB705700A0F546 /* EAOProject.swift */; };
 		D5B6F73C21DF313C007FF921 /* RealmLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DDB21CB61CF00A0F546 /* RealmLocation.swift */; };
 		D5B6F73D21DF3145007FF921 /* InspectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B6DDE21CB622E00A0F546 /* InspectionError.swift */; };
-		D5F7DE1321E1BCCF00C0A859 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5F7DE1221E1BCCF00C0A859 /* Parse.plist */; };
 		D5F7DE1421E1BD8500C0A859 /* Parse.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5F7DE1221E1BCCF00C0A859 /* Parse.plist */; };
 		D5F7DE1E21E1C2D800C0A859 /* PFPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE1D21E1C2D800C0A859 /* PFPhoto.swift */; };
 		D5F7DE1F21E1C2D800C0A859 /* PFPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7DE1D21E1C2D800C0A859 /* PFPhoto.swift */; };
@@ -479,6 +479,7 @@
 		2EF38A7FAAD5F484B9070707 /* Pods-Field Insp TEST.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Field Insp TEST.release.xcconfig"; path = "Pods/Target Support Files/Pods-Field Insp TEST/Pods-Field Insp TEST.release.xcconfig"; sourceTree = "<group>"; };
 		35A0BFAA52096CAB054AF015 /* Pods-EAOTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EAOTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EAOTests/Pods-EAOTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3EFCB32E4A23AD52FBFE6B3C /* Pods-Field Insp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Field Insp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Field Insp/Pods-Field Insp.debug.xcconfig"; sourceTree = "<group>"; };
+		4D02374F223C56B20062B509 /* Parse.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Parse.plist; path = "parse-config/prod/Parse.plist"; sourceTree = "<group>"; };
 		560ACFCD2236F0C80034081D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		56447C61219635D90018A828 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		56447C65219664ED0018A828 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -1001,6 +1002,7 @@
 		9688D50F1E69DA4300C49CD7 = {
 			isa = PBXGroup;
 			children = (
+				4D02374F223C56B20062B509 /* Parse.plist */,
 				560ACFCD2236F0C80034081D /* README.md */,
 				D5391DB921E7124700FC4055 /* CHANGELOG.md */,
 				299971B02077FAA5006252B9 /* Essentials.xcodeproj */,
@@ -1216,6 +1218,7 @@
 					};
 					9688D5171E69DA4300C49CD7 = {
 						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = KH9MTRSDAZ;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
@@ -1341,7 +1344,7 @@
 				29424D451FFC146200562508 /* GalleryImageCollectionViewCell.xib in Resources */,
 				29FF5613200E9F6E00FCF230 /* RequirementNewObservationCollectionViewCell.xib in Resources */,
 				29AA663D2003EF2200673013 /* OldDescriptionFieldTableViewCell.xib in Resources */,
-				D5F7DE1321E1BCCF00C0A859 /* Parse.plist in Resources */,
+				4D023750223C56B30062B509 /* Parse.plist in Resources */,
 				29FF560F200E9F5A00FCF230 /* TitleNewObservationCollectionViewCell.xib in Resources */,
 				29FF5617200E9F8400FCF230 /* DescriptionNewObservationCollectionViewCell.xib in Resources */,
 				291746772073EAEF005F70B4 /* Team.storyboard in Resources */,
@@ -1987,7 +1990,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = EAO/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2010,7 +2013,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KH9MTRSDAZ;
 				INFOPLIST_FILE = EAO/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.bc.gov.pathfinder.mobile.FieldInspection;

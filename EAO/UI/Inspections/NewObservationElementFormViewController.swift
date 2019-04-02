@@ -876,7 +876,7 @@ extension  NewObservationElementFormViewController: UIImagePickerControllerDeleg
             self.enabledPopUp = false
             form.remove(from: self.popUpContainer)
         })
-        
+
         form.addImage(image: image)
         form.addField(name: "details", title: "Caption", placeholder: "", type: .TextViewInput, inputType: .Text, style: commonFieldStyle)
         form.addLabel(name: "gpsstamp", text: locationString, style: textStyleM)
