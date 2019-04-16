@@ -257,7 +257,7 @@ final class InspectionSetupController: UIViewController {
     
     @objc func validate() -> Inspection? {
         
-        if linkProjectButton.title(for: .normal) == "Link Project" || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil {
+        if linkProjectButton.title(for: .normal) == "Business Name..." || titleTextField.text?.isEmpty() == true || subtextTextField.text?.isEmpty() == true || dates["start"] == nil {
             // remove ^
             presentAlert(controller: Alerts.fields)
             return nil
