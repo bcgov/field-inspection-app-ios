@@ -11,7 +11,7 @@ struct Constants {
 	static let textViewLenght  = 5000
     
     struct API {
-        static let projectListURI = "https://projects.eao.gov.bc.ca/api/projects/published"
+        static let projectListURI = "https://projects.eao.gov.bc.ca/api-public/projects/published"
     }
     
     static let jpegCompression: CGFloat = 0.8
